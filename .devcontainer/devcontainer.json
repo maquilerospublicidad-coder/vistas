@@ -1,0 +1,12 @@
+{
+  "name": "vistas",
+  "postStartCommand": "cd /workspaces/vistas && nohup python3 -m http.server 8080 > /tmp/server.log 2>&1 &",
+  "portsAttributes": {
+    "8080": {
+      "label": "App Maquileros",
+      "onAutoForward": "openBrowserOnce",
+      "visibility": "public"
+    }
+  },
+  "forwardPorts": [8080]
+}

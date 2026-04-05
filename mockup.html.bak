@@ -6692,10 +6692,10 @@ function abrirPopupProveedorDesdeProductos() {
             <label class="clientesform-field">ID insumo<input id="insFormId" type="text" autocomplete="off"></label>
             <label class="clientesform-field">Nombre insumo<input id="insFormNombre" type="text" autocomplete="off"></label>
             <label class="clientesform-field">Categoría<input id="insFormCategoria" type="text" autocomplete="off"></label>
-            <label class="clientesform-field">Unidad base fabricación<select id="insFormUnidad"><option value="">Seleccionar...</option></select></label>
-            <label class="clientesform-field">Unidad de compra<select id="insFormUnidadCompra"><option value="">Seleccionar...</option></select></label>
+            <label class="clientesform-field">Unidad base fabricación<input id="insFormUnidad" type="text" placeholder="Pza, ml, kg, m2..." autocomplete="off"></label>
+            <label class="clientesform-field">Unidad de compra<input id="insFormUnidadCompra" type="text" placeholder="Caja, paquete, rollo..." autocomplete="off"></label>
             <label class="clientesform-field">Factor compra→base<input id="insFormFactorCompraBase" type="number" min="0.0001" step="0.0001" value="1" placeholder="1 compra = X base"></label>
-            <label class="clientesform-field">Unidad de venta<select id="insFormUnidadVenta"><option value="">Seleccionar...</option></select></label>
+            <label class="clientesform-field">Unidad de venta<input id="insFormUnidadVenta" type="text" placeholder="Pieza, medio millar, millar..." autocomplete="off"></label>
             <label class="clientesform-field">Factor venta→base<input id="insFormFactorVentaBase" type="number" min="0.0001" step="0.0001" value="1" placeholder="1 venta = X base"></label>
             <label class="clientesform-field">Existencias<input id="insFormExistencias" type="number" min="0" step="1" value="0"></label>
             <label class="clientesform-field">Mínimo<input id="insFormMinimo" type="number" min="0" step="1" value="0"></label>
@@ -10336,67 +10336,37 @@ const imgBolsaDeliveryBase = new Image();
     </div>
 </div>
 
-<!-- ============ MODAL: CONFIGURAR UNIDADES DE MEDIDA ============ -->
+<!-- POPUP UNIDADES DE MEDIDA -->
 <div id="popupUMConfig" class="productos-modal-overlay" aria-hidden="true" style="z-index:2200;">
-    <div class="productos-modal-card" role="dialog" aria-modal="true" aria-labelledby="umConfigTitulo" style="width:min(96vw,540px);max-height:88vh;overflow-y:auto;">
-        <h3 id="umConfigTitulo" class="productos-modal-title" style="display:flex;align-items:center;gap:8px;">
-            <span style="font-size:0.9rem;">📏</span> Configurar unidades de medida
-        </h3>
-        <p style="margin:0 0 6px;font-size:0.68rem;color:#6b7280;">Define grupos de unidades. Cada grupo tiene un nombre, una unidad base de referencia y sus conversiones.</p>
-
-        <!-- Selector de grupo -->
-        <div class="orden-field" style="margin-bottom:6px;">
-            <label for="umGrupoSelect" style="font-size:0.66rem;font-weight:700;color:#374151;">Grupo activo</label>
-            <div style="display:flex;gap:6px;align-items:center;">
-                <select id="umGrupoSelect" style="flex:1;"></select>
-                <button id="umGrupoEliminar" class="productos-btn" type="button" style="font-size:0.62rem;padding:4px 8px;background:#ef4444;color:#fff;border:none;border-radius:6px;cursor:pointer;" title="Eliminar grupo activo">✕</button>
+    <div class="productos-modal-card" role="dialog" aria-modal="true" style="max-width:580px;">
+        <h3 class="productos-modal-title" style="display:flex;align-items:center;gap:8px;"><span style="font-size:0.9rem;">📏</span> Configurar unidades de medida</h3>
+        <div style="display:flex;gap:6px;align-items:flex-end;margin-bottom:12px;padding:10px;background:#fafbfc;border-radius:8px;border:1px solid #e5e7eb;">
+            <div style="flex:1;">
+                <label style="font-size:0.5rem;font-weight:700;color:#6b7280;text-transform:uppercase;display:block;margin-bottom:3px;">Nombre de la unidad</label>
+                <input id="umNuevoNombre" type="text" placeholder="Ej: Docena, Caja, Media..." style="width:100%;padding:6px 10px;border-radius:7px;border:1px solid #d7dce4;font-size:0.62rem;box-sizing:border-box;">
             </div>
+            <button type="button" id="umAgregar" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border-color:#d76700;border-radius:7px;white-space:nowrap;height:32px;">+ Agregar</button>
         </div>
-
-        <!-- Nombre del grupo (editable) -->
-        <div class="orden-field" style="margin-bottom:6px;">
-            <label for="umGrupoNombreInput" style="font-size:0.66rem;font-weight:700;color:#374151;">Nombre del grupo</label>
-            <input id="umGrupoNombreInput" type="text" placeholder="Ej: Piezas, Peso, Volumen..." style="font-size:0.72rem;">
-        </div>
-
-        <!-- Unidad base de referencia -->
-        <div class="orden-field" style="margin-bottom:8px;">
-            <label for="umBaseSelect" style="font-size:0.66rem;font-weight:700;color:#374151;">Unidad base de referencia</label>
-            <select id="umBaseSelect" style="font-size:0.72rem;"></select>
-        </div>
-
-        <!-- Tabla de unidades -->
         <div style="border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;">
-            <table style="width:100%;border-collapse:collapse;font-size:0.66rem;">
+            <table style="width:100%;border-collapse:collapse;font-size:0.58rem;">
                 <thead>
-                    <tr style="background:#f3f4f6;">
-                        <th style="padding:6px 8px;text-align:left;color:#374151;font-weight:700;border-bottom:1px solid #e5e7eb;">Unidad</th>
-                        <th style="padding:6px 8px;text-align:left;color:#374151;font-weight:700;border-bottom:1px solid #e5e7eb;">Abreviación</th>
-                        <th style="padding:6px 8px;text-align:right;color:#374151;font-weight:700;border-bottom:1px solid #e5e7eb;">Factor → base</th>
-                        <th style="padding:6px 4px;text-align:center;color:#374151;font-weight:700;border-bottom:1px solid #e5e7eb;width:36px;"></th>
+                    <tr style="background:#fafbfc;border-bottom:2px solid #f07a00;">
+                        <th style="padding:7px 8px;text-align:left;font-size:0.52rem;font-weight:800;color:#6b7280;text-transform:uppercase;">Nombre</th>
+                        <th style="padding:7px 8px;text-align:right;font-size:0.52rem;font-weight:800;color:#6b7280;text-transform:uppercase;">Ratio</th>
+                        <th style="padding:7px 8px;text-align:center;font-size:0.52rem;font-weight:800;color:#6b7280;text-transform:uppercase;width:36px;"></th>
                     </tr>
                 </thead>
-                <tbody id="umUnidadesTbody"></tbody>
+                <tbody id="umTablaBody"></tbody>
             </table>
         </div>
-
-        <!-- Botón agregar unidad -->
-        <button id="umAgregarUnidad" class="productos-btn" type="button" style="margin-top:6px;font-size:0.64rem;display:flex;align-items:center;gap:4px;padding:5px 10px;background:#f0fdf4;color:#16a34a;border:1px dashed #86efac;border-radius:6px;cursor:pointer;">
-            <span style="font-size:0.82rem;">＋</span> Agregar unidad al grupo
-        </button>
-
         <div style="margin-top:8px;padding:8px 10px;background:#fff8f0;border-radius:6px;border:1px solid #fcd9b0;font-size:0.52rem;color:#92400e;">
-            <b>★ Base</b> = unidad de referencia (resaltada en amarillo). Factor de las demás indica cuántas unidades base equivale. Ej: <b>Docena = 12</b>, <b>Millar = 1000</b>.
+            <b>★ Referencia</b> = unidad base (ratio siempre 1). Las demás se definen con su ratio numérico: ej. <b>Docena = 12</b>, <b>Media = 0.5</b>.
         </div>
-
-        <div class="productos-modal-actions" style="margin-top:10px;">
-            <button id="umNuevoGrupo" class="productos-btn" type="button" style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">＋ Nuevo grupo</button>
-            <button id="umGuardar" class="productos-btn primary" type="button">Guardar</button>
-            <button id="umCerrar" class="productos-btn gray" type="button">Cerrar</button>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px;">
+            <button type="button" id="umCerrar" class="productos-btn" style="background:#e5e7eb;color:#374151;border:1px solid #d1d5db;border-radius:7px;padding:7px 16px;font-size:0.62rem;">Cerrar</button>
         </div>
     </div>
 </div>
-<!-- ============ FIN MODAL UNIDADES ============ -->
 
 <!-- Procesos popup removed - procesos are now created via naturaleza -->
 <!-- POPUP VARIANTES -->
@@ -10766,10 +10736,12 @@ const imgBolsaDeliveryBase = new Image();
                 <div class="popup-panel">
                     <div class="orden-field">
                         <label for="configProductosUnidadPorDefecto">Unidad de medida por defecto</label>
-                        <div style="display:flex;gap:6px;align-items:center;">
-                            <select id="configProductosUnidadPorDefecto" style="flex:1;"></select>
-                            <button id="btnAbrirUMConfigProductos" class="productos-btn" type="button" title="Configurar unidades de medida" style="padding:5px 8px;font-size:0.68rem;cursor:pointer;">⚙️</button>
-                        </div>
+                        <select id="configProductosUnidadPorDefecto">
+                            <option value="pza">Piezas (pza)</option>
+                            <option value="mt">Metros (mt)</option>
+                            <option value="kg">Kilogramos (kg)</option>
+                            <option value="lt">Litros (lt)</option>
+                        </select>
                     </div>
                     <div class="orden-field">
                         <label for="configProductosMargenPorDefecto">Margen de ganancia por defecto (%)</label>
@@ -10822,10 +10794,12 @@ const imgBolsaDeliveryBase = new Image();
                 <div class="popup-panel">
                     <div class="orden-field">
                         <label for="configInsumosUnidadPorDefecto">Unidad de medida por defecto</label>
-                        <div style="display:flex;gap:6px;align-items:center;">
-                            <select id="configInsumosUnidadPorDefecto" style="flex:1;"></select>
-                            <button id="btnAbrirUMConfigInsumos" class="productos-btn" type="button" title="Configurar unidades de medida" style="padding:5px 8px;font-size:0.68rem;cursor:pointer;">⚙️</button>
-                        </div>
+                        <select id="configInsumosUnidadPorDefecto">
+                            <option value="pza">Piezas (pza)</option>
+                            <option value="mt">Metros (mt)</option>
+                            <option value="kg">Kilogramos (kg)</option>
+                            <option value="lt">Litros (lt)</option>
+                        </select>
                     </div>
                     <div class="orden-field">
                         <label for="configInsumosStockMinimoAlerta">Stock mínimo para alertar</label>
@@ -12091,29 +12065,7 @@ document.addEventListener('DOMContentLoaded', () => {
         almacen: { ubicacionPorDefecto: 'PISO_1', stockMinimoAlerta: 20, aceptarStockNegativo: false, overstockAlerta: true },
         reportes: { rangoPorDefecto: 30, formatoMoneda: 'MXN', mostrarGraficos: true, actualizarKpisAutomatico: true },
         promociones: { lista: ['PROMO10|porcentaje|10', 'BIENVENIDA50|monto|50'] },
-        permisos: { descuentoUsuarios: ['admin'] },
-        unidadesMedida: {
-            grupos: [
-                { nombre: 'Piezas', baseIndex: 0, unidades: [
-                    { nombre: 'Pieza', abrev: 'pza', factor: 1 },
-                    { nombre: 'Docena', abrev: 'doc', factor: 12 },
-                    { nombre: 'Ciento', abrev: 'cto', factor: 100 },
-                    { nombre: 'Millar', abrev: 'mll', factor: 1000 }
-                ]},
-                { nombre: 'Peso', baseIndex: 0, unidades: [
-                    { nombre: 'Kilogramo', abrev: 'kg', factor: 1 },
-                    { nombre: 'Gramo', abrev: 'g', factor: 0.001 }
-                ]},
-                { nombre: 'Longitud', baseIndex: 0, unidades: [
-                    { nombre: 'Metro', abrev: 'mt', factor: 1 },
-                    { nombre: 'Cent\u00edmetro', abrev: 'cm', factor: 0.01 }
-                ]},
-                { nombre: 'Volumen', baseIndex: 0, unidades: [
-                    { nombre: 'Litro', abrev: 'lt', factor: 1 },
-                    { nombre: 'Mililitro', abrev: 'ml', factor: 0.001 }
-                ]}
-            ]
-        }
+        permisos: { descuentoUsuarios: ['admin'] }
     };
 
     const loadSystemConfig = () => {
@@ -12141,339 +12093,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!systemConfig[category]) systemConfig[category] = {};
         systemConfig[category][key] = value;
     };
-
-    // ===== MODULO: UNIDADES DE MEDIDA =====
-    const UM_FIREBASE_COLLECTION = 'config_unidades_medida';
-    let umGrupoActivo = 0;
-
-    const getUMGrupos = () => {
-        if (!systemConfig.unidadesMedida) systemConfig.unidadesMedida = { grupos: [] };
-        if (!Array.isArray(systemConfig.unidadesMedida.grupos)) systemConfig.unidadesMedida.grupos = [];
-        return systemConfig.unidadesMedida.grupos;
-    };
-
-    const umSaveToSystem = () => {
-        saveSystemConfig();
-        umSyncToFirebase();
-        umRefreshAllSelectors();
-    };
-
-    const umSyncToFirebase = () => {
-        try {
-            if (!window.firebase || !window.firebase.apps?.length) return;
-            const db = window.firebase.firestore();
-            db.collection(UM_FIREBASE_COLLECTION).doc('grupos').set({
-                grupos: getUMGrupos(),
-                actualizadoEn: window.firebase.firestore.FieldValue.serverTimestamp()
-            }).catch(() => {});
-        } catch (_) {}
-    };
-
-    const umLoadFromFirebase = (cb) => {
-        try {
-            if (!window.firebase || !window.firebase.apps?.length) { if (cb) cb(); return; }
-            const db = window.firebase.firestore();
-            db.collection(UM_FIREBASE_COLLECTION).doc('grupos').get().then((snap) => {
-                if (snap.exists) {
-                    const data = snap.data();
-                    if (Array.isArray(data?.grupos) && data.grupos.length) {
-                        systemConfig.unidadesMedida = { grupos: data.grupos };
-                        saveSystemConfig();
-                    }
-                }
-                if (cb) cb();
-            }).catch(() => { if (cb) cb(); });
-        } catch (_) { if (cb) cb(); }
-    };
-
-    const umBuildOptions = () => {
-        const grupos = getUMGrupos();
-        const opts = [];
-        grupos.forEach((g) => {
-            (g.unidades || []).forEach((u) => {
-                opts.push({ value: u.abrev, label: u.nombre + ' (' + u.abrev + ')', grupo: g.nombre });
-            });
-        });
-        return opts;
-    };
-
-    const umPopulateSelect = (sel, currentValue) => {
-        if (!sel) return;
-        const prev = currentValue || sel.value;
-        sel.innerHTML = '';
-        const opts = umBuildOptions();
-        if (!opts.length) {
-            const op = document.createElement('option');
-            op.value = 'pza'; op.textContent = 'Piezas (pza)';
-            sel.appendChild(op);
-        } else {
-            let lastGroup = '';
-            let optgroup = null;
-            opts.forEach((o) => {
-                if (o.grupo !== lastGroup) {
-                    optgroup = document.createElement('optgroup');
-                    optgroup.label = o.grupo;
-                    sel.appendChild(optgroup);
-                    lastGroup = o.grupo;
-                }
-                const op = document.createElement('option');
-                op.value = o.value;
-                op.textContent = o.label;
-                (optgroup || sel).appendChild(op);
-            });
-        }
-        const allValues = Array.from(sel.options).map(o => o.value);
-        if (allValues.includes(prev)) sel.value = prev;
-    };
-
-    const umRefreshAllSelectors = () => {
-        umPopulateSelect(configProductosUnidadPorDefecto);
-        umPopulateSelect(configInsumosUnidadPorDefecto);
-    };
-
-    // ---- UI del popup UM ----
-    const popupUMConfig = document.getElementById('popupUMConfig');
-    const umGrupoSelect = document.getElementById('umGrupoSelect');
-    const umGrupoNombreInput = document.getElementById('umGrupoNombreInput');
-    const umBaseSelect = document.getElementById('umBaseSelect');
-    const umUnidadesTbody = document.getElementById('umUnidadesTbody');
-    const umAgregarUnidad = document.getElementById('umAgregarUnidad');
-    const umNuevoGrupo = document.getElementById('umNuevoGrupo');
-    const umGuardar = document.getElementById('umGuardar');
-    const umCerrar = document.getElementById('umCerrar');
-    const umGrupoEliminar = document.getElementById('umGrupoEliminar');
-    const btnAbrirUMConfigProductos = document.getElementById('btnAbrirUMConfigProductos');
-    const btnAbrirUMConfigInsumos = document.getElementById('btnAbrirUMConfigInsumos');
-    const prodFormUMConfigBtn = document.getElementById('prodFormUMConfig');
-
-    const umOpenPopup = () => {
-        if (!popupUMConfig) return;
-        umGrupoActivo = 0;
-        umRenderGrupoSelect();
-        umRenderGrupo();
-        popupUMConfig.style.display = 'flex';
-        popupUMConfig.setAttribute('aria-hidden', 'false');
-    };
-
-    const umClosePopup = () => {
-        if (!popupUMConfig) return;
-        popupUMConfig.style.display = 'none';
-        popupUMConfig.setAttribute('aria-hidden', 'true');
-    };
-
-    const umRenderGrupoSelect = () => {
-        if (!umGrupoSelect) return;
-        const grupos = getUMGrupos();
-        umGrupoSelect.innerHTML = '';
-        grupos.forEach((g, i) => {
-            const op = document.createElement('option');
-            op.value = i;
-            op.textContent = g.nombre || '(Sin nombre ' + (i + 1) + ')';
-            umGrupoSelect.appendChild(op);
-        });
-        if (umGrupoActivo >= grupos.length) umGrupoActivo = Math.max(0, grupos.length - 1);
-        umGrupoSelect.value = umGrupoActivo;
-    };
-
-    const umRenderGrupo = () => {
-        const grupos = getUMGrupos();
-        const g = grupos[umGrupoActivo];
-        if (!g) {
-            if (umGrupoNombreInput) umGrupoNombreInput.value = '';
-            if (umUnidadesTbody) umUnidadesTbody.innerHTML = '<tr><td colspan="4" style="padding:12px;text-align:center;color:#9ca3af;font-size:0.64rem;">No hay grupos. Crea uno nuevo.</td></tr>';
-            if (umBaseSelect) umBaseSelect.innerHTML = '';
-            return;
-        }
-        if (umGrupoNombreInput) umGrupoNombreInput.value = g.nombre || '';
-        umRenderUnidades(g);
-        umRenderBaseSelect(g);
-    };
-
-    const umRenderUnidades = (g) => {
-        if (!umUnidadesTbody) return;
-        const unidades = g.unidades || [];
-        if (!unidades.length) {
-            umUnidadesTbody.innerHTML = '<tr><td colspan="4" style="padding:12px;text-align:center;color:#9ca3af;font-size:0.64rem;">Sin unidades. Usa el bot\u00f3n + de abajo.</td></tr>';
-            return;
-        }
-        umUnidadesTbody.innerHTML = unidades.map((u, idx) => {
-            const isBase = idx === (g.baseIndex || 0);
-            const bg = isBase ? 'background:#fffbeb;' : '';
-            const fbg = isBase ? 'background:#fef3c7;font-weight:700;' : '';
-            const nEsc = (u.nombre || '').replace(/"/g, '&quot;');
-            const aEsc = (u.abrev || '').replace(/"/g, '&quot;');
-            return '<tr style="border-bottom:1px solid #f3f4f6;' + bg + '">' +
-                '<td style="padding:5px 8px;"><input type="text" value="' + nEsc + '" data-um-field="nombre" data-um-idx="' + idx + '" style="width:100%;font-size:0.66rem;border:1px solid #d1d5db;border-radius:4px;padding:3px 6px;" placeholder="Nombre..."></td>' +
-                '<td style="padding:5px 4px;"><input type="text" value="' + aEsc + '" data-um-field="abrev" data-um-idx="' + idx + '" style="width:100%;font-size:0.66rem;border:1px solid #d1d5db;border-radius:4px;padding:3px 6px;" placeholder="abrev"></td>' +
-                '<td style="padding:5px 4px;text-align:right;"><input type="number" value="' + (u.factor ?? 1) + '" data-um-field="factor" data-um-idx="' + idx + '" min="0.0001" step="any" style="width:80px;font-size:0.66rem;border:1px solid #d1d5db;border-radius:4px;padding:3px 6px;text-align:right;' + fbg + '"></td>' +
-                '<td style="padding:5px 4px;text-align:center;"><button type="button" data-um-del="' + idx + '" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.78rem;" title="Eliminar">\u2715</button></td>' +
-                '</tr>';
-        }).join('');
-    };
-
-    const umRenderBaseSelect = (g) => {
-        if (!umBaseSelect) return;
-        const prev = g.baseIndex || 0;
-        umBaseSelect.innerHTML = '';
-        (g.unidades || []).forEach((u, i) => {
-            const op = document.createElement('option');
-            op.value = i;
-            op.textContent = u.nombre ? u.nombre + ' (' + (u.abrev || '?') + ')' : 'Unidad ' + (i + 1);
-            umBaseSelect.appendChild(op);
-        });
-        umBaseSelect.value = prev;
-    };
-
-    const umReadFieldsFromDOM = () => {
-        const grupos = getUMGrupos();
-        const g = grupos[umGrupoActivo];
-        if (!g) return;
-        if (umGrupoNombreInput) g.nombre = umGrupoNombreInput.value.trim() || 'Grupo ' + (umGrupoActivo + 1);
-        if (umBaseSelect) g.baseIndex = Number(umBaseSelect.value) || 0;
-        if (umUnidadesTbody) {
-            umUnidadesTbody.querySelectorAll('input[data-um-field]').forEach((inp) => {
-                const idx = Number(inp.dataset.umIdx);
-                const field = inp.dataset.umField;
-                if (!g.unidades[idx]) return;
-                if (field === 'factor') {
-                    g.unidades[idx].factor = Math.max(0.0001, Number(inp.value) || 1);
-                } else {
-                    g.unidades[idx][field] = inp.value.trim();
-                }
-            });
-        }
-    };
-
-    if (umGrupoSelect) {
-        umGrupoSelect.addEventListener('change', () => {
-            umReadFieldsFromDOM();
-            umGrupoActivo = Number(umGrupoSelect.value) || 0;
-            umRenderGrupo();
-        });
-    }
-
-    if (umAgregarUnidad) {
-        umAgregarUnidad.addEventListener('click', () => {
-            umReadFieldsFromDOM();
-            const g = getUMGrupos()[umGrupoActivo];
-            if (!g) return;
-            if (!g.unidades) g.unidades = [];
-            g.unidades.push({ nombre: '', abrev: '', factor: 1 });
-            umRenderUnidades(g);
-            umRenderBaseSelect(g);
-            const lastInp = umUnidadesTbody?.querySelector('input[data-um-idx="' + (g.unidades.length - 1) + '"][data-um-field="nombre"]');
-            if (lastInp) lastInp.focus();
-        });
-    }
-
-    if (umUnidadesTbody) {
-        umUnidadesTbody.addEventListener('click', (ev) => {
-            const btn = ev.target.closest('button[data-um-del]');
-            if (!btn) return;
-            umReadFieldsFromDOM();
-            const idx = Number(btn.dataset.umDel);
-            const g = getUMGrupos()[umGrupoActivo];
-            if (!g || !g.unidades || !g.unidades[idx]) return;
-            g.unidades.splice(idx, 1);
-            if (g.baseIndex >= g.unidades.length) g.baseIndex = Math.max(0, g.unidades.length - 1);
-            umRenderUnidades(g);
-            umRenderBaseSelect(g);
-        });
-    }
-
-    if (umNuevoGrupo) {
-        umNuevoGrupo.addEventListener('click', () => {
-            umReadFieldsFromDOM();
-            const grupos = getUMGrupos();
-            grupos.push({ nombre: '', baseIndex: 0, unidades: [] });
-            umGrupoActivo = grupos.length - 1;
-            umRenderGrupoSelect();
-            umRenderGrupo();
-            if (umGrupoNombreInput) umGrupoNombreInput.focus();
-        });
-    }
-
-    if (umGrupoEliminar) {
-        umGrupoEliminar.addEventListener('click', () => {
-            const grupos = getUMGrupos();
-            if (!grupos.length) return;
-            const g = grupos[umGrupoActivo];
-            if (!confirm('\u00bfEliminar el grupo "' + (g?.nombre || 'Sin nombre') + '"?')) return;
-            grupos.splice(umGrupoActivo, 1);
-            umGrupoActivo = Math.max(0, umGrupoActivo - 1);
-            umRenderGrupoSelect();
-            umRenderGrupo();
-        });
-    }
-
-    if (umGuardar) {
-        umGuardar.addEventListener('click', () => {
-            umReadFieldsFromDOM();
-            const grupos = getUMGrupos();
-            for (const g of grupos) {
-                for (const u of (g.unidades || [])) {
-                    if (u.nombre && !u.abrev) {
-                        notifyError('La unidad "' + u.nombre + '" en "' + g.nombre + '" necesita abreviaci\u00f3n.', 'Unidades');
-                        return;
-                    }
-                }
-                g.unidades = (g.unidades || []).filter(u => u.nombre || u.abrev);
-                if (g.baseIndex >= g.unidades.length) g.baseIndex = 0;
-            }
-            umSaveToSystem();
-            umRenderGrupoSelect();
-            umRenderGrupo();
-            notifyInfo('Unidades de medida guardadas.', 'Unidades');
-        });
-    }
-
-    if (umCerrar) umCerrar.addEventListener('click', umClosePopup);
-    if (popupUMConfig) popupUMConfig.addEventListener('click', (ev) => { if (ev.target === popupUMConfig) umClosePopup(); });
-    if (btnAbrirUMConfigProductos) btnAbrirUMConfigProductos.addEventListener('click', umOpenPopup);
-    if (btnAbrirUMConfigInsumos) btnAbrirUMConfigInsumos.addEventListener('click', umOpenPopup);
-    if (prodFormUMConfigBtn) prodFormUMConfigBtn.addEventListener('click', umOpenPopup);
-
-    // Auto-fill factor en insumos al seleccionar unidad
-    const umGetFactorForAbrev = (abrev) => {
-        for (const g of getUMGrupos()) {
-            const baseU = (g.unidades || [])[g.baseIndex || 0];
-            const baseFactor = baseU ? baseU.factor : 1;
-            for (const u of (g.unidades || [])) {
-                if (u.abrev === abrev) return u.factor / baseFactor;
-            }
-        }
-        return 1;
-    };
-
-    const insFormUnidadEl = document.getElementById('insFormUnidad');
-    const insFormUnidadCompraEl = document.getElementById('insFormUnidadCompra');
-    const insFormUnidadVentaEl = document.getElementById('insFormUnidadVenta');
-    if (insFormUnidadCompraEl) {
-        insFormUnidadCompraEl.addEventListener('change', () => {
-            const base = insFormUnidadEl?.value || '';
-            const compra = insFormUnidadCompraEl.value || '';
-            if (base && compra) {
-                const fBase = umGetFactorForAbrev(base);
-                const fCompra = umGetFactorForAbrev(compra);
-                const inp = document.getElementById('insFormFactorCompraBase');
-                if (inp && fBase > 0) inp.value = (fCompra / fBase).toFixed(4);
-            }
-        });
-    }
-    if (insFormUnidadVentaEl) {
-        insFormUnidadVentaEl.addEventListener('change', () => {
-            const base = insFormUnidadEl?.value || '';
-            const venta = insFormUnidadVentaEl.value || '';
-            if (base && venta) {
-                const fBase = umGetFactorForAbrev(base);
-                const fVenta = umGetFactorForAbrev(venta);
-                const inp = document.getElementById('insFormFactorVentaBase');
-                if (inp && fBase > 0) inp.value = (fVenta / fBase).toFixed(4);
-            }
-        });
-    }
-
-    // ===== FIN MODULO UNIDADES DE MEDIDA =====
 
     // Popups - FONDO DE CAJA
     const closeFondoCajaPopup = () => {
@@ -12551,7 +12170,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (configClientesAceptarOrdenesSinCliente) configClientesAceptarOrdenesSinCliente.checked = getConfigValue('clientes', 'aceptarOrdenesSinCliente') !== false;
 
         // Productos
-        umPopulateSelect(configProductosUnidadPorDefecto, getConfigValue('productos', 'unidadPorDefecto') || 'pza');
+        if (configProductosUnidadPorDefecto) configProductosUnidadPorDefecto.value = getConfigValue('productos', 'unidadPorDefecto') || 'pza';
         if (configProductosMargenPorDefecto) configProductosMargenPorDefecto.value = getConfigValue('productos', 'margenPorDefecto') || 30;
         if (configProductosAlertaBajaExistencia) configProductosAlertaBajaExistencia.value = getConfigValue('productos', 'alertaBajaExistencia') || 10;
         if (configProductosActualizarPreciosAutomatico) configProductosActualizarPreciosAutomatico.checked = getConfigValue('productos', 'actualizarPreciosAutomatico') !== false;
@@ -12563,7 +12182,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (configProveedoresAceptarSinEntre) configProveedoresAceptarSinEntre.checked = getConfigValue('proveedores', 'aceptarSinEntre') === true;
 
         // Insumos
-        umPopulateSelect(configInsumosUnidadPorDefecto, getConfigValue('insumos', 'unidadPorDefecto') || 'pza');
+        if (configInsumosUnidadPorDefecto) configInsumosUnidadPorDefecto.value = getConfigValue('insumos', 'unidadPorDefecto') || 'pza';
         if (configInsumosStockMinimoAlerta) configInsumosStockMinimoAlerta.value = getConfigValue('insumos', 'stockMinimoAlerta') || 50;
         if (configInsumosAceptarComprasConStock) configInsumosAceptarComprasConStock.checked = getConfigValue('insumos', 'aceptarComprasConStock') === true;
         if (configInsumosMostrarCostoProduccion) configInsumosMostrarCostoProduccion.checked = getConfigValue('insumos', 'mostrarCostoProduccion') !== false;
@@ -14446,10 +14065,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (insFormId) insFormId.value = isEdit ? String(insumo?.id || '') : mkInsumoId();
         if (insFormNombre) insFormNombre.value = isEdit ? String(insumo?.nombre || '') : '';
         if (insFormCategoria) insFormCategoria.value = isEdit ? String(insumo?.categoria || '') : '';
-        umPopulateSelect(insFormUnidad, isEdit ? String(insumo?.unidad || '') : '');
-        umPopulateSelect(insFormUnidadCompra, isEdit ? String(insumo?.unidadCompra || '') : '');
+        if (insFormUnidad) insFormUnidad.value = isEdit ? String(insumo?.unidad || '') : '';
+        if (insFormUnidadCompra) insFormUnidadCompra.value = isEdit ? String(insumo?.unidadCompra || '') : '';
         if (insFormFactorCompraBase) insFormFactorCompraBase.value = isEdit ? String(Number(insumo?.factorCompraBase || 1)) : '1';
-        umPopulateSelect(insFormUnidadVenta, isEdit ? String(insumo?.unidadVenta || '') : '');
+        if (insFormUnidadVenta) insFormUnidadVenta.value = isEdit ? String(insumo?.unidadVenta || '') : '';
         if (insFormFactorVentaBase) insFormFactorVentaBase.value = isEdit ? String(Number(insumo?.factorVentaBase || 1)) : '1';
         if (insFormVentaPublica) insFormVentaPublica.checked = isEdit ? Boolean(insumo?.ventaPublica) : false;
         if (insFormContabilizarDesgaste) insFormContabilizarDesgaste.checked = isEdit ? Boolean(insumo?.contabilizarDesgaste) : true;
@@ -18318,7 +17937,99 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // ========== UNIDADES DE MEDIDA ==========
+    let unidadesMedidaLista = [
+        { nombre: "Unidad", esReferencia: true, ratio: 1 },
+        { nombre: "Docena", esReferencia: false, ratio: 12 },
+        { nombre: "Caja", esReferencia: false, ratio: 50 }
+    ];
 
+    function actualizarSelectsUM() {
+        const selC = document.getElementById("prodFormUMCompra");
+        const selV = document.getElementById("prodFormUMVenta");
+        [selC, selV].forEach(sel => {
+            if (!sel) return;
+            const prev = sel.value;
+            sel.innerHTML = unidadesMedidaLista.map(u =>
+                '<option value="' + prodEscape(u.nombre) + '">' + prodEscape(u.nombre) + ' (' + Number(u.ratio).toFixed(3) + ')' + (u.esReferencia ? ' ★' : '') + '</option>'
+            ).join("");
+            if (prev && sel.querySelector('option[value="' + prev + '"]')) sel.value = prev;
+        });
+    }
+
+    function renderUMTabla() {
+        const tbody = document.getElementById("umTablaBody");
+        if (!tbody) return;
+        tbody.innerHTML = unidadesMedidaLista.map((u, i) => {
+            const ratioVal = Number(u.ratio).toFixed(3);
+            const label = u.esReferencia ? ' <span style="color:#f07a00;font-weight:800;">★ Ref</span>' : '';
+            return '<tr style="border-bottom:1px solid #f0f0f0;background:' + (i % 2 === 0 ? '#fff' : '#fafbfc') + ';">' +
+                '<td style="padding:5px 8px;font-size:0.6rem;color:#1f2937;font-weight:600;">' + prodEscape(u.nombre) + label + '</td>' +
+                '<td style="padding:5px 6px;text-align:right;"><input type="number" class="um-ratio" data-um-idx="' + i + '" value="' + ratioVal + '" min="0.001" step="0.001" style="width:76px;padding:4px 6px;border-radius:6px;border:1px solid #d7dce4;font-size:0.58rem;text-align:right;outline:none;"' + (u.esReferencia ? ' readonly' : '') + '></td>' +
+                '<td style="padding:5px 6px;text-align:center;">' + (unidadesMedidaLista.length > 1 ? '<button type="button" class="' + (u.esReferencia ? 'um-set-ref' : 'um-eliminar') + '" data-um-idx="' + i + '" style="background:none;border:none;color:' + (u.esReferencia ? '#f07a00' : '#dc2626') + ';cursor:pointer;font-size:0.6rem;" title="' + (u.esReferencia ? 'Referencia actual' : 'Eliminar') + '">' + (u.esReferencia ? '★' : '✕') + '</button>' : '') + '</td>' +
+                '</tr>';
+        }).join("");
+
+        // Ratio change
+        tbody.querySelectorAll(".um-ratio").forEach(inp => {
+            inp.addEventListener("change", () => {
+                const idx = Number(inp.dataset.umIdx);
+                if (unidadesMedidaLista[idx] && !unidadesMedidaLista[idx].esReferencia) {
+                    unidadesMedidaLista[idx].ratio = Math.max(0.001, Number(inp.value || 1));
+                }
+                renderUMTabla();
+                actualizarSelectsUM();
+            });
+        });
+
+        // Delete non-ref
+        tbody.querySelectorAll(".um-eliminar").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const idx = Number(btn.dataset.umIdx);
+                if (unidadesMedidaLista[idx]?.esReferencia) return;
+                unidadesMedidaLista.splice(idx, 1);
+                renderUMTabla();
+                actualizarSelectsUM();
+            });
+        });
+    }
+
+    // Open UoM popup
+    const prodFormUMConfig = document.getElementById("prodFormUMConfig");
+    const popupUMConfig = document.getElementById("popupUMConfig");
+    if (prodFormUMConfig) {
+        prodFormUMConfig.addEventListener("click", () => {
+            if (popupUMConfig) { popupUMConfig.setAttribute("aria-hidden", "false"); popupUMConfig.style.display = "flex"; }
+            renderUMTabla();
+        });
+    }
+
+    // Close UoM popup
+    const umCerrar = document.getElementById("umCerrar");
+    if (umCerrar) umCerrar.addEventListener("click", () => {
+        if (popupUMConfig) { popupUMConfig.setAttribute("aria-hidden", "true"); popupUMConfig.style.display = "none"; }
+    });
+
+    // Add unit
+    const umAgregar = document.getElementById("umAgregar");
+    if (umAgregar) {
+        umAgregar.addEventListener("click", () => {
+            const nameInp = document.getElementById("umNuevoNombre");
+            const nombre = (nameInp?.value || "").trim();
+            if (!nombre) { alert("Escribe el nombre de la unidad."); return; }
+            if (unidadesMedidaLista.some(u => u.nombre.toLowerCase() === nombre.toLowerCase())) { alert("Esa unidad ya existe."); return; }
+            unidadesMedidaLista.push({ nombre, esReferencia: false, ratio: 1 });
+            if (nameInp) nameInp.value = "";
+            renderUMTabla();
+            actualizarSelectsUM();
+        });
+
+        const umNombreInp = document.getElementById("umNuevoNombre");
+        if (umNombreInp) umNombreInp.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); umAgregar.click(); } });
+    }
+
+    // Init UoM selects
+    actualizarSelectsUM();
 
     // ========== PROCESOS / INSUMOS - selector dinámico ==========
     function renderProcesoInsumosSelector() {
@@ -19095,8 +18806,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCajaMovimientos();
     loadCajaAperturas();
     loadSystemConfig();
-    umRefreshAllSelectors();
-    umLoadFromFirebase(() => umRefreshAllSelectors());
     
     const day = todayISO();
     const current = Number(cajaAperturas[day]);
