@@ -3946,12 +3946,52 @@
 
         .productos-modal-grid {
             display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 6px;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 1px 3px;
+            flex: 1;
+            align-content: start;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .productos-modal-grid .orden-field {
             margin: 0;
+            gap: 0;
+        }
+
+        .productos-field-span3 {
+            grid-column: span 3;
+        }
+
+        .prod-nat-hidden {
+            display: none !important;
+        }
+
+        /* Compact fields inside wide product form */
+        .productos-modal-card.wide .orden-field {
+            gap: 0;
+            font-size: 0.48rem;
+        }
+        .productos-modal-card.wide .orden-field label {
+            font-size: 0.48rem;
+            margin-bottom: 0;
+            line-height: 1.1;
+            padding: 0;
+        }
+        .productos-modal-card.wide .orden-field input,
+        .productos-modal-card.wide .orden-field select,
+        .productos-modal-card.wide .orden-field textarea {
+            font-size: 0.56rem;
+            padding: 2px 4px;
+            border-radius: 4px;
+            line-height: 1.2;
+        }
+        .productos-modal-card.wide .orden-field textarea {
+            resize: none;
+        }
+        .productos-modal-card.wide .productos-btn {
+            font-size: 0.52rem;
+            padding: 2px 6px;
         }
 
         .productos-modal-list {
@@ -3984,10 +4024,17 @@
             color: #123c9d;
         }
 
+        .productos-modal-card.wide .productos-modal-title {
+            flex-shrink: 0;
+            padding: 0 0 2px 0;
+        }
+
         .productos-modal-actions {
             display: flex;
             justify-content: flex-end;
             gap: 6px;
+            flex-shrink: 0;
+            padding-top: 2px;
         }
 
         .ajustes-main-btn {
@@ -4014,9 +4061,35 @@
         }
 
         .productos-modal-card.wide {
-            width: min(96vw, 1120px);
-            max-height: 92dvh;
-            overflow: auto;
+            width: min(98vw, 1120px) !important;
+            height: min(96vh, 780px) !important;
+            height: min(96dvh, 780px) !important;
+            min-height: min(96vh, 780px) !important;
+            min-height: min(96dvh, 780px) !important;
+            max-height: min(96vh, 780px) !important;
+            max-height: min(96dvh, 780px) !important;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            flex-shrink: 0;
+            box-sizing: border-box;
+            gap: 4px;
+            padding: 8px 10px;
+        }
+
+        /* ID selector — máxima especificidad CSS para fijar tamaño */
+        #prodFormCard {
+            width: min(98vw, 1120px) !important;
+            height: min(96vh, 780px) !important;
+            height: min(96dvh, 780px) !important;
+            min-height: min(96vh, 780px) !important;
+            min-height: min(96dvh, 780px) !important;
+            max-height: min(96vh, 780px) !important;
+            max-height: min(96dvh, 780px) !important;
+            overflow: hidden !important;
+            box-sizing: border-box !important;
+            display: flex !important;
+            flex-direction: column !important;
         }
 
         .productos-modal-card.wide.gf-compact {
@@ -4064,19 +4137,24 @@
 
         .prod-form-wizard {
             display: grid;
-            grid-template-columns: 280px minmax(0, 1fr);
-            gap: 12px;
-            align-items: start;
+            grid-template-columns: 150px minmax(0, 1fr);
+            grid-template-rows: minmax(0, 1fr);
+            gap: 6px;
+            flex: 1 1 0;
+            min-height: 0;
+            overflow: hidden;
         }
 
         .prod-photo-pane {
             background: linear-gradient(160deg, #f07a00 0%, #d76700 100%);
             border-radius: 10px;
-            padding: 10px;
-            display: grid;
-            gap: 8px;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
             color: #fff;
-            height: 100%;
+            overflow: hidden;
+            min-height: 0;
         }
 
         .prod-photo-pane h4 {
@@ -4097,7 +4175,7 @@
             border-color: rgba(255,255,255,0.5);
             background: rgba(255,255,255,0.16);
             color: #fff;
-            height: 200px;
+            height: 80px;
         }
 
         .prod-photo-pane input[type="file"] {
@@ -4114,8 +4192,13 @@
 
         .prod-form-main {
             min-width: 0;
-            display: grid;
-            gap: 8px;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            overflow: hidden;
+            flex: 1 1 0;
+            height: 100%;
         }
 
         .prod-tab-step-layout {
@@ -4270,6 +4353,17 @@
             .prod-form-wizard,
             .prod-tab-step-layout {
                 grid-template-columns: 1fr;
+            }
+
+            /* Mantener tamaño fijo del card incluso en mobile */
+            #prodFormCard {
+                width: min(98vw, 1120px) !important;
+                height: min(96vh, 780px) !important;
+                height: min(96dvh, 780px) !important;
+                min-height: min(96vh, 780px) !important;
+                min-height: min(96dvh, 780px) !important;
+                max-height: min(96vh, 780px) !important;
+                max-height: min(96dvh, 780px) !important;
             }
 
             .productos-crud {
@@ -10261,7 +10355,7 @@ const imgBolsaDeliveryBase = new Image();
             </aside>
             <div class="prod-form-main">
                 <div class="productos-modal-grid">
-                    <div class="orden-field productos-field-span2">
+                    <div class="orden-field productos-field-span3">
                         <label for="prodFormCodigo">Código de producto (15 dígitos)</label>
                         <div class="productos-code-row" style="display:flex;gap:4px;align-items:center;">
                             <input id="prodFormCodigo" type="text" maxlength="15" placeholder="15 dígitos" style="flex:1;">
@@ -10271,7 +10365,7 @@ const imgBolsaDeliveryBase = new Image();
                     </div>
                     <select id="prodFormTipo" style="display:none;"><option value="stock">Productos en stock</option><option value="gran-formato">Gran formato</option></select>
                     <div class="orden-field"><label for="prodFormNaturaleza">Tipo comercial</label><select id="prodFormNaturaleza"><option value="producto">Producto</option><option value="insumo">Insumo</option><option value="proceso">Proceso</option><option value="servicio">Servicio</option></select></div>
-                    <div class="orden-field" data-nat="producto,insumo,proceso,servicio"><label for="prodFormProducto">Nombre</label><input id="prodFormProducto" type="text" placeholder="Nombre del artículo"></div>
+                    <div class="orden-field" id="prodFormNombreWrap" data-nat="producto,insumo,proceso,servicio"><label for="prodFormProducto">Nombre</label><input id="prodFormProducto" type="text" placeholder="Nombre del artículo"></div>
                     <div class="orden-field prod-stock-only" data-nat="producto,insumo">
                         <label for="prodFormUMCompra">U. medida compra</label>
                         <select id="prodFormUMCompra" style="width:100%;"></select>
@@ -10288,13 +10382,13 @@ const imgBolsaDeliveryBase = new Image();
                     <div class="orden-field prod-stock-only" data-nat="producto"><label for="prodFormMinima">Cantidad minima</label><input id="prodFormMinima" type="number" min="0" step="1"></div>
                     <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormExistencias">Existencias</label><input id="prodFormExistencias" type="number" min="0" step="1"></div>
                     <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormPrecioCompra">Precio de compra</label><input id="prodFormPrecioCompra" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field productos-field-span2 prod-stock-only" data-nat="producto"><label>Procesos asignados <span style="font-weight:400;color:#9ca3af;font-size:0.6rem;">(Ctrl+click para seleccionar varios)</span></label><select id="prodFormProcesos" multiple style="width:100%;min-height:50px;font-size:0.7rem;"></select></div>
+                    <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto"><label>Procesos asignados <span style="font-weight:400;color:#9ca3af;font-size:0.6rem;">(Ctrl+click para seleccionar varios)</span></label><select id="prodFormProcesos" multiple style="width:100%;min-height:28px;max-height:40px;font-size:0.6rem;"></select></div>
                     <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormProveedor">Proveedor</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormProveedor" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormProveedorAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar proveedor" onclick="abrirPopupProveedorDesdeProductos()">+</button></div></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,insumo,servicio"><label for="prodFormVenta">Precio unitario venta general</label><input id="prodFormVenta" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field prod-stock-only" id="prodFormVentaWrap" data-nat="producto,insumo,servicio"><label for="prodFormVenta">Precio unitario venta general</label><input id="prodFormVenta" type="number" min="0" step="0.01"></div>
                     <div class="orden-field prod-stock-only" data-nat="producto"><label for="prodFormRevendedor">Precio unitario revendedor</label><input id="prodFormRevendedor" type="number" min="0" step="0.01"></div>
                     <div class="orden-field" data-nat="insumo"><label for="prodFormDesgastePorUso">Desgaste por unidad usada</label><input id="prodFormDesgastePorUso" type="number" min="0" step="0.001" value="1" placeholder="Cantidad que se consume por uso"></div>
-                    <div class="orden-field productos-field-span2" data-nat="proceso"><label style="margin-bottom:4px;">Insumos del proceso</label><div id="prodFormProcesoInsumos" style="max-height:220px;overflow-y:auto;border:1px solid #e5e7eb;border-radius:8px;padding:8px;background:#fafbfc;"><span style="color:#9ca3af;font-size:0.6rem;">Los insumos creados aparecerán aquí para ser asignados a este proceso</span></div></div>
-                    <div class="orden-field prod-stock-only productos-field-span2" data-nat="producto,insumo,proceso,servicio"><label for="prodFormDescripcion">Descripción</label><textarea id="prodFormDescripcion" rows="2" placeholder="Descripción del producto" style="resize:vertical;"></textarea></div>
+                    <div class="orden-field productos-field-span3" data-nat="proceso"><label style="margin-bottom:4px;">Insumos del proceso</label><div id="prodFormProcesoInsumos" style="max-height:60px;overflow-y:auto;border:1px solid #e5e7eb;border-radius:8px;padding:8px;background:#fafbfc;"><span style="color:#9ca3af;font-size:0.6rem;">Los insumos creados aparecerán aquí para ser asignados a este proceso</span></div></div>
+                    <div class="orden-field prod-stock-only productos-field-span3" data-nat="producto,insumo,proceso,servicio"><label for="prodFormDescripcion">Descripción</label><textarea id="prodFormDescripcion" rows="1" placeholder="Descripción del producto" style="resize:none;"></textarea></div>
 
                     <div class="orden-field prod-gf-only" data-nat="producto" style="display:none;">
                         <label for="prodGfCobroTipo">Tipo de precio</label>
@@ -10309,7 +10403,7 @@ const imgBolsaDeliveryBase = new Image();
                     <div class="orden-field prod-gf-only prod-gf-ml-only" data-nat="producto" style="display:none;"><label for="prodGfPrecioRevML">Precio de venta por M/lineal revendedor</label><input id="prodGfPrecioRevML" type="number" min="0" step="0.01"></div>
                     <div class="orden-field prod-gf-only prod-gf-m2-only" data-nat="producto" style="display:none;"><label for="prodGfCostoM2">Costo por M2</label><input id="prodGfCostoM2" type="number" min="0" step="0.01"></div>
                     <div class="orden-field prod-gf-only prod-gf-ml-only" data-nat="producto" style="display:none;"><label for="prodGfCostoML">Costo por M/lineal</label><input id="prodGfCostoML" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only productos-field-span2" data-nat="producto" style="display:none;">
+                    <div class="orden-field prod-gf-only productos-field-span3" data-nat="producto" style="display:none;">
                         <label for="prodGfAjusteAncho">Ajuste del precio al ancho del vinil</label>
                         <select id="prodGfAjusteAncho">
                             <option value="metro">Ajustar al metro</option>
@@ -10318,7 +10412,7 @@ const imgBolsaDeliveryBase = new Image();
                         </select>
                     </div>
 
-                    <div class="orden-field productos-field-span2 prod-stock-only" data-nat="producto">
+                    <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto">
                         <label style="margin-bottom:2px;">Variantes del producto</label>
                         <div style="display:flex;align-items:center;gap:6px;">
                             <button type="button" id="prodFormVariantesBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;">⚙ Variantes</button>
@@ -15523,6 +15617,52 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nat === 'proceso') {
             renderProcesoInsumosSelector();
         }
+
+        // --- Adapt layout to fill popup for each naturaleza ---
+        const descField = document.getElementById('prodFormDescripcion');
+        const insumosBox = document.getElementById('prodFormProcesoInsumos');
+        const procesosSelect = document.getElementById('prodFormProcesos');
+
+        // Reset to defaults first
+        if (descField) { descField.rows = 1; descField.style.minHeight = ''; descField.style.flex = ''; }
+        if (insumosBox) { insumosBox.style.maxHeight = '60px'; insumosBox.style.flex = ''; }
+        if (procesosSelect) { procesosSelect.style.minHeight = '28px'; procesosSelect.style.maxHeight = '40px'; }
+
+        // Grid reference
+        const grid = prodFormCard?.querySelector('.productos-modal-grid');
+
+        // Nombre field span control
+        const nombreWrap = document.getElementById('prodFormNombreWrap');
+
+        if (nat === 'servicio') {
+            // Servicio: very few fields — expand description + Nombre full width
+            if (descField) { descField.rows = 6; descField.style.minHeight = '120px'; }
+            if (nombreWrap) nombreWrap.style.gridColumn = 'span 3';
+            const pvWrap = document.getElementById('prodFormVentaWrap');
+            if (pvWrap) pvWrap.style.gridColumn = 'span 3';
+            if (grid) { grid.style.alignContent = 'start'; }
+        } else if (nat === 'proceso') {
+            // Proceso: few fields — expand insumos box + description + Nombre full width
+            if (insumosBox) { insumosBox.style.maxHeight = '180px'; insumosBox.style.minHeight = '100px'; }
+            if (descField) { descField.rows = 3; descField.style.minHeight = '60px'; }
+            if (nombreWrap) nombreWrap.style.gridColumn = 'span 3';
+            if (grid) { grid.style.alignContent = 'start'; }
+        } else if (nat === 'insumo') {
+            // Insumo: moderate fields — slightly bigger description
+            if (descField) { descField.rows = 2; descField.style.minHeight = '36px'; }
+            if (nombreWrap) nombreWrap.style.gridColumn = '';
+            const pvWrap2 = document.getElementById('prodFormVentaWrap');
+            if (pvWrap2) pvWrap2.style.gridColumn = '';
+            if (grid) { grid.style.alignContent = 'start'; }
+        } else {
+            // Producto: most fields — keep compact
+            if (descField) { descField.rows = 1; }
+            if (procesosSelect) { procesosSelect.style.minHeight = '32px'; procesosSelect.style.maxHeight = '50px'; }
+            if (nombreWrap) nombreWrap.style.gridColumn = '';
+            const pvWrap2 = document.getElementById('prodFormVentaWrap');
+            if (pvWrap2) pvWrap2.style.gridColumn = '';
+            if (grid) { grid.style.alignContent = 'start'; }
+        }
     };
 
     const renderProductosTabla = () => {
@@ -15746,6 +15886,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modal) return;
         modal.style.display = 'flex';
         modal.setAttribute('aria-hidden', 'false');
+        // Forzar tamaño fijo del card
+        if (modal === popupProdForm && prodFormCard) {
+            prodFormCard.style.cssText = 'width:min(98vw,1120px)!important;height:min(96vh,780px)!important;height:min(96dvh,780px)!important;min-height:min(96vh,780px)!important;min-height:min(96dvh,780px)!important;max-height:min(96vh,780px)!important;max-height:min(96dvh,780px)!important;overflow:hidden!important;display:flex!important;flex-direction:column!important;gap:4px;padding:8px 10px;box-sizing:border-box!important;';
+        }
     };
 
     const closeProdModal = (modal) => {
