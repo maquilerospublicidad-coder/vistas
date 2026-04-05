@@ -6745,6 +6745,7 @@ function abrirPopupProveedorDesdeProductos() {
                     <input id="insumosSearch" class="clientesmod-search" type="text" placeholder="Buscar por ID, nombre, categoría o unidad...">
                     <button id="insumosTabInventario" class="clientesmod-btn" type="button">📋 Inventario</button>
                     <button id="insumosTabSurtir" class="clientesmod-btn" type="button">⚠ Por surtir</button>
+                    <button id="insumosTabUrgente" class="clientesmod-btn" type="button" style="background:#fef2f2;color:#dc2626;border-color:#fca5a5;font-weight:800;">🚨 Urgente surtir</button>
                     <button id="insumosReabastecerProd" class="clientesmod-btn" type="button">🔄 Reposición</button>
                 </div>
             </div>
@@ -10363,31 +10364,32 @@ const imgBolsaDeliveryBase = new Image();
                         </div>
                     </div>
                     <select id="prodFormTipo" style="display:none;"><option value="stock">Productos en stock</option><option value="gran-formato">Gran formato</option></select>
-                    <div class="orden-field"><label for="prodFormNaturaleza">Tipo comercial</label><select id="prodFormNaturaleza"><option value="producto">Producto</option><option value="insumo">Insumo</option><option value="proceso">Proceso</option><option value="servicio">Servicio</option></select></div>
-                    <div class="orden-field" id="prodFormNombreWrap" data-nat="producto,insumo,proceso,servicio"><label for="prodFormProducto">Nombre</label><input id="prodFormProducto" type="text" placeholder="Nombre del artículo"></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,insumo">
+                    <div class="orden-field"><label for="prodFormNaturaleza">Tipo comercial</label><select id="prodFormNaturaleza"><option value="producto">Producto</option><option value="fabricado">Producto fabricado</option><option value="insumo">Insumo</option><option value="proceso">Proceso</option><option value="servicio">Servicio</option></select></div>
+                    <div class="orden-field" id="prodFormNombreWrap" data-nat="producto,fabricado,insumo,proceso,servicio"><label for="prodFormProducto">Nombre</label><input id="prodFormProducto" type="text" placeholder="Nombre del artículo"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo">
                         <label for="prodFormUMCompra">U. medida compra</label>
                         <select id="prodFormUMCompra" style="width:100%;"></select>
                     </div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,insumo">
+                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo">
                         <label for="prodFormUMVenta">U. medida venta</label>
                         <div style="display:flex;gap:4px;align-items:center;">
                             <select id="prodFormUMVenta" style="flex:1;"></select>
                             <button type="button" id="prodFormUMConfig" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;" title="Configurar unidades de medida">⚙</button>
                         </div>
                     </div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormCategoria">Categoría</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormCategoria" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormCategoriaAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar categoría">+</button></div></div>
-                    <div class="orden-field" data-nat="producto,insumo"><label for="prodFormMaterial">Material</label><input id="prodFormMaterial" type="text"></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto"><label for="prodFormMinima">Cantidad minima</label><input id="prodFormMinima" type="number" min="0" step="1"></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormExistencias">Existencias</label><input id="prodFormExistencias" type="number" min="0" step="1"></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormPrecioCompra">Precio de compra</label><input id="prodFormPrecioCompra" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto"><label>Procesos asignados <span style="font-weight:400;color:#9ca3af;font-size:0.6rem;">(Ctrl+click para seleccionar varios)</span></label><select id="prodFormProcesos" multiple style="width:100%;min-height:28px;max-height:40px;font-size:0.6rem;"></select></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormProveedor">Proveedor</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormProveedor" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormProveedorAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar proveedor" onclick="abrirPopupProveedorDesdeProductos()">+</button></div></div>
-                    <div class="orden-field prod-stock-only" id="prodFormVentaWrap" data-nat="producto,insumo,servicio"><label for="prodFormVenta">Precio unitario venta general</label><input id="prodFormVenta" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto"><label for="prodFormRevendedor">Precio unitario revendedor</label><input id="prodFormRevendedor" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormCategoria">Categoría</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormCategoria" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormCategoriaAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar categoría">+</button></div></div>
+                    <div class="orden-field" data-nat="producto,fabricado,insumo"><label for="prodFormMaterial">Material</label><input id="prodFormMaterial" type="text"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado"><label for="prodFormMinima">Cantidad minima</label><input id="prodFormMinima" type="number" min="0" step="1"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormExistencias">Existencias</label><input id="prodFormExistencias" type="number" min="0" step="1"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormPrecioCompra">Precio de compra</label><input id="prodFormPrecioCompra" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto,fabricado"><label>Procesos asignados <span style="font-weight:400;color:#9ca3af;font-size:0.6rem;">(Ctrl+click para seleccionar varios)</span></label><select id="prodFormProcesos" multiple style="width:100%;min-height:28px;max-height:40px;font-size:0.6rem;"></select></div>
+                    <div class="orden-field productos-field-span3" data-nat="fabricado"><label style="margin-bottom:2px;">🧪 Receta de fabricación <span style="font-weight:400;color:#9ca3af;font-size:0.55rem;">(insumos necesarios para fabricar este producto)</span></label><div id="prodFormRecetaBox" style="border:1px solid #e5e7eb;border-radius:6px;padding:6px;background:#fafbfc;"><div id="prodFormRecetaList" style="font-size:0.65rem;color:#6b7280;">Sin insumos asignados</div><div style="display:flex;gap:4px;margin-top:4px;align-items:center;"><select id="prodFormRecetaInsumoSel" style="flex:1;font-size:0.68rem;padding:4px 6px;border:1px solid #d8dde6;border-radius:5px;"><option value="">Seleccionar insumo...</option></select><input id="prodFormRecetaCantidad" type="number" min="0.001" step="0.001" value="1" placeholder="Cantidad" style="width:80px;font-size:0.68rem;padding:4px 6px;border:1px solid #d8dde6;border-radius:5px;"><button type="button" id="prodFormRecetaAdd" class="productos-btn" style="padding:4px 8px;">+ Agregar</button></div></div></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormProveedor">Proveedor</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormProveedor" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormProveedorAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar proveedor" onclick="abrirPopupProveedorDesdeProductos()">+</button></div></div>
+                    <div class="orden-field prod-stock-only" id="prodFormVentaWrap" data-nat="producto,fabricado,insumo,servicio"><label for="prodFormVenta">Precio unitario venta general</label><input id="prodFormVenta" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado"><label for="prodFormRevendedor">Precio unitario revendedor</label><input id="prodFormRevendedor" type="number" min="0" step="0.01"></div>
                     <div class="orden-field" data-nat="insumo"><label for="prodFormDesgastePorUso">Desgaste por unidad usada</label><input id="prodFormDesgastePorUso" type="number" min="0" step="0.001" value="1" placeholder="Cantidad que se consume por uso"></div>
                     <div class="orden-field productos-field-span3" data-nat="proceso"><label style="margin-bottom:4px;">Insumos del proceso</label><div id="prodFormProcesoInsumos" style="max-height:60px;overflow-y:auto;border:1px solid #e5e7eb;border-radius:8px;padding:8px;background:#fafbfc;"><span style="color:#9ca3af;font-size:0.6rem;">Los insumos creados aparecerán aquí para ser asignados a este proceso</span></div></div>
-                    <div class="orden-field prod-stock-only productos-field-span3" data-nat="producto,insumo,proceso,servicio"><label for="prodFormDescripcion">Descripción</label><textarea id="prodFormDescripcion" rows="1" placeholder="Descripción del producto" style="resize:none;"></textarea></div>
+                    <div class="orden-field prod-stock-only productos-field-span3" data-nat="producto,fabricado,insumo,proceso,servicio"><label for="prodFormDescripcion">Descripción</label><textarea id="prodFormDescripcion" rows="1" placeholder="Descripción del producto" style="resize:none;"></textarea></div>
 
                     <div class="orden-field prod-gf-only" data-nat="producto" style="display:none;">
                         <label for="prodGfCobroTipo">Tipo de precio</label>
@@ -10411,7 +10413,7 @@ const imgBolsaDeliveryBase = new Image();
                         </select>
                     </div>
 
-                    <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto">
+                    <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto,fabricado">
                         <label style="margin-bottom:2px;">Variantes del producto</label>
                         <div style="display:flex;align-items:center;gap:6px;">
                             <button type="button" id="prodFormVariantesBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;">⚙ Variantes</button>
@@ -14116,7 +14118,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     desgasteCicloActual: Math.max(0, Number(i.desgasteCicloActual || 0)),
                     desgastePromedio: Math.max(0, Number(i.desgastePromedio || 0)),
                     ciclosDesgaste: Math.max(0, Number(i.ciclosDesgaste || 0)),
-                    existencias: Math.max(0, Number(i.existencias || 0)),
+                    existencias: Number(i.existencias || 0), // Permitir negativos
                     minimo: Math.max(0, Number(i.minimo || 0)),
                     costoUnitario: Math.max(0, Number(i.costoUnitario || 0)),
                     foto: String(i.foto || ''),
@@ -14319,9 +14321,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (faltantes.length) {
             saveInsumosSurtir();
+            // Permitir venta con inventario negativo, solo avisar
             return {
-                ok: false,
-                detail: `No se puede vender: faltan insumos para fabricar o surtir.\n${faltantes.join('\n')}`
+                ok: true,
+                detail: `\u26a0\ufe0f Advertencia: faltantes de insumos (el inventario quedará negativo):\n${faltantes.join('\n')}`,
+                hasWarnings: true
             };
         }
         return { ok: true, detail: '' };
@@ -14339,13 +14343,34 @@ document.addEventListener('DOMContentLoaded', () => {
             const desgasteReq = Math.max(0, Number(reqMeta?.desgasteTotal || 0));
             return {
                 ...i,
-                existencias: Math.max(0, Number(i.existencias || 0) - req),
+                existencias: Number(i.existencias || 0) - req, // Permitir negativos
                 desgasteCicloActual: i.contabilizarDesgaste
                     ? Math.max(0, Number(i.desgasteCicloActual || 0)) + desgasteReq
                     : Math.max(0, Number(i.desgasteCicloActual || 0))
             };
         });
         saveInsumosModulo();
+
+        // --- También descontar existencias de productosData (naturaleza=insumo) ---
+        let productosCambiaron = false;
+        consumoMap.forEach((meta, insumoId) => {
+            const req = Math.max(0, Number(meta?.total || 0));
+            if (!req) return;
+            // Buscar en productosData por código o id
+            const idx = productosData.findIndex(p =>
+                p.naturaleza === 'insumo' && (p.codigo === insumoId || p.id === insumoId)
+            );
+            if (idx >= 0) {
+                productosData[idx] = {
+                    ...productosData[idx],
+                    existencias: Number(productosData[idx].existencias || 0) - req // Negativos permitidos
+                };
+                productosCambiaron = true;
+            }
+        });
+        if (productosCambiaron) {
+            saveProductos();
+        }
     };
 
     const updateAlmacenButtons = () => {
@@ -14390,8 +14415,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderInsumosModulo = () => {
         if (!insumosTableBody) return;
-        if (insumosTabInventario) insumosTabInventario.classList.toggle('active', insumosVista !== 'surtir');
+        if (insumosTabInventario) insumosTabInventario.classList.toggle('active', insumosVista === 'inventario' || (!['surtir','urgente'].includes(insumosVista)));
         if (insumosTabSurtir) insumosTabSurtir.classList.toggle('active', insumosVista === 'surtir');
+        const urgBtn = document.getElementById('insumosTabUrgente');
+        if (urgBtn) urgBtn.classList.toggle('active', insumosVista === 'urgente');
 
         if (insumosVista === 'surtir') {
             if (insumosTableHead) {
@@ -14415,6 +14442,34 @@ document.addEventListener('DOMContentLoaded', () => {
                 </tr>
             `).join('');
             if (insumosConteo) insumosConteo.textContent = 'Insumos por surtir: ' + rowsSurtir.length;
+            updateInsumosButtons();
+            return;
+        }
+
+        // ===== URGENTE SURTIR VIEW (insumos con inventario negativo) =====
+        if (insumosVista === 'urgente') {
+            if (insumosTableHead) {
+                insumosTableHead.innerHTML = '<tr><th>Código</th><th>Insumo</th><th>Existencias</th><th>Faltante</th><th>Proveedor</th></tr>';
+            }
+            const urgentes = getInsumosUrgentes();
+            if (!urgentes.length) {
+                if (insumosTableBody) insumosTableBody.innerHTML = '<tr><td colspan="5" class="clientesmod-empty" style="color:#16a34a;">\u2705 No hay insumos con inventario negativo. Todo en orden.</td></tr>';
+                if (insumosConteo) insumosConteo.textContent = 'Urgente surtir: 0 — todo bien';
+                updateInsumosButtons();
+                return;
+            }
+            if (insumosTableBody) {
+                insumosTableBody.innerHTML = urgentes.map(u =>
+                    '<tr style="background:#fef2f2;">' +
+                    '<td>' + escCliMod(u.codigo) + '</td>' +
+                    '<td style="font-weight:800;">' + escCliMod(u.nombre) + '</td>' +
+                    '<td style="color:#dc2626;font-weight:800;">' + u.existencias + '</td>' +
+                    '<td style="color:#dc2626;font-weight:900;font-size:0.72rem;">\u26a0 ' + u.faltante + ' por surtir</td>' +
+                    '<td>' + escCliMod(u.proveedor) + '</td>' +
+                    '</tr>'
+                ).join('');
+            }
+            if (insumosConteo) insumosConteo.textContent = '\ud83d\udea8 Urgente surtir: ' + urgentes.length + ' insumos con inventario negativo';
             updateInsumosButtons();
             return;
         }
@@ -15590,20 +15645,20 @@ document.addEventListener('DOMContentLoaded', () => {
         // Update labels by naturaleza
         const lblProd = document.querySelector('label[for="prodFormProducto"]');
         if (lblProd) {
-            const labels = { producto: 'Nombre del producto', insumo: 'Nombre del insumo', proceso: 'Nombre del proceso', servicio: 'Nombre del servicio' };
+            const labels = { producto: 'Nombre del producto', fabricado: 'Nombre del producto fabricado', insumo: 'Nombre del insumo', proceso: 'Nombre del proceso', servicio: 'Nombre del servicio' };
             lblProd.textContent = labels[nat] || 'Nombre';
         }
 
         // Update modal title
         if (prodFormTitulo) {
             const isEditing = !!productoEditandoId;
-            const titles = { producto: 'producto', insumo: 'insumo', proceso: 'proceso', servicio: 'servicio' };
+            const titles = { producto: 'producto', fabricado: 'producto fabricado', insumo: 'insumo', proceso: 'proceso', servicio: 'servicio' };
             prodFormTitulo.textContent = (isEditing ? 'Editar ' : 'Agregar ') + (titles[nat] || 'producto');
         }
 
         // Populate Procesos select from productosData (productos with naturaleza=proceso)
         const procSel = document.getElementById('prodFormProcesos');
-        if (procSel && nat === 'producto') {
+        if (procSel && (nat === 'producto' || nat === 'fabricado')) {
             const prev = Array.from(procSel.selectedOptions).map(o => o.value);
             const procesos = productosData.filter(p => p.naturaleza === 'proceso');
             procSel.innerHTML = procesos.length === 0
@@ -15615,6 +15670,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // Populate insumos list for proceso form
         if (nat === 'proceso') {
             renderProcesoInsumosSelector();
+        }
+
+        // Populate receta insumos for fabricado
+        if (nat === 'fabricado') {
+            renderRecetaInsumosSelector();
         }
 
         // --- Adapt layout to fill popup for each naturaleza ---
@@ -15673,6 +15733,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 descField.style.cssText = 'resize:none;flex:1;min-height:40px;';
             }
             if (grid) { grid.style.gridTemplateRows = 'repeat(5, auto) 1fr'; }
+        } else if (nat === 'fabricado') {
+            // FABRICADO: como producto pero con receta
+            if (procesosSelect) { procesosSelect.style.cssText = 'width:100%;min-height:32px;max-height:50px;font-size:0.6rem;'; }
+            if (grid) { grid.style.alignContent = 'start'; }
+            renderRecetaInsumosSelector();
         } else {
             // PRODUCTO: muchos campos — dejar compacto
             if (procesosSelect) { procesosSelect.style.cssText = 'width:100%;min-height:32px;max-height:50px;font-size:0.6rem;'; }
@@ -15994,8 +16059,10 @@ document.addEventListener('DOMContentLoaded', () => {
         { const pic = document.getElementById('prodFormProcesoInsumos'); if (pic) { pic._selectedInsumos = []; } }
         if (prodFormProveedor) prodFormProveedor.value = '';
         if (prodFormDescripcion) prodFormDescripcion.value = '';
-        if (prodFormNecesitaFabricacion) prodFormNecesitaFabricacion.checked = false;
-        if (prodFormReceta) prodFormReceta.value = '';
+        recetaDraft = [];
+        // receta cleared via recetaDraft = []
+        const costoFieldClear = document.getElementById('prodFormPrecioCompra');
+        if (costoFieldClear) { costoFieldClear.readOnly = false; costoFieldClear.style.background = ''; costoFieldClear.title = ''; }
         if (prodGfCobroTipo) prodGfCobroTipo.value = 'm2';
         if (prodGfPrecioGeneralM2) prodGfPrecioGeneralM2.value = '0';
         if (prodGfPrecioRevM2) prodGfPrecioRevM2.value = '0';
@@ -16035,8 +16102,22 @@ document.addEventListener('DOMContentLoaded', () => {
         { const psel = document.getElementById('prodFormProcesos'); if (psel && Array.isArray(row.procesos)) { Array.from(psel.options).forEach(o => { o.selected = row.procesos.includes(o.value); }); } }
         if (prodFormProveedor) prodFormProveedor.value = row.proveedor || '';
         if (prodFormDescripcion) prodFormDescripcion.value = row.descripcion || '';
-        if (prodFormNecesitaFabricacion) prodFormNecesitaFabricacion.checked = Boolean(row.necesitaFabricacion);
-        if (prodFormReceta) prodFormReceta.value = formatRecetaInsumos(row.recetaInsumos);
+        recetaDraft = Array.isArray(row.recetaInsumos) ? row.recetaInsumos.map(r => ({insumoId: r.insumoId || '', insumoNombre: r.insumoNombre || r.insumoId || '', cantidad: Number(r.cantidad || 1)})) : [];
+        // recetaDraft loaded above
+
+        // Bloquear campo costo si ya tiene promedio bloqueado
+        const costoField = document.getElementById('prodFormPrecioCompra');
+        if (costoField) {
+            if (row.costoPromedioBloqueado && (row.naturaleza === 'insumo' || row.naturaleza === 'fabricado')) {
+                costoField.readOnly = true;
+                costoField.style.background = '#f3f4f6';
+                costoField.title = 'Costo bloqueado (promedio automático). Para actualizar, agrega más existencias.';
+            } else {
+                costoField.readOnly = false;
+                costoField.style.background = '';
+                costoField.title = '';
+            }
+        }
         if (prodGfCobroTipo) prodGfCobroTipo.value = row.gfCobroTipo || 'm2';
         if (prodGfPrecioGeneralM2) prodGfPrecioGeneralM2.value = String(Number(row.gfPrecioGeneralM2 || 0));
         if (prodGfPrecioRevM2) prodGfPrecioRevM2.value = String(Number(row.gfPrecioRevM2 || 0));
@@ -16081,8 +16162,8 @@ document.addEventListener('DOMContentLoaded', () => {
             insumosProceso: (document.getElementById('prodFormProcesoInsumos')?._selectedInsumos || []),
             proveedor: String(prodFormProveedor?.value || '').trim(),
             descripcion: String(prodFormDescripcion?.value || '').trim(),
-            necesitaFabricacion: Boolean(prodFormNecesitaFabricacion?.checked),
-            recetaInsumos: parseRecetaInsumos(prodFormReceta?.value || ''),
+            necesitaFabricacion: (prodFormNaturaleza?.value === 'fabricado'),
+            recetaInsumos: (prodFormNaturaleza?.value === 'fabricado') ? [...recetaDraft] : [],
             fotoPrincipal: prodMainPhotoData,
             coloresSubproductos: prodColorDraftList.map((c) => ({
                 color: String(c.color || '').trim(),
@@ -16205,11 +16286,38 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (productoEditandoId) {
+            // Costo promedio: si ya tiene precioCompra y se cambia, calcular promedio ponderado
+            const existente = productosData.find(p => p.id === productoEditandoId);
+            if (existente && (existente.naturaleza === 'insumo' || existente.naturaleza === 'fabricado') && existente.costoPromedioBloqueado) {
+                // El costo ya fue bloqueado; calcular nuevo promedio ponderado
+                const existAnt = Math.max(0, Number(existente.existencias || 0));
+                const costoAnt = Math.max(0, Number(existente.precioCompra || 0));
+                const existNuevo = Math.max(0, Number(payload.existencias || 0));
+                const diferencia = existNuevo - existAnt;
+                if (diferencia > 0 && payload.precioCompra !== undefined) {
+                    const costoNuevo = Number(payload.precioCompra || 0);
+                    // Promedio ponderado
+                    const totalUnid = existAnt + diferencia;
+                    if (totalUnid > 0) {
+                        payload.precioCompra = +( ((existAnt * costoAnt) + (diferencia * costoNuevo)) / totalUnid ).toFixed(4);
+                    }
+                } else {
+                    // No se agregaron más unidades: mantener costo actual
+                    payload.precioCompra = costoAnt;
+                }
+            }
+            // Bloquear costo después del primer guardado con precioCompra > 0
+            if (existente && (existente.naturaleza === 'insumo' || existente.naturaleza === 'fabricado') && Number(payload.precioCompra || 0) > 0) {
+                payload.costoPromedioBloqueado = true;
+            }
             productosData = productosData.map((p) => p.id === productoEditandoId ? { ...p, ...payload } : p);
             productosSelectedIds = new Set([productoEditandoId]);
             productosSelectionAnchorId = productoEditandoId;
         } else {
             const newId = `PR-${Date.now().toString(36).toUpperCase()}`;
+            if ((payload.naturaleza === 'insumo' || payload.naturaleza === 'fabricado') && Number(payload.precioCompra || 0) > 0) {
+                payload.costoPromedioBloqueado = true;
+            }
             productosData.unshift({ id: newId, ...payload });
             productosSelectedIds = new Set([newId]);
             productosSelectionAnchorId = newId;
@@ -18115,6 +18223,38 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Receta add button for fabricado
+    const recetaAddBtn = document.getElementById('prodFormRecetaAdd');
+    if (recetaAddBtn) {
+        recetaAddBtn.addEventListener('click', () => {
+            const sel = document.getElementById('prodFormRecetaInsumoSel');
+            const cantInput = document.getElementById('prodFormRecetaCantidad');
+            const insumoId = sel?.value;
+            const cantidad = Math.max(0.001, Number(cantInput?.value || 1));
+            if (!insumoId) return;
+            const insumoNombre = sel.options[sel.selectedIndex]?.textContent || insumoId;
+            const existing = recetaDraft.find(r => r.insumoId === insumoId);
+            if (existing) {
+                existing.cantidad += cantidad;
+            } else {
+                recetaDraft.push({ insumoId, insumoNombre: insumoNombre.replace(/\s*\(.*\)$/, ''), cantidad });
+            }
+            sel.value = '';
+            if (cantInput) cantInput.value = '1';
+            renderRecetaList();
+        });
+    }
+
+    // Urgente surtir tab in insumos module
+    const insumosTabUrgente = document.getElementById('insumosTabUrgente');
+    if (insumosTabUrgente) {
+        insumosTabUrgente.addEventListener('click', () => {
+            insumosVista = 'urgente';
+            renderInsumosModulo();
+        });
+    }
+
+
     if (prodGfCobroTipo) {
         prodGfCobroTipo.addEventListener('change', () => {
             syncProdFormModeByTipo();
@@ -18505,6 +18645,67 @@ document.addEventListener('DOMContentLoaded', () => {
                 container._selectedInsumos = Array.from(container.querySelectorAll('.proceso-insumo-check:checked')).map(c => c.value);
             });
         });
+    }
+
+
+
+    // === Receta de fabricación para Producto Fabricado ===
+    let recetaDraft = []; // [{insumoId, insumoNombre, cantidad}]
+
+    function renderRecetaInsumosSelector() {
+        const sel = document.getElementById('prodFormRecetaInsumoSel');
+        const listDiv = document.getElementById('prodFormRecetaList');
+        if (!sel) return;
+        // Populate select with insumos from productosData (naturaleza=insumo)
+        const insumos = (typeof productosData !== 'undefined' ? productosData : []).filter(p => p.naturaleza === 'insumo');
+        sel.innerHTML = '<option value="">Seleccionar insumo...</option>' +
+            insumos.map(ins => '<option value="' + (ins.codigo || ins.id || '') + '">' + prodEscape(ins.producto || ins.id || '') + ' (' + (ins.umCompra || 'Ud') + ')</option>').join('');
+        renderRecetaList();
+    }
+
+    function renderRecetaList() {
+        const listDiv = document.getElementById('prodFormRecetaList');
+        if (!listDiv) return;
+        if (!recetaDraft.length) {
+            listDiv.innerHTML = '<span style="color:#9ca3af;font-size:0.6rem;">Sin insumos asignados a la receta</span>';
+            return;
+        }
+        listDiv.innerHTML = recetaDraft.map((r, idx) =>
+            '<div style="display:flex;align-items:center;gap:6px;padding:3px 0;border-bottom:1px solid #f1f5f9;">' +
+            '<span style="flex:1;font-size:0.65rem;font-weight:700;color:#1f2937;">' + prodEscape(r.insumoNombre || r.insumoId) + '</span>' +
+            '<span style="font-size:0.62rem;color:#6b7280;">\u00d7' + r.cantidad + '</span>' +
+            '<button type="button" onclick="removeRecetaItem(' + idx + ')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.7rem;padding:2px 4px;">\u2715</button>' +
+            '</div>'
+        ).join('');
+    }
+
+    window.removeRecetaItem = function(idx) {
+        recetaDraft.splice(idx, 1);
+        renderRecetaList();
+    };
+
+    // === Costo promedio automático para insumos ===
+    function calcularCostoPromedio(existenciasAnt, costoAnt, nuevaCantidad, nuevoCosto) {
+        // Promedio ponderado: ((existAnt * costoAnt) + (nuevaCantidad * nuevoCosto)) / (existAnt + nuevaCantidad)
+        const ea = Math.max(0, Number(existenciasAnt || 0));
+        const ca = Math.max(0, Number(costoAnt || 0));
+        const total = ea + nuevaCantidad;
+        if (total <= 0) return nuevoCosto;
+        return +( ((ea * ca) + (nuevaCantidad * nuevoCosto)) / total ).toFixed(4);
+    }
+
+    // === Urgente surtir — inventario negativo de insumos ===
+    function getInsumosUrgentes() {
+        const prods = (typeof productosData !== 'undefined' ? productosData : []);
+        const insumos = prods.filter(p => p.naturaleza === 'insumo');
+        return insumos.filter(ins => Number(ins.existencias || 0) < 0).map(ins => ({
+            id: ins.id,
+            codigo: ins.codigo || '-',
+            nombre: ins.producto || ins.id,
+            existencias: Number(ins.existencias || 0),
+            faltante: Math.abs(Number(ins.existencias || 0)),
+            proveedor: ins.proveedor || '-'
+        })).sort((a, b) => a.existencias - b.existencias);
     }
 
     // ========== CATEGORÍAS Y PROVEEDORES (selects) ==========
