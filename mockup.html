@@ -1,4 +1,4 @@
-l.,<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -2260,9 +2260,6 @@ l.,<!DOCTYPE html>
             background: #eaf2ff;
         }
 
-        .productos-row-low-stock {
-            background: #fee2e2;
-        }
 
         .productos-table-foot {
             display: flex;
@@ -2277,22 +2274,6 @@ l.,<!DOCTYPE html>
             color: #374151;
         }
 
-        .productos-lowstock-indicator {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 700;
-        }
-
-        .productos-lowstock-sample {
-            width: 16px;
-            height: 10px;
-            border-radius: 4px;
-            border: 1px solid #fca5a5;
-            background: #fee2e2;
-        }
-
-        .productos-reg-counter {
             font-weight: 900;
             color: #111827;
         }
@@ -6371,6 +6352,10 @@ l.,<!DOCTYPE html>
                 <img class="landing-icon-img" src="https://img.icons8.com/ios-filled/50/FFFFFF/leaf.png" alt="Bolsas Kraft">
                 <span>Bolsas Kraft</span>
             </div>
+            <div class="landing-card" onclick="seleccionarProducto('DELIVERY KRAFT')">
+                <img class="landing-icon-img" src="https://img.icons8.com/ios-filled/50/FFFFFF/leaf.png" alt="Delivery Kraft">
+                <span>Delivery Kraft</span>
+            </div>
             <div class="landing-card disabled">
                 <svg class="landing-icon-svg" viewBox="0 0 64 64" aria-hidden="true">
                     <path fill="#fff" d="M20 10 28 14h8l8-4 6 6-3 8 3 4v20c0 4-2.5 6-6 6H22c-3.5 0-6-2-6-6V28l3-4-3-8 4-6Z"/>
@@ -6634,6 +6619,22 @@ l.,<!DOCTYPE html>
         </div>
     </div>
 </div>
+<script>
+function abrirPopupProveedorDesdeProductos() {
+    var pp = document.getElementById("popupProveedorForm");
+    if (pp) {
+        pp.setAttribute("aria-hidden", "false");
+        pp.style.display = "flex";
+        pp.style.zIndex = "2250";
+        var titulo = document.getElementById("proveedorFormTitulo");
+        if (titulo) titulo.textContent = "Agregar proveedor";
+        ["provFormId","provFormNombre","provFormEmpresa","provFormTelefono","provFormCorreo","provFormCredito","provFormSaldo","provFormNotas"].forEach(function(id){
+            var el = document.getElementById(id);
+            if (el) { if (el.tagName === "TEXTAREA") el.value = ""; else el.value = el.type === "number" ? "0" : ""; }
+        });
+    }
+}
+</script>
 
 <div id="popupInsumosModulo" class="clientesmod-overlay" aria-hidden="true">
     <div class="clientesmod-card" role="dialog" aria-modal="true" aria-labelledby="insumosTitulo">
@@ -6641,44 +6642,37 @@ l.,<!DOCTYPE html>
         <div class="clientesmod-head">
             <h2 id="insumosTitulo" class="clientesmod-title">MÓDULO DE INSUMOS</h2>
             <div class="clientesmod-head-right">
-                <span style="font-size:0.58rem;font-weight:800;color:#64748b;letter-spacing:0.14px;text-transform:uppercase;">Control de consumibles</span>
+                <span style="font-size:0.58rem;font-weight:800;color:#64748b;letter-spacing:0.14px;text-transform:uppercase;">Insumos (creados desde Productos → Tipo: Insumo)</span>
             </div>
         </div>
         <div class="clientesmod-main">
             <div class="clientesmod-toolbar">
-                <div class="clientesmod-label">Inventario de insumos</div>
+                <div class="clientesmod-label">Inventario de insumos (vinculado a Productos)</div>
                 <div class="clientesmod-toolbar-right">
                     <input id="insumosSearch" class="clientesmod-search" type="text" placeholder="Buscar por ID, nombre, categoría o unidad...">
-                    <button id="insumosTabInventario" class="clientesmod-btn" type="button">Inventario</button>
-                    <button id="insumosTabSurtir" class="clientesmod-btn" type="button">Insumos por surtir</button>
-                    <button id="insumosReabastecerProd" class="clientesmod-btn" type="button">🔄 Reposición producción</button>
-                    <button id="insumosAdd" class="clientesmod-btn primary" type="button">➕ Agregar</button>
-                    <button id="insumosEdit" class="clientesmod-btn" type="button">✏ Editar</button>
-                    <button id="insumosDelete" class="clientesmod-btn danger" type="button">🗑 Eliminar</button>
+                    <button id="insumosTabInventario" class="clientesmod-btn" type="button">📋 Inventario</button>
+                    <button id="insumosTabSurtir" class="clientesmod-btn" type="button">⚠ Por surtir</button>
+                    <button id="insumosReabastecerProd" class="clientesmod-btn" type="button">🔄 Reposición</button>
                 </div>
             </div>
             <div class="clientesmod-table-wrap">
                 <table class="clientesmod-table">
                     <thead id="insumosTableHead">
                         <tr>
-                            <th>ID</th>
-                            <th>Insumo</th>
+                            <th>Código</th>
+                            <th>Nombre</th>
                             <th>Categoría</th>
-                            <th>Unidad base</th>
-                            <th>Unidad compra</th>
-                            <th>Unidad venta</th>
-                            <th>Conversión</th>
-                            <th>Desgaste</th>
-                            <th>Venta pública</th>
-                            <th>Precio público</th>
+                            <th>U. Compra</th>
+                            <th>U. Venta</th>
+                            <th>Desgaste/uso</th>
                             <th>Existencias</th>
-                            <th>Mínimo</th>
-                            <th>Costo unitario</th>
-                            <th>Foto</th>
+                            <th>P. Compra</th>
+                            <th>P. Venta</th>
+                            <th>Proveedor</th>
                         </tr>
                     </thead>
                     <tbody id="insumosTableBody">
-                        <tr><td colspan="14" class="clientesmod-empty">No hay insumos registrados.</td></tr>
+                        <tr><td colspan="10" class="clientesmod-empty">No hay insumos registrados. Crea uno desde Productos → Tipo comercial: Insumo.</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -6727,7 +6721,7 @@ l.,<!DOCTYPE html>
         <div class="clientesmod-head">
             <h2 id="almacenTitulo" class="clientesmod-title">MÓDULO DE ALMACÉN</h2>
             <div class="clientesmod-head-right">
-                <span style="font-size:0.58rem;font-weight:800;color:#64748b;letter-spacing:0.14px;text-transform:uppercase;">Control de mercancía en almacén</span>
+                <span style="font-size:0.58rem;font-weight:800;color:#64748b;letter-spacing:0.14px;text-transform:uppercase;">Control de productos e insumos</span>
             </div>
         </div>
         <div class="clientesmod-main">
@@ -6735,30 +6729,35 @@ l.,<!DOCTYPE html>
                 <div class="clientesmod-label">Existencias del almacén</div>
                 <div class="clientesmod-toolbar-right">
                     <input id="almacenSearch" class="clientesmod-search" type="text" placeholder="Buscar por ID, producto o ubicación...">
-                    <button id="almacenAdd" class="clientesmod-btn primary" type="button">➕ Agregar</button>
-                    <button id="almacenEdit" class="clientesmod-btn" type="button">✏ Editar</button>
-                    <button id="almacenDelete" class="clientesmod-btn danger" type="button">🗑 Eliminar</button>
+                    <button id="almacenFiltroTodo" class="clientesmod-btn" type="button" style="font-size:0.6rem;">📦 Todo</button>
+                    <button id="almacenFiltroProductos" class="clientesmod-btn" type="button" style="font-size:0.6rem;">🏷 Productos</button>
+                    <button id="almacenFiltroInsumos" class="clientesmod-btn" type="button" style="font-size:0.6rem;">🧪 Insumos</button>
                 </div>
             </div>
             <div class="clientesmod-table-wrap">
                 <table class="clientesmod-table">
                     <thead>
                         <tr>
-                            <th>ID</th>
-                            <th>Producto</th>
-                            <th>Stock</th>
-                            <th>Ubicación</th>
-                            <th>Costo unitario</th>
+                            <th>Código</th>
+                            <th>Tipo</th>
+                            <th>Nombre</th>
+                            <th>Categoría</th>
+                            <th>Existencias</th>
+                            <th>U. Compra</th>
+                            <th>U. Venta</th>
+                            <th>P. Compra</th>
+                            <th>P. Venta</th>
+                            <th>Proveedor</th>
                         </tr>
                     </thead>
                     <tbody id="almacenTableBody">
-                        <tr><td colspan="5" class="clientesmod-empty">No hay productos en almacén.</td></tr>
+                        <tr><td colspan="10" class="clientesmod-empty">No hay productos ni insumos en almacén. Agrega desde la sección de Productos.</td></tr>
                     </tbody>
                 </table>
             </div>
             <div class="clientesmod-foot">
-                <span id="almacenConteo">Total de productos: 0</span>
-                <span id="almacenValorTotal">Valor total: $0.00</span>
+                <span id="almacenConteo">Total: 0</span>
+                <span id="almacenValorTotal">Valor inventario: $0.00</span>
             </div>
         </div>
     </div>
@@ -7002,10 +7001,8 @@ l.,<!DOCTYPE html>
             </div>
             <div id="panelAjusteManual" style="display:none; margin: 10px 0; text-align:center;">
             <!-- El panel de ajuste manual ahora es un popup -->
-            <div id="panelAjusteManual" style="display:none;"></div>
         </div>
 
-        </body>
         <script>
             function handleAjusteManualKey(e) {
                 const t = e.target;
@@ -7220,6 +7217,9 @@ l.,<!DOCTYPE html>
         { value: '20.5,56,30', label: '30 10x24.5+6' },
         { value: '20.5,61.5,35', label: '35 12.5x26.5+6.5' }
     ];
+    const MEDIDAS_DELIVERY_KRAFT = [
+        { value: '30,41,DELIVERY', label: '30x41+17.5' }
+    ];
     const FUELLE_KRAFT = {
         '1/4': '3.5',
         '1/2': '3.5',
@@ -7237,7 +7237,8 @@ l.,<!DOCTYPE html>
         '20': '3.5',
         '25': '5.5',
         '30': '6',
-        '35': '6.5'
+        '35': '6.5',
+        'DELIVERY': '17.5'
     };
     const MEDIDAS_TARJETAS = [
         { value: '9,5,STD', label: 'STD 9x5 cm (horizontal)' },
@@ -7253,12 +7254,15 @@ l.,<!DOCTYPE html>
     let orientacionActual = 'horizontal'; // vertical o horizontal
     let logoManualOffsetX = 0, logoManualOffsetY = 0;
     const ajusteLogoKraft = { scale: 1, orientacionLogo: 'vertical' };
+    const esProductoKraft = (p = productoActual) => p === 'BOLSAS KRAFT' || p === 'DELIVERY KRAFT';
+    const getMedidasKraftActivas = (p = productoActual) => (p === 'DELIVERY KRAFT' ? MEDIDAS_DELIVERY_KRAFT : MEDIDAS_KRAFT);
     const esProductoTarjeta = (p = productoActual) => p === 'TARJETAS DE PRESENTACIÓN' || p === 'VOLANTES';
 
     const CM_TO_PX = 50; // Escala de centímetros a píxeles para mantener proporciones
     const CM_TO_PX_VOLANTES = 39; // Escala volantes (sin incremento extra)
     const CM_TO_PX_KRAFT = 100; // Equivalencia estándar para bolsa kraft: 100 px = 1 cm
     const URL_BOLSA_KRAFT_BASE = 'https://i.postimg.cc/7YTdkNtf/BOLSACAFE.png';
+    const URL_BOLSA_DELIVERY_BASE = 'https://i.postimg.cc/nrD8ZnNb/Chat-GPT-Image-1-abr-2026-03-07-15-p-m.png';
     const KRAFT_BAG_NAME = 'KRAFT';
     const KRAFT_BAG_HEX = '#9C7443';
     const LOGO_BOX_SCALE = 1; // Mantén 1 para que el cuadro invisible use exactamente la medida objetivo
@@ -7293,7 +7297,7 @@ l.,<!DOCTYPE html>
         const h = String((medidaArr && medidaArr[1]) ?? '').trim();
         const label = String((medidaArr && medidaArr[2]) ?? '').trim();
         const fuelle = getFuelleKraftByLabel(label);
-        const esKraft = productoActual === 'BOLSAS KRAFT' || Boolean(fuelle);
+        const esKraft = esProductoKraft(productoActual) || Boolean(fuelle);
 
         if (esKraft) {
             const base = `${w}x${h}${fuelle ? `+${fuelle}` : ''}`;
@@ -7452,7 +7456,7 @@ l.,<!DOCTYPE html>
     }
 
     function moverLogoManual(dir) {
-        const paso = 20;
+        const paso = 0.015;
         if (dir === 'up')    logoManualOffsetY -= paso;
         if (dir === 'down')  logoManualOffsetY += paso;
         if (dir === 'left')  logoManualOffsetX -= paso;
@@ -7467,7 +7471,7 @@ l.,<!DOCTYPE html>
 
     function setOrientacion(o) {
         orientacionActual = o;
-        if (productoActual === 'BOLSAS KRAFT') {
+        if (esProductoKraft(productoActual)) {
             ajusteLogoKraft.orientacionLogo = o;
             if (typeof actualizarBotonesOrientacionKraft === 'function') {
                 actualizarBotonesOrientacionKraft();
@@ -7504,7 +7508,7 @@ l.,<!DOCTYPE html>
         }
         const info = document.getElementById('selMedida').value.split(',');
         const tipoVolanteSel = (productoActual === 'VOLANTES') ? tipoVolante : null;
-        const isKraft = productoActual === 'BOLSAS KRAFT';
+        const isKraft = esProductoKraft(productoActual);
         const imgIdxSel = isKraft ? -1 : indexColorAct;
         const bolsaNombreSel = getBolsaColorName(indexColorAct);
         
@@ -7588,19 +7592,25 @@ l.,<!DOCTYPE html>
     imgBolsaKraftBase.crossOrigin = 'anonymous';
     imgBolsaKraftBase.src = URL_BOLSA_KRAFT_BASE;
     imgBolsaKraftBase.onload = actualizar;
+const imgBolsaDeliveryBase = new Image();
+    imgBolsaDeliveryBase.crossOrigin = 'anonymous';
+    imgBolsaDeliveryBase.src = URL_BOLSA_DELIVERY_BASE;
+    imgBolsaDeliveryBase.onload = actualizar;
+
 
     function getBolsaImageForIndex(colorIdx) {
-        if (productoActual === 'BOLSAS KRAFT') return imgBolsaKraftBase;
+        if (productoActual === 'DELIVERY KRAFT') return imgBolsaDeliveryBase;
+        if (esProductoKraft(productoActual)) return imgBolsaKraftBase;
         return imgCache[colorIdx];
     }
 
     function getBolsaColorName(colorIdx) {
-        if (productoActual === 'BOLSAS KRAFT') return KRAFT_BAG_NAME;
+        if (esProductoKraft(productoActual)) return KRAFT_BAG_NAME;
         return LISTA_COLORES[colorIdx]?.n || KRAFT_BAG_NAME;
     }
 
     function getBolsaColorHex(colorIdx, fallbackName = '') {
-        if (productoActual === 'BOLSAS KRAFT' || String(fallbackName || '').toUpperCase() === KRAFT_BAG_NAME) return KRAFT_BAG_HEX;
+        if (esProductoKraft(productoActual) || String(fallbackName || '').toUpperCase() === KRAFT_BAG_NAME) return KRAFT_BAG_HEX;
         return LISTA_COLORES[colorIdx]?.hex || KRAFT_BAG_HEX;
     }
 
@@ -7675,7 +7685,7 @@ l.,<!DOCTYPE html>
         const sel = document.getElementById('selMedida');
         if (!helper || !sel) return;
 
-        const isKraft = productoActual === 'BOLSAS KRAFT';
+        const isKraft = esProductoKraft(productoActual);
         helper.style.display = isKraft ? 'block' : 'none';
         if (!isKraft) return;
 
@@ -7685,11 +7695,12 @@ l.,<!DOCTYPE html>
         });
     }
 
-    function renderKraftChips() {
+    function renderKraftChips(producto = productoActual) {
         const wrap = document.getElementById('kraftQuickGrid');
         if (!wrap) return;
         wrap.innerHTML = '';
-        MEDIDAS_KRAFT.forEach((opt) => {
+        const medidas = getMedidasKraftActivas(producto);
+        medidas.forEach((opt) => {
             const label = String(opt.label || '').trim().split(' ')[0] || '';
             const btn = document.createElement('button');
             btn.type = 'button';
@@ -7705,7 +7716,7 @@ l.,<!DOCTYPE html>
     function ajustarDistribucionKraftChips() {
         const wrap = document.getElementById('kraftQuickGrid');
         if (!wrap) return;
-        const total = MEDIDAS_KRAFT.length;
+        const total = wrap.querySelectorAll('.kraft-chip').length;
         if (!total) return;
         const cols = window.matchMedia('(max-width: 760px)').matches ? 5 : 6;
         const rows = Math.ceil(total / cols);
@@ -7713,7 +7724,7 @@ l.,<!DOCTYPE html>
     }
 
     function seleccionarMedidaKraft(valor) {
-        if (productoActual !== 'BOLSAS KRAFT') return;
+        if (!esProductoKraft(productoActual)) return;
         const sel = document.getElementById('selMedida');
         if (!sel) return;
         const existe = Array.from(sel.options).some(o => o.value === valor);
@@ -7750,7 +7761,7 @@ l.,<!DOCTYPE html>
     window.addEventListener('resize', ajustarDistribucionKraftChips);
 
     function activarSurtido() {
-        if (productoActual === 'BOLSAS KRAFT') return;
+        if (esProductoKraft(productoActual)) return;
         modoSurtido = true;
         actualizar();
     }
@@ -8021,11 +8032,12 @@ l.,<!DOCTYPE html>
             if (panelOrientacion) panelOrientacion.style.display = 'grid';
             setOrientacion('horizontal'); // Volante por defecto horizontal
         } else {
-            const isKraft = p === 'BOLSAS KRAFT';
-            setOptionsFromList(sel, isKraft ? MEDIDAS_KRAFT : MEDIDAS_BOLSAS);
+            const isKraft = esProductoKraft(p);
+            const medidas = isKraft ? getMedidasKraftActivas(p) : MEDIDAS_BOLSAS;
+            setOptionsFromList(sel, medidas);
             if (sel) {
                 sel.disabled = false;
-                if (isKraft) sel.value = '7.5,17,1/2'; // Medida inicial por defecto para KRAFT
+                if (isKraft && medidas.length) sel.value = medidas[0].value;
             }
             indexColorAct = 11; // negro por defecto bolsas
             modoSurtido = false; paginaActual = 1; // reset de paginado/multicolor
@@ -8054,7 +8066,8 @@ l.,<!DOCTYPE html>
         if (btnHome) btnHome.style.display = 'block';
         document.body.classList.toggle('mod-bolsa', !esProductoTarjeta());
         document.body.classList.toggle('mod-tarjeta', esProductoTarjeta());
-        document.body.classList.toggle('mod-kraft', p === 'BOLSAS KRAFT');
+        document.body.classList.toggle('mod-kraft', esProductoKraft(p));
+        renderKraftChips(p);
 
         actualizarUIKraftMedidas();
 
@@ -8620,6 +8633,10 @@ l.,<!DOCTYPE html>
             if (productoActual === 'BOLSAS KRAFT' && logoHorizontalKraft) {
                 areaX -= bW * 0.055;
             }
+            if (productoActual === 'DELIVERY KRAFT' && logoHorizontalKraft) {
+                areaY -= bH * 0.08; // subir el logo
+                areaX -= bW * 0.01; // mover a la izquierda
+            }
 
             if (productoActual !== 'BOLSAS KRAFT') {
                 // Centrado horizontal en ambas orientaciones; solo ajuste vertical.
@@ -8648,8 +8665,8 @@ l.,<!DOCTYPE html>
             areaY = Math.max(minY, Math.min(areaY, maxY));
 
             // Aplicar desplazamiento de ajuste manual
-            areaX += logoManualOffsetX;
-            areaY += logoManualOffsetY;
+            areaX += logoManualOffsetX * bW;
+            areaY += logoManualOffsetY * bH;
 
             const logoX = areaX + (areaW - renderW) / 2;
             const logoY = areaY + (areaH - renderH) / 2;
@@ -8684,18 +8701,26 @@ l.,<!DOCTYPE html>
             if (kraftVertical) {
                 // Para KRAFT vertical el clip se centra en el punto de dibujo real
                 ctx.rect(cX - areaW / 2, cY - areaH / 2, areaW, areaH);
+            } else if (productoActual === 'DELIVERY KRAFT') {
+                // Delivery Kraft: clip amplio usando los bordes de la bolsa
+                ctx.rect(cX - bW / 2, cY - bH / 2, bW, bH);
             } else {
                 ctx.rect(areaX, areaY, areaW, areaH);
             }
             ctx.clip();
             
             // En horizontal solo rotamos 90° el logo completo sin alterar su caja objetivo
-            if (productoActual === 'BOLSAS KRAFT') {
+            if (esProductoKraft()) {
                 // Logo recto con perspectiva lateral sutil (sin inclinacion angular)
-                const centerX = kraftVertical ? cX + logoManualOffsetX : areaX + areaW / 2;
-                const centerY = kraftVertical ? cY + logoManualOffsetY : areaY + areaH / 2;
+                const centerX = kraftVertical ? cX + logoManualOffsetX * bW : areaX + areaW / 2;
+                const centerY = kraftVertical ? cY + logoManualOffsetY * bH : areaY + areaH / 2;
+                const isDeliveryKraft = productoActual === 'DELIVERY KRAFT';
                 const kraftRotateRad = -0.5 * Math.PI / 180;
+                const deliveryShiftX = (isDeliveryKraft && (logoHorizontalKraft === false)) ? -0.02 * bW : 0;
+                const deliveryShiftY = (isDeliveryKraft && (logoHorizontalKraft === false)) ? -0.04 * bH : 0;
                 const kraftSkewX = 0.05;
+                const deliveryVerticalLeftRad = (isDeliveryKraft && (logoHorizontalKraft === false)) ? (-15 * Math.PI / 180) : 0;
+                const deliveryHorizontalScale = (isDeliveryKraft && logoHorizontalKraft) ? 0.965 : 1;
                 const kraftScaleX = 0.92;
                 const kraftOffsetRatioByMedida = { MINI: 0.018, CHICA: 0.022, MEDIANA: 0.026, GRANDE: 0.03 };
                 const ratio = kraftOffsetRatioByMedida[medidaLabel] || 0.022;
@@ -8712,10 +8737,10 @@ l.,<!DOCTYPE html>
                 // La rotación solo ocurre en el pie de página si orientación es vertical
 
                 ctx.save();
-                ctx.translate(centerX + kraftOffsetX, centerY);
-                ctx.rotate(kraftRotateRad + (logoHorizontalKraft ? 0 : -Math.PI / 2));
+                ctx.translate(centerX + kraftOffsetX + deliveryShiftX, centerY + deliveryShiftY);
+                ctx.rotate(kraftRotateRad + (logoHorizontalKraft ? (isDeliveryKraft ? (2 * Math.PI / 180) : 0) : (isDeliveryKraft ? (-85 * Math.PI / 180) : (-Math.PI / 2))));
                 ctx.transform(1, 0, kraftSkewX, 1, 0, 0);
-                ctx.scale(kraftScaleX, 1);
+                ctx.scale(kraftScaleX * deliveryHorizontalScale, deliveryHorizontalScale);
                 ctx.drawImage(drawSource, -drawW / 2, -drawH / 2, drawW, drawH);
                 ctx.restore();
             } else if(isHorizontal) {
@@ -10004,10 +10029,6 @@ l.,<!DOCTYPE html>
                 </div>
 
                 <div class="productos-table-foot">
-                    <div class="productos-lowstock-indicator">
-                        <span class="productos-lowstock-sample" aria-hidden="true"></span>
-                        <span>Productos con stock bajo: filas en rojo tenue cuando llegan al mínimo configurado</span>
-                    </div>
                     <div id="prodRegistrosCount" class="productos-reg-counter">Registros: 0</div>
                 </div>
             </div>
@@ -10241,49 +10262,54 @@ l.,<!DOCTYPE html>
             <div class="prod-form-main">
                 <div class="productos-modal-grid">
                     <div class="orden-field productos-field-span2">
-                        <label for="prodFormCodigo">Código de producto</label>
-                        <div class="productos-code-row">
-                            <input id="prodFormCodigo" type="text" placeholder="Manual o generar automáticamente">
-                            <button id="prodFormGenerarCodigo" class="productos-btn" type="button">Generar código</button>
+                        <label for="prodFormCodigo">Código de producto (15 dígitos)</label>
+                        <div class="productos-code-row" style="display:flex;gap:4px;align-items:center;">
+                            <input id="prodFormCodigo" type="text" maxlength="15" placeholder="15 dígitos" style="flex:1;">
+                            <button id="prodFormGenerarCodigo" class="productos-btn" type="button">Generar</button>
+                            <button id="prodFormScanCodigo" class="productos-btn" type="button" title="Escanear código de barras" style="padding:6px 10px;font-size:0.75rem;">📷 Escanear</button>
                         </div>
                     </div>
-                    <div class="orden-field prod-stock-only">
-                        <label for="prodFormTipo">Pestaña</label>
-                        <select id="prodFormTipo">
-                            <option value="stock">Productos en stock</option>
-                            <option value="gran-formato">Gran formato</option>
-                        </select>
+                    <select id="prodFormTipo" style="display:none;"><option value="stock">Productos en stock</option><option value="gran-formato">Gran formato</option></select>
+                    <div class="orden-field"><label for="prodFormNaturaleza">Tipo comercial</label><select id="prodFormNaturaleza"><option value="producto">Producto</option><option value="insumo">Insumo</option><option value="proceso">Proceso</option><option value="servicio">Servicio</option></select></div>
+                    <div class="orden-field" data-nat="producto,insumo,proceso,servicio"><label for="prodFormProducto">Nombre</label><input id="prodFormProducto" type="text" placeholder="Nombre del artículo"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,insumo">
+                        <label for="prodFormUMCompra">U. medida compra</label>
+                        <select id="prodFormUMCompra" style="width:100%;"></select>
                     </div>
-                    <div class="orden-field"><label for="prodFormNaturaleza">Tipo comercial</label><select id="prodFormNaturaleza"><option value="producto">Producto</option><option value="insumo">Insumo</option><option value="servicio">Servicio</option></select></div>
-                    <div class="orden-field"><label for="prodFormProducto">Nombre del producto</label><input id="prodFormProducto" type="text"></div>
-                    <div class="orden-field prod-stock-only"><label for="prodFormMedida">Medida</label><input id="prodFormMedida" type="text"></div>
-                    <div class="orden-field prod-stock-only"><label for="prodFormCategoria">Categoría</label><input id="prodFormCategoria" type="text" placeholder="Bolsas, Tarjetas, Lonas..."></div>
-                    <div class="orden-field"><label for="prodFormMaterial">Material</label><input id="prodFormMaterial" type="text"></div>
-                    <div class="orden-field prod-stock-only"><label for="prodFormMinima">Cantidad minima</label><input id="prodFormMinima" type="number" min="0" step="1"></div>
-                    <div class="orden-field prod-stock-only"><label for="prodFormExistencias">Existencias</label><input id="prodFormExistencias" type="number" min="0" step="1"></div>
-                    <div class="orden-field prod-stock-only"><label for="prodFormPrecioCompra">Precio de compra</label><input id="prodFormPrecioCompra" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-stock-only"><label for="prodFormTipoImpresion">Tipo de impresión</label><input id="prodFormTipoImpresion" type="text" placeholder="Serigrafía, offset, digital..."></div>
-                    <div class="orden-field prod-stock-only"><label for="prodFormProveedor">Proveedor</label><input id="prodFormProveedor" type="text"></div>
-                    <div class="orden-field prod-stock-only"><label for="prodFormVenta">Precio unitario venta general</label><input id="prodFormVenta" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-stock-only"><label for="prodFormRevendedor">Precio unitario revendedor</label><input id="prodFormRevendedor" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-stock-only productos-field-span2" style="display:flex;align-items:center;gap:8px;"><input id="prodFormNecesitaFabricacion" type="checkbox"><label for="prodFormNecesitaFabricacion" style="margin:0;">Este producto necesita fabricación (con receta de insumos)</label></div>
-                    <div class="orden-field prod-stock-only productos-field-span2"><label for="prodFormReceta">Receta de insumos (ID=cantidadBase@desgaste, una línea por insumo)</label><textarea id="prodFormReceta" rows="4" placeholder="INS-001=0.25@60&#10;INS-002=2@20"></textarea></div>
-                    <div class="orden-field prod-stock-only productos-field-span2"><label for="prodFormDescripcion">Descripción</label><textarea id="prodFormDescripcion" rows="3" placeholder="Descripción del producto"></textarea></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,insumo">
+                        <label for="prodFormUMVenta">U. medida venta</label>
+                        <div style="display:flex;gap:4px;align-items:center;">
+                            <select id="prodFormUMVenta" style="flex:1;"></select>
+                            <button type="button" id="prodFormUMConfig" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;" title="Configurar unidades de medida">⚙</button>
+                        </div>
+                    </div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormCategoria">Categoría</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormCategoria" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormCategoriaAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar categoría">+</button></div></div>
+                    <div class="orden-field" data-nat="producto,insumo"><label for="prodFormMaterial">Material</label><input id="prodFormMaterial" type="text"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto"><label for="prodFormMinima">Cantidad minima</label><input id="prodFormMinima" type="number" min="0" step="1"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormExistencias">Existencias</label><input id="prodFormExistencias" type="number" min="0" step="1"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormPrecioCompra">Precio de compra</label><input id="prodFormPrecioCompra" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field productos-field-span2 prod-stock-only" data-nat="producto"><label>Procesos asignados <span style="font-weight:400;color:#9ca3af;font-size:0.6rem;">(Ctrl+click para seleccionar varios)</span></label><select id="prodFormProcesos" multiple style="width:100%;min-height:50px;font-size:0.7rem;"></select></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,insumo"><label for="prodFormProveedor">Proveedor</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormProveedor" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormProveedorAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar proveedor" onclick="abrirPopupProveedorDesdeProductos()">+</button></div></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto,insumo,servicio"><label for="prodFormVenta">Precio unitario venta general</label><input id="prodFormVenta" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field prod-stock-only" data-nat="producto"><label for="prodFormRevendedor">Precio unitario revendedor</label><input id="prodFormRevendedor" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field" data-nat="insumo"><label for="prodFormDesgastePorUso">Desgaste por unidad usada</label><input id="prodFormDesgastePorUso" type="number" min="0" step="0.001" value="1" placeholder="Cantidad que se consume por uso"></div>
+                    <div class="orden-field productos-field-span2" data-nat="proceso"><label style="margin-bottom:4px;">Insumos del proceso</label><div id="prodFormProcesoInsumos" style="max-height:220px;overflow-y:auto;border:1px solid #e5e7eb;border-radius:8px;padding:8px;background:#fafbfc;"><span style="color:#9ca3af;font-size:0.6rem;">Los insumos creados aparecerán aquí para ser asignados a este proceso</span></div></div>
+                    <div class="orden-field prod-stock-only productos-field-span2" data-nat="producto,insumo,proceso,servicio"><label for="prodFormDescripcion">Descripción</label><textarea id="prodFormDescripcion" rows="2" placeholder="Descripción del producto" style="resize:vertical;"></textarea></div>
 
-                    <div class="orden-field prod-gf-only" style="display:none;">
+                    <div class="orden-field prod-gf-only" data-nat="producto" style="display:none;">
                         <label for="prodGfCobroTipo">Tipo de precio</label>
                         <select id="prodGfCobroTipo">
                             <option value="m2">Cobrar por metro cuadrado (M2)</option>
                             <option value="m-lineal">Cobrar por metro lineal (M/lineal)</option>
                         </select>
                     </div>
-                    <div class="orden-field prod-gf-only prod-gf-m2-only" style="display:none;"><label for="prodGfPrecioGeneralM2">Precio de venta por M2</label><input id="prodGfPrecioGeneralM2" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only prod-gf-m2-only" style="display:none;"><label for="prodGfPrecioRevM2">Precio de venta por M2 revendedor</label><input id="prodGfPrecioRevM2" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only prod-gf-ml-only" style="display:none;"><label for="prodGfPrecioGeneralML">Precio de venta por M/lineal</label><input id="prodGfPrecioGeneralML" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only prod-gf-ml-only" style="display:none;"><label for="prodGfPrecioRevML">Precio de venta por M/lineal revendedor</label><input id="prodGfPrecioRevML" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only prod-gf-m2-only" style="display:none;"><label for="prodGfCostoM2">Costo por M2</label><input id="prodGfCostoM2" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only prod-gf-ml-only" style="display:none;"><label for="prodGfCostoML">Costo por M/lineal</label><input id="prodGfCostoML" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only productos-field-span2" style="display:none;">
+                    <div class="orden-field prod-gf-only prod-gf-m2-only" data-nat="producto" style="display:none;"><label for="prodGfPrecioGeneralM2">Precio de venta por M2</label><input id="prodGfPrecioGeneralM2" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field prod-gf-only prod-gf-m2-only" data-nat="producto" style="display:none;"><label for="prodGfPrecioRevM2">Precio de venta por M2 revendedor</label><input id="prodGfPrecioRevM2" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field prod-gf-only prod-gf-ml-only" data-nat="producto" style="display:none;"><label for="prodGfPrecioGeneralML">Precio de venta por M/lineal</label><input id="prodGfPrecioGeneralML" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field prod-gf-only prod-gf-ml-only" data-nat="producto" style="display:none;"><label for="prodGfPrecioRevML">Precio de venta por M/lineal revendedor</label><input id="prodGfPrecioRevML" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field prod-gf-only prod-gf-m2-only" data-nat="producto" style="display:none;"><label for="prodGfCostoM2">Costo por M2</label><input id="prodGfCostoM2" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field prod-gf-only prod-gf-ml-only" data-nat="producto" style="display:none;"><label for="prodGfCostoML">Costo por M/lineal</label><input id="prodGfCostoML" type="number" min="0" step="0.01"></div>
+                    <div class="orden-field prod-gf-only productos-field-span2" data-nat="producto" style="display:none;">
                         <label for="prodGfAjusteAncho">Ajuste del precio al ancho del vinil</label>
                         <select id="prodGfAjusteAncho">
                             <option value="metro">Ajustar al metro</option>
@@ -10292,17 +10318,13 @@ l.,<!DOCTYPE html>
                         </select>
                     </div>
 
-                    <div class="orden-field productos-field-span2 prod-stock-only">
-                        <label>Color (subproducto ligado, con foto y stock independiente)</label>
-                        <div class="prod-color-section">
-                            <div class="prod-color-grid">
-                                <div class="orden-field"><label for="prodColorNombre">Color</label><input id="prodColorNombre" type="text" placeholder="Rojo, Azul..." /></div>
-                                <div class="orden-field"><label for="prodColorExistencias">Existencias</label><input id="prodColorExistencias" type="number" min="0" step="1" value="0" /></div>
-                                <div class="orden-field"><label for="prodColorFoto">Foto del color</label><input id="prodColorFoto" type="file" accept="image/*" /></div>
-                                <button id="prodColorAgregar" class="productos-btn" type="button">Añadir color</button>
-                            </div>
-                            <div id="prodColorLista" class="prod-color-list"></div>
+                    <div class="orden-field productos-field-span2 prod-stock-only" data-nat="producto">
+                        <label style="margin-bottom:2px;">Variantes del producto</label>
+                        <div style="display:flex;align-items:center;gap:6px;">
+                            <button type="button" id="prodFormVariantesBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;">⚙ Variantes</button>
+                            <span id="prodFormVariantesResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin variantes configuradas</span>
                         </div>
+                        <div id="prodFormVariantesPreview" style="margin-top:4px;"></div>
                     </div>
                 </div>
             </div>
@@ -10314,6 +10336,96 @@ l.,<!DOCTYPE html>
     </div>
 </div>
 
+<!-- POPUP UNIDADES DE MEDIDA -->
+<div id="popupUMConfig" class="productos-modal-overlay" aria-hidden="true" style="z-index:2200;">
+    <div class="productos-modal-card" role="dialog" aria-modal="true" style="max-width:580px;">
+        <h3 class="productos-modal-title" style="display:flex;align-items:center;gap:8px;"><span style="font-size:0.9rem;">📏</span> Configurar unidades de medida</h3>
+        <div style="display:flex;gap:6px;align-items:flex-end;margin-bottom:12px;padding:10px;background:#fafbfc;border-radius:8px;border:1px solid #e5e7eb;">
+            <div style="flex:1;">
+                <label style="font-size:0.5rem;font-weight:700;color:#6b7280;text-transform:uppercase;display:block;margin-bottom:3px;">Nombre de la unidad</label>
+                <input id="umNuevoNombre" type="text" placeholder="Ej: Docena, Caja, Media..." style="width:100%;padding:6px 10px;border-radius:7px;border:1px solid #d7dce4;font-size:0.62rem;box-sizing:border-box;">
+            </div>
+            <button type="button" id="umAgregar" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border-color:#d76700;border-radius:7px;white-space:nowrap;height:32px;">+ Agregar</button>
+        </div>
+        <div style="border:1px solid #e5e7eb;border-radius:8px;overflow:hidden;">
+            <table style="width:100%;border-collapse:collapse;font-size:0.58rem;">
+                <thead>
+                    <tr style="background:#fafbfc;border-bottom:2px solid #f07a00;">
+                        <th style="padding:7px 8px;text-align:left;font-size:0.52rem;font-weight:800;color:#6b7280;text-transform:uppercase;">Nombre</th>
+                        <th style="padding:7px 8px;text-align:right;font-size:0.52rem;font-weight:800;color:#6b7280;text-transform:uppercase;">Ratio</th>
+                        <th style="padding:7px 8px;text-align:center;font-size:0.52rem;font-weight:800;color:#6b7280;text-transform:uppercase;width:36px;"></th>
+                    </tr>
+                </thead>
+                <tbody id="umTablaBody"></tbody>
+            </table>
+        </div>
+        <div style="margin-top:8px;padding:8px 10px;background:#fff8f0;border-radius:6px;border:1px solid #fcd9b0;font-size:0.52rem;color:#92400e;">
+            <b>★ Referencia</b> = unidad base (ratio siempre 1). Las demás se definen con su ratio numérico: ej. <b>Docena = 12</b>, <b>Media = 0.5</b>.
+        </div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px;">
+            <button type="button" id="umCerrar" class="productos-btn" style="background:#e5e7eb;color:#374151;border:1px solid #d1d5db;border-radius:7px;padding:7px 16px;font-size:0.62rem;">Cerrar</button>
+        </div>
+    </div>
+</div>
+
+<!-- Procesos popup removed - procesos are now created via naturaleza -->
+<!-- POPUP VARIANTES -->
+<div id="popupProdVariantes" class="productos-modal-overlay" aria-hidden="true">
+    <div class="productos-modal-card wide" role="dialog" aria-modal="true" style="max-width:960px;padding:0;overflow:hidden;border:1px solid #e5e7eb;max-height:92dvh;display:flex;flex-direction:column;">
+        <!-- Header -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px 12px;border-bottom:2px solid #f07a00;background:#fff;">
+            <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-size:1rem;">⚙️</span>
+                <h3 style="margin:0;font-size:0.82rem;font-weight:900;color:#1f2937;text-transform:uppercase;letter-spacing:0.2px;">Configurar variantes</h3>
+            </div>
+            <div style="display:flex;gap:6px;align-items:center;">
+                <span id="varianteBadgeTipos" style="background:#fff3e6;color:#d76700;padding:2px 10px;border-radius:20px;font-size:0.58rem;font-weight:700;border:1px solid #f07a00;">0 tipos</span>
+                <span id="varianteBadgeCombos" style="background:#f0fdf4;color:#16a34a;padding:2px 10px;border-radius:20px;font-size:0.58rem;font-weight:700;border:1px solid #86efac;">0 combinaciones</span>
+            </div>
+        </div>
+        <!-- Body: two columns -->
+        <div style="display:flex;min-height:400px;max-height:calc(92dvh - 110px);overflow:hidden;">
+            <!-- Left: Types panel -->
+            <div style="width:300px;min-width:280px;border-right:1px solid #e5e7eb;background:#fafbfc;display:flex;flex-direction:column;min-height:0;">
+                <div style="padding:14px 14px 10px;">
+                    <label style="font-size:0.58rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;display:block;">Tipos de variante</label>
+                    <div style="display:flex;gap:6px;">
+                        <input id="varianteNuevoTipo" type="text" placeholder="Ej: Color, Talla, Género..." style="flex:1;padding:7px 10px;border-radius:7px;border:1px solid #d7dce4;background:#fff;color:#1f2937;font-size:0.63rem;outline:none;">
+                        <button type="button" id="varianteAgregarTipo" class="productos-btn" style="padding:7px 12px;font-size:0.63rem;white-space:nowrap;background:#f07a00;color:#fff;border-color:#d76700;border-radius:7px;">+ Tipo</button>
+                    </div>
+                </div>
+                <div id="varianteTiposLista" style="flex:1;overflow-y:auto;padding:6px 14px 14px;display:flex;flex-direction:column;gap:8px;min-height:0;"></div>
+            </div>
+            <!-- Right: Combinations table -->
+            <div style="flex:1;display:flex;flex-direction:column;background:#fff;min-height:0;">
+                <div style="padding:14px 14px 10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;border-bottom:1px solid #f0f0f0;">
+                    <label style="font-size:0.58rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:0.5px;">Combinaciones</label>
+                    <div style="display:flex;align-items:center;gap:6px;">
+                        <span style="font-size:0.57rem;color:#9ca3af;">Agrupar por:</span>
+                        <select id="varianteAgruparPor" style="padding:4px 8px;border-radius:6px;border:1px solid #d7dce4;background:#fff;color:#1f2937;font-size:0.6rem;outline:none;"></select>
+                    </div>
+                </div>
+                <div id="varianteVistaPrevia" style="flex:1;overflow:auto;padding:8px 14px 14px;font-size:0.6rem;color:#374151;"></div>
+            </div>
+        </div>
+        <!-- Footer -->
+        <div style="display:flex;justify-content:flex-end;gap:8px;padding:12px 20px;border-top:1px solid #e5e7eb;background:#fafbfc;">
+            <button type="button" id="varianteCancelar" class="productos-btn" style="background:#e5e7eb;color:#374151;border:1px solid #d1d5db;border-radius:7px;padding:8px 18px;font-size:0.65rem;font-weight:800;">Cancelar</button>
+            <button type="button" id="varianteGuardar" class="productos-btn" style="background:#f07a00;color:#fff;border:1px solid #d76700;border-radius:7px;padding:8px 18px;font-size:0.65rem;font-weight:800;">✓ Guardar variantes</button>
+        </div>
+    </div>
+</div>
+<!-- POPUP AGREGAR CATEGORÍA -->
+<div id="popupProdCategoriaAdd" class="productos-modal-overlay" aria-hidden="true">
+    <div class="productos-modal-card" role="dialog" aria-modal="true" style="max-width:380px;">
+        <h3 class="productos-modal-title">Nueva categoría</h3>
+        <div class="orden-field" style="margin-bottom:12px;"><label for="categoriaNuevaNombre">Nombre de la categoría</label><input id="categoriaNuevaNombre" type="text" placeholder="Ej: Bolsas, Tarjetas..." style="width:100%;"></div>
+        <div style="display:flex;justify-content:flex-end;gap:8px;">
+            <button type="button" id="categoriaCancelar" class="productos-btn" style="background:#374151;">Cancelar</button>
+            <button type="button" id="categoriaGuardarBtn" class="productos-btn" style="background:#10b981;">Guardar</button>
+        </div>
+    </div>
+</div>
 <div id="popupProdTabulador" class="productos-modal-overlay" aria-hidden="true">
     <div class="productos-modal-card wide" role="dialog" aria-modal="true" aria-labelledby="prodTabSelTitulo">
         <h3 id="prodTabSelTitulo" class="productos-modal-title">Paso 2: Tabulador y precios</h3>
@@ -11196,12 +11308,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const prodFormNaturaleza = document.getElementById('prodFormNaturaleza');
     const prodFormProducto = document.getElementById('prodFormProducto');
     const prodFormCategoria = document.getElementById('prodFormCategoria');
-    const prodFormMedida = document.getElementById('prodFormMedida');
+    // prodFormMedida removed - now using UoM selects
     const prodFormMaterial = document.getElementById('prodFormMaterial');
     const prodFormMinima = document.getElementById('prodFormMinima');
     const prodFormExistencias = document.getElementById('prodFormExistencias');
     const prodFormPrecioCompra = document.getElementById('prodFormPrecioCompra');
-    const prodFormTipoImpresion = document.getElementById('prodFormTipoImpresion');
+    // prodFormTipoImpresion removed - now using Procesos system
     const prodFormProveedor = document.getElementById('prodFormProveedor');
     const prodFormDescripcion = document.getElementById('prodFormDescripcion');
     const prodFormNecesitaFabricacion = document.getElementById('prodFormNecesitaFabricacion');
@@ -13362,7 +13474,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const popupAlmacenModulo = document.getElementById('popupAlmacenModulo');
     const almacenBack = document.getElementById('almacenBack');
     const almacenSearch = document.getElementById('almacenSearch');
-    const almacenAdd = document.getElementById('almacenAdd');
+    // Almacén filter buttons
+    const almacenFiltroTodo = document.getElementById('almacenFiltroTodo');
+    const almacenFiltroProductos = document.getElementById('almacenFiltroProductos');
+    const almacenFiltroInsumos = document.getElementById('almacenFiltroInsumos');
+    window._almacenFiltro = 'todo';
+    const updateAlmFiltroUI = () => {
+        if (almacenFiltroTodo) almacenFiltroTodo.style.background = window._almacenFiltro === 'todo' ? '#f07a00' : '';
+        if (almacenFiltroTodo) almacenFiltroTodo.style.color = window._almacenFiltro === 'todo' ? '#fff' : '';
+        if (almacenFiltroProductos) almacenFiltroProductos.style.background = window._almacenFiltro === 'productos' ? '#f07a00' : '';
+        if (almacenFiltroProductos) almacenFiltroProductos.style.color = window._almacenFiltro === 'productos' ? '#fff' : '';
+        if (almacenFiltroInsumos) almacenFiltroInsumos.style.background = window._almacenFiltro === 'insumos' ? '#f07a00' : '';
+        if (almacenFiltroInsumos) almacenFiltroInsumos.style.color = window._almacenFiltro === 'insumos' ? '#fff' : '';
+    };
+    [['almacenFiltroTodo','todo'],['almacenFiltroProductos','productos'],['almacenFiltroInsumos','insumos']].forEach(([id,val]) => {
+        const btn = document.getElementById(id);
+        if (btn) btn.addEventListener('click', () => { window._almacenFiltro = val; updateAlmFiltroUI(); renderAlmacenModulo(); });
+    });
+
+        const almacenAdd = document.getElementById('almacenAdd');
     const almacenEdit = document.getElementById('almacenEdit');
     const almacenDelete = document.getElementById('almacenDelete');
     const almacenTableBody = document.getElementById('almacenTableBody');
@@ -13791,7 +13921,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (insumosVista === 'surtir') {
             if (insumosTableHead) {
-                insumosTableHead.innerHTML = '<tr><th>ID insumo</th><th>Insumo</th><th>Cantidad por surtir</th><th>Fecha límite</th><th>Producto origen</th></tr>';
+                insumosTableHead.innerHTML = '<tr><th>Código</th><th>Insumo</th><th>Cantidad por surtir</th><th>Fecha límite</th><th>Producto origen</th></tr>';
             }
             if (!insumosSurtirData.length) {
                 insumosTableBody.innerHTML = '<tr><td colspan="5" class="clientesmod-empty">No hay insumos pendientes por surtir.</td></tr>';
@@ -13810,36 +13940,45 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${escCliMod(r.origenProducto || '-')}</td>
                 </tr>
             `).join('');
-            if (insumosConteo) insumosConteo.textContent = `Insumos por surtir: ${rowsSurtir.length}`;
+            if (insumosConteo) insumosConteo.textContent = 'Insumos por surtir: ' + rowsSurtir.length;
             updateInsumosButtons();
             return;
         }
 
+        // Inventario view: pull insumos from productosData
         if (insumosTableHead) {
-            insumosTableHead.innerHTML = '<tr><th>ID</th><th>Insumo</th><th>Categoría</th><th>Unidad base</th><th>Unidad compra</th><th>Unidad venta</th><th>Conversión</th><th>Desgaste</th><th>Venta pública</th><th>Precio público</th><th>Existencias</th><th>Mínimo</th><th>Costo unitario</th><th>Foto</th></tr>';
+            insumosTableHead.innerHTML = '<tr><th>Código</th><th>Nombre</th><th>Categoría</th><th>U. Compra</th><th>U. Venta</th><th>Desgaste/uso</th><th>Existencias</th><th>P. Compra</th><th>P. Venta</th><th>Proveedor</th></tr>';
         }
         const term = String(insumosSearch?.value || '').trim().toLowerCase();
-        const rows = insumosData.filter((i) => {
-            if (!term) return true;
-            return [i.id, i.nombre, i.categoria, i.unidad, i.unidadCompra]
-                .some((v) => String(v || '').toLowerCase().includes(term));
+        const items = productosData.filter(p => {
+            if ((p.naturaleza || 'producto') !== 'insumo') return false;
+            if (term) {
+                return [p.codigo, p.producto, p.categoria, p.proveedor].some(v => String(v || '').toLowerCase().includes(term));
+            }
+            return true;
         });
 
-        if (!rows.length) {
-            insumosTableBody.innerHTML = '<tr><td colspan="14" class="clientesmod-empty">No hay insumos para este filtro.</td></tr>';
-            if (insumosConteo) insumosConteo.textContent = `Total de insumos: ${insumosData.length}`;
+        if (!items.length) {
+            insumosTableBody.innerHTML = '<tr><td colspan="10" class="clientesmod-empty">No hay insumos registrados. Crea uno desde Productos → Tipo comercial: Insumo.</td></tr>';
+            if (insumosConteo) insumosConteo.textContent = 'Total de insumos: 0';
             updateInsumosButtons();
             return;
         }
 
-        insumosTableBody.innerHTML = rows.map((i) => {
-            const selected = i.id === insumosSelectedId ? ' clientesmod-row-selected' : '';
-            const eq = `1 ${escCliMod(i.unidadCompra || 'compra')} = ${Number(i.factorCompraBase || 1)} ${escCliMod(i.unidad || 'base')} | 1 ${escCliMod(i.unidadVenta || i.unidad || 'venta')} = ${Number(i.factorVentaBase || 1)} ${escCliMod(i.unidad || 'base')}`;
-            const desgaste = i.contabilizarDesgaste
-                ? `${escCliMod(i.unidadDesgaste || 'Usos')}: actual ${Number(i.desgasteCicloActual || 0).toFixed(2)} | prom ${Number(i.desgastePromedio || 0).toFixed(2)}`
-                : 'No aplica';
-            const foto = i.foto ? '<span style="font-size:0.95rem;">🖼</span>' : '-';
-            return `<tr class="${selected}" data-ins-id="${escCliMod(i.id)}"><td>${escCliMod(i.id)}</td><td>${escCliMod(i.nombre)}</td><td>${escCliMod(i.categoria)}</td><td>${escCliMod(i.unidad)}</td><td>${escCliMod(i.unidadCompra || '-')}</td><td>${escCliMod(i.unidadVenta || i.unidad || '-')}</td><td>${eq}</td><td>${desgaste}</td><td>${i.ventaPublica ? 'Sí' : 'No'}</td><td>${formatMoney(Number(i.precioVentaPublico || 0))}</td><td>${Number(i.existencias || 0)}</td><td>${Number(i.minimo || 0)}</td><td>${formatMoney(Number(i.costoUnitario || 0))}</td><td>${foto}</td></tr>`;
+        insumosTableBody.innerHTML = items.map(p => {
+            const selected = p.codigo === insumosSelectedId ? ' clientesmod-row-selected' : '';
+            return '<tr class="' + selected + '" data-ins-id="' + prodEscape(p.codigo) + '">' +
+                '<td>' + prodEscape(p.codigo || '-') + '</td>' +
+                '<td>' + prodEscape(p.producto || '-') + '</td>' +
+                '<td>' + prodEscape(p.categoria || '-') + '</td>' +
+                '<td>' + prodEscape(p.umCompra || '-') + '</td>' +
+                '<td>' + prodEscape(p.umVenta || '-') + '</td>' +
+                '<td>' + Number(p.desgastePorUso || 0).toFixed(3) + '</td>' +
+                '<td style="font-weight:700;">' + Number(p.existencias || 0) + '</td>' +
+                '<td>$' + Number(p.precioCompra || 0).toFixed(2) + '</td>' +
+                '<td>$' + Number(p.precioVenta || 0).toFixed(2) + '</td>' +
+                '<td>' + prodEscape(p.proveedor || '-') + '</td>' +
+                '</tr>';
         }).join('');
 
         insumosTableBody.querySelectorAll('[data-ins-id]').forEach((row) => {
@@ -13851,50 +13990,53 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        if (insumosConteo) insumosConteo.textContent = `Total de insumos: ${insumosData.length}`;
+        if (insumosConteo) insumosConteo.textContent = 'Total de insumos: ' + items.length;
         updateInsumosButtons();
     };
 
     const renderAlmacenModulo = () => {
         if (!almacenTableBody) return;
-        const term = String(almacenSearch?.value || '').trim().toLowerCase();
-        const rows = almacenData.filter((a) => {
-            if (!term) return true;
-            return [a.id, a.producto, a.ubicacion]
-                .some((v) => String(v || '').toLowerCase().includes(term));
-        });
-
-        if (!rows.length) {
-            almacenTableBody.innerHTML = '<tr><td colspan="5" class="clientesmod-empty">No hay productos para este filtro.</td></tr>';
-            if (almacenConteo) almacenConteo.textContent = `Total de productos: ${almacenData.length}`;
-            if (almacenValorTotal) {
-                const total = almacenData.reduce((acc, a) => acc + (Number(a.stock || 0) * Number(a.costoUnitario || 0)), 0);
-                almacenValorTotal.textContent = `Valor total: ${formatMoney(total)}`;
+        const almFiltro = window._almacenFiltro || 'todo';
+        const searchVal = (almacenSearch?.value || '').trim().toLowerCase();
+        // Pull from productosData: productos & insumos with stock
+        const items = productosData.filter(p => {
+            const nat = p.naturaleza || 'producto';
+            if (almFiltro === 'productos' && nat !== 'producto') return false;
+            if (almFiltro === 'insumos' && nat !== 'insumo') return false;
+            if (nat !== 'producto' && nat !== 'insumo') return false;
+            if (searchVal) {
+                const hay = [p.codigo, p.producto, p.categoria, p.proveedor].some(v => String(v || '').toLowerCase().includes(searchVal));
+                if (!hay) return false;
             }
-            updateAlmacenButtons();
-            return;
-        }
-
-        almacenTableBody.innerHTML = rows.map((a) => {
-            const selected = a.id === almacenSelectedId ? ' clientesmod-row-selected' : '';
-            return `<tr class="${selected}" data-alm-id="${escCliMod(a.id)}"><td>${escCliMod(a.id)}</td><td>${escCliMod(a.producto)}</td><td>${Number(a.stock || 0)}</td><td>${escCliMod(a.ubicacion)}</td><td>${formatMoney(Number(a.costoUnitario || 0))}</td></tr>`;
-        }).join('');
-
-        almacenTableBody.querySelectorAll('[data-alm-id]').forEach((row) => {
-            row.addEventListener('click', () => {
-                const id = String(row.getAttribute('data-alm-id') || '');
-                if (!id) return;
-                almacenSelectedId = id;
-                renderAlmacenModulo();
-            });
+            return true;
         });
-
-        if (almacenConteo) almacenConteo.textContent = `Total de productos: ${almacenData.length}`;
-        if (almacenValorTotal) {
-            const total = almacenData.reduce((acc, a) => acc + (Number(a.stock || 0) * Number(a.costoUnitario || 0)), 0);
-            almacenValorTotal.textContent = `Valor total: ${formatMoney(total)}`;
+        if (!items.length) {
+            almacenTableBody.innerHTML = '<tr><td colspan="10" class="clientesmod-empty">No hay artículos que mostrar.</td></tr>';
+        } else {
+            almacenTableBody.innerHTML = items.map(p => {
+                const nat = p.naturaleza || 'producto';
+                const badge = nat === 'insumo'
+                    ? '<span style="background:#fef3c7;color:#92400e;padding:1px 6px;border-radius:8px;font-size:0.5rem;font-weight:700;">Insumo</span>'
+                    : '<span style="background:#dbeafe;color:#1e40af;padding:1px 6px;border-radius:8px;font-size:0.5rem;font-weight:700;">Producto</span>';
+                return '<tr>' +
+                    '<td>' + prodEscape(p.codigo || '-') + '</td>' +
+                    '<td>' + badge + '</td>' +
+                    '<td>' + prodEscape(p.producto || '-') + '</td>' +
+                    '<td>' + prodEscape(p.categoria || '-') + '</td>' +
+                    '<td style="font-weight:700;">' + Number(p.existencias || 0) + '</td>' +
+                    '<td>' + prodEscape(p.umCompra || '-') + '</td>' +
+                    '<td>' + prodEscape(p.umVenta || '-') + '</td>' +
+                    '<td>$' + Number(p.precioCompra || 0).toFixed(2) + '</td>' +
+                    '<td>$' + Number(p.precioVenta || 0).toFixed(2) + '</td>' +
+                    '<td>' + prodEscape(p.proveedor || '-') + '</td>' +
+                    '</tr>';
+            }).join('');
         }
-        updateAlmacenButtons();
+        if (almacenConteo) almacenConteo.textContent = 'Total: ' + items.length;
+        if (almacenValorTotal) {
+            const total = items.reduce((acc, p) => acc + (Number(p.existencias || 0) * Number(p.precioCompra || 0)), 0);
+            almacenValorTotal.textContent = 'Valor inventario: $' + total.toFixed(2);
+        }
     };
 
     const openProveedorFormPopup = (mode, proveedor) => {
@@ -14295,18 +14437,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        const totalInsumosValor = insumosData.reduce((acc, i) => acc + (Number(i.existencias || 0) * Number(i.costoUnitario || 0)), 0);
-        const totalAlmacenValor = almacenData.reduce((acc, a) => acc + (Number(a.stock || 0) * Number(a.costoUnitario || 0)), 0);
-        const lowStockInsumos = insumosData.filter((i) => Number(i.existencias || 0) <= Number(i.minimo || 0)).length;
+        const totalInsumosValor = productosData.filter(p=>(p.naturaleza||'producto')==='insumo').reduce((acc,p)=>acc+(Number(p.existencias||0)*Number(p.precioCompra||0)),0);
+        const totalAlmacenValor = productosData.filter(p=>(p.naturaleza||'producto')==='producto').reduce((acc,p)=>acc+(Number(p.existencias||0)*Number(p.precioCompra||0)),0);
+        const lowStockInsumos = productosData.filter(p=>(p.naturaleza||'producto')==='insumo'&&Number(p.existencias||0)<=0).length;
         const lowStockAlmacenThreshold = Math.max(0, Number(getConfigValue('almacen', 'stockMinimoAlerta') || 0));
-        const lowStockAlmacen = almacenData.filter((a) => Number(a.stock || 0) <= lowStockAlmacenThreshold).length;
+        const lowStockAlmacen = productosData.filter(p=>(p.naturaleza||'producto')==='producto'&&Number(p.existencias||0)<=0).length;
 
         if (repResumenFuentesBody) {
             repResumenFuentesBody.innerHTML = [
                 ['Pedidos en periodo', ordenes, formatMoney(ventas)],
                 ['Proveedores activos', proveedoresData.length, formatMoney(proveedoresData.reduce((acc, p) => acc + Number(p.saldoPendiente || 0), 0))],
-                ['Insumos en inventario', insumosData.length, formatMoney(totalInsumosValor)],
-                ['Productos en almacén', almacenData.length, formatMoney(totalAlmacenValor)],
+                ['Insumos en inventario', productosData.filter(p=>(p.naturaleza||'producto')==='insumo').length, formatMoney(productosData.filter(p=>(p.naturaleza||'producto')==='insumo').reduce((a,p)=>a+(Number(p.existencias||0)*Number(p.precioCompra||0)),0))],
+                ['Productos en almacén', productosData.filter(p=>(p.naturaleza||'producto')==='producto').length, formatMoney(productosData.filter(p=>(p.naturaleza||'producto')==='producto').reduce((a,p)=>a+(Number(p.existencias||0)*Number(p.precioCompra||0)),0))],
                 ['Bajo stock (insumos)', lowStockInsumos, '-'],
                 ['Bajo stock (almacén)', lowStockAlmacen, '-']
             ].map((r) => `<tr><td>${escCliMod(r[0])}</td><td>${escCliMod(r[1])}</td><td>${escCliMod(r[2])}</td></tr>`).join('');
@@ -14340,6 +14482,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     window.openProveedoresPopupGlobal = openProveedoresPopup;
+    window.openProveedorFormPopupGlobal = openProveedorFormPopup;
     window.openInsumosPopupGlobal = openInsumosPopup;
     window.openAlmacenPopupGlobal = openAlmacenPopup;
     window.openReportesPopupGlobal = openReportesPopup;
@@ -14822,7 +14965,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 minima: Math.max(0, Number(row.minima || row.cantMinima || 0)),
                 existencias: Math.max(0, Number(row.existencias || 0)),
                 precioCompra: Math.max(0, Number(row.precioCompra || 0)),
-                tipoImpresion: String(row.tipoImpresion || '').trim(),
+                naturaleza: String(row.naturaleza || 'producto').trim(),
+                procesos: Array.isArray(row.procesos) ? row.procesos : [],
+                desgastePorUso: Math.max(0, Number(row.desgastePorUso || 0)),
+                insumosProceso: Array.isArray(row.insumosProceso) ? row.insumosProceso : [],
                 proveedor: String(row.proveedor || '').trim(),
                 descripcion: String(row.descripcion || '').trim(),
                 fotoPrincipal: String(row.fotoPrincipal || ''),
@@ -14933,22 +15079,69 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const syncProdFormModeByTipo = () => {
         const isGF = (prodFormTipo?.value === 'gran-formato');
-        document.querySelectorAll('.prod-stock-only').forEach((elx) => {
-            elx.style.display = isGF ? 'none' : '';
+        const nat = prodFormNaturaleza?.value || 'producto';
+
+        // First pass: handle data-nat visibility
+        document.querySelectorAll('[data-nat]').forEach(el => {
+            const allowed = el.getAttribute('data-nat').split(',');
+            if (!allowed.includes(nat)) {
+                el.style.display = 'none';
+                return;
+            }
+            // Passed naturaleza check - now check stock/gf
+            if (el.classList.contains('prod-gf-only')) {
+                el.style.display = isGF ? '' : 'none';
+            } else if (el.classList.contains('prod-stock-only')) {
+                el.style.display = isGF ? 'none' : '';
+            } else {
+                el.style.display = '';
+            }
         });
-        document.querySelectorAll('.prod-gf-only').forEach((elx) => {
-            elx.style.display = isGF ? '' : 'none';
-        });
+
         if (prodFormCard) {
             prodFormCard.classList.toggle('gf-compact', isGF);
         }
+
+        // GF sub-modes (m2 vs m-lineal)
         const useML = (prodGfCobroTipo?.value === 'm-lineal');
-        document.querySelectorAll('.prod-gf-m2-only').forEach((elx) => {
-            elx.style.display = (isGF && !useML) ? '' : 'none';
+        document.querySelectorAll('.prod-gf-m2-only').forEach(el => {
+            if (el.style.display === 'none') return;
+            el.style.display = (isGF && !useML) ? '' : 'none';
         });
-        document.querySelectorAll('.prod-gf-ml-only').forEach((elx) => {
-            elx.style.display = (isGF && useML) ? '' : 'none';
+        document.querySelectorAll('.prod-gf-ml-only').forEach(el => {
+            if (el.style.display === 'none') return;
+            el.style.display = (isGF && useML) ? '' : 'none';
         });
+
+        // Update labels by naturaleza
+        const lblProd = document.querySelector('label[for="prodFormProducto"]');
+        if (lblProd) {
+            const labels = { producto: 'Nombre del producto', insumo: 'Nombre del insumo', proceso: 'Nombre del proceso', servicio: 'Nombre del servicio' };
+            lblProd.textContent = labels[nat] || 'Nombre';
+        }
+
+        // Update modal title
+        if (prodFormTitulo) {
+            const isEditing = !!productoEditandoId;
+            const titles = { producto: 'producto', insumo: 'insumo', proceso: 'proceso', servicio: 'servicio' };
+            prodFormTitulo.textContent = (isEditing ? 'Editar ' : 'Agregar ') + (titles[nat] || 'producto');
+        }
+
+        // Populate Procesos select from productosData (productos with naturaleza=proceso)
+        const procSel = document.getElementById('prodFormProcesos');
+        if (procSel && nat === 'producto') {
+            const prev = Array.from(procSel.selectedOptions).map(o => o.value);
+            const procesos = productosData.filter(p => p.naturaleza === 'proceso');
+            procSel.innerHTML = procesos.length === 0
+                ? '<option value="" disabled>No hay procesos creados</option>'
+                : procesos.map(p => '<option value="' + prodEscape(p.producto) + '">' + prodEscape(p.producto) + '</option>').join('');
+            Array.from(procSel.options).forEach(o => { if (prev.includes(o.value)) o.selected = true; });
+        }
+
+        // Populate insumos list for proceso form
+        if (nat === 'proceso') {
+            renderProcesoInsumosSelector();
+        }
     };
 
     const renderProductosTabla = () => {
@@ -14978,11 +15171,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         productosTablaBody.innerHTML = rows.map((row) => {
-            const isLowStock = productosTab === 'stock'
-                && Number(row.existencias || 0) <= Number(row.minima || 0);
             const classes = [
                 productosSelectedIds.has(row.id) ? 'productos-row-selected' : '',
-                isLowStock ? 'productos-row-low-stock' : ''
             ].filter(Boolean).join(' ');
             if (productosTab === 'gran-formato') {
                 return `<tr data-prod-id="${prodEscape(row.id)}" class="${classes}">
@@ -15114,7 +15304,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 minima,
                 existencias,
                 precioCompra: 0,
-                tipoImpresion: '',
+                naturaleza: 'producto',
+                procesos: [],
+                desgastePorUso: 0,
+                insumosProceso: [],
                 proveedor: '',
                 descripcion: '',
                 fotoPrincipal: '',
@@ -15197,9 +15390,14 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const generarCodigoProducto = () => {
-        const stamp = Date.now().toString(36).toUpperCase();
-        const pref = (prodFormTipo?.value === 'gran-formato') ? 'GF' : 'ST';
-        return `${pref}-${stamp}`;
+        const existingCodes = new Set(productosData.map(p => p.codigo));
+        let code;
+        do {
+            const ts = Date.now().toString().slice(-10);
+            const rand = String(Math.floor(Math.random() * 100000)).padStart(5, '0');
+            code = ts + rand;
+        } while (existingCodes.has(code));
+        return code;
     };
 
     const renderProdMainPhotoPreview = () => {
@@ -15236,18 +15434,24 @@ document.addEventListener('DOMContentLoaded', () => {
         prodPendingTabuladorPrecios = [];
         prodMainPhotoData = '';
         prodColorDraftList = [];
+        variantesDraft = [];
+        variantesComboData = {};
+        if (typeof updateVariantesResumen === "function") updateVariantesResumen();
         if (prodFormTitulo) prodFormTitulo.textContent = 'Agregar producto';
         if (prodFormCodigo) prodFormCodigo.value = '';
         if (prodFormTipo) prodFormTipo.value = productosTab;
         if (prodFormNaturaleza) prodFormNaturaleza.value = 'producto';
         if (prodFormProducto) prodFormProducto.value = '';
         if (prodFormCategoria) prodFormCategoria.value = '';
-        if (prodFormMedida) prodFormMedida.value = '';
+        var umC = document.getElementById('prodFormUMCompra'); if (umC) umC.value = 'Unidad';
+        var umV = document.getElementById('prodFormUMVenta'); if (umV) umV.value = 'Unidad';
         if (prodFormMaterial) prodFormMaterial.value = '';
         if (prodFormMinima) prodFormMinima.value = '0';
         if (prodFormExistencias) prodFormExistencias.value = '0';
         if (prodFormPrecioCompra) prodFormPrecioCompra.value = '0';
-        if (prodFormTipoImpresion) prodFormTipoImpresion.value = '';
+        { const psel = document.getElementById('prodFormProcesos'); if (psel) Array.from(psel.options).forEach(o => o.selected = false); }
+        { const dp = document.getElementById('prodFormDesgastePorUso'); if (dp) dp.value = '1'; }
+        { const pic = document.getElementById('prodFormProcesoInsumos'); if (pic) { pic._selectedInsumos = []; } }
         if (prodFormProveedor) prodFormProveedor.value = '';
         if (prodFormDescripcion) prodFormDescripcion.value = '';
         if (prodFormNecesitaFabricacion) prodFormNecesitaFabricacion.checked = false;
@@ -15278,14 +15482,17 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prodFormCodigo) prodFormCodigo.value = row.codigo || '';
         if (prodFormTipo) prodFormTipo.value = row.tipo || 'stock';
         if (prodFormNaturaleza) prodFormNaturaleza.value = row.naturaleza || 'producto';
+        { const dp = document.getElementById('prodFormDesgastePorUso'); if (dp) dp.value = String(Number(row.desgastePorUso || 1)); }
+        { const pic = document.getElementById('prodFormProcesoInsumos'); if (pic) { pic._selectedInsumos = Array.isArray(row.insumosProceso) ? [...row.insumosProceso] : []; } }
         if (prodFormProducto) prodFormProducto.value = row.producto || '';
         if (prodFormCategoria) prodFormCategoria.value = row.categoria || '';
-        if (prodFormMedida) prodFormMedida.value = row.medida || '';
+        var umC2 = document.getElementById('prodFormUMCompra'); if (umC2) umC2.value = row.umCompra || 'Unidad';
+        var umV2 = document.getElementById('prodFormUMVenta'); if (umV2) umV2.value = row.umVenta || 'Unidad';
         if (prodFormMaterial) prodFormMaterial.value = row.material || '';
         if (prodFormMinima) prodFormMinima.value = String(Number(row.minima || 0));
         if (prodFormExistencias) prodFormExistencias.value = String(Number(row.existencias || 0));
         if (prodFormPrecioCompra) prodFormPrecioCompra.value = String(Number(row.precioCompra || 0));
-        if (prodFormTipoImpresion) prodFormTipoImpresion.value = row.tipoImpresion || '';
+        { const psel = document.getElementById('prodFormProcesos'); if (psel && Array.isArray(row.procesos)) { Array.from(psel.options).forEach(o => { o.selected = row.procesos.includes(o.value); }); } }
         if (prodFormProveedor) prodFormProveedor.value = row.proveedor || '';
         if (prodFormDescripcion) prodFormDescripcion.value = row.descripcion || '';
         if (prodFormNecesitaFabricacion) prodFormNecesitaFabricacion.checked = Boolean(row.necesitaFabricacion);
@@ -15303,6 +15510,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prodFormFotoPrincipal) prodFormFotoPrincipal.value = '';
         prodMainPhotoData = row.fotoPrincipal || '';
         prodColorDraftList = Array.isArray(row.coloresSubproductos) ? row.coloresSubproductos.map((c) => ({ ...c })) : [];
+        variantesDraft = Array.isArray(row.variantes) ? row.variantes.map(t => ({tipo: t.tipo, valores: [...(t.valores||[])]})) : [];
+        variantesComboData = (row.variantesCombo && typeof row.variantesCombo === "object") ? JSON.parse(JSON.stringify(row.variantesCombo)) : {};
+        if (typeof updateVariantesResumen === "function") updateVariantesResumen();
         prodPendingTabuladorId = row.tabuladorId || '';
         prodPendingTabuladorPrecios = Array.isArray(row.tabuladorDetalle) ? row.tabuladorDetalle.map((r) => ({
             precioRevendedor: Math.max(0, Number(r.precioRevendedor || 0)),
@@ -15316,15 +15526,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const collectProductFormPayload = () => {
         const payload = {
             codigo: String(prodFormCodigo?.value || '').trim(),
+            naturaleza: prodFormNaturaleza?.value || 'producto',
             tipo: prodFormTipo?.value === 'gran-formato' ? 'gran-formato' : 'stock',
             producto: String(prodFormProducto?.value || '').trim(),
             categoria: String(prodFormCategoria?.value || '').trim() || 'General',
-            medida: String(prodFormMedida?.value || '').trim() || '-',
+            umCompra: String(document.getElementById('prodFormUMCompra')?.value || '').trim() || 'Unidad',
+            umVenta: String(document.getElementById('prodFormUMVenta')?.value || '').trim() || 'Unidad',
             material: String(prodFormMaterial?.value || '').trim() || '-',
             minima: Math.max(0, Number(prodFormMinima?.value || 0)),
             existencias: Math.max(0, Number(prodFormExistencias?.value || 0)),
             precioCompra: Math.max(0, Number(prodFormPrecioCompra?.value || 0)),
-            tipoImpresion: String(prodFormTipoImpresion?.value || '').trim(),
+            procesos: Array.from(document.getElementById('prodFormProcesos')?.selectedOptions || []).map(o => o.value).filter(v => v),
+            desgastePorUso: Math.max(0, Number(document.getElementById('prodFormDesgastePorUso')?.value || 0)),
+            insumosProceso: (document.getElementById('prodFormProcesoInsumos')?._selectedInsumos || []),
             proveedor: String(prodFormProveedor?.value || '').trim(),
             descripcion: String(prodFormDescripcion?.value || '').trim(),
             necesitaFabricacion: Boolean(prodFormNecesitaFabricacion?.checked),
@@ -15335,6 +15549,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 existencias: Math.max(0, Number(c.existencias || 0)),
                 foto: String(c.foto || '')
             })).filter((c) => c.color),
+            variantes: variantesDraft.map(t => ({tipo: t.tipo, valores: [...t.valores]})),
+            variantesCombo: typeof variantesComboData !== "undefined" ? JSON.parse(JSON.stringify(variantesComboData)) : {},
             gfCobroTipo: prodGfCobroTipo?.value === 'm-lineal' ? 'm-lineal' : 'm2',
             gfAjusteAncho: ['metro', 'medio', 'sin'].includes(prodGfAjusteAncho?.value || '') ? prodGfAjusteAncho.value : 'sin',
             gfPrecioGeneralM2: Math.max(0, Number(prodGfPrecioGeneralM2?.value || 0)),
@@ -15531,7 +15747,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let extraRows = [];
         if (String(ordenPickerTipo || 'stock').toLowerCase() === 'stock') {
             loadInsumosModulo();
-            extraRows = insumosData
+            extraRows = productosData.filter(p => (p.naturaleza||'producto') === 'insumo')
                 .filter((i) => Boolean(i.ventaPublica))
                 .map((i) => ({
                     id: `INS-PUB-${i.id}`,
@@ -17348,11 +17564,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // prodFormTipo is hidden, auto-set from tab on form open
     if (prodFormTipo) {
-        prodFormTipo.addEventListener('change', () => {
-            if (!prodFormCodigo?.value?.trim()) {
-                prodFormCodigo.value = generarCodigoProducto();
-            }
+        prodFormTipo.addEventListener('change', () => { syncProdFormModeByTipo(); });
+    }
+
+    if (prodFormNaturaleza) {
+        prodFormNaturaleza.addEventListener('change', () => {
             syncProdFormModeByTipo();
         });
     }
@@ -17407,12 +17625,506 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+
+    // ========== SISTEMA DE VARIANTES ==========
+    let variantesDraft = []; // [{tipo: "Color", valores: ["Rojo","Negro"]}, ...]
+    let variantesComboData = {}; // key "Rojo|Ch|Caballero" => {foto, costo, precio, stock}
+    const variantesBtn = document.getElementById("prodFormVariantesBtn");
+    const variantesResumen = document.getElementById("prodFormVariantesResumen");
+    const popupVariantes = document.getElementById("popupProdVariantes");
+
+    function openVariantesPopup() {
+        if (popupVariantes) { popupVariantes.setAttribute("aria-hidden","false"); popupVariantes.style.display = "flex"; }
+        varianteTipoExpandido = -1;
+        renderVariantesTipos();
+        renderVariantesTabla();
+        updateVariantesBadges();
+    }
+
+    // Click outside types list collapses accordion
+    if (popupVariantes) {
+        popupVariantes.addEventListener("click", (e) => {
+            const tiposLista = document.getElementById("varianteTiposLista");
+            const tipoInput = document.getElementById("varianteNuevoTipo");
+            if (tiposLista && !tiposLista.contains(e.target) && e.target !== tipoInput && varianteTipoExpandido !== -1) {
+                varianteTipoExpandido = -1;
+                renderVariantesTipos();
+            }
+        });
+    }
+    function closeVariantesPopup() {
+        if (popupVariantes) { popupVariantes.setAttribute("aria-hidden","true"); popupVariantes.style.display = "none"; }
+    }
+
+    function getVariantesCombinaciones() {
+        const tipos = variantesDraft.filter(t => t.valores.length > 0);
+        if (!tipos.length) return [];
+        let combos = tipos[0].valores.map(v => [v]);
+        for (let i = 1; i < tipos.length; i++) {
+            const next = [];
+            combos.forEach(c => tipos[i].valores.forEach(v => next.push([...c, v])));
+            combos = next;
+        }
+        return combos;
+    }
+
+    function comboKey(combo) { return combo.join("|"); }
+
+    function saveComboDataFromTable() {
+        const cont = document.getElementById("varianteVistaPrevia");
+        if (!cont) return;
+        cont.querySelectorAll("tr[data-combo-key]").forEach(tr => {
+            const key = tr.dataset.comboKey;
+            const fotoInput = tr.querySelector(".vc-foto");
+            const existing = variantesComboData[key] || {};
+            variantesComboData[key] = {
+                costo: Number(tr.querySelector(".vc-costo")?.value || 0),
+                precio: Number(tr.querySelector(".vc-precio")?.value || 0),
+                stock: Number(tr.querySelector(".vc-stock")?.value || 0),
+                foto: existing.foto || "",
+                codigoVar: tr.querySelector(".vc-codigo")?.value || existing.codigoVar || ""
+            };
+        });
+    }
+
+    function updateVariantesBadges() {
+        const bt = document.getElementById("varianteBadgeTipos");
+        const bc = document.getElementById("varianteBadgeCombos");
+        const nTipos = variantesDraft.length;
+        const nCombos = getVariantesCombinaciones().length;
+        if (bt) bt.textContent = nTipos + (nTipos === 1 ? " tipo" : " tipos");
+        if (bc) bc.textContent = nCombos + (nCombos === 1 ? " combinación" : " combinaciones");
+    }
+
+    let varianteTipoExpandido = -1; // -1 = ninguno expandido
+
+    function renderVariantesTipos() {
+        const cont = document.getElementById("varianteTiposLista");
+        if (!cont) return;
+        if (!variantesDraft.length) {
+            cont.innerHTML = '<div style="padding:24px 10px;text-align:center;color:#9ca3af;font-size:0.62rem;"><div style="font-size:1.4rem;margin-bottom:6px;">📦</div>Sin tipos de variante.<br>Agrega uno arriba para comenzar.</div>';
+            updateVariantesAgrupar(); updateVariantesBadges(); return;
+        }
+        cont.innerHTML = variantesDraft.map((t, ti) => {
+            const isOpen = varianteTipoExpandido === ti;
+            const valoresResumen = t.valores.length
+                ? t.valores.map(v => prodEscape(v)).join(', ')
+                : '<i style="color:#9ca3af;">Sin valores</i>';
+            const valoresChips = t.valores.map((v, vi) =>
+                `<span style="display:inline-flex;align-items:center;gap:3px;background:#fff3e6;border:1px solid #fcd9b0;border-radius:20px;padding:3px 10px;font-size:0.55rem;color:#92400e;font-weight:600;">${prodEscape(v)}<button type="button" data-tipo="${ti}" data-val="${vi}" class="varianteRemoveVal" title="Eliminar" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:0.63rem;padding:0 2px;line-height:1;">×</button></span>`
+            ).join("");
+            return `<div style="background:#fff;border:1px solid ${isOpen ? '#f07a00' : '#e5e7eb'};border-radius:10px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,0.05);transition:border-color .2s;">
+                <div class="varianteTipoHeader" data-tipo="${ti}" style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:${isOpen ? 'linear-gradient(135deg,#fff8f0,#fff)' : '#fafbfc'};cursor:pointer;user-select:none;border-bottom:${isOpen ? '1px solid #f0e6d9' : 'none'};">
+                    <span style="font-size:0.6rem;color:#f07a00;transition:transform .2s;transform:rotate(${isOpen ? '90' : '0'}deg);flex-shrink:0;">▶</span>
+                    <span style="width:8px;height:8px;border-radius:50%;background:#f07a00;display:inline-block;flex-shrink:0;"></span>
+                    <b style="font-size:0.64rem;color:#1f2937;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${prodEscape(t.tipo)}</b>
+                    <span style="font-size:0.50rem;color:#f07a00;background:#fff3e6;padding:1px 7px;border-radius:10px;font-weight:700;border:1px solid #fcd9b0;flex-shrink:0;">${t.valores.length}</span>
+                    <button type="button" data-tipo="${ti}" class="varianteRemoveTipo" style="background:none;border:none;color:#dc2626;cursor:pointer;font-size:0.58rem;padding:2px 4px;opacity:0.6;flex-shrink:0;" title="Eliminar tipo">✕</button>
+                </div>
+                ${!isOpen ? `<div style="padding:4px 12px 6px;overflow:hidden;"><div style="font-size:0.52rem;color:#6b7280;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${valoresResumen}</div></div>` : `
+                <div style="padding:10px 12px;">
+                    <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;min-height:24px;">${valoresChips || '<span style="font-size:0.53rem;color:#9ca3af;font-style:italic;">Agrega valores abajo</span>'}</div>
+                    <div style="display:flex;gap:5px;">
+                        <input type="text" placeholder="Nuevo valor..." class="varianteNuevoValor" data-tipo="${ti}" style="flex:1;padding:6px 10px;border-radius:7px;border:1px solid #d7dce4;background:#fff;color:#1f2937;font-size:0.6rem;outline:none;">
+                        <button type="button" class="varianteAddVal productos-btn" data-tipo="${ti}" style="padding:6px 12px;font-size:0.6rem;background:#f07a00;color:#fff;border-color:#d76700;border-radius:7px;white-space:nowrap;">+ Valor</button>
+                    </div>
+                </div>`}
+            </div>`;
+        }).join("");
+        updateVariantesAgrupar();
+        updateVariantesBadges();
+        // Toggle accordion
+        cont.querySelectorAll(".varianteTipoHeader").forEach(hdr => {
+            hdr.onclick = (e) => {
+                if (e.target.closest(".varianteRemoveTipo")) return;
+                const ti = Number(hdr.dataset.tipo);
+                varianteTipoExpandido = (varianteTipoExpandido === ti) ? -1 : ti;
+                renderVariantesTipos();
+                // Auto-focus input if opened
+                if (varianteTipoExpandido === ti) {
+                    setTimeout(() => {
+                        const inp = cont.querySelector('.varianteNuevoValor[data-tipo="' + ti + '"]');
+                        if (inp) inp.focus();
+                    }, 50);
+                }
+            };
+        });
+        cont.querySelectorAll(".varianteRemoveTipo").forEach(btn => {
+            btn.onclick = (e) => { e.stopPropagation(); saveComboDataFromTable(); const ti = Number(btn.dataset.tipo); if (varianteTipoExpandido === ti) varianteTipoExpandido = -1; else if (varianteTipoExpandido > ti) varianteTipoExpandido--; variantesDraft.splice(ti, 1); renderVariantesTipos(); renderVariantesTabla(); };
+        });
+        cont.querySelectorAll(".varianteRemoveVal").forEach(btn => {
+            btn.onclick = () => { saveComboDataFromTable(); variantesDraft[Number(btn.dataset.tipo)].valores.splice(Number(btn.dataset.val), 1); renderVariantesTipos(); renderVariantesTabla(); };
+        });
+        function addValForTipo(tipoIdx) {
+            const input = cont.querySelector('.varianteNuevoValor[data-tipo="' + tipoIdx + '"]');
+            const val = (input?.value || "").trim();
+            if (!val) return;
+            saveComboDataFromTable();
+            variantesDraft[Number(tipoIdx)].valores.push(val);
+            input.value = "";
+            renderVariantesTipos();
+            renderVariantesTabla();
+            // Re-focus input after render
+            setTimeout(() => {
+                const newInp = cont.querySelector('.varianteNuevoValor[data-tipo="' + tipoIdx + '"]');
+                if (newInp) newInp.focus();
+            }, 50);
+        }
+        cont.querySelectorAll(".varianteAddVal").forEach(btn => {
+            btn.onclick = () => addValForTipo(btn.dataset.tipo);
+        });
+        cont.querySelectorAll(".varianteNuevoValor").forEach(input => {
+            input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); addValForTipo(input.dataset.tipo); } });
+        });
+    }
+
+    function updateVariantesAgrupar() {
+        const sel = document.getElementById("varianteAgruparPor");
+        if (!sel) return;
+        const prev = sel.value;
+        sel.innerHTML = variantesDraft.map((t, i) => `<option value="${i}">${prodEscape(t.tipo)}</option>`).join("");
+        if (prev && sel.querySelector(`option[value="${prev}"]`)) sel.value = prev;
+    }
+
+    function renderVariantesTabla() {
+        const cont = document.getElementById("varianteVistaPrevia");
+        if (!cont) return;
+        const combos = getVariantesCombinaciones();
+        if (!combos.length) {
+            cont.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:40px 20px;text-align:center;color:#9ca3af;"><div style="font-size:1.8rem;margin-bottom:8px;">📋</div><div style="font-size:0.63rem;color:#6b7280;">Agrega tipos y valores<br>para ver las combinaciones aquí.</div></div>';
+            updateVariantesBadges(); return;
+        }
+        updateVariantesBadges();
+        const sel = document.getElementById("varianteAgruparPor");
+        const groupIdx = Number(sel?.value || 0);
+        const tipos = variantesDraft.filter(t => t.valores.length > 0);
+        const headers = tipos.map(t => t.tipo);
+        const inputStyle = "width:100%;padding:5px 7px;border-radius:6px;border:1px solid #d7dce4;background:#fff;color:#1f2937;font-size:0.58rem;outline:none;box-sizing:border-box;";
+        let html = '<table style="width:100%;border-collapse:separate;border-spacing:0;font-size:0.58rem;">';
+        html += '<thead><tr>';
+        headers.forEach(h => { html += `<th style="padding:7px 8px;text-align:left;font-size:0.54rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid #f07a00;position:sticky;top:0;background:#fff;z-index:1;">${prodEscape(h)}</th>`; });
+        html += '<th style="padding:7px 8px;text-align:center;font-size:0.54rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid #f07a00;position:sticky;top:0;background:#fff;z-index:1;width:110px;">Código</th>';
+        html += '<th style="padding:7px 8px;text-align:center;font-size:0.54rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid #f07a00;position:sticky;top:0;background:#fff;z-index:1;width:44px;">Foto</th>';
+        html += '<th style="padding:7px 8px;text-align:center;font-size:0.54rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid #f07a00;position:sticky;top:0;background:#fff;z-index:1;width:78px;">Costo</th>';
+        html += '<th style="padding:7px 8px;text-align:center;font-size:0.54rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid #f07a00;position:sticky;top:0;background:#fff;z-index:1;width:78px;">Precio</th>';
+        html += '<th style="padding:7px 8px;text-align:center;font-size:0.54rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:.4px;border-bottom:2px solid #f07a00;position:sticky;top:0;background:#fff;z-index:1;width:64px;">Stock</th>';
+        html += '</tr></thead><tbody>';
+        const sorted = [...combos].sort((a, b) => (a[groupIdx] || "").localeCompare(b[groupIdx] || ""));
+        let lastGroup = null;
+        let rowNum = 0;
+        sorted.forEach(combo => {
+            const key = comboKey(combo);
+            const data = variantesComboData[key] || { costo: 0, precio: 0, stock: 0, foto: "" };
+            const groupVal = combo[groupIdx] || "";
+            if (groupVal !== lastGroup) {
+                html += `<tr><td colspan="${headers.length + 5}" style="padding:7px 8px 5px;font-weight:800;font-size:0.58rem;color:#1f2937;background:#fafbfc;border-top:${lastGroup !== null ? '1' : '0'}px solid #e5e7eb;"><span style="background:#fff3e6;color:#d76700;padding:2px 10px;border-radius:4px;border:1px solid #fcd9b0;">${prodEscape(headers[groupIdx] || "")}: ${prodEscape(groupVal)}</span></td></tr>`;
+                lastGroup = groupVal;
+                rowNum = 0;
+            }
+            const rowBg = rowNum % 2 === 0 ? "#fff" : "#fafbfc";
+            html += `<tr data-combo-key="${prodEscape(key)}" style="background:${rowBg};transition:background .1s;" onmouseenter="this.style.background='#fff8f0'" onmouseleave="this.style.background='${rowBg}'">`;
+            combo.forEach((v, i) => {
+                html += `<td style="padding:5px 8px;color:#374151;border-bottom:1px solid #f0f0f0;font-size:0.58rem;">${prodEscape(v)}</td>`;
+            });
+            if (!variantesComboData[key]) variantesComboData[key] = { costo: 0, precio: 0, stock: 0, foto: "", codigoVar: "" };
+            if (!variantesComboData[key].codigoVar) {
+                const ts = Date.now().toString().slice(-10);
+                const rn = String(Math.floor(Math.random() * 100000)).padStart(5, '0');
+                variantesComboData[key].codigoVar = ts + rn;
+            }
+            const codeVal = variantesComboData[key].codigoVar || "";
+            html += `<td style="padding:4px 5px;border-bottom:1px solid #f0f0f0;"><input type="text" class="vc-codigo" value="${codeVal}" maxlength="15" style="width:100%;padding:4px 6px;border-radius:6px;border:1px solid #d7dce4;background:#fafbfc;color:#1f2937;font-size:0.52rem;outline:none;box-sizing:border-box;text-align:center;font-family:monospace;" readonly></td>`;
+            const fotoThumb = data.foto
+                ? `<img src="${data.foto}" style="width:28px;height:28px;object-fit:cover;border-radius:5px;border:1px solid #e5e7eb;cursor:pointer;" onclick="this.nextElementSibling.click()">`
+                : `<div style="width:28px;height:28px;border-radius:5px;border:1px dashed #d7dce4;display:flex;align-items:center;justify-content:center;cursor:pointer;color:#9ca3af;font-size:0.6rem;background:#fafbfc;" onclick="this.nextElementSibling.click()">📷</div>`;
+            html += `<td style="padding:4px 8px;text-align:center;border-bottom:1px solid #f0f0f0;">${fotoThumb}<input type="file" accept="image/*" class="vc-foto" style="display:none;"></td>`;
+            html += `<td style="padding:4px 5px;border-bottom:1px solid #f0f0f0;"><input type="number" class="vc-costo" value="${data.costo}" min="0" step="0.01" style="${inputStyle}text-align:right;"></td>`;
+            html += `<td style="padding:4px 5px;border-bottom:1px solid #f0f0f0;"><input type="number" class="vc-precio" value="${data.precio}" min="0" step="0.01" style="${inputStyle}text-align:right;"></td>`;
+            html += `<td style="padding:4px 5px;border-bottom:1px solid #f0f0f0;"><input type="number" class="vc-stock" value="${data.stock}" min="0" step="1" style="${inputStyle}text-align:right;"></td>`;
+            html += '</tr>';
+            rowNum++;
+        });
+        html += '</tbody></table>';
+        cont.innerHTML = html;
+        cont.querySelectorAll(".vc-foto").forEach(input => {
+            input.addEventListener("change", (e) => {
+                const file = e.target.files?.[0];
+                if (!file) return;
+                const tr = input.closest("tr");
+                const key = tr?.dataset.comboKey;
+                if (!key) return;
+                const reader = new FileReader();
+                reader.onload = (ev) => {
+                    if (!variantesComboData[key]) variantesComboData[key] = { costo: 0, precio: 0, stock: 0, foto: "" };
+                    variantesComboData[key].foto = ev.target.result;
+                    saveComboDataFromTable();
+                    renderVariantesTabla();
+                };
+                reader.readAsDataURL(file);
+            });
+        });
+    }
+
+    function updateVariantesResumen() {
+        if (!variantesResumen) return;
+        if (!variantesDraft.length) { variantesResumen.textContent = "Sin variantes configuradas"; return; }
+        const combos = getVariantesCombinaciones();
+        variantesResumen.textContent = variantesDraft.map(t => `${t.tipo}: ${t.valores.length}`).join(" | ") + ` (${combos.length} combinaciones)`;
+    }
+
+    if (variantesBtn) variantesBtn.addEventListener("click", openVariantesPopup);
+
+    function agregarNuevoTipo() {
+        const input = document.getElementById("varianteNuevoTipo");
+        const tipo = (input?.value || "").trim();
+        if (!tipo) { alert("Escribe el nombre del tipo de variante."); return; }
+        if (variantesDraft.some(t => t.tipo.toLowerCase() === tipo.toLowerCase())) { alert("Ese tipo ya existe."); return; }
+        variantesDraft.push({ tipo, valores: [] });
+        input.value = "";
+        varianteTipoExpandido = variantesDraft.length - 1;
+        renderVariantesTipos();
+        renderVariantesTabla();
+        setTimeout(() => {
+            const cont = document.getElementById("varianteTiposLista");
+            const inp = cont?.querySelector('.varianteNuevoValor[data-tipo="' + (variantesDraft.length - 1) + '"]');
+            if (inp) inp.focus();
+        }, 50);
+    }
+    const varianteAgregarTipo = document.getElementById("varianteAgregarTipo");
+    if (varianteAgregarTipo) varianteAgregarTipo.addEventListener("click", agregarNuevoTipo);
+
+    const varianteNuevoTipoInput = document.getElementById("varianteNuevoTipo");
+    if (varianteNuevoTipoInput) varianteNuevoTipoInput.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); agregarNuevoTipo(); } });
+
+    const varianteCancelar = document.getElementById("varianteCancelar");
+    if (varianteCancelar) varianteCancelar.addEventListener("click", closeVariantesPopup);
+
+    const varianteGuardar = document.getElementById("varianteGuardar");
+    if (varianteGuardar) varianteGuardar.addEventListener("click", () => {
+        saveComboDataFromTable();
+        updateVariantesResumen();
+        closeVariantesPopup();
+    });
+
+    const varianteAgruparPor = document.getElementById("varianteAgruparPor");
+    if (varianteAgruparPor) varianteAgruparPor.addEventListener("change", () => { saveComboDataFromTable(); renderVariantesTabla(); });
+
+    // ========== ESCÁNER DE CÓDIGO DE BARRAS ==========
+    const prodFormScanCodigo = document.getElementById("prodFormScanCodigo");
+    if (prodFormScanCodigo) {
+        prodFormScanCodigo.addEventListener("click", () => {
+            const popupScan = document.createElement("div");
+            popupScan.style.cssText = "position:fixed;inset:0;z-index:2300;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;padding:20px;";
+            popupScan.innerHTML = '<div style="background:#fff;border-radius:12px;padding:20px;max-width:400px;width:100%;text-align:center;">' +
+                '<h3 style="margin:0 0 12px;font-size:0.8rem;font-weight:900;color:#1f2937;">Escanear código de barras</h3>' +
+                '<p style="font-size:0.6rem;color:#6b7280;margin-bottom:14px;">Apunte la cámara al código de barras o ingrese el código manualmente:</p>' +
+                '<input id="scanCodigoInput" type="text" maxlength="15" placeholder="Ingrese o escanee el código..." style="width:100%;padding:10px;border-radius:8px;border:2px solid #f07a00;font-size:0.75rem;text-align:center;font-family:monospace;box-sizing:border-box;outline:none;" autofocus>' +
+                '<div style="display:flex;gap:8px;justify-content:center;margin-top:14px;">' +
+                '<button id="scanCancelar" class="productos-btn" style="background:#e5e7eb;color:#374151;border:1px solid #d1d5db;border-radius:7px;padding:7px 16px;font-size:0.63rem;">Cancelar</button>' +
+                '<button id="scanAceptar" class="productos-btn" style="background:#f07a00;color:#fff;border-color:#d76700;border-radius:7px;padding:7px 16px;font-size:0.63rem;">Aceptar</button>' +
+                '</div></div>';
+            document.body.appendChild(popupScan);
+            const inp = popupScan.querySelector("#scanCodigoInput");
+            setTimeout(() => { if (inp) inp.focus(); }, 50);
+            popupScan.querySelector("#scanCancelar").onclick = () => popupScan.remove();
+            popupScan.querySelector("#scanAceptar").onclick = () => {
+                const val = (inp?.value || "").trim();
+                if (val && prodFormCodigo) prodFormCodigo.value = val;
+                popupScan.remove();
+            };
+            inp.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); popupScan.querySelector("#scanAceptar").click(); } });
+            popupScan.addEventListener("click", (e) => { if (e.target === popupScan) popupScan.remove(); });
+        });
+    }
+
+    // ========== UNIDADES DE MEDIDA ==========
+    let unidadesMedidaLista = [
+        { nombre: "Unidad", esReferencia: true, ratio: 1 },
+        { nombre: "Docena", esReferencia: false, ratio: 12 },
+        { nombre: "Caja", esReferencia: false, ratio: 50 }
+    ];
+
+    function actualizarSelectsUM() {
+        const selC = document.getElementById("prodFormUMCompra");
+        const selV = document.getElementById("prodFormUMVenta");
+        [selC, selV].forEach(sel => {
+            if (!sel) return;
+            const prev = sel.value;
+            sel.innerHTML = unidadesMedidaLista.map(u =>
+                '<option value="' + prodEscape(u.nombre) + '">' + prodEscape(u.nombre) + ' (' + Number(u.ratio).toFixed(3) + ')' + (u.esReferencia ? ' ★' : '') + '</option>'
+            ).join("");
+            if (prev && sel.querySelector('option[value="' + prev + '"]')) sel.value = prev;
+        });
+    }
+
+    function renderUMTabla() {
+        const tbody = document.getElementById("umTablaBody");
+        if (!tbody) return;
+        tbody.innerHTML = unidadesMedidaLista.map((u, i) => {
+            const ratioVal = Number(u.ratio).toFixed(3);
+            const label = u.esReferencia ? ' <span style="color:#f07a00;font-weight:800;">★ Ref</span>' : '';
+            return '<tr style="border-bottom:1px solid #f0f0f0;background:' + (i % 2 === 0 ? '#fff' : '#fafbfc') + ';">' +
+                '<td style="padding:5px 8px;font-size:0.6rem;color:#1f2937;font-weight:600;">' + prodEscape(u.nombre) + label + '</td>' +
+                '<td style="padding:5px 6px;text-align:right;"><input type="number" class="um-ratio" data-um-idx="' + i + '" value="' + ratioVal + '" min="0.001" step="0.001" style="width:76px;padding:4px 6px;border-radius:6px;border:1px solid #d7dce4;font-size:0.58rem;text-align:right;outline:none;"' + (u.esReferencia ? ' readonly' : '') + '></td>' +
+                '<td style="padding:5px 6px;text-align:center;">' + (unidadesMedidaLista.length > 1 ? '<button type="button" class="' + (u.esReferencia ? 'um-set-ref' : 'um-eliminar') + '" data-um-idx="' + i + '" style="background:none;border:none;color:' + (u.esReferencia ? '#f07a00' : '#dc2626') + ';cursor:pointer;font-size:0.6rem;" title="' + (u.esReferencia ? 'Referencia actual' : 'Eliminar') + '">' + (u.esReferencia ? '★' : '✕') + '</button>' : '') + '</td>' +
+                '</tr>';
+        }).join("");
+
+        // Ratio change
+        tbody.querySelectorAll(".um-ratio").forEach(inp => {
+            inp.addEventListener("change", () => {
+                const idx = Number(inp.dataset.umIdx);
+                if (unidadesMedidaLista[idx] && !unidadesMedidaLista[idx].esReferencia) {
+                    unidadesMedidaLista[idx].ratio = Math.max(0.001, Number(inp.value || 1));
+                }
+                renderUMTabla();
+                actualizarSelectsUM();
+            });
+        });
+
+        // Delete non-ref
+        tbody.querySelectorAll(".um-eliminar").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const idx = Number(btn.dataset.umIdx);
+                if (unidadesMedidaLista[idx]?.esReferencia) return;
+                unidadesMedidaLista.splice(idx, 1);
+                renderUMTabla();
+                actualizarSelectsUM();
+            });
+        });
+    }
+
+    // Open UoM popup
+    const prodFormUMConfig = document.getElementById("prodFormUMConfig");
+    const popupUMConfig = document.getElementById("popupUMConfig");
+    if (prodFormUMConfig) {
+        prodFormUMConfig.addEventListener("click", () => {
+            if (popupUMConfig) { popupUMConfig.setAttribute("aria-hidden", "false"); popupUMConfig.style.display = "flex"; }
+            renderUMTabla();
+        });
+    }
+
+    // Close UoM popup
+    const umCerrar = document.getElementById("umCerrar");
+    if (umCerrar) umCerrar.addEventListener("click", () => {
+        if (popupUMConfig) { popupUMConfig.setAttribute("aria-hidden", "true"); popupUMConfig.style.display = "none"; }
+    });
+
+    // Add unit
+    const umAgregar = document.getElementById("umAgregar");
+    if (umAgregar) {
+        umAgregar.addEventListener("click", () => {
+            const nameInp = document.getElementById("umNuevoNombre");
+            const nombre = (nameInp?.value || "").trim();
+            if (!nombre) { alert("Escribe el nombre de la unidad."); return; }
+            if (unidadesMedidaLista.some(u => u.nombre.toLowerCase() === nombre.toLowerCase())) { alert("Esa unidad ya existe."); return; }
+            unidadesMedidaLista.push({ nombre, esReferencia: false, ratio: 1 });
+            if (nameInp) nameInp.value = "";
+            renderUMTabla();
+            actualizarSelectsUM();
+        });
+
+        const umNombreInp = document.getElementById("umNuevoNombre");
+        if (umNombreInp) umNombreInp.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); umAgregar.click(); } });
+    }
+
+    // Init UoM selects
+    actualizarSelectsUM();
+
+    // ========== PROCESOS / INSUMOS - selector dinámico ==========
+    function renderProcesoInsumosSelector() {
+        const container = document.getElementById("prodFormProcesoInsumos");
+        if (!container) return;
+        const insumos = productosData.filter(p => p.naturaleza === 'insumo');
+        if (insumos.length === 0) {
+            container.innerHTML = '<div style="text-align:center;padding:12px;color:#9ca3af;font-size:0.6rem;">No hay insumos creados. Crea uno primero seleccionando Tipo comercial → Insumo.</div>';
+            return;
+        }
+        // Read current selection
+        const currentSel = (container._selectedInsumos || []);
+        container.innerHTML = insumos.map(ins => {
+            const checked = currentSel.includes(ins.codigo) ? ' checked' : '';
+            return '<label style="display:flex;align-items:center;gap:6px;padding:5px 4px;border-bottom:1px solid #f0f0f0;cursor:pointer;font-size:0.6rem;">' +
+                '<input type="checkbox" class="proceso-insumo-check" value="' + prodEscape(ins.codigo) + '"' + checked + ' style="accent-color:#f07a00;">' +
+                '<span style="flex:1;font-weight:600;color:#1f2937;">' + prodEscape(ins.producto) + '</span>' +
+                '<span style="color:#6b7280;font-size:0.52rem;">Desgaste: ' + Number(ins.desgastePorUso || 0).toFixed(3) + ' por uso</span>' +
+                '<span style="color:#f07a00;font-size:0.52rem;font-weight:700;">$' + Number(ins.precioVenta || 0).toFixed(2) + '</span>' +
+                '</label>';
+        }).join('');
+
+        container.querySelectorAll('.proceso-insumo-check').forEach(cb => {
+            cb.addEventListener('change', () => {
+                container._selectedInsumos = Array.from(container.querySelectorAll('.proceso-insumo-check:checked')).map(c => c.value);
+            });
+        });
+    }
+
+    // ========== CATEGORÍAS Y PROVEEDORES (selects) ==========
+    let categoriasLista = ["General", "Bolsas", "Tarjetas", "Lonas", "Otros"];
+
+    function actualizarSelectCategorias() {
+        const sel = document.getElementById("prodFormCategoria");
+        if (!sel) return;
+        const prev = sel.value;
+        sel.innerHTML = "<option value=\"\">Seleccionar...</option>" + categoriasLista.map(c => `<option value="${prodEscape(c)}">${prodEscape(c)}</option>`).join("");
+        if (prev) sel.value = prev;
+    }
+
+    function actualizarSelectProveedores() {
+        const sel = document.getElementById("prodFormProveedor");
+        if (!sel) return;
+        const prev = sel.value;
+        const provs = (typeof proveedoresData !== "undefined" && Array.isArray(proveedoresData)) ? proveedoresData : [];
+        sel.innerHTML = "<option value=\"\">Seleccionar...</option>" + provs.map(p => `<option value="${prodEscape(p.nombre || p.id)}">${prodEscape(p.nombre || p.id)}</option>`).join("");
+        if (prev) sel.value = prev;
+    }
+
+    actualizarSelectCategorias();
+    actualizarSelectProveedores();
+
+    const prodFormCategoriaAdd = document.getElementById("prodFormCategoriaAdd");
+    const popupCategoriaAdd = document.getElementById("popupProdCategoriaAdd");
+    if (prodFormCategoriaAdd) {
+        prodFormCategoriaAdd.addEventListener("click", () => {
+            if (popupCategoriaAdd) { popupCategoriaAdd.setAttribute("aria-hidden","false"); popupCategoriaAdd.style.display = "flex"; }
+        });
+    }
+    const categoriaCancelar = document.getElementById("categoriaCancelar");
+    if (categoriaCancelar) categoriaCancelar.addEventListener("click", () => {
+        if (popupCategoriaAdd) { popupCategoriaAdd.setAttribute("aria-hidden","true"); popupCategoriaAdd.style.display = "none"; }
+    });
+    const categoriaGuardarBtn = document.getElementById("categoriaGuardarBtn");
+    if (categoriaGuardarBtn) {
+        categoriaGuardarBtn.addEventListener("click", () => {
+            const input = document.getElementById("categoriaNuevaNombre");
+            const nombre = (input?.value || "").trim();
+            if (!nombre) { alert("Escribe el nombre de la categoría."); return; }
+            if (!categoriasLista.includes(nombre)) categoriasLista.push(nombre);
+            actualizarSelectCategorias();
+            const sel = document.getElementById("prodFormCategoria");
+            if (sel) sel.value = nombre;
+            if (input) input.value = "";
+            if (popupCategoriaAdd) { popupCategoriaAdd.setAttribute("aria-hidden","true"); popupCategoriaAdd.style.display = "none"; }
+        });
+    }
+
+    const prodFormProveedorAdd = document.getElementById("prodFormProveedorAdd");
+    if (prodFormProveedorAdd) {
+        prodFormProveedorAdd.addEventListener("click", () => {
+            if (typeof window.openProveedorFormPopupGlobal === "function") { window.openProveedorFormPopupGlobal("add"); }
+            else if (typeof window.openProveedoresPopupGlobal === "function") { window.openProveedoresPopupGlobal(); }
+            else { alert("Módulo de proveedores no disponible."); }
+        });
+    }
     if (prodAgregar) {
         prodAgregar.addEventListener('click', () => {
             resetProdForm();
+            if (prodFormTipo) prodFormTipo.value = productosTab;
             if (prodFormCodigo) prodFormCodigo.value = generarCodigoProducto();
             syncProdFormModeByTipo();
             openProdModal(popupProdForm);
+            if (typeof actualizarSelectCategorias === "function") actualizarSelectCategorias();
+            if (typeof actualizarSelectProveedores === "function") actualizarSelectProveedores();
         });
     }
 
@@ -17428,6 +18140,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 openProdFormForEdit(selected[0]);
                 syncProdFormModeByTipo();
                 openProdModal(popupProdForm);
+            if (typeof actualizarSelectCategorias === "function") actualizarSelectCategorias();
+            if (typeof actualizarSelectProveedores === "function") actualizarSelectProveedores();
                 return;
             }
 
