@@ -16279,10 +16279,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // receta cleared via recetaDraft = []
         const costoFieldClear = document.getElementById('prodFormPrecioCompra');
         if (costoFieldClear) { costoFieldClear.readOnly = false; costoFieldClear.style.background = ''; costoFieldClear.title = ''; }
-        procesoInsumosDraft = Array.isArray(row.insumosEnlazados) ? row.insumosEnlazados.map(i => ({insumoId: i.insumoId || '', insumoNombre: i.insumoNombre || i.insumoId || '', insumoCode: i.insumoCode || i.insumoId || '', categoria: i.categoria || ''})) : [];
         updateRecetaResumen();
         updateProcesosResumen();
-        updateProcesoInsumosResumen();
         updateProcesoInsumosResumen();
         if (prodGfCobroTipo) prodGfCobroTipo.value = 'm2';
         if (prodGfPrecioGeneralM2) prodGfPrecioGeneralM2.value = '0';
@@ -16324,8 +16322,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (prodFormDescripcion) prodFormDescripcion.value = row.descripcion || '';
         recetaDraft = Array.isArray(row.recetaInsumos) ? row.recetaInsumos.map(r => ({insumoId: r.insumoId || '', insumoNombre: r.insumoNombre || r.insumoId || '', insumoCode: r.insumoCode || r.insumoId || '', cantidad: Number(r.cantidad || 1), unidad: r.unidad || 'Pza'})) : [];
         procesosDraft = Array.isArray(row.procesosDetalle) ? row.procesosDetalle.map(p => ({procesoId: p.procesoId || '', procesoNombre: p.procesoNombre || p.procesoId || '', costo: Number(p.costo || 0), notas: p.notas || ''})) : (Array.isArray(row.procesos) ? row.procesos.map(id => ({procesoId: id, procesoNombre: id, costo: 0, notas: ''})) : []);
+        procesoInsumosDraft = Array.isArray(row.insumosEnlazados) ? row.insumosEnlazados.map(i => ({insumoId: i.insumoId || '', insumoNombre: i.insumoNombre || i.insumoId || '', insumoCode: i.insumoCode || i.insumoId || '', categoria: i.categoria || ''})) : [];
         updateRecetaResumen();
         updateProcesosResumen();
+        updateProcesoInsumosResumen();
         // recetaDraft loaded above
 
         // Bloquear campo costo si ya tiene promedio bloqueado
@@ -21434,7 +21434,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-storage-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore-compat.js"></script>
 <script src="./config.js"></script>
-<script src="./access-api-client.js"></script>
 
 <!-- ═══════════════════════════════════════════════════════════════
      MÓDULO DE PRODUCCIÓN — Panel HTML
