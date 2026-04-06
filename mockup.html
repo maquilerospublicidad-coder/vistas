@@ -2072,7 +2072,7 @@
         .mispedidos-foot-item:nth-child(2) span { color: #be123c; }
 
         .mispedidos-foot-item:nth-child(3) {
-            background: #ecfdf5;
+            background: #fff3e6;
             border: 1px solid #bbf7d0;
             border-radius: 8px;
             padding: 6px;
@@ -10601,13 +10601,13 @@ const imgBolsaDeliveryBase = new Image();
                     <div class="orden-field prod-stock-only" data-nat="producto,fabricado"><label for="prodFormMinima">Cantidad minima</label><input id="prodFormMinima" type="number" min="0" step="1"></div>
                     <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormExistencias">Existencias</label><input id="prodFormExistencias" type="number" min="0" step="1"></div>
                     <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormPrecioCompra">Precio de compra</label><input id="prodFormPrecioCompra" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto,fabricado"><label style="margin-bottom:2px;">⚙️ Procesos asignados</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormProcesosBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#6366f1;color:#fff;border:none;border-radius:6px;">⚙️ Seleccionar procesos</button><span id="prodFormProcesosResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin procesos asignados</span></div><div id="prodFormProcesosPreview" style="margin-top:4px;font-size:0.6rem;"></div></div>
+                    <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto,fabricado"><label style="margin-bottom:2px;">⚙️ Procesos asignados</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormProcesosBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border:none;border-radius:6px;">⚙️ Seleccionar procesos</button><span id="prodFormProcesosResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin procesos asignados</span></div><div id="prodFormProcesosPreview" style="margin-top:4px;font-size:0.6rem;"></div></div>
                     <div class="orden-field productos-field-span3" data-nat="fabricado"><label style="margin-bottom:2px;">🧪 Receta de fabricación</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormRecetaBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border:none;border-radius:6px;">🧪 Configurar receta</button><span id="prodFormRecetaResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin insumos en la receta</span></div><div id="prodFormRecetaPreview" style="margin-top:4px;max-height:45px;overflow-y:auto;font-size:0.6rem;"></div></div>
                     <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormProveedor">Proveedor</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormProveedor" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormProveedorAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar proveedor" onclick="abrirPopupProveedorDesdeProductos()">+</button></div></div>
                     <div class="orden-field prod-stock-only" id="prodFormVentaWrap" data-nat="producto,fabricado,insumo,servicio"><label for="prodFormVenta">Precio unitario venta general</label><input id="prodFormVenta" type="number" min="0" step="0.01"></div>
                     <div class="orden-field prod-stock-only" data-nat="producto,fabricado"><label for="prodFormRevendedor">Precio unitario revendedor</label><input id="prodFormRevendedor" type="number" min="0" step="0.01"></div>
                     <div class="orden-field" data-nat="insumo"><label for="prodFormDesgastePorUso">Desgaste por unidad usada</label><input id="prodFormDesgastePorUso" type="number" min="0" step="0.001" value="1" placeholder="Cantidad que se consume por uso"></div>
-                    <div class="orden-field productos-field-span3" data-nat="proceso"><label style="margin-bottom:2px;">🧰 Insumos del proceso</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormProcesoInsumosBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#059669;color:#fff;border:none;border-radius:6px;">🧰 Enlazar insumos</button><span id="prodFormProcesoInsumosResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin insumos enlazados</span></div><div id="prodFormProcesoInsumosPreview" style="margin-top:4px;font-size:0.6rem;"></div></div>
+                    <div class="orden-field productos-field-span3" data-nat="proceso"><label style="margin-bottom:2px;">🧰 Insumos del proceso</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormProcesoInsumosBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border:none;border-radius:6px;">🧰 Enlazar insumos</button><span id="prodFormProcesoInsumosResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin insumos enlazados</span></div><div id="prodFormProcesoInsumosPreview" style="margin-top:4px;font-size:0.6rem;"></div></div>
                     <div class="orden-field prod-stock-only productos-field-span3" data-nat="producto,fabricado,insumo,proceso,servicio"><label for="prodFormDescripcion">Descripción</label><textarea id="prodFormDescripcion" rows="1" placeholder="Descripción del producto" style="resize:none;"></textarea></div>
 
                     <div class="orden-field prod-gf-only" data-nat="producto" style="display:none;">
@@ -10704,7 +10704,7 @@ const imgBolsaDeliveryBase = new Image();
         </div>
 
         <div class="productos-modal-actions" style="margin-top:10px;">
-            <button id="umNuevoGrupo" class="productos-btn" type="button" style="background:#eef2ff;color:#4f46e5;border:1px solid #c7d2fe;">＋ Nuevo grupo</button>
+            <button id="umNuevoGrupo" class="productos-btn" type="button" style="background:#fff3e6;color:#d76700;border:1px solid #f07a00;">＋ Nuevo grupo</button>
             <button id="umGuardar" class="productos-btn primary" type="button">Guardar</button>
             <button id="umCerrar" class="productos-btn gray" type="button">Cerrar</button>
         </div>
@@ -10846,13 +10846,13 @@ const imgBolsaDeliveryBase = new Image();
 <div id="popupProcesosAsignados" class="productos-modal-overlay" aria-hidden="true" style="z-index:2200;">
     <div class="productos-modal-card wide" role="dialog" aria-modal="true" style="max-width:820px;padding:0;overflow:hidden;border:1px solid #e5e7eb;max-height:88dvh;display:flex;flex-direction:column;">
         <!-- Header -->
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px 10px;border-bottom:2px solid #6366f1;background:#fff;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px 10px;border-bottom:2px solid #f07a00;background:#fff;">
             <div style="display:flex;align-items:center;gap:8px;">
                 <span style="font-size:1rem;">⚙️</span>
                 <h3 style="margin:0;font-size:0.82rem;font-weight:900;color:#1f2937;text-transform:uppercase;letter-spacing:0.2px;">Procesos asignados</h3>
             </div>
             <div style="display:flex;gap:6px;align-items:center;">
-                <span id="procesosBadgeCount" style="background:#eef2ff;color:#4338ca;padding:2px 10px;border-radius:20px;font-size:0.58rem;font-weight:700;border:1px solid #a5b4fc;">0 procesos</span>
+                <span id="procesosBadgeCount" style="background:#fff3e6;color:#d76700;padding:2px 10px;border-radius:20px;font-size:0.58rem;font-weight:700;border:1px solid #f07a00;">0 procesos</span>
                 <button type="button" id="procesosPopupClose" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:#6b7280;padding:4px;">✕</button>
             </div>
         </div>
@@ -10879,17 +10879,17 @@ const imgBolsaDeliveryBase = new Image();
             </div>
             <!-- RIGHT: Procesos confirmados -->
             <div style="display:flex;flex-direction:column;overflow:hidden;">
-                <div style="padding:8px 12px;background:#eef2ff;border-bottom:1px solid #c7d2fe;">
-                    <div style="font-size:0.68rem;font-weight:800;color:#3730a3;">✅ Procesos seleccionados</div>
+                <div style="padding:8px 12px;background:#fff3e6;border-bottom:1px solid #f07a00;">
+                    <div style="font-size:0.68rem;font-weight:800;color:#92400e;">✅ Procesos seleccionados</div>
                 </div>
                 <div style="flex:1;overflow-y:auto;min-height:0;">
                     <table style="width:100%;border-collapse:collapse;">
                         <thead style="position:sticky;top:0;background:#e0e7ff;z-index:1;">
                             <tr>
-                                <th style="padding:6px 8px;font-size:0.58rem;text-align:left;color:#3730a3;border-bottom:1px solid #c7d2fe;">Proceso</th>
-                                <th style="padding:6px 8px;font-size:0.58rem;text-align:center;color:#3730a3;border-bottom:1px solid #c7d2fe;">Costo</th>
-                                <th style="padding:6px 8px;font-size:0.58rem;text-align:center;color:#3730a3;border-bottom:1px solid #c7d2fe;">Notas</th>
-                                <th style="padding:6px 8px;font-size:0.58rem;text-align:center;color:#3730a3;border-bottom:1px solid #c7d2fe;">Quitar</th>
+                                <th style="padding:6px 8px;font-size:0.58rem;text-align:left;color:#92400e;border-bottom:1px solid #f07a00;">Proceso</th>
+                                <th style="padding:6px 8px;font-size:0.58rem;text-align:center;color:#92400e;border-bottom:1px solid #f07a00;">Costo</th>
+                                <th style="padding:6px 8px;font-size:0.58rem;text-align:center;color:#92400e;border-bottom:1px solid #f07a00;">Notas</th>
+                                <th style="padding:6px 8px;font-size:0.58rem;text-align:center;color:#92400e;border-bottom:1px solid #f07a00;">Quitar</th>
                             </tr>
                         </thead>
                         <tbody id="procesosConfirmadosTableBody"></tbody>
@@ -10904,7 +10904,7 @@ const imgBolsaDeliveryBase = new Image();
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-top:1px solid #e5e7eb;background:#f9fafb;">
             <span id="procesosTotalInfo" style="font-size:0.6rem;color:#6b7280;">0 procesos seleccionados</span>
             <div style="display:flex;gap:6px;">
-                <button type="button" id="procesosAceptar" class="productos-btn primary" style="padding:6px 18px;font-size:0.68rem;background:#6366f1;">Aceptar</button>
+                <button type="button" id="procesosAceptar" class="productos-btn primary" style="padding:6px 18px;font-size:0.68rem;background:#f07a00;">Aceptar</button>
                 <button type="button" id="procesosCancelar" class="productos-btn gray" style="padding:6px 18px;font-size:0.68rem;">Cancelar</button>
             </div>
         </div>
@@ -10915,13 +10915,13 @@ const imgBolsaDeliveryBase = new Image();
 <!-- ============ POPUP: INSUMOS DEL PROCESO ============ -->
 <div id="popupProcesoInsumos" class="productos-modal-overlay" aria-hidden="true" style="z-index:2200;">
     <div class="productos-modal-card wide" role="dialog" aria-modal="true" style="max-width:980px;padding:0;overflow:hidden;border:1px solid #e5e7eb;max-height:92dvh;display:flex;flex-direction:column;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px 10px;border-bottom:2px solid #059669;background:#fff;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px 10px;border-bottom:2px solid #f07a00;background:#fff;">
             <div style="display:flex;align-items:center;gap:8px;">
                 <span style="font-size:1rem;">🧰</span>
                 <h3 style="margin:0;font-size:0.82rem;font-weight:900;color:#1f2937;text-transform:uppercase;letter-spacing:0.2px;">Insumos del proceso</h3>
             </div>
             <div style="display:flex;gap:6px;align-items:center;">
-                <span id="procInsumoBadge" style="background:#ecfdf5;color:#059669;padding:2px 10px;border-radius:20px;font-size:0.58rem;font-weight:700;border:1px solid #6ee7b7;">0 insumos</span>
+                <span id="procInsumoBadge" style="background:#fff3e6;color:#f07a00;padding:2px 10px;border-radius:20px;font-size:0.58rem;font-weight:700;border:1px solid #f07a00;">0 insumos</span>
                 <button type="button" id="procInsumoPopupClose" style="background:none;border:none;font-size:1.1rem;cursor:pointer;color:#6b7280;padding:4px;">✕</button>
             </div>
         </div>
@@ -10948,17 +10948,17 @@ const imgBolsaDeliveryBase = new Image();
             </div>
             <!-- RIGHT: Insumos enlazados -->
             <div style="display:flex;flex-direction:column;overflow:hidden;">
-                <div style="padding:8px 12px;background:#ecfdf5;border-bottom:1px solid #6ee7b7;">
-                    <div style="font-size:0.68rem;font-weight:800;color:#065f46;">✅ Insumos enlazados al proceso</div>
-                    <div style="font-size:0.52rem;color:#047857;margin-top:2px;">Al asignar este proceso a un producto, el cotizador pedirá seleccionar cuál insumo usar</div>
+                <div style="padding:8px 12px;background:#fff3e6;border-bottom:1px solid #f07a00;">
+                    <div style="font-size:0.68rem;font-weight:800;color:#92400e;">✅ Insumos enlazados al proceso</div>
+                    <div style="font-size:0.52rem;color:#92400e;margin-top:2px;">Al asignar este proceso a un producto, el cotizador pedirá seleccionar cuál insumo usar</div>
                 </div>
                 <div style="flex:1;overflow-y:auto;min-height:0;">
                     <table style="width:100%;border-collapse:collapse;">
                         <thead style="position:sticky;top:0;background:#d1fae5;z-index:1;">
                             <tr>
-                                <th style="padding:6px 8px;font-size:0.58rem;text-align:left;color:#065f46;border-bottom:1px solid #6ee7b7;">Insumo</th>
-                                <th style="padding:6px 8px;font-size:0.58rem;text-align:center;color:#065f46;border-bottom:1px solid #6ee7b7;">Categoría</th>
-                                <th style="padding:6px 8px;font-size:0.58rem;text-align:center;color:#065f46;border-bottom:1px solid #6ee7b7;">Quitar</th>
+                                <th style="padding:6px 8px;font-size:0.58rem;text-align:left;color:#92400e;border-bottom:1px solid #f07a00;">Insumo</th>
+                                <th style="padding:6px 8px;font-size:0.58rem;text-align:center;color:#92400e;border-bottom:1px solid #f07a00;">Categoría</th>
+                                <th style="padding:6px 8px;font-size:0.58rem;text-align:center;color:#92400e;border-bottom:1px solid #f07a00;">Quitar</th>
                             </tr>
                         </thead>
                         <tbody id="procInsumoLinkedBody"></tbody>
@@ -10972,7 +10972,7 @@ const imgBolsaDeliveryBase = new Image();
         <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 18px;border-top:1px solid #e5e7eb;background:#f9fafb;">
             <span id="procInsumoTotalInfo" style="font-size:0.6rem;color:#6b7280;">0 insumos enlazados</span>
             <div style="display:flex;gap:6px;">
-                <button type="button" id="procInsumoAceptar" class="productos-btn primary" style="padding:6px 18px;font-size:0.68rem;background:#059669;">Aceptar</button>
+                <button type="button" id="procInsumoAceptar" class="productos-btn primary" style="padding:6px 18px;font-size:0.68rem;background:#f07a00;">Aceptar</button>
                 <button type="button" id="procInsumoCancelar" class="productos-btn gray" style="padding:6px 18px;font-size:0.68rem;">Cancelar</button>
             </div>
         </div>
@@ -10982,7 +10982,7 @@ const imgBolsaDeliveryBase = new Image();
 <!-- ============ POPUP: SELECCION DE INSUMO DEL PROCESO EN COTIZADOR ============ -->
 <div id="popupSeleccionInsumoProc" class="productos-modal-overlay" aria-hidden="true" style="z-index:2220;">
     <div class="productos-modal-card" role="dialog" aria-modal="true" style="max-width:520px;padding:0;overflow:hidden;border:1px solid #e5e7eb;max-height:70dvh;display:flex;flex-direction:column;">
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px 10px;border-bottom:2px solid #059669;background:#fff;">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px 10px;border-bottom:2px solid #f07a00;background:#fff;">
             <div style="display:flex;align-items:center;gap:8px;">
                 <span style="font-size:1rem;">🧰</span>
                 <h3 id="selInsProcTitulo" style="margin:0;font-size:0.78rem;font-weight:900;color:#1f2937;">Seleccionar insumo para el proceso</h3>
@@ -10994,11 +10994,11 @@ const imgBolsaDeliveryBase = new Image();
         </div>
         <div style="flex:1;overflow-y:auto;min-height:0;padding:0;">
             <table style="width:100%;border-collapse:collapse;">
-                <thead style="position:sticky;top:0;background:#ecfdf5;z-index:1;">
+                <thead style="position:sticky;top:0;background:#fff3e6;z-index:1;">
                     <tr>
-                        <th style="padding:8px 12px;font-size:0.6rem;text-align:left;color:#065f46;border-bottom:1px solid #6ee7b7;">Insumo</th>
-                        <th style="padding:8px 12px;font-size:0.6rem;text-align:center;color:#065f46;border-bottom:1px solid #6ee7b7;">Existencias</th>
-                        <th style="padding:8px 12px;font-size:0.6rem;text-align:center;color:#065f46;border-bottom:1px solid #6ee7b7;">Seleccionar</th>
+                        <th style="padding:8px 12px;font-size:0.6rem;text-align:left;color:#92400e;border-bottom:1px solid #f07a00;">Insumo</th>
+                        <th style="padding:8px 12px;font-size:0.6rem;text-align:center;color:#92400e;border-bottom:1px solid #f07a00;">Existencias</th>
+                        <th style="padding:8px 12px;font-size:0.6rem;text-align:center;color:#92400e;border-bottom:1px solid #f07a00;">Seleccionar</th>
                     </tr>
                 </thead>
                 <tbody id="selInsProcBody"></tbody>
@@ -16083,7 +16083,14 @@ document.addEventListener('DOMContentLoaded', () => {
                     })).filter((r) => r.insumoId && r.cantidad > 0)
                     : [],
                 categoria: String(row.categoria || 'General').trim() || 'General',
-                tipo: row.tipo === 'gran-formato' ? 'gran-formato' : 'stock'
+                tipo: row.tipo === 'gran-formato' ? 'gran-formato' : 'stock',
+                ubicacion: String(row.ubicacion || '').trim(),
+                ubiPasillo: String(row.ubiPasillo || '').trim(),
+                ubiRack: String(row.ubiRack || '').trim(),
+                ubiNivel: String(row.ubiNivel || '').trim(),
+                ubiContenedor: String(row.ubiContenedor || '').trim(),
+                notasInternas: String(row.notasInternas || '').trim(),
+                activo: row.activo !== false
             }));
         } catch (_) {
             productosData = seedProductos();
@@ -18884,11 +18891,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (el) el.addEventListener('input', () => updateConfigCapacidadTotal());
     });
     if (confirmUbiCancelar) confirmUbiCancelar.addEventListener('click', () => closeConfirmUbicacion(false));
-    ['confirmUbiPasillo', 'confirmUbiRack', 'confirmUbiNivel', 'confirmUbiContenedor'].forEach(id => {
+    const _confirmUbiFields = ['confirmUbiPasillo', 'confirmUbiRack', 'confirmUbiNivel', 'confirmUbiContenedor'];
+    _confirmUbiFields.forEach((id, idx) => {
         const el = document.getElementById(id);
         if (el) {
-            el.addEventListener('input', () => updateConfirmUbiPreview());
+            el.addEventListener('input', () => {
+                updateConfirmUbiPreview();
+                // Auto-advance to next field when a digit is entered
+                const val = el.value.replace(/[^0-9]/g, '');
+                if (val.length >= 1 && idx < _confirmUbiFields.length - 1) {
+                    const next = document.getElementById(_confirmUbiFields[idx + 1]);
+                    if (next) { setTimeout(() => next.focus(), 50); }
+                }
+            });
             el.addEventListener('focus', () => { setTimeout(() => el.select(), 0); });
+            el.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    closeConfirmUbicacion(true);
+                }
+            });
         }
     });
     const popupConfirmUbi = document.getElementById('popupConfirmarUbicacion');
@@ -19335,7 +19357,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return '<tr style="cursor:pointer;' + (alreadyIn ? 'background:#f0fdf4;' : '') + '" data-insumo-code="' + prodEscape(code) + '">' +
                 '<td style="padding:5px 8px;font-size:0.6rem;color:#6b7280;border-bottom:1px solid #f1f5f9;">' + prodEscape(code) + '</td>' +
                 '<td style="padding:5px 8px;font-size:0.62rem;font-weight:700;color:#1f2937;border-bottom:1px solid #f1f5f9;">' + prodEscape(nombre) + '</td>' +
-                '<td style="padding:5px 8px;font-size:0.6rem;text-align:center;color:' + (exist < 0 ? '#dc2626' : '#059669') + ';font-weight:700;border-bottom:1px solid #f1f5f9;">' + exist + '</td>' +
+                '<td style="padding:5px 8px;font-size:0.6rem;text-align:center;color:' + (exist < 0 ? '#dc2626' : '#f07a00') + ';font-weight:700;border-bottom:1px solid #f1f5f9;">' + exist + '</td>' +
                 '<td style="padding:5px 8px;font-size:0.58rem;text-align:center;color:#6b7280;border-bottom:1px solid #f1f5f9;">' + prodEscape(um) + '</td>' +
                 '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #f1f5f9;">' +
                     (alreadyIn
@@ -19432,7 +19454,7 @@ document.addEventListener('DOMContentLoaded', () => {
             resumen.textContent = recetaDraft.length
                 ? recetaDraft.length + ' insumo' + (recetaDraft.length !== 1 ? 's' : '') + ' en la receta'
                 : 'Sin insumos en la receta';
-            resumen.style.color = recetaDraft.length ? '#059669' : '#9ca3af';
+            resumen.style.color = recetaDraft.length ? '#f07a00' : '#9ca3af';
             resumen.style.fontWeight = recetaDraft.length ? '700' : '400';
         }
         if (preview) {
@@ -19487,13 +19509,13 @@ document.addEventListener('DOMContentLoaded', () => {
             const nombre = proc.producto || '';
             const desc = proc.descripcion || '-';
             const alreadyIn = procesosDraft.some(r => r.procesoId === id);
-            return '<tr style="cursor:pointer;' + (alreadyIn ? 'background:#eef2ff;' : '') + '">' +
+            return '<tr style="cursor:pointer;' + (alreadyIn ? 'background:#fff3e6;' : '') + '">' +
                 '<td style="padding:5px 8px;font-size:0.62rem;font-weight:700;color:#1f2937;border-bottom:1px solid #f1f5f9;">' + prodEscape(nombre) + '</td>' +
                 '<td style="padding:5px 8px;font-size:0.58rem;color:#6b7280;border-bottom:1px solid #f1f5f9;">' + prodEscape(desc.substring(0, 60)) + '</td>' +
                 '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #f1f5f9;">' +
                     (alreadyIn
-                        ? '<span style="color:#4338ca;font-size:0.58rem;font-weight:700;">\u2713 Asignado</span>'
-                        : '<button type="button" onclick="addProcesoToDraft(\'' + prodEscape(id).replace(/'/g, "\\'") + '\')" class="productos-btn" style="padding:3px 10px;font-size:0.58rem;background:#6366f1;color:#fff;border:none;border-radius:4px;">+ Asignar</button>'
+                        ? '<span style="color:#d76700;font-size:0.58rem;font-weight:700;">\u2713 Asignado</span>'
+                        : '<button type="button" onclick="addProcesoToDraft(\'' + prodEscape(id).replace(/'/g, "\\'") + '\')" class="productos-btn" style="padding:3px 10px;font-size:0.58rem;background:#f07a00;color:#fff;border:none;border-radius:4px;">+ Asignar</button>'
                     ) +
                 '</td></tr>';
         }).join('');
@@ -19542,10 +19564,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (emptyDiv) emptyDiv.style.display = 'none';
         tbody.innerHTML = procesosDraft.map((r, idx) =>
             '<tr>' +
-            '<td style="padding:5px 8px;font-size:0.62rem;font-weight:700;color:#1f2937;border-bottom:1px solid #c7d2fe;">' + prodEscape(r.procesoNombre) + '</td>' +
-            '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #c7d2fe;"><input type="number" min="0" step="0.01" value="' + r.costo + '" onchange="updateProcesoCosto(' + idx + ',this.value)" style="width:70px;font-size:0.62rem;padding:4px 6px;border:1px solid #d1d5db;border-radius:5px;text-align:center;"></td>' +
-            '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #c7d2fe;"><input type="text" value="' + prodEscape(r.notas) + '" onchange="updateProcesoNotas(' + idx + ',this.value)" placeholder="Notas..." style="width:100%;font-size:0.58rem;padding:4px 6px;border:1px solid #d1d5db;border-radius:5px;"></td>' +
-            '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #c7d2fe;"><button type="button" onclick="removeProcesoFromDraft(' + idx + ')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.75rem;padding:2px 6px;" title="Quitar">\u2715</button></td>' +
+            '<td style="padding:5px 8px;font-size:0.62rem;font-weight:700;color:#1f2937;border-bottom:1px solid #f07a00;">' + prodEscape(r.procesoNombre) + '</td>' +
+            '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #f07a00;"><input type="number" min="0" step="0.01" value="' + r.costo + '" onchange="updateProcesoCosto(' + idx + ',this.value)" style="width:70px;font-size:0.62rem;padding:4px 6px;border:1px solid #d1d5db;border-radius:5px;text-align:center;"></td>' +
+            '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #f07a00;"><input type="text" value="' + prodEscape(r.notas) + '" onchange="updateProcesoNotas(' + idx + ',this.value)" placeholder="Notas..." style="width:100%;font-size:0.58rem;padding:4px 6px;border:1px solid #d1d5db;border-radius:5px;"></td>' +
+            '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #f07a00;"><button type="button" onclick="removeProcesoFromDraft(' + idx + ')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.75rem;padding:2px 6px;" title="Quitar">\u2715</button></td>' +
             '</tr>'
         ).join('');
         if (badge) badge.textContent = procesosDraft.length + ' proceso' + (procesosDraft.length !== 1 ? 's' : '');
@@ -19559,12 +19581,12 @@ document.addEventListener('DOMContentLoaded', () => {
             resumen.textContent = procesosDraft.length
                 ? procesosDraft.length + ' proceso' + (procesosDraft.length !== 1 ? 's' : '') + ' asignados'
                 : 'Sin procesos asignados';
-            resumen.style.color = procesosDraft.length ? '#4338ca' : '#9ca3af';
+            resumen.style.color = procesosDraft.length ? '#d76700' : '#9ca3af';
             resumen.style.fontWeight = procesosDraft.length ? '700' : '400';
         }
         if (preview) {
             preview.innerHTML = procesosDraft.map(r =>
-                '<span style="display:inline-block;padding:2px 8px;margin:1px 2px;background:#eef2ff;border:1px solid #c7d2fe;border-radius:12px;font-size:0.55rem;font-weight:600;color:#3730a3;">' +
+                '<span style="display:inline-block;padding:2px 8px;margin:1px 2px;background:#fff3e6;border:1px solid #f07a00;border-radius:12px;font-size:0.55rem;font-weight:600;color:#92400e;">' +
                 prodEscape(r.procesoNombre) + (r.costo ? ' $' + Number(r.costo).toFixed(2) : '') + '</span>'
             ).join('');
         }
@@ -19612,14 +19634,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const nombre = ins.producto || ins.id || '';
             const exist = Number(ins.existencias || 0);
             const already = procesoInsumosDraft.some(r => r.insumoId === code);
-            return '<tr style="cursor:pointer;' + (already ? 'background:#ecfdf5;' : '') + '">' +
+            return '<tr style="cursor:pointer;' + (already ? 'background:#fff3e6;' : '') + '">' +
                 '<td style="padding:5px 8px;font-size:0.6rem;color:#6b7280;border-bottom:1px solid #f1f5f9;">' + prodEscape(code) + '</td>' +
                 '<td style="padding:5px 8px;font-size:0.62rem;font-weight:700;color:#1f2937;border-bottom:1px solid #f1f5f9;">' + prodEscape(nombre) + '</td>' +
-                '<td style="padding:5px 8px;font-size:0.6rem;text-align:center;color:' + (exist < 0 ? '#dc2626' : '#059669') + ';font-weight:700;border-bottom:1px solid #f1f5f9;">' + exist + '</td>' +
+                '<td style="padding:5px 8px;font-size:0.6rem;text-align:center;color:' + (exist < 0 ? '#dc2626' : '#f07a00') + ';font-weight:700;border-bottom:1px solid #f1f5f9;">' + exist + '</td>' +
                 '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #f1f5f9;">' +
                     (already
-                        ? '<span style="color:#059669;font-size:0.58rem;font-weight:700;">\u2713 Enlazado</span>'
-                        : '<button type="button" onclick="addInsumoProceso(\'' + prodEscape(code).replace(/'/g, "\\'") + '\')" class="productos-btn" style="padding:3px 10px;font-size:0.58rem;background:#059669;color:#fff;border:none;border-radius:4px;">+ Enlazar</button>'
+                        ? '<span style="color:#f07a00;font-size:0.58rem;font-weight:700;">\u2713 Enlazado</span>'
+                        : '<button type="button" onclick="addInsumoProceso(\'' + prodEscape(code).replace(/'/g, "\\'") + '\')" class="productos-btn" style="padding:3px 10px;font-size:0.58rem;background:#f07a00;color:#fff;border:none;border-radius:4px;">+ Enlazar</button>'
                     ) +
                 '</td></tr>';
         }).join('');
@@ -19661,9 +19683,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (emptyDiv) emptyDiv.style.display = 'none';
         tbody.innerHTML = procesoInsumosDraft.map((r, idx) =>
             '<tr>' +
-            '<td style="padding:5px 8px;font-size:0.62rem;font-weight:700;color:#1f2937;border-bottom:1px solid #6ee7b7;">' + prodEscape(r.insumoNombre) + '<div style="font-size:0.5rem;color:#6b7280;">' + prodEscape(r.insumoCode || r.insumoId) + '</div></td>' +
-            '<td style="padding:5px 8px;font-size:0.58rem;text-align:center;color:#6b7280;border-bottom:1px solid #6ee7b7;">' + prodEscape(r.categoria || '-') + '</td>' +
-            '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #6ee7b7;"><button type="button" onclick="removeInsumoProceso(' + idx + ')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.75rem;padding:2px 6px;" title="Quitar">\u2715</button></td>' +
+            '<td style="padding:5px 8px;font-size:0.62rem;font-weight:700;color:#1f2937;border-bottom:1px solid #f07a00;">' + prodEscape(r.insumoNombre) + '<div style="font-size:0.5rem;color:#6b7280;">' + prodEscape(r.insumoCode || r.insumoId) + '</div></td>' +
+            '<td style="padding:5px 8px;font-size:0.58rem;text-align:center;color:#6b7280;border-bottom:1px solid #f07a00;">' + prodEscape(r.categoria || '-') + '</td>' +
+            '<td style="padding:5px 8px;text-align:center;border-bottom:1px solid #f07a00;"><button type="button" onclick="removeInsumoProceso(' + idx + ')" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.75rem;padding:2px 6px;" title="Quitar">\u2715</button></td>' +
             '</tr>'
         ).join('');
         if (badge) badge.textContent = procesoInsumosDraft.length + ' insumo' + (procesoInsumosDraft.length !== 1 ? 's' : '');
@@ -19677,12 +19699,12 @@ document.addEventListener('DOMContentLoaded', () => {
             resumen.textContent = procesoInsumosDraft.length
                 ? procesoInsumosDraft.length + ' insumo' + (procesoInsumosDraft.length !== 1 ? 's' : '') + ' enlazados'
                 : 'Sin insumos enlazados';
-            resumen.style.color = procesoInsumosDraft.length ? '#059669' : '#9ca3af';
+            resumen.style.color = procesoInsumosDraft.length ? '#f07a00' : '#9ca3af';
             resumen.style.fontWeight = procesoInsumosDraft.length ? '700' : '400';
         }
         if (preview) {
             preview.innerHTML = procesoInsumosDraft.map(r =>
-                '<span style="display:inline-block;padding:2px 8px;margin:1px 2px;background:#ecfdf5;border:1px solid #6ee7b7;border-radius:12px;font-size:0.55rem;font-weight:600;color:#065f46;">' +
+                '<span style="display:inline-block;padding:2px 8px;margin:1px 2px;background:#fff3e6;border:1px solid #f07a00;border-radius:12px;font-size:0.55rem;font-weight:600;color:#92400e;">' +
                 prodEscape(r.insumoNombre) + '</span>'
             ).join('');
         }
@@ -19753,8 +19775,8 @@ document.addEventListener('DOMContentLoaded', () => {
             const exist = model ? Number(model.existencias || 0) : 0;
             return '<tr style="cursor:pointer;" onclick="selectInsumoForProceso(\'' + prodEscape(ins.insumoId).replace(/'/g, "\\'") + '\', \'' + prodEscape(nombre).replace(/'/g, "\\'") + '\')">' +
                 '<td style="padding:8px 12px;font-size:0.65rem;font-weight:700;color:#1f2937;border-bottom:1px solid #e5e7eb;">' + prodEscape(nombre) + '</td>' +
-                '<td style="padding:8px 12px;font-size:0.62rem;text-align:center;color:' + (exist < 0 ? '#dc2626' : '#059669') + ';font-weight:700;border-bottom:1px solid #e5e7eb;">' + exist + '</td>' +
-                '<td style="padding:8px 12px;text-align:center;border-bottom:1px solid #e5e7eb;"><button type="button" class="productos-btn" style="padding:4px 12px;font-size:0.6rem;background:#059669;color:#fff;border:none;border-radius:4px;">Usar este</button></td>' +
+                '<td style="padding:8px 12px;font-size:0.62rem;text-align:center;color:' + (exist < 0 ? '#dc2626' : '#f07a00') + ';font-weight:700;border-bottom:1px solid #e5e7eb;">' + exist + '</td>' +
+                '<td style="padding:8px 12px;text-align:center;border-bottom:1px solid #e5e7eb;"><button type="button" class="productos-btn" style="padding:4px 12px;font-size:0.6rem;background:#f07a00;color:#fff;border:none;border-radius:4px;">Usar este</button></td>' +
                 '</tr>';
         }).join('');
 
@@ -19866,35 +19888,51 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
 .label-header { text-align: center; border-bottom: 1px solid #000; padding-bottom: 3px; margin-bottom: 4px; }
 .label-empresa { font-size: 9px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
 .label-tipo-tag { font-size: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.5px; border: 1px solid #000; padding: 1px 6px; display: inline-block; margin-top: 2px; }
-.label-ubicacion { text-align: center; font-family: 'Courier New', monospace; font-size: 22px; font-weight: 900; letter-spacing: 2px; padding: 4px 0; }
-.label-desc-row { display: flex; justify-content: center; gap: 6px; font-size: 7px; margin-bottom: 4px; }
-.label-desc-row span { border: 1px solid #999; padding: 1px 4px; border-radius: 2px; }
+.label-ubicacion { text-align: center; font-family: 'Courier New', monospace; font-size: 20px; font-weight: 900; letter-spacing: 2px; padding: 4px 0; }
 .label-producto { text-align: center; font-size: 10px; font-weight: 800; padding: 4px 0; border-top: 1px dashed #000; border-bottom: 1px dashed #000; text-transform: uppercase; word-break: break-word; }
-.label-codigo { text-align: center; font-family: 'Courier New', monospace; font-size: 12px; letter-spacing: 2px; padding: 3px 0; }
-.label-barcode { text-align: center; font-family: 'Libre Barcode 39', 'Courier New', monospace; font-size: 40px; letter-spacing: 3px; }
+.label-codigo { text-align: center; font-family: 'Courier New', monospace; font-size: 9px; letter-spacing: 1px; padding: 2px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.label-barcode { text-align: center; font-family: 'Libre Barcode 39', 'Courier New', monospace; font-size: 38px; letter-spacing: 3px; }
 .label-footer { text-align: center; font-size: 6px; margin-top: 3px; border-top: 1px solid #ccc; padding-top: 2px; }
+.label-multi { text-align: center; font-size: 7px; font-weight: 800; border: 1px dashed #000; padding: 2px 4px; margin-top: 3px; }
 .btn-print { margin-top: 12px; padding: 8px 24px; font-size: 13px; font-weight: 700; background: #000; color: #fff; border: none; border-radius: 6px; cursor: pointer; }`;
     }
 
-    function _ubicDescHTML(v) {
-        let h = '';
-        if (v.p) h += '<span>P' + prodEscape(v.p.replace(/^P/i,'')) + '</span>';
-        if (v.r) h += '<span>R' + prodEscape(v.r.replace(/^R/i,'')) + '</span>';
-        if (v.n) h += '<span>N' + prodEscape(v.n.replace(/^N/i,'')) + '</span>';
-        if (v.c) h += '<span>C' + prodEscape(v.c.replace(/^C/i,'')) + '</span>';
-        return h;
+    function _getContainerProducts(v) {
+        // Find other products in the same P/R/N/C location
+        const code = buildUbiCode(v.p, v.r, v.n, v.c);
+        if (!code) return [];
+        const editingId = document.getElementById('prodFormCodigo')?.dataset?.editingId || '';
+        return productosData.filter(p => {
+            if (editingId && p.id === editingId) return false;
+            const pc = buildUbiCode(
+                String(p.ubiPasillo || '').trim().toUpperCase(),
+                String(p.ubiRack || '').trim().toUpperCase(),
+                String(p.ubiNivel || '').trim().toUpperCase(),
+                String(p.ubiContenedor || '').trim().toUpperCase()
+            );
+            return pc === code;
+        });
     }
 
     function generarEtiquetaContenedor() {
         const v = _getUbiFormValues();
         const ubicacionCode = buildUbiCode(v.p, v.r, v.n, v.c) || 'SIN-UBICACION';
         const fecha = new Date().toLocaleDateString('es-MX');
+        const others = _getContainerProducts(v);
+        const currentName = v.nombre !== 'PRODUCTO' ? v.nombre : '';
+        const allNames = currentName ? [currentName] : [];
+        others.forEach(p => { if (p.producto) allNames.push(p.producto); });
+        const multiHTML = allNames.length > 1
+            ? '<div class="label-multi">' + allNames.length + ' productos en este contenedor</div>'
+            : allNames.length === 1
+            ? '<div class="label-multi">1 producto: ' + prodEscape(allNames[0].substring(0, 30)) + '</div>'
+            : '';
         const html = '<!DOCTYPE html><html><head><meta charset="utf-8"><title>' + prodEscape(ubicacionCode) + '</title><style>' + _labelCSS() + '</style><link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+39&display=swap" rel="stylesheet"></head><body>' +
             '<div class="label-card">' +
             '<div class="label-header"><div class="label-empresa">MAQUILEROS PUBLICIDAD</div><div class="label-tipo-tag">CONTENEDOR</div></div>' +
             '<div class="label-ubicacion">' + prodEscape(ubicacionCode) + '</div>' +
-            '<div class="label-desc-row">' + _ubicDescHTML(v) + '</div>' +
             '<div class="label-barcode">*' + prodEscape(ubicacionCode.replace(/-/g,'')) + '*</div>' +
+            multiHTML +
             '<div class="label-footer">' + fecha + '</div>' +
             '</div>' +
             '<button class="btn-print no-print" onclick="window.print()">Imprimir</button></body></html>';
@@ -19913,9 +19951,7 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
             '<div class="label-codigo">' + prodEscape(v.codigo) + '</div>' +
             '<div class="label-barcode">*' + prodEscape(v.codigo) + '*</div>' +
             '<div style="border-top:1px dashed #000;padding:3px 0;text-align:center;">' +
-            '<div style="font-size:7px;font-weight:800;text-transform:uppercase;">UBICACI\u00d3N</div>' +
             '<div style="font-family:monospace;font-size:14px;font-weight:900;letter-spacing:1px;">' + prodEscape(ubicacionCode) + '</div>' +
-            '<div class="label-desc-row" style="margin-top:2px;">' + _ubicDescHTML(v) + '</div>' +
             '</div>' +
             '<div class="label-footer">' + fecha + '</div>' +
             '</div>' +
@@ -20013,6 +20049,11 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
         updateConfirmUbiPreview();
         popup.style.display = 'flex';
         popup.setAttribute('aria-hidden', 'false');
+        // Auto-focus pasillo field
+        setTimeout(() => {
+            const pField = document.getElementById('confirmUbiPasillo');
+            if (pField) { pField.focus(); pField.select(); }
+        }, 100);
     }
 
     function updateConfirmUbiPreview() {
@@ -20025,27 +20066,59 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
         if (grande) grande.textContent = code;
     }
 
+    function _checkDuplicateUbicacion(p, r, n, c) {
+        const code = buildUbiCode(p, r, n, c);
+        if (!code) return [];
+        const editingId = document.getElementById('prodFormCodigo')?.dataset?.editingId || '';
+        return productosData.filter(prod => {
+            if (editingId && prod.id === editingId) return false;
+            const pc = buildUbiCode(
+                String(prod.ubiPasillo || '').trim().toUpperCase(),
+                String(prod.ubiRack || '').trim().toUpperCase(),
+                String(prod.ubiNivel || '').trim().toUpperCase(),
+                String(prod.ubiContenedor || '').trim().toUpperCase()
+            );
+            return pc === code;
+        });
+    }
+
+    function _applyConfirmedUbi(cp, cr, cn, cc) {
+        const p1 = document.getElementById('prodFormUbiPasillo');
+        const r1 = document.getElementById('prodFormUbiRack');
+        const n1 = document.getElementById('prodFormUbiNivel');
+        const c1 = document.getElementById('prodFormUbiContenedor');
+        if (p1) p1.value = cp;
+        if (r1) r1.value = cr;
+        if (n1) n1.value = cn;
+        if (c1) c1.value = cc;
+        updateUbicacionCodigo();
+        syncUbicacionToStep2();
+        if (_commitAfterConfirm) _commitAfterConfirm();
+        _commitAfterConfirm = null;
+    }
+
     function closeConfirmUbicacion(accepted) {
         const popup = document.getElementById('popupConfirmarUbicacion');
-        if (popup) { popup.style.display = 'none'; popup.setAttribute('aria-hidden', 'true'); }
-        if (accepted && _commitAfterConfirm) {
-            const cp = (document.getElementById('confirmUbiPasillo')?.value || '').trim().toUpperCase();
-            const cr = (document.getElementById('confirmUbiRack')?.value || '').trim().toUpperCase();
-            const cn = (document.getElementById('confirmUbiNivel')?.value || '').trim().toUpperCase();
-            const cc = (document.getElementById('confirmUbiContenedor')?.value || '').trim().toUpperCase();
-            const p1 = document.getElementById('prodFormUbiPasillo');
-            const r1 = document.getElementById('prodFormUbiRack');
-            const n1 = document.getElementById('prodFormUbiNivel');
-            const c1 = document.getElementById('prodFormUbiContenedor');
-            if (p1) p1.value = cp;
-            if (r1) r1.value = cr;
-            if (n1) n1.value = cn;
-            if (c1) c1.value = cc;
-            updateUbicacionCodigo();
-            syncUbicacionToStep2();
-            _commitAfterConfirm();
+        if (!accepted) {
+            if (popup) { popup.style.display = 'none'; popup.setAttribute('aria-hidden', 'true'); }
+            _commitAfterConfirm = null;
+            return;
         }
-        _commitAfterConfirm = null;
+        const cp = (document.getElementById('confirmUbiPasillo')?.value || '').trim().toUpperCase();
+        const cr = (document.getElementById('confirmUbiRack')?.value || '').trim().toUpperCase();
+        const cn = (document.getElementById('confirmUbiNivel')?.value || '').trim().toUpperCase();
+        const cc = (document.getElementById('confirmUbiContenedor')?.value || '').trim().toUpperCase();
+        const dupes = _checkDuplicateUbicacion(cp, cr, cn, cc);
+        if (dupes.length > 0) {
+            const code = buildUbiCode(cp, cr, cn, cc);
+            const names = dupes.slice(0, 3).map(d => d.producto || d.codigo || d.id).join(', ');
+            const msg = dupes.length === 1
+                ? 'La ubicaci\u00f3n ' + code + ' ya est\u00e1 asignada a:\n\n\u2022 ' + names + '\n\n\u00bfDeseas guardar aqu\u00ed de todos modos?'
+                : 'La ubicaci\u00f3n ' + code + ' ya tiene ' + dupes.length + ' producto(s):\n\n\u2022 ' + names + '\n\n\u00bfDeseas guardar aqu\u00ed de todos modos?';
+            if (!confirm(msg)) return; // User cancelled, stay in popup
+        }
+        if (popup) { popup.style.display = 'none'; popup.setAttribute('aria-hidden', 'true'); }
+        _applyConfirmedUbi(cp, cr, cn, cc);
     }
 
     // === Costo promedio automático para insumos ===
