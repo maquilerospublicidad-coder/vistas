@@ -8469,7 +8469,21 @@ const imgBolsaDeliveryBase = new Image();
         }
 
         if (key === 'CAJA') {
+            // Oculta todo lo demás
             ocultarInicioSistema();
+            var landing = document.getElementById('landing');
+            if (landing) landing.style.display = 'none';
+            [
+                'popupCalendario','popupClientesModulo','popupProveedoresModulo',
+                'popupInsumosModulo','popupAlmacenModulo','popupReportesModulo','popupMisPedidos',
+                'popupProductos','popupAjustesTabuladores','popupProdTabulador','popupListado',
+                'popupAccess','popupDesignTracking','inicioSistema','landing'
+            ].forEach(function(id){
+                var el = document.getElementById(id);
+                if (el) { el.style.display = 'none'; el.setAttribute('aria-hidden','true'); }
+            });
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
             if (window.openCajaPopupGlobal) window.openCajaPopupGlobal();
             return;
         }
@@ -8512,6 +8526,11 @@ const imgBolsaDeliveryBase = new Image();
 
         if (key === 'MUESTRARIO') {
             ocultarInicioSistema();
+            // Cierra popupCaja y overlays
+            var caja = document.getElementById('popupCaja');
+            if (caja) { caja.style.display = 'none'; caja.setAttribute('aria-hidden','true'); }
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
             const landing = document.getElementById('landing');
             if (landing) landing.style.display = 'flex';
             return;
