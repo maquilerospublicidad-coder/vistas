@@ -1139,7 +1139,7 @@
         .orden-action-square {
             min-height: 46px;
             width: 100%;
-            padding: 0 4px !important;
+            padding: 2px 4px !important;
             background: #ffffff !important;
             color: #000000 !important;
             border: none !important;
@@ -1147,8 +1147,20 @@
             font-size: 0.56rem !important;
             font-weight: 900 !important;
             display: flex !important;
+            flex-direction: column !important;
             align-items: center !important;
             justify-content: center !important;
+            gap: 0 !important;
+        }
+        .orden-action-square .shortcut-hint {
+            color: rgba(0,0,0,0.35);
+            background: rgba(0,0,0,0.06);
+            border-color: rgba(0,0,0,0.1);
+        }
+        .orden-action-square.primary .shortcut-hint {
+            color: rgba(255,255,255,0.4);
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.15);
         }
 
         .orden-action-square:hover {
@@ -1224,6 +1236,23 @@
             background: #ffffff;
             color: #000000;
             border: none;
+        }
+
+        .orden-pay-btn {
+            display: flex !important;
+            flex-direction: column !important;
+            align-items: center !important;
+            justify-content: center !important;
+            gap: 0 !important;
+            padding: 4px 2px !important;
+        }
+        .orden-pay-btn .shortcut-hint {
+            color: rgba(0,0,0,0.3);
+            background: rgba(0,0,0,0.05);
+            border-color: rgba(0,0,0,0.1);
+        }
+        .orden-btn.warn .shortcut-hint {
+            color: rgba(255,255,255,0.5);
         }
 
         .orden-pagos-grid .orden-btn:hover,
@@ -6649,10 +6678,10 @@
 
         /* ===== SHORTCUT HINTS ===== */
         .shortcut-hint {
-            display: inline-block; font-size: 0.45rem; color: rgba(255,255,255,0.4);
+            display: block; font-size: 0.4rem; color: rgba(255,255,255,0.4);
             background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
-            border-radius: 3px; padding: 1px 5px; margin-left: 4px;
-            font-weight: 600; vertical-align: middle;
+            border-radius: 3px; padding: 0px 4px; margin: 2px auto 0;
+            font-weight: 600; text-align: center; line-height: 1.2;
         }
 
         /* ===== ENVIO E INSTALACION CHECKS ===== */
@@ -6726,6 +6755,18 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 </head>
 <body>
+
+<!-- ===== GLOBAL CONFIRM POPUP ===== -->
+<div id="globalConfirmPopup" class="orden-pay-popup" aria-hidden="true" style="z-index:200000;">
+    <div class="orden-pay-card" role="dialog" aria-modal="true" aria-labelledby="globalConfirmTitulo">
+        <h3 id="globalConfirmTitulo" style="margin:0;font-size:0.9rem;font-weight:900;color:#111827;">CONFIRMAR</h3>
+        <div id="globalConfirmMensaje" class="orden-mini-note" style="padding:12px 0;font-size:0.7rem;color:#374151;">¿Estás seguro?</div>
+        <div class="orden-pay-actions">
+            <button id="globalConfirmCancelar" class="orden-btn" type="button">CANCELAR <span class="shortcut-hint" style="color:rgba(0,0,0,0.3);background:rgba(0,0,0,0.05);border-color:rgba(0,0,0,0.1);">ESC</span></button>
+            <button id="globalConfirmAceptar" class="orden-btn warn" type="button">ACEPTAR <span class="shortcut-hint">ENTER</span></button>
+        </div>
+    </div>
+</div>
 
 <!-- ===== LOGIN SCREEN ===== -->
 <div id="loginOverlay" class="login-overlay">
@@ -6893,7 +6934,7 @@
                     <button id="clientesmodImport" class="clientesmod-btn gray" type="button">⬆ Importar Excel</button>
                     <button id="clientesmodAdd" class="clientesmod-btn primary" type="button">➕ Agregar</button>
                     <button id="clientesmodEdit" class="clientesmod-btn edit" type="button">✏ Editar</button>
-                    <button id="clientesmodDelete" class="clientesmod-btn danger" type="button">🗑 Eliminar</button>
+                    <button id="clientesmodDelete" class="clientesmod-btn danger" type="button">⛔ Deshabilitar</button>
                     <input id="clientesmodImportFile" type="file" accept=".csv,text/csv,application/vnd.ms-excel" style="display:none;">
                 </div>
             </div>
@@ -7028,7 +7069,7 @@
                     <input id="proveedoresSearch" class="clientesmod-search" type="text" placeholder="Buscar por ID, proveedor, empresa, correo o teléfono...">
                     <button id="proveedoresAdd" class="clientesmod-btn primary" type="button">➕ Agregar</button>
                     <button id="proveedoresEdit" class="clientesmod-btn" type="button">✏ Editar</button>
-                    <button id="proveedoresDelete" class="clientesmod-btn danger" type="button">🗑 Eliminar</button>
+                    <button id="proveedoresDelete" class="clientesmod-btn danger" type="button">⛔ Deshabilitar</button>
                 </div>
             </div>
             <div class="clientesmod-table-wrap">
@@ -8760,6 +8801,35 @@ const imgBolsaDeliveryBase = new Image();
         try { sessionStorage.removeItem('nextProducto'); } catch (_) {}
     }
 
+    // ===== GLOBAL CONFIRM POPUP =====
+    window.showGlobalConfirmPopup = function(message, onAccept, onCancel) {
+        const popup = document.getElementById('globalConfirmPopup');
+        const msg = document.getElementById('globalConfirmMensaje');
+        const btnAceptar = document.getElementById('globalConfirmAceptar');
+        const btnCancelar = document.getElementById('globalConfirmCancelar');
+        if (!popup || !msg || !btnAceptar || !btnCancelar) {
+            if (confirm(message)) { if (onAccept) onAccept(); }
+            else { if (onCancel) onCancel(); }
+            return;
+        }
+        msg.textContent = String(message || '¿Estás seguro?');
+        popup.style.display = 'flex';
+        popup.setAttribute('aria-hidden', 'false');
+
+        const cleanup = () => {
+            popup.style.display = 'none';
+            popup.setAttribute('aria-hidden', 'true');
+            document.removeEventListener('keydown', keyHandler);
+        };
+        const keyHandler = (e) => {
+            if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); cleanup(); if (onAccept) onAccept(); }
+            if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); cleanup(); if (onCancel) onCancel(); }
+        };
+        document.addEventListener('keydown', keyHandler);
+        btnAceptar.onclick = () => { cleanup(); if (onAccept) onAccept(); };
+        btnCancelar.onclick = () => { cleanup(); if (onCancel) onCancel(); };
+    };
+
     function abrirComparacion(side = 'frente') {
         if (side === 'bolsa') {
             const raw = imgLogoOriginalBolsa || imgLogoOriginal;
@@ -10159,7 +10229,7 @@ const imgBolsaDeliveryBase = new Image();
                     <h2 id="popupListadoTitulo" class="orden-title">CREAR ORDEN DE TRABAJO</h2>
                     <div class="orden-actions-row">
                         <button id="ordenRegistrarCliente" class="orden-btn">REGISTRAR CLIENTE <span class="shortcut-hint">F2</span></button>
-                        <button id="ordenSeleccionarCliente" class="orden-btn">SELECCIONAR CLIENTE</button>
+                        <button id="ordenSeleccionarCliente" class="orden-btn">SELECCIONAR CLIENTE <span class="shortcut-hint">F3</span></button>
                     </div>
                 </div>
                 <div class="orden-id-box">
@@ -10262,21 +10332,21 @@ const imgBolsaDeliveryBase = new Image();
             <div class="orden-ticket-tools">
                 <div id="ordenTicketTabs" class="orden-ticket-tabs" aria-label="Tickets en espera">
                     <button class="orden-ticket-tab active" type="button" data-ticket-index="0">TICKET 1</button>
-                    <button id="ordenTicketAdd" class="orden-ticket-add" type="button" title="Agregar ticket (F8)" aria-label="Agregar ticket">+ <span class="shortcut-hint">F8</span></button>
+                    <button id="ordenTicketAdd" class="orden-ticket-add" type="button" title="Agregar ticket (F9)" aria-label="Agregar ticket">+ <span class="shortcut-hint">F9</span></button>
                 </div>
             </div>
 
             <div class="orden-mini">MÉTODOS DE PAGO</div>
             <div class="orden-pagos-grid">
-                <button data-pay="EFECTIVO" class="orden-btn orden-pay-btn" title="Efectivo (F3)" aria-label="Efectivo"><span class="orden-pay-icon">◉</span><span class="orden-pay-label">EFECTIVO</span><span class="shortcut-hint">F3</span></button>
-                <button data-pay="TARJETA" class="orden-btn orden-pay-btn" title="Tarjeta (F4)" aria-label="Tarjeta"><span class="orden-pay-icon">▣</span><span class="orden-pay-label">TARJETA</span><span class="shortcut-hint">F4</span></button>
-                <button data-pay="TRANSFERENCIA" class="orden-btn orden-pay-btn" title="Transferencia (F5)" aria-label="Transferencia"><span class="orden-pay-icon">⇄</span><span class="orden-pay-label">TRANSFERENCIA</span><span class="shortcut-hint">F5</span></button>
-                <button data-pay="DEPOSITO" class="orden-btn orden-pay-btn" title="Depósito (F6)" aria-label="Depósito"><span class="orden-pay-icon">↓</span><span class="orden-pay-label">DEPÓSITO</span><span class="shortcut-hint">F6</span></button>
-                <button data-pay="GUARDAR SIN ANTICIPO" class="orden-btn orden-pay-btn" title="Sin anticipo (F7)" aria-label="Sin anticipo"><span class="orden-pay-icon">◎</span><span class="orden-pay-label">SIN ANTICIPO</span><span class="shortcut-hint">F7</span></button>
+                <button data-pay="EFECTIVO" class="orden-btn orden-pay-btn" title="Efectivo (F4)" aria-label="Efectivo"><span class="orden-pay-icon">◉</span><span class="orden-pay-label">EFECTIVO</span><span class="shortcut-hint">F4</span></button>
+                <button data-pay="TARJETA" class="orden-btn orden-pay-btn" title="Tarjeta (F5)" aria-label="Tarjeta"><span class="orden-pay-icon">▣</span><span class="orden-pay-label">TARJETA</span><span class="shortcut-hint">F5</span></button>
+                <button data-pay="TRANSFERENCIA" class="orden-btn orden-pay-btn" title="Transferencia (F6)" aria-label="Transferencia"><span class="orden-pay-icon">⇄</span><span class="orden-pay-label">TRANSFERENCIA</span><span class="shortcut-hint">F6</span></button>
+                <button data-pay="DEPOSITO" class="orden-btn orden-pay-btn" title="Depósito (F7)" aria-label="Depósito"><span class="orden-pay-icon">↓</span><span class="orden-pay-label">DEPÓSITO</span><span class="shortcut-hint">F7</span></button>
+                <button data-pay="GUARDAR SIN ANTICIPO" class="orden-btn orden-pay-btn" title="Sin anticipo (F8)" aria-label="Sin anticipo"><span class="orden-pay-icon">◎</span><span class="orden-pay-label">SIN ANTICIPO</span><span class="shortcut-hint">F8</span></button>
                 <button id="ordenBtnLimpiar" class="orden-btn warn" title="Limpiar ticket (Supr)" aria-label="Limpiar ticket"><span class="orden-pay-icon">✕</span><span class="orden-pay-label">LIMPIAR</span><span class="shortcut-hint">SUPR</span></button>
             </div>
 
-            <button id="ordenBtnVentaRapida" class="orden-btn orden-btn-venta-rapida" type="button">VENDER COMO VENTA RÁPIDA <span class="shortcut-hint">F9</span></button>
+            <button id="ordenBtnVentaRapida" class="orden-btn orden-btn-venta-rapida" type="button">VENDER COMO VENTA RÁPIDA <span class="shortcut-hint">F10</span></button>
         </div>
     </div>
 </div>
@@ -10559,7 +10629,7 @@ const imgBolsaDeliveryBase = new Image();
                 <div class="productos-crud">
                     <button id="prodAgregar" class="productos-btn primary" type="button">➕ Agregar</button>
                     <button id="prodEditar" class="productos-btn edit" type="button">✏️ Editar</button>
-                    <button id="prodEliminar" class="productos-btn delete" type="button">🗑️ Eliminar</button>
+                    <button id="prodEliminar" class="productos-btn delete" type="button">⛔ Deshabilitar</button>
                 </div>
             </div>
         </div>
@@ -10575,8 +10645,8 @@ const imgBolsaDeliveryBase = new Image();
                         <button id="prodExportPdf" class="productos-btn productos-icon-btn" type="button" data-tip="Exportar PDF" title="Exportar PDF" aria-label="Exportar PDF">📄</button>
                         <button id="prodFiltroCategoria" class="productos-btn productos-icon-btn" type="button" data-tip="Filtrar por categoría" title="Filtrar por categoría" aria-label="Filtrar por categoría">🗂</button>
                         <button id="prodFiltroCodigo" class="productos-btn productos-icon-btn" type="button" data-tip="Filtrar por código de producto" title="Filtrar por código de producto" aria-label="Filtrar por código de producto">#</button>
-                        <button id="prodEntradaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar entrada de stock" title="Registrar entrada de stock" aria-label="Registrar entrada de stock">ENTRADA</button>
-                        <button id="prodSalidaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar salida de stock" title="Registrar salida de stock" aria-label="Registrar salida de stock">SALIDA</button>
+                        <button id="prodEntradaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar entrada de stock" title="Registrar entrada de stock" aria-label="Registrar entrada de stock" style="color:#16a34a;">↑ ENTRADA</button>
+                        <button id="prodSalidaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar salida de stock" title="Registrar salida de stock" aria-label="Registrar salida de stock" style="color:#dc2626;">↓ SALIDA</button>
                         <button id="prodImprimir" class="productos-btn productos-icon-btn" type="button" data-tip="Imprimir inventario" title="Imprimir inventario" aria-label="Imprimir inventario">🖨</button>
                         <button id="prodExcel" class="productos-btn productos-icon-btn" type="button" data-tip="Exportar en Excel" title="Exportar en Excel" aria-label="Exportar en Excel">📊</button>
                         <button id="prodAbrirPlantilla" class="productos-btn productos-icon-btn gray" type="button" data-tip="Abrir plantilla" title="Abrir plantilla" aria-label="Abrir plantilla">Abrir plantilla</button>
@@ -14533,6 +14603,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!clientesmodTableBody) return;
         const term = String(clientesmodSearch?.value || '').trim().toLowerCase();
         const rows = clientesModuloData.filter((c) => {
+            if (c.deshabilitado) return false;
             if (!term) return true;
             return [
                 c.id,
@@ -14547,7 +14618,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!rows.length) {
             clientesmodTableBody.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">No hay clientes para este filtro.</td></tr>';
-            if (clientesmodConteo) clientesmodConteo.textContent = `Total de clientes: ${clientesModuloData.length}`;
+            if (clientesmodConteo) clientesmodConteo.textContent = `Total de clientes: ${clientesModuloData.filter(c => !c.deshabilitado).length}`;
             updateClientesModuloButtons();
             return;
         }
@@ -14557,7 +14628,7 @@ document.addEventListener('DOMContentLoaded', () => {
             return `<tr class="${selected}" data-cli-id="${escCliMod(c.id)}"><td>${escCliMod(c.id)}</td><td>${escCliMod(c.nombre)}</td><td>${escCliMod(c.empresa || '-')}</td><td>${escCliMod(c.telefono || '-')}</td><td>${escCliMod(c.correo || '-')}</td><td>${escCliMod(c.tipoCliente)}</td></tr>`;
         }).join('');
 
-        if (clientesmodConteo) clientesmodConteo.textContent = `Total de clientes: ${clientesModuloData.length}`;
+        if (clientesmodConteo) clientesmodConteo.textContent = `Total de clientes: ${clientesModuloData.filter(c => !c.deshabilitado).length}`;
 
         clientesmodTableBody.querySelectorAll('[data-cli-id]').forEach((row) => {
             row.addEventListener('click', () => {
@@ -15378,6 +15449,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!proveedoresTableBody) return;
         const term = String(proveedoresSearch?.value || '').trim().toLowerCase();
         const rows = proveedoresData.filter((p) => {
+            if (p.deshabilitado) return false;
             if (!term) return true;
             return [p.id, p.nombre, p.empresa, p.telefono, p.correo]
                 .some((v) => String(v || '').toLowerCase().includes(term));
@@ -16668,6 +16740,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const term = String(productosSearchTerm || '').toLowerCase();
         const code = String(productosCodigoFilter || '').toLowerCase();
         return productosData.filter((p) => {
+            if (p.deshabilitado) return false;
             if (productosTipoFilter && (p.tipo || 'stock') !== productosTipoFilter) return false;
             if (productosCategoriaFilter && p.categoria !== productosCategoriaFilter) return false;
             if (productosLowStockOnly && Number(p.existencias || 0) > Number(p.minima || 0)) return false;
@@ -16849,12 +16922,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const tipoLabel = tipoLabels[row.tipo] || 'PRODUCTO';
             const precioRev = isGF ? Number(row.gfPrecioRevM2 || 0) : Number(row.precioRevendedor || 0);
             const precioVta = isGF ? Number(row.gfPrecioGeneralM2 || 0) : Number(row.precioVenta || 0);
+            const existencias = Number(row.existencias || 0);
+            const minima = Number(row.minima || 0);
+            const stockLow = !isGF && existencias <= minima;
+            const stockStyle = stockLow ? ' style="color:#dc2626;font-weight:900;"' : '';
             return `<tr data-prod-id="${prodEscape(row.id)}" class="${classes}">
                 <td style="font-size:0.5rem;">${tipoLabel}</td>
                 <td>${prodEscape(row.producto)}</td>
                 <td>${prodEscape(row.medida || (isGF ? '-' : ''))}</td>
                 <td>${prodEscape(row.material)}</td>
-                <td>${isGF ? '-' : Number(row.existencias || 0)}</td>
+                <td${stockStyle}>${isGF ? '-' : existencias}</td>
                 <td>${formatMoney(precioRev)}</td>
                 <td>${formatMoney(precioVta)}</td>
             </tr>`;
@@ -17040,7 +17117,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderEntradaSelect = () => {
         if (!prodEntradaSelect) return;
         const term = String(prodEntradaBuscar?.value || '').toLowerCase();
-        const rows = productosData.filter((p) => `${p.codigo} ${p.producto}`.toLowerCase().includes(term));
+        const rows = productosData.filter((p) => !p.deshabilitado && `${p.codigo} ${p.producto}`.toLowerCase().includes(term));
         prodEntradaSelect.innerHTML = rows.map((p) => `<option value="${prodEscape(p.id)}">${prodEscape(p.codigo)} - ${prodEscape(p.producto)} (${Number(p.existencias || 0)})</option>`).join('');
         syncEntradaCategoria();
     };
@@ -17054,7 +17131,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderSalidaSelect = () => {
         if (!prodSalidaSelect) return;
         const term = String(prodSalidaBuscar?.value || '').toLowerCase();
-        const rows = productosData.filter((p) => `${p.codigo} ${p.producto}`.toLowerCase().includes(term));
+        const rows = productosData.filter((p) => !p.deshabilitado && `${p.codigo} ${p.producto}`.toLowerCase().includes(term));
         prodSalidaSelect.innerHTML = rows.map((p) => `<option value="${prodEscape(p.id)}">${prodEscape(p.codigo)} - ${prodEscape(p.producto)} (${Number(p.existencias || 0)})</option>`).join('');
         syncSalidaCategoria();
     };
@@ -17522,6 +17599,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const getProductosStockOrden = () => {
         const term = String(ordenStockSearchTerm || '').trim().toLowerCase();
         const baseRows = productosData
+            .filter((p) => !p.deshabilitado)
             .map((p) => ({ ...p, sourceType: 'producto' }));
 
         let extraRows = [];
@@ -18504,7 +18582,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (clientesmodDelete) {
         clientesmodDelete.addEventListener('click', () => {
             if (!clientesModuloSelectedId) {
-                notifyError('Selecciona un cliente para eliminar.', 'Clientes');
+                notifyError('Selecciona un cliente para deshabilitar.', 'Clientes');
                 return;
             }
             const target = clientesModuloData.find((c) => c.id === clientesModuloSelectedId);
@@ -18512,13 +18590,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 notifyError('No se encontró el cliente seleccionado.', 'Clientes');
                 return;
             }
-            if (!confirm(`Eliminar cliente "${target.nombre}" (${target.id})?`)) return;
-            clientesModuloData = clientesModuloData.filter((c) => c.id !== clientesModuloSelectedId);
-            removeClienteQuickStore(clientesModuloSelectedId);
-            clientesModuloSelectedId = '';
-            saveClientesModulo();
-            renderClientesModulo();
-            notifyInfo('Cliente eliminado correctamente.', 'Clientes');
+            window.showGlobalConfirmPopup(`¿Deshabilitar cliente "${target.nombre}" (${target.id})? Sus datos se conservarán para el historial.`, () => {
+                const idx = clientesModuloData.findIndex((c) => c.id === clientesModuloSelectedId);
+                if (idx >= 0) clientesModuloData[idx] = { ...clientesModuloData[idx], deshabilitado: true };
+                clientesModuloSelectedId = '';
+                saveClientesModulo();
+                renderClientesModulo();
+                notifyInfo('Cliente deshabilitado correctamente.', 'Clientes');
+            });
         });
     }
 
@@ -18623,7 +18702,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (proveedoresDelete) {
         proveedoresDelete.addEventListener('click', () => {
             if (!proveedoresSelectedId) {
-                notifyError('Selecciona un proveedor para eliminar.', 'Proveedores');
+                notifyError('Selecciona un proveedor para deshabilitar.', 'Proveedores');
                 return;
             }
             const target = proveedoresData.find((p) => p.id === proveedoresSelectedId);
@@ -18631,12 +18710,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 notifyError('No se encontró el proveedor seleccionado.', 'Proveedores');
                 return;
             }
-            if (!confirm(`Eliminar proveedor "${target.nombre}" (${target.id})?`)) return;
-            proveedoresData = proveedoresData.filter((p) => p.id !== proveedoresSelectedId);
-            proveedoresSelectedId = '';
-            saveProveedoresModulo();
-            renderProveedoresModulo();
-            notifyInfo('Proveedor eliminado correctamente.', 'Proveedores');
+            window.showGlobalConfirmPopup(`¿Deshabilitar proveedor "${target.nombre}" (${target.id})? Sus datos se conservarán.`, () => {
+                const idx = proveedoresData.findIndex((p) => p.id === proveedoresSelectedId);
+                if (idx >= 0) proveedoresData[idx] = { ...proveedoresData[idx], deshabilitado: true };
+                proveedoresSelectedId = '';
+                saveProveedoresModulo();
+                renderProveedoresModulo();
+                notifyInfo('Proveedor deshabilitado correctamente.', 'Proveedores');
+            });
         });
     }
 
@@ -18716,7 +18797,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (insumosDelete) {
         insumosDelete.addEventListener('click', () => {
             if (!insumosSelectedId) {
-                notifyError('Selecciona un insumo para eliminar.', 'Insumos');
+                notifyError('Selecciona un insumo para deshabilitar.', 'Insumos');
                 return;
             }
             const target = insumosData.find((i) => i.id === insumosSelectedId);
@@ -18724,12 +18805,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 notifyError('No se encontró el insumo seleccionado.', 'Insumos');
                 return;
             }
-            if (!confirm(`Eliminar insumo "${target.nombre}" (${target.id})?`)) return;
-            insumosData = insumosData.filter((i) => i.id !== insumosSelectedId);
-            insumosSelectedId = '';
-            saveInsumosModulo();
-            renderInsumosModulo();
-            notifyInfo('Insumo eliminado correctamente.', 'Insumos');
+            window.showGlobalConfirmPopup(`¿Deshabilitar insumo "${target.nombre}" (${target.id})? Sus datos se conservarán.`, () => {
+                const idx = insumosData.findIndex((i) => i.id === insumosSelectedId);
+                if (idx >= 0) insumosData[idx] = { ...insumosData[idx], deshabilitado: true };
+                insumosSelectedId = '';
+                saveInsumosModulo();
+                renderInsumosModulo();
+                notifyInfo('Insumo deshabilitado correctamente.', 'Insumos');
+            });
         });
     }
 
@@ -18809,7 +18892,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (almacenDelete) {
         almacenDelete.addEventListener('click', () => {
             if (!almacenSelectedId) {
-                notifyError('Selecciona un producto para eliminar.', 'Almacén');
+                notifyError('Selecciona un producto para deshabilitar.', 'Almacén');
                 return;
             }
             const target = almacenData.find((a) => a.id === almacenSelectedId);
@@ -18817,12 +18900,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 notifyError('No se encontró el producto seleccionado.', 'Almacén');
                 return;
             }
-            if (!confirm(`Eliminar producto "${target.producto}" (${target.id})?`)) return;
-            almacenData = almacenData.filter((a) => a.id !== almacenSelectedId);
-            almacenSelectedId = '';
-            saveAlmacenModulo();
-            renderAlmacenModulo();
-            notifyInfo('Producto eliminado correctamente.', 'Almacén');
+            window.showGlobalConfirmPopup(`¿Deshabilitar producto "${target.producto}" (${target.id})? Sus datos se conservarán.`, () => {
+                const idx = almacenData.findIndex((a) => a.id === almacenSelectedId);
+                if (idx >= 0) almacenData[idx] = { ...almacenData[idx], deshabilitado: true };
+                almacenSelectedId = '';
+                saveAlmacenModulo();
+                renderAlmacenModulo();
+                notifyInfo('Producto deshabilitado correctamente.', 'Almacén');
+            });
         });
     }
 
@@ -20936,19 +21021,20 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
         prodEliminar.addEventListener('click', () => {
             const selected = getProductosSeleccionados();
             if (!selected.length) {
-                alert('Selecciona un producto para eliminar.');
+                alert('Selecciona un producto para deshabilitar.');
                 return;
             }
             const ask = selected.length === 1
-                ? `¿Eliminar ${selected[0].producto}?`
-                : `¿Eliminar ${selected.length} productos seleccionados?`;
-            if (!confirm(ask)) return;
-            const ids = new Set(selected.map((r) => r.id));
-            productosData = productosData.filter((p) => !ids.has(p.id));
-            productosSelectedIds = new Set();
-            productosSelectionAnchorId = '';
-            saveProductos();
-            renderProductosTabla();
+                ? `¿Deshabilitar "${selected[0].producto}"? El producto dejará de aparecer en el sistema pero sus datos se conservarán.`
+                : `¿Deshabilitar ${selected.length} productos seleccionados? Dejarán de aparecer en el sistema pero sus datos se conservarán.`;
+            window.showGlobalConfirmPopup(ask, () => {
+                const ids = new Set(selected.map((r) => r.id));
+                productosData = productosData.map((p) => ids.has(p.id) ? { ...p, deshabilitado: true } : p);
+                productosSelectedIds = new Set();
+                productosSelectionAnchorId = '';
+                saveProductos();
+                renderProductosTabla();
+            });
         });
     }
 
@@ -24775,39 +24861,55 @@ document.addEventListener('DOMContentLoaded', function() {
         const isInCotizador = popupListado && popupListado.style.display === 'flex';
 
         if (ev.key === 'F2') { ev.preventDefault(); document.getElementById('ordenRegistrarCliente')?.click(); return; }
-        if (ev.key === 'F3' && isInCotizador) {
+        if (ev.key === 'F3') { ev.preventDefault(); document.getElementById('ordenSeleccionarCliente')?.click(); return; }
+        if (ev.key === 'F4' && isInCotizador) {
             ev.preventDefault();
             document.querySelector('.orden-pay-btn[data-pay="EFECTIVO"]')?.click();
             return;
         }
-        if (ev.key === 'F4' && isInCotizador) {
+        if (ev.key === 'F5' && isInCotizador) {
             ev.preventDefault();
             document.querySelector('.orden-pay-btn[data-pay="TARJETA"]')?.click();
             return;
         }
-        if (ev.key === 'F5' && isInCotizador) {
+        if (ev.key === 'F6' && isInCotizador) {
             ev.preventDefault();
             document.querySelector('.orden-pay-btn[data-pay="TRANSFERENCIA"]')?.click();
             return;
         }
-        if (ev.key === 'F6' && isInCotizador) {
+        if (ev.key === 'F7' && isInCotizador) {
             ev.preventDefault();
             document.querySelector('.orden-pay-btn[data-pay="DEPOSITO"]')?.click();
             return;
         }
-        if (ev.key === 'F7' && isInCotizador) {
+        if (ev.key === 'F8' && isInCotizador) {
             ev.preventDefault();
             document.querySelector('.orden-pay-btn[data-pay="GUARDAR SIN ANTICIPO"]')?.click();
             return;
         }
-        if (ev.key === 'F8' && isInCotizador) {
+        if (ev.key === 'F9' && isInCotizador) {
             ev.preventDefault();
             document.getElementById('ordenTicketAdd')?.click();
             return;
         }
-        if (ev.key === 'F9' && isInCotizador) {
+        if (ev.key === 'F10' && isInCotizador) {
             ev.preventDefault();
             document.getElementById('ordenBtnVentaRapida')?.click();
+            return;
+        }
+        if (ev.key === 'Backspace' && !isInput && isInCotizador) {
+            ev.preventDefault();
+            if (typeof ordenLineaActiva !== 'undefined' && ordenLineaActiva >= 0 && typeof ordenLineas !== 'undefined' && ordenLineas[ordenLineaActiva]) {
+                const prodName = ordenLineas[ordenLineaActiva].producto || 'este producto';
+                if (typeof showConfirmPopup === 'function') {
+                    showConfirmPopup(`¿Eliminar "${prodName}" del ticket?`, () => {
+                        ordenLineas.splice(ordenLineaActiva, 1);
+                        ordenLineaActiva = -1;
+                        renderTabla();
+                        saveTicketActivo();
+                    });
+                }
+            }
             return;
         }
         if (ev.key === 'Delete' && !isInput) { ev.preventDefault(); document.getElementById('ordenBtnLimpiar')?.click(); return; }
