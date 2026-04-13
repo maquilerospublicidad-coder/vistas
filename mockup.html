@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <title>Maquileros VP - Pedido Dinámico</title>
     <style>
+        /* GLOBAL UPPERCASE */
+        body, button, input, select, textarea, th, td, label, option,
+        h1, h2, h3, h4, h5, h6, span, div, p, a {
+            text-transform: uppercase !important;
+        }
+        input::placeholder, textarea::placeholder {
+            text-transform: uppercase !important;
+        }
+
         :root { 
             --bg: #0a0f1a; 
             --panel: #141b2a; 
@@ -282,7 +291,7 @@
         
         .color-grid { 
             display: grid; 
-            grid-template-columns: repeat(5, 1fr); 
+            grid-template-columns: repeat(4, 1fr); 
             gap: 2px;
             background: rgba(0,0,0,0.2);
             padding: 3px;
@@ -5157,7 +5166,7 @@
         .inicio-grid {
             width: 100%;
             display: grid;
-            grid-template-columns: repeat(5, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 12px;
         }
 
@@ -6739,38 +6748,30 @@
     </div>
 </div>
 
-<button id="btnHome" class="btn-home" onclick="irMenuPrincipal()">🏠 Menú</button>
+<button id="btnHome" class="btn-home" onclick="irMenuPrincipal()">MENU</button>
 
 <div id="inicioSistema" class="inicio-sistema-overlay" aria-hidden="true">
     <div class="inicio-sistema-box" style="position:relative">
         <button id="btnAjustesMain" class="ajustes-main-btn" type="button" title="Ajustes de tabuladores" aria-label="Ajustes de tabuladores">⚙</button>
-        <div id="registrosDropdownWrap" class="registros-dropdown-wrap">
-            <button class="registros-btn" onclick="toggleRegistrosMenu()">
-                <span>📋 REGISTROS</span>
-                <span class="registros-arrow">▼</span>
-            </button>
-            <div class="registros-menu">
-                <button class="registros-menu-item" onclick="abrirRegistro('PROVEEDORES')">🏢 Proveedores</button>
-                <button class="registros-menu-item" onclick="abrirRegistro('INSUMOS')">📦 Insumos</button>
-                <button class="registros-menu-item" onclick="abrirRegistro('ALMACEN')">🏬 Almacén</button>
-            </div>
-        </div>
+        <!-- Dropdown REGISTROS eliminado: Proveedores y Configuraciones ahora en cuadricula principal -->
         <div class="inicio-logo">
             <img src="https://i.postimg.cc/WzY3mk57/Copia-de-Copia-de-Post-Instagram-catalogo-de-productos-escolares-comercial-promocional-azul-(11).png" alt="Logo Maquileros">
         </div>
         <div class="inicio-title">PANEL DE VENTAS</div>
         <div class="inicio-sub">Selecciona un modulo principal para iniciar</div>
         <div class="inicio-grid">
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('NUEVA ORDEN')"><span class="ico">🆕</span><span>Nueva Orden</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('MIS PEDIDOS')"><span class="ico">📦</span><span>Mis Pedidos</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCCION')"><span class="ico">🏭</span><span>Producción</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPARTO')"><span class="ico">🚚</span><span>Reparto</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCTOS')"><span class="ico">🧾</span><span>Productos</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPORTES')"><span class="ico">📊</span><span>Reportes</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CAJA')"><span class="ico">💳</span><span>Caja</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CALENDARIO')"><span class="ico">📅</span><span>Calendario</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('MUESTRARIO')"><span class="ico">🎨</span><span>Muestrario</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CLIENTES')"><span class="ico">👥</span><span>Clientes</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('NUEVA ORDEN')"><span>NUEVA ORDEN</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('MIS PEDIDOS')"><span>MIS PEDIDOS</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCCION')"><span>PRODUCCION</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPARTO')"><span>REPARTO</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCTOS')"><span>PRODUCTOS</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPORTES')"><span>REPORTES</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CAJA')"><span>CAJA</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CALENDARIO')"><span>CALENDARIO</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('MUESTRARIO')"><span>MUESTRARIO</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CLIENTES')"><span>CLIENTES</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PROVEEDORES')"><span>PROVEEDORES</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CONFIGURACIONES')"><span>CONFIGURACIONES</span></button>
         </div>
     </div>
 </div>
@@ -7243,69 +7244,96 @@ function abrirPopupProveedorDesdeProductos() {
 
 <div id="popupReportesModulo" class="clientesmod-overlay" aria-hidden="true">
     <div class="clientesmod-card" role="dialog" aria-modal="true" aria-labelledby="reportesmodTitulo">
-        <button id="reportesmodBack" class="clientesmod-back" type="button" title="Volver al menú principal" aria-label="Volver al menú principal">←</button>
+        <button id="reportesmodBack" class="clientesmod-back" type="button" title="VOLVER AL MENU PRINCIPAL" aria-label="VOLVER AL MENU PRINCIPAL">&#8592;</button>
         <div class="clientesmod-head">
-            <h2 id="reportesmodTitulo" class="clientesmod-title">MÓDULO DE REPORTES</h2>
+            <h2 id="reportesmodTitulo" class="clientesmod-title">REPORTES Y DASHBOARD</h2>
             <div class="clientesmod-head-right">
-                <span style="font-size:0.58rem;font-weight:800;color:#64748b;letter-spacing:0.14px;text-transform:uppercase;">Dashboard integrado e indicadores en tiempo real</span>
+                <button id="repTabDashboard" class="productos-btn primary" type="button" style="font-size:0.48rem;padding:6px 14px;">DASHBOARD</button>
+                <button id="repTabReportes" class="productos-btn" type="button" style="font-size:0.48rem;padding:6px 14px;">REPORTES</button>
             </div>
         </div>
         <div class="clientesmod-main">
-            <div class="clientesmod-toolbar">
-                <div class="clientesmod-label">Resumen ejecutivo</div>
-                <div class="clientesmod-toolbar-right">
-                    <select id="reportesRango" class="clientesmod-search" style="width:220px;min-width:220px;">
-                        <option value="30">Últimos 30 días</option>
-                        <option value="60">Últimos 60 días</option>
-                        <option value="90">Últimos 90 días</option>
-                        <option value="365">Último año</option>
-                    </select>
-                    <button id="reportesRefresh" class="clientesmod-btn primary" type="button">↻ Actualizar</button>
+            <!-- ======= DASHBOARD TAB ======= -->
+            <div id="repSeccionDashboard">
+                <div class="clientesmod-toolbar">
+                    <div class="clientesmod-label">RESUMEN EJECUTIVO</div>
+                    <div class="clientesmod-toolbar-right">
+                        <select id="reportesRango" class="clientesmod-search" style="width:220px;min-width:220px;">
+                            <option value="30">ULTIMOS 30 DIAS</option>
+                            <option value="60">ULTIMOS 60 DIAS</option>
+                            <option value="90">ULTIMOS 90 DIAS</option>
+                            <option value="365">ULTIMO AÑO</option>
+                        </select>
+                        <button id="reportesRefresh" class="clientesmod-btn primary" type="button">ACTUALIZAR</button>
+                    </div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:repeat(6,minmax(140px,1fr));gap:8px;">
+                    <div class="caja-kpi"><b>VENTAS</b><span id="repKpiVentas">$0.00</span></div>
+                    <div class="caja-kpi"><b>INVERSION</b><span id="repKpiInversion">$0.00</span></div>
+                    <div class="caja-kpi"><b>GANANCIA</b><span id="repKpiGanancia">$0.00</span></div>
+                    <div class="caja-kpi"><b>ORDENES</b><span id="repKpiOrdenes">0</span></div>
+                    <div class="caja-kpi"><b>TICKET PROMEDIO</b><span id="repKpiTicket">$0.00</span></div>
+                    <div class="caja-kpi"><b>ADEUDO PENDIENTE</b><span id="repKpiAdeudo">$0.00</span></div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:8px;margin-top:10px;">
+                    <div class="caja-kpi"><b>ENTRADAS HOY</b><span id="repKpiEntradasHoy">0</span></div>
+                    <div class="caja-kpi"><b>SALIDAS HOY</b><span id="repKpiSalidasHoy">0</span></div>
+                    <div class="caja-kpi"><b>MOVIMIENTOS PERIODO</b><span id="repKpiMovsPeriodo">0</span></div>
+                </div>
+
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;min-height:0;margin-top:8px;">
+                    <div class="clientesmod-table-wrap">
+                        <table class="clientesmod-table">
+                            <thead>
+                                <tr><th>TOP PRODUCTO</th><th>CANTIDAD</th><th>TOTAL VENDIDO</th></tr>
+                            </thead>
+                            <tbody id="repTopProductosBody">
+                                <tr><td colspan="3" class="clientesmod-empty">SIN DATOS</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clientesmod-table-wrap">
+                        <table class="clientesmod-table">
+                            <thead>
+                                <tr><th>ULTIMAS ENTRADAS/SALIDAS</th><th>CANTIDAD</th><th>TIPO</th></tr>
+                            </thead>
+                            <tbody id="repMovimientosBody">
+                                <tr><td colspan="3" class="clientesmod-empty">SIN DATOS</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="clientesmod-foot">
+                    <span id="repUltimaActualizacion">ACTUALIZACION: --</span>
                 </div>
             </div>
 
-            <div style="display:grid;grid-template-columns:repeat(6,minmax(140px,1fr));gap:8px;">
-                <div class="caja-kpi"><b>Ventas</b><span id="repKpiVentas">$0.00</span></div>
-                <div class="caja-kpi"><b>Inversión</b><span id="repKpiInversion">$0.00</span></div>
-                <div class="caja-kpi"><b>Ganancia</b><span id="repKpiGanancia">$0.00</span></div>
-                <div class="caja-kpi"><b>Órdenes</b><span id="repKpiOrdenes">0</span></div>
-                <div class="caja-kpi"><b>Ticket promedio</b><span id="repKpiTicket">$0.00</span></div>
-                <div class="caja-kpi"><b>Adeudo pendiente</b><span id="repKpiAdeudo">$0.00</span></div>
-            </div>
-
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;min-height:0;">
-                <div class="clientesmod-table-wrap">
-                    <table class="clientesmod-table">
-                        <thead>
-                            <tr>
-                                <th>Top producto</th>
-                                <th>Cantidad</th>
-                                <th>Total vendido</th>
-                            </tr>
-                        </thead>
-                        <tbody id="repTopProductosBody">
-                            <tr><td colspan="3" class="clientesmod-empty">Sin datos</td></tr>
-                        </tbody>
-                    </table>
+            <!-- ======= REPORTES TAB ======= -->
+            <div id="repSeccionReportes" style="display:none;">
+                <div class="clientesmod-toolbar">
+                    <div class="clientesmod-label">GENERAR REPORTES</div>
                 </div>
-                <div class="clientesmod-table-wrap">
-                    <table class="clientesmod-table">
-                        <thead>
-                            <tr>
-                                <th>Origen</th>
-                                <th>Registros</th>
-                                <th>Monto / Valor</th>
-                            </tr>
-                        </thead>
-                        <tbody id="repResumenFuentesBody">
-                            <tr><td colspan="3" class="clientesmod-empty">Sin datos</td></tr>
-                        </tbody>
-                    </table>
+                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px 0;">
+                    <button id="repBtnVentas" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>REPORTE DE VENTAS</span></button>
+                    <button id="repBtnEntradasSalidas" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>REPORTE DE ENTRADAS Y SALIDAS</span></button>
+                    <button id="repBtnGastos" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>REPORTE DE GASTOS</span></button>
+                    <button id="repBtnCortesCaja" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>REPORTE DE CORTES DE CAJA</span></button>
+                    <button id="repBtnPagosRecibidos" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>REPORTE DE PAGOS RECIBIDOS</span></button>
+                    <button id="repBtnHistorialCliente" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>HISTORIAL DEL CLIENTE</span></button>
                 </div>
-            </div>
-
-            <div class="clientesmod-foot">
-                <span id="repUltimaActualizacion">Actualización: --</span>
+                <div id="repContenidoReporte" style="margin-top:10px;">
+                    <div class="clientesmod-table-wrap">
+                        <table class="clientesmod-table">
+                            <thead id="repReporteHead"></thead>
+                            <tbody id="repReporteBody">
+                                <tr><td colspan="6" class="clientesmod-empty">SELECCIONA UN TIPO DE REPORTE</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -8677,15 +8705,9 @@ const imgBolsaDeliveryBase = new Image();
             return;
         }
 
-        if (key === 'INSUMOS') {
+        if (key === 'CONFIGURACIONES') {
             ocultarInicioSistema();
-            if (window.openInsumosPopupGlobal) window.openInsumosPopupGlobal();
-            return;
-        }
-
-        if (key === 'ALMACEN' || key === 'ALMACÉN') {
-            ocultarInicioSistema();
-            if (window.openAlmacenPopupGlobal) window.openAlmacenPopupGlobal();
+            if (window.openConfiguracionesPopupGlobal) window.openConfiguracionesPopupGlobal();
             return;
         }
 
@@ -10519,8 +10541,19 @@ const imgBolsaDeliveryBase = new Image();
             <h2 id="productosTitulo" class="productos-title">MÓDULO DE PRODUCTOS</h2>
             <div class="productos-head-right">
                 <div class="productos-search">
-                    <label for="productosSearchInput">Buscar</label>
-                    <input id="productosSearchInput" type="text" placeholder="Nombre, material, medida o código">
+                    <label for="productosSearchInput">BUSCAR</label>
+                    <input id="productosSearchInput" type="text" placeholder="NOMBRE, MATERIAL, MEDIDA O CODIGO">
+                </div>
+                <div class="productos-tipo-filter" style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+                    <select id="prodFiltroTipo" style="padding:4px 8px;font-size:0.48rem;border-radius:6px;border:1px solid #d1d5db;background:#fff;cursor:pointer;">
+                        <option value="">TODOS LOS TIPOS</option>
+                        <option value="stock">PRODUCTO</option>
+                        <option value="gran-formato">GRAN FORMATO</option>
+                        <option value="fabricado">FABRICADO</option>
+                        <option value="insumo">INSUMO</option>
+                        <option value="proceso">PROCESO</option>
+                        <option value="servicio">SERVICIO</option>
+                    </select>
                 </div>
                 <div class="productos-crud">
                     <button id="prodAgregar" class="productos-btn primary" type="button">➕ Agregar</button>
@@ -10541,7 +10574,8 @@ const imgBolsaDeliveryBase = new Image();
                         <button id="prodExportPdf" class="productos-btn productos-icon-btn" type="button" data-tip="Exportar PDF" title="Exportar PDF" aria-label="Exportar PDF">📄</button>
                         <button id="prodFiltroCategoria" class="productos-btn productos-icon-btn" type="button" data-tip="Filtrar por categoría" title="Filtrar por categoría" aria-label="Filtrar por categoría">🗂</button>
                         <button id="prodFiltroCodigo" class="productos-btn productos-icon-btn" type="button" data-tip="Filtrar por código de producto" title="Filtrar por código de producto" aria-label="Filtrar por código de producto">#</button>
-                        <button id="prodEntradaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar entrada de stock" title="Registrar entrada de stock" aria-label="Registrar entrada de stock">➕</button>
+                        <button id="prodEntradaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar entrada de stock" title="Registrar entrada de stock" aria-label="Registrar entrada de stock">ENTRADA</button>
+                        <button id="prodSalidaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar salida de stock" title="Registrar salida de stock" aria-label="Registrar salida de stock">SALIDA</button>
                         <button id="prodImprimir" class="productos-btn productos-icon-btn" type="button" data-tip="Imprimir inventario" title="Imprimir inventario" aria-label="Imprimir inventario">🖨</button>
                         <button id="prodExcel" class="productos-btn productos-icon-btn" type="button" data-tip="Exportar en Excel" title="Exportar en Excel" aria-label="Exportar en Excel">📊</button>
                         <button id="prodAbrirPlantilla" class="productos-btn productos-icon-btn gray" type="button" data-tip="Abrir plantilla" title="Abrir plantilla" aria-label="Abrir plantilla">Abrir plantilla</button>
@@ -10755,23 +10789,94 @@ const imgBolsaDeliveryBase = new Image();
 </div>
 
 <div id="popupProdEntrada" class="productos-modal-overlay" aria-hidden="true">
-    <div class="productos-modal-card" role="dialog" aria-modal="true" aria-labelledby="prodEntradaTitulo">
-        <h3 id="prodEntradaTitulo" class="productos-modal-title">Registrar entrada de stock</h3>
+    <div class="productos-modal-card" role="dialog" aria-modal="true" aria-labelledby="prodEntradaTitulo" style="max-width:480px;">
+        <h3 id="prodEntradaTitulo" class="productos-modal-title">REGISTRAR ENTRADA DE STOCK</h3>
         <div class="orden-field">
-            <label for="prodEntradaBuscar">Buscar producto</label>
-            <input id="prodEntradaBuscar" type="text" placeholder="Escribe para filtrar...">
+            <label for="prodEntradaBuscar">BUSCAR PRODUCTO</label>
+            <input id="prodEntradaBuscar" type="text" placeholder="ESCRIBE PARA FILTRAR...">
         </div>
         <div class="orden-field">
-            <label for="prodEntradaSelect">Producto</label>
+            <label for="prodEntradaSelect">PRODUCTO</label>
             <select id="prodEntradaSelect"></select>
         </div>
         <div class="orden-field">
-            <label for="prodEntradaCantidad">Cantidad de entrada</label>
+            <label>CATEGORIA</label>
+            <input id="prodEntradaCategoria" type="text" readonly style="background:#f3f4f6;cursor:default;">
+        </div>
+        <div class="orden-field">
+            <label for="prodEntradaCantidad">CANTIDAD DE ENTRADA</label>
             <input id="prodEntradaCantidad" type="number" min="1" step="1" value="1">
         </div>
+        <div class="orden-field">
+            <label for="prodEntradaCosto">COSTO UNITARIO</label>
+            <input id="prodEntradaCosto" type="number" min="0" step="0.01" value="0">
+        </div>
+        <div class="orden-field">
+            <label for="prodEntradaMotivo">MOTIVO</label>
+            <select id="prodEntradaMotivo">
+                <option value="COMPRA">COMPRA</option>
+                <option value="DEVOLUCION">DEVOLUCION</option>
+                <option value="AJUSTE">AJUSTE DE INVENTARIO</option>
+                <option value="PRODUCCION">PRODUCCION</option>
+                <option value="OTRO">OTRO</option>
+            </select>
+        </div>
+        <div class="orden-field">
+            <label>USUARIO</label>
+            <input id="prodEntradaUsuario" type="text" readonly style="background:#f3f4f6;cursor:default;">
+        </div>
+        <div class="orden-field">
+            <label>FECHA Y HORA</label>
+            <input id="prodEntradaFecha" type="text" readonly style="background:#f3f4f6;cursor:default;">
+        </div>
         <div class="productos-modal-actions">
-            <button id="prodEntradaGuardar" class="productos-btn" type="button">Registrar</button>
-            <button id="prodEntradaCerrar" class="productos-btn" type="button">Cerrar</button>
+            <button id="prodEntradaGuardar" class="productos-btn primary" type="button">REGISTRAR ENTRADA</button>
+            <button id="prodEntradaCerrar" class="productos-btn" type="button">CERRAR</button>
+        </div>
+    </div>
+</div>
+
+<div id="popupProdSalida" class="productos-modal-overlay" aria-hidden="true">
+    <div class="productos-modal-card" role="dialog" aria-modal="true" aria-labelledby="prodSalidaTitulo" style="max-width:480px;">
+        <h3 id="prodSalidaTitulo" class="productos-modal-title">REGISTRAR SALIDA DE STOCK</h3>
+        <div class="orden-field">
+            <label for="prodSalidaBuscar">BUSCAR PRODUCTO</label>
+            <input id="prodSalidaBuscar" type="text" placeholder="ESCRIBE PARA FILTRAR...">
+        </div>
+        <div class="orden-field">
+            <label for="prodSalidaSelect">PRODUCTO</label>
+            <select id="prodSalidaSelect"></select>
+        </div>
+        <div class="orden-field">
+            <label>CATEGORIA</label>
+            <input id="prodSalidaCategoria" type="text" readonly style="background:#f3f4f6;cursor:default;">
+        </div>
+        <div class="orden-field">
+            <label for="prodSalidaCantidad">CANTIDAD DE SALIDA</label>
+            <input id="prodSalidaCantidad" type="number" min="1" step="1" value="1">
+        </div>
+        <div class="orden-field">
+            <label for="prodSalidaMotivo">MOTIVO</label>
+            <select id="prodSalidaMotivo">
+                <option value="VENTA">VENTA</option>
+                <option value="MERMA">MERMA</option>
+                <option value="DEVOLUCION_PROVEEDOR">DEVOLUCION A PROVEEDOR</option>
+                <option value="AJUSTE">AJUSTE DE INVENTARIO</option>
+                <option value="MUESTRA">MUESTRA</option>
+                <option value="OTRO">OTRO</option>
+            </select>
+        </div>
+        <div class="orden-field">
+            <label>USUARIO</label>
+            <input id="prodSalidaUsuario" type="text" readonly style="background:#f3f4f6;cursor:default;">
+        </div>
+        <div class="orden-field">
+            <label>FECHA Y HORA</label>
+            <input id="prodSalidaFecha" type="text" readonly style="background:#f3f4f6;cursor:default;">
+        </div>
+        <div class="productos-modal-actions">
+            <button id="prodSalidaGuardar" class="productos-btn primary" type="button">REGISTRAR SALIDA</button>
+            <button id="prodSalidaCerrar" class="productos-btn" type="button">CERRAR</button>
         </div>
     </div>
 </div>
@@ -10835,7 +10940,7 @@ const imgBolsaDeliveryBase = new Image();
                             <button id="prodFormScanCodigo" class="productos-btn" type="button" title="Escanear código de barras" style="padding:6px 10px;font-size:0.75rem;">📷 Escanear</button>
                         </div>
                     </div>
-                    <div class="orden-field"><label for="prodFormTipo">Tipo de producto</label><select id="prodFormTipo"><option value="stock">📦 Producto en stock</option><option value="gran-formato">📐 Gran formato</option></select></div>
+                    <div class="orden-field"><label for="prodFormTipo">TIPO DE PRODUCTO</label><select id="prodFormTipo"><option value="stock">PRODUCTO</option><option value="gran-formato">GRAN FORMATO</option><option value="fabricado">FABRICADO</option><option value="insumo">INSUMO</option><option value="proceso">PROCESO</option><option value="servicio">SERVICIO</option></select></div>
                     <div class="orden-field"><label for="prodFormNaturaleza">Tipo comercial</label><select id="prodFormNaturaleza"><option value="producto">Producto</option><option value="fabricado">Producto fabricado</option><option value="insumo">Insumo</option><option value="proceso">Proceso</option><option value="servicio">Servicio</option></select></div>
                     <div class="orden-field" id="prodFormNombreWrap" data-nat="producto,fabricado,insumo,proceso,servicio"><label for="prodFormProducto">Nombre</label><input id="prodFormProducto" type="text" placeholder="Nombre del artículo"></div>
                     <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo">
@@ -11852,9 +11957,9 @@ const imgBolsaDeliveryBase = new Image();
                         <div>
                             <label style="font-size:0.52rem;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Rol</label>
                             <select id="configUserRol" style="width:100%;box-sizing:border-box;">
-                                <option value="vendedor">🟢 Vendedor</option>
-                                <option value="disenador">🟣 Diseñador</option>
-                                <option value="admin">🟡 Administrador</option>
+                                <option value="vendedor">VENDEDOR</option>
+                                <option value="disenador">DISENADOR</option>
+                                <option value="admin">ADMINistrador</option>
                             </select>
                         </div>
                         <div class="config-users-add-actions">
@@ -12263,8 +12368,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const prodEntradaBuscar = document.getElementById('prodEntradaBuscar');
     const prodEntradaSelect = document.getElementById('prodEntradaSelect');
     const prodEntradaCantidad = document.getElementById('prodEntradaCantidad');
+    const prodEntradaCosto = document.getElementById('prodEntradaCosto');
+    const prodEntradaMotivo = document.getElementById('prodEntradaMotivo');
+    const prodEntradaCategoria = document.getElementById('prodEntradaCategoria');
+    const prodEntradaUsuario = document.getElementById('prodEntradaUsuario');
+    const prodEntradaFecha = document.getElementById('prodEntradaFecha');
     const prodEntradaGuardar = document.getElementById('prodEntradaGuardar');
     const prodEntradaCerrar = document.getElementById('prodEntradaCerrar');
+    const popupProdSalida = document.getElementById('popupProdSalida');
+    const prodSalidaBuscar = document.getElementById('prodSalidaBuscar');
+    const prodSalidaSelect = document.getElementById('prodSalidaSelect');
+    const prodSalidaCantidad = document.getElementById('prodSalidaCantidad');
+    const prodSalidaMotivo = document.getElementById('prodSalidaMotivo');
+    const prodSalidaCategoria = document.getElementById('prodSalidaCategoria');
+    const prodSalidaUsuario = document.getElementById('prodSalidaUsuario');
+    const prodSalidaFecha = document.getElementById('prodSalidaFecha');
+    const prodSalidaGuardar = document.getElementById('prodSalidaGuardar');
+    const prodSalidaCerrar = document.getElementById('prodSalidaCerrar');
+    const prodSalidaStock = document.getElementById('prodSalidaStock');
     const popupProdForm = document.getElementById('popupProdForm');
     const prodFormCard = document.getElementById('prodFormCard');
     const prodFormTitulo = document.getElementById('prodFormTitulo');
@@ -12350,6 +12471,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let misPedidosData = [];
     let mpSelectedIds = new Set();
     const PRODUCTOS_KEY = 'mock_productos_v1';
+    const MOVIMIENTOS_STOCK_KEY = 'mock_movimientos_stock_v1';
     const CAJA_SETTINGS_KEY = 'mock_caja_settings_v1';
     const CAJA_MOVS_KEY = 'mock_caja_movs_v1';
     const CAJA_APERTURAS_KEY = 'mock_caja_aperturas_v1';
@@ -12363,6 +12485,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let productosCodigoFilter = '';
     let productosCategoriaFilter = '';
     let productosLowStockOnly = false;
+    let productosTipoFilter = '';
     let productoEditandoId = '';
     let prodMainPhotoData = '';
     let prodColorDraftList = [];
@@ -12753,6 +12876,8 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const canUsuarioAplicarDescuento = () => {
+        const role = (localStorage.getItem('logged_user_role') || '').trim().toLowerCase();
+        if (role === 'admin') return true;
         const usuario = String(getUsuarioLogeado() || '').trim().toLowerCase();
         const lista = getConfigValue('permisos', 'descuentoUsuarios');
         const permitidos = (Array.isArray(lista) ? lista : [])
@@ -15780,8 +15905,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderReportesModulo = () => {
         loadMisPedidos();
         loadProductos();
-        loadInsumosModulo();
-        loadAlmacenModulo();
 
         const rangoDias = Math.max(1, Number(reportesRango?.value || 30));
         const since = getDateDaysAgo(rangoDias - 1);
@@ -15805,18 +15928,34 @@ document.addEventListener('DOMContentLoaded', () => {
         if (repKpiTicket) repKpiTicket.textContent = formatMoney(ticket);
         if (repKpiAdeudo) repKpiAdeudo.textContent = formatMoney(adeudo);
 
+        // Movimientos de stock - estadisticas
+        const movs = getMovimientosStock();
+        const hoyStr = new Date().toISOString().slice(0, 10);
+        const movsHoy = movs.filter((m) => (m.fecha || '').slice(0, 10) === hoyStr);
+        const entradasHoy = movsHoy.filter((m) => m.tipo === 'ENTRADA').reduce((a, m) => a + (m.cantidad || 0), 0);
+        const salidasHoy = movsHoy.filter((m) => m.tipo === 'SALIDA').reduce((a, m) => a + (m.cantidad || 0), 0);
+        const movsPeriodo = movs.filter((m) => new Date(m.fecha) >= since).length;
+
+        const repKpiEntradasHoy = document.getElementById('repKpiEntradasHoy');
+        const repKpiSalidasHoy = document.getElementById('repKpiSalidasHoy');
+        const repKpiMovsPeriodo = document.getElementById('repKpiMovsPeriodo');
+        if (repKpiEntradasHoy) repKpiEntradasHoy.textContent = String(entradasHoy);
+        if (repKpiSalidasHoy) repKpiSalidasHoy.textContent = String(salidasHoy);
+        if (repKpiMovsPeriodo) repKpiMovsPeriodo.textContent = String(movsPeriodo);
+
+        // Top productos
         const topMap = new Map();
         rows.forEach((r) => {
             if (Array.isArray(r.lineas) && r.lineas.length) {
                 r.lineas.forEach((ln) => {
-                    const name = String(ln.producto || 'Producto').trim() || 'Producto';
+                    const name = String(ln.producto || 'PRODUCTO').trim() || 'PRODUCTO';
                     const qty = Math.max(0, Number(ln.cantidad || 0));
                     const total = qty * Math.max(0, Number(ln.precio || 0));
                     const prev = topMap.get(name) || { qty: 0, total: 0 };
                     topMap.set(name, { qty: prev.qty + qty, total: prev.total + total });
                 });
             } else if (r.producto) {
-                const name = String(r.producto || 'Producto').trim() || 'Producto';
+                const name = String(r.producto || 'PRODUCTO').trim() || 'PRODUCTO';
                 const prev = topMap.get(name) || { qty: 0, total: 0 };
                 topMap.set(name, { qty: prev.qty + 1, total: prev.total + Number(r.total || 0) });
             }
@@ -15829,43 +15968,139 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (repTopProductosBody) {
             if (!topRows.length) {
-                repTopProductosBody.innerHTML = '<tr><td colspan="3" class="clientesmod-empty">Sin detalle de productos en el periodo.</td></tr>';
+                repTopProductosBody.innerHTML = '<tr><td colspan="3" class="clientesmod-empty">SIN DETALLE DE PRODUCTOS EN EL PERIODO.</td></tr>';
             } else {
                 repTopProductosBody.innerHTML = topRows.map((t) => `<tr><td>${escCliMod(t.name)}</td><td>${Number(t.qty || 0)}</td><td>${formatMoney(Number(t.total || 0))}</td></tr>`).join('');
             }
         }
 
-        const totalInsumosValor = productosData.filter(p=>(p.naturaleza||'producto')==='insumo').reduce((acc,p)=>acc+(Number(p.existencias||0)*Number(p.precioCompra||0)),0);
-        const totalAlmacenValor = productosData.filter(p=>(p.naturaleza||'producto')==='producto').reduce((acc,p)=>acc+(Number(p.existencias||0)*Number(p.precioCompra||0)),0);
-        const lowStockInsumos = productosData.filter(p=>(p.naturaleza||'producto')==='insumo'&&Number(p.existencias||0)<=0).length;
-        const lowStockAlmacenThreshold = Math.max(0, Number(getConfigValue('almacen', 'stockMinimoAlerta') || 0));
-        const lowStockAlmacen = productosData.filter(p=>(p.naturaleza||'producto')==='producto'&&Number(p.existencias||0)<=0).length;
-
-        if (repResumenFuentesBody) {
-            repResumenFuentesBody.innerHTML = [
-                ['Pedidos en periodo', ordenes, formatMoney(ventas)],
-                ['Proveedores activos', proveedoresData.length, formatMoney(proveedoresData.reduce((acc, p) => acc + Number(p.saldoPendiente || 0), 0))],
-                ['Insumos en inventario', productosData.filter(p=>(p.naturaleza||'producto')==='insumo').length, formatMoney(productosData.filter(p=>(p.naturaleza||'producto')==='insumo').reduce((a,p)=>a+(Number(p.existencias||0)*Number(p.precioCompra||0)),0))],
-                ['Productos en almacén', productosData.filter(p=>(p.naturaleza||'producto')==='producto').length, formatMoney(productosData.filter(p=>(p.naturaleza||'producto')==='producto').reduce((a,p)=>a+(Number(p.existencias||0)*Number(p.precioCompra||0)),0))],
-                ['Bajo stock (insumos)', lowStockInsumos, '-'],
-                ['Bajo stock (almacén)', lowStockAlmacen, '-']
-            ].map((r) => `<tr><td>${escCliMod(r[0])}</td><td>${escCliMod(r[1])}</td><td>${escCliMod(r[2])}</td></tr>`).join('');
+        // Ultimos movimientos en dashboard
+        const repMovimientosBody = document.getElementById('repMovimientosBody');
+        if (repMovimientosBody) {
+            const ultimos = movs.slice(-10).reverse();
+            if (!ultimos.length) {
+                repMovimientosBody.innerHTML = '<tr><td colspan="3" class="clientesmod-empty">SIN MOVIMIENTOS</td></tr>';
+            } else {
+                repMovimientosBody.innerHTML = ultimos.map((m) => `<tr><td>${escCliMod(m.producto || '')}</td><td>${m.cantidad || 0}</td><td>${m.tipo || ''}</td></tr>`).join('');
+            }
         }
 
         if (repUltimaActualizacion) {
-            repUltimaActualizacion.textContent = `Actualización: ${new Date().toLocaleString('es-MX')}`;
+            repUltimaActualizacion.textContent = `ACTUALIZACION: ${new Date().toLocaleString('es-MX')}`;
+        }
+    };
+
+    let repTabActivo = 'dashboard';
+
+    const switchRepTab = (tab) => {
+        repTabActivo = tab;
+        const secDash = document.getElementById('repSeccionDashboard');
+        const secRep = document.getElementById('repSeccionReportes');
+        const btnDash = document.getElementById('repTabDashboard');
+        const btnRep = document.getElementById('repTabReportes');
+        if (secDash) secDash.style.display = tab === 'dashboard' ? '' : 'none';
+        if (secRep) secRep.style.display = tab === 'reportes' ? '' : 'none';
+        if (btnDash) { btnDash.classList.toggle('primary', tab === 'dashboard'); }
+        if (btnRep) { btnRep.classList.toggle('primary', tab === 'reportes'); }
+    };
+
+    const generarReporteVentas = () => {
+        const rangoDias = Math.max(1, Number(reportesRango?.value || 30));
+        const since = getDateDaysAgo(rangoDias - 1);
+        loadMisPedidos();
+        const rows = misPedidosData.filter((r) => {
+            const dt = new Date(`${r.fechaEmitida || ''}T00:00:00`);
+            return !Number.isNaN(dt.getTime()) && dt >= since;
+        });
+        const head = document.getElementById('repReporteHead');
+        const body = document.getElementById('repReporteBody');
+        if (head) head.innerHTML = '<tr><th>FECHA</th><th>ORDEN</th><th>CLIENTE</th><th>VENDEDOR</th><th>TOTAL</th><th>ESTADO</th></tr>';
+        if (body) {
+            if (!rows.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN VENTAS EN EL PERIODO</td></tr>'; return; }
+            body.innerHTML = rows.map((r) => `<tr><td>${escCliMod(r.fechaEmitida||'')}</td><td>${escCliMod(r.id||'')}</td><td>${escCliMod(r.cliente||'')}</td><td>${escCliMod(r.vendedor||'')}</td><td>${formatMoney(Number(r.total||0))}</td><td>${escCliMod(r.estado||'')}</td></tr>`).join('');
+        }
+    };
+
+    const generarReporteEntradasSalidas = () => {
+        const rangoDias = Math.max(1, Number(reportesRango?.value || 30));
+        const since = getDateDaysAgo(rangoDias - 1);
+        const movs = getMovimientosStock().filter((m) => new Date(m.fecha) >= since);
+        const head = document.getElementById('repReporteHead');
+        const body = document.getElementById('repReporteBody');
+        if (head) head.innerHTML = '<tr><th>FECHA</th><th>TIPO</th><th>PRODUCTO</th><th>CANTIDAD</th><th>MOTIVO</th><th>USUARIO</th></tr>';
+        if (body) {
+            if (!movs.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN MOVIMIENTOS EN EL PERIODO</td></tr>'; return; }
+            body.innerHTML = movs.reverse().map((m) => `<tr><td>${escCliMod(new Date(m.fecha).toLocaleString('es-MX'))}</td><td>${escCliMod(m.tipo)}</td><td>${escCliMod(m.producto)}</td><td>${m.cantidad}</td><td>${escCliMod(m.motivo)}</td><td>${escCliMod(m.usuario)}</td></tr>`).join('');
+        }
+    };
+
+    const generarReporteGastos = () => {
+        const rangoDias = Math.max(1, Number(reportesRango?.value || 30));
+        const since = getDateDaysAgo(rangoDias - 1);
+        const movs = getMovimientosStock().filter((m) => m.tipo === 'ENTRADA' && new Date(m.fecha) >= since);
+        const totalGasto = movs.reduce((a, m) => a + (m.costoUnitario || 0) * (m.cantidad || 0), 0);
+        const head = document.getElementById('repReporteHead');
+        const body = document.getElementById('repReporteBody');
+        if (head) head.innerHTML = '<tr><th>FECHA</th><th>PRODUCTO</th><th>CANTIDAD</th><th>COSTO UNITARIO</th><th>TOTAL</th><th>MOTIVO</th></tr>';
+        if (body) {
+            if (!movs.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN GASTOS EN EL PERIODO</td></tr>'; return; }
+            body.innerHTML = movs.reverse().map((m) => `<tr><td>${escCliMod(new Date(m.fecha).toLocaleString('es-MX'))}</td><td>${escCliMod(m.producto)}</td><td>${m.cantidad}</td><td>${formatMoney(m.costoUnitario||0)}</td><td>${formatMoney((m.costoUnitario||0)*(m.cantidad||0))}</td><td>${escCliMod(m.motivo)}</td></tr>`).join('');
+            body.innerHTML += `<tr style="font-weight:bold;"><td colspan="4">TOTAL GASTOS</td><td>${formatMoney(totalGasto)}</td><td></td></tr>`;
+        }
+    };
+
+    const generarReporteCortesCaja = () => {
+        const head = document.getElementById('repReporteHead');
+        const body = document.getElementById('repReporteBody');
+        let aperturas = [];
+        try { aperturas = JSON.parse(localStorage.getItem(CAJA_APERTURAS_KEY) || '[]'); } catch(_){}
+        if (head) head.innerHTML = '<tr><th>FECHA APERTURA</th><th>FECHA CIERRE</th><th>FONDO INICIAL</th><th>VENTAS</th><th>DIFERENCIA</th><th>ESTADO</th></tr>';
+        if (body) {
+            if (!aperturas.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN CORTES DE CAJA</td></tr>'; return; }
+            body.innerHTML = aperturas.reverse().map((a) => `<tr><td>${escCliMod(a.fechaApertura||'')}</td><td>${escCliMod(a.fechaCierre||'ABIERTA')}</td><td>${formatMoney(Number(a.fondoInicial||0))}</td><td>${formatMoney(Number(a.totalVentas||0))}</td><td>${formatMoney(Number(a.diferencia||0))}</td><td>${a.fechaCierre?'CERRADA':'ABIERTA'}</td></tr>`).join('');
+        }
+    };
+
+    const generarReportePagosRecibidos = () => {
+        const rangoDias = Math.max(1, Number(reportesRango?.value || 30));
+        const since = getDateDaysAgo(rangoDias - 1);
+        loadMisPedidos();
+        const rows = misPedidosData.filter((r) => {
+            const dt = new Date(`${r.fechaEmitida || ''}T00:00:00`);
+            return !Number.isNaN(dt.getTime()) && dt >= since && Number(r.totalPagado || 0) > 0;
+        });
+        const head = document.getElementById('repReporteHead');
+        const body = document.getElementById('repReporteBody');
+        if (head) head.innerHTML = '<tr><th>FECHA</th><th>ORDEN</th><th>CLIENTE</th><th>TOTAL PAGADO</th><th>ADEUDO</th><th>METODO</th></tr>';
+        if (body) {
+            if (!rows.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN PAGOS EN EL PERIODO</td></tr>'; return; }
+            body.innerHTML = rows.map((r) => `<tr><td>${escCliMod(r.fechaEmitida||'')}</td><td>${escCliMod(r.id||'')}</td><td>${escCliMod(r.cliente||'')}</td><td>${formatMoney(Number(r.totalPagado||0))}</td><td>${formatMoney(Number(r.adeudoCliente||0))}</td><td>${escCliMod(r.metodoPago||'')}</td></tr>`).join('');
+        }
+    };
+
+    const generarReporteHistorialCliente = () => {
+        const clienteNombre = prompt('NOMBRE DEL CLIENTE PARA CONSULTAR HISTORIAL:');
+        if (!clienteNombre) return;
+        loadMisPedidos();
+        const term = clienteNombre.trim().toLowerCase();
+        const rows = misPedidosData.filter((r) => String(r.cliente || '').toLowerCase().includes(term));
+        const head = document.getElementById('repReporteHead');
+        const body = document.getElementById('repReporteBody');
+        if (head) head.innerHTML = '<tr><th>FECHA</th><th>ORDEN</th><th>TOTAL</th><th>PAGADO</th><th>ADEUDO</th><th>ESTADO</th></tr>';
+        if (body) {
+            if (!rows.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN ORDENES PARA ESTE CLIENTE</td></tr>'; return; }
+            body.innerHTML = rows.map((r) => `<tr><td>${escCliMod(r.fechaEmitida||'')}</td><td>${escCliMod(r.id||'')}</td><td>${formatMoney(Number(r.total||0))}</td><td>${formatMoney(Number(r.totalPagado||0))}</td><td>${formatMoney(Number(r.adeudoCliente||0))}</td><td>${escCliMod(r.estado||'')}</td></tr>`).join('');
         }
     };
 
     const openReportesPopup = () => {
         if (!popupReportesModulo) return;
         loadProveedoresModulo();
-        loadInsumosModulo();
-        loadAlmacenModulo();
         popupReportesModulo.style.display = 'flex';
         popupReportesModulo.setAttribute('aria-hidden', 'false');
         document.body.classList.add('popup-open');
         document.documentElement.classList.add('popup-open');
+        switchRepTab('dashboard');
         renderReportesModulo();
     };
 
@@ -16432,6 +16667,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const term = String(productosSearchTerm || '').toLowerCase();
         const code = String(productosCodigoFilter || '').toLowerCase();
         return productosData.filter((p) => {
+            if (productosTipoFilter && (p.tipo || 'stock') !== productosTipoFilter) return false;
             if (productosCategoriaFilter && p.categoria !== productosCategoriaFilter) return false;
             if (productosLowStockOnly && Number(p.existencias || 0) > Number(p.minima || 0)) return false;
             if (term) {
@@ -16581,15 +16817,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderProductosTabla = () => {
         if (!productosTablaBody) return;
         const rows = getProductosFiltrados();
-        const totalTabRows = productosData.filter((p) => String(p.tipo || '') === String(productosTab)).length;
+        const totalTabRows = rows.length;
         renderProductosHead();
         toggleProductosToolbarByTab();
         if (productosLegend) {
-            const baseLabel = 'Listado de productos';
-            const low = productosLowStockOnly ? ' | agotados o por agotarse' : '';
-            const cat = productosCategoriaFilter ? ` | categoría: ${productosCategoriaFilter}` : '';
-            const cod = productosCodigoFilter ? ` | código: ${productosCodigoFilter}` : '';
-            productosLegend.textContent = `${baseLabel}${low}${cat}${cod}`;
+            const baseLabel = 'LISTADO DE PRODUCTOS';
+            const tipoF = productosTipoFilter ? ` | TIPO: ${productosTipoFilter.toUpperCase()}` : '';
+            const low = productosLowStockOnly ? ' | AGOTADOS O POR AGOTARSE' : '';
+            const cat = productosCategoriaFilter ? ` | CATEGORIA: ${productosCategoriaFilter}` : '';
+            const cod = productosCodigoFilter ? ` | CODIGO: ${productosCodigoFilter}` : '';
+            productosLegend.textContent = `${baseLabel}${tipoF}${low}${cat}${cod}`;
         }
 
         prodLowStock?.classList.toggle('active', productosLowStockOnly);
@@ -16607,7 +16844,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 productosSelectedIds.has(row.id) ? 'productos-row-selected' : '',
             ].filter(Boolean).join(' ');
             const isGF = row.tipo === 'gran-formato';
-            const tipoLabel = isGF ? '📐 Gran formato' : '📦 Stock';
+            const tipoLabels = {'stock':'PRODUCTO','gran-formato':'GRAN FORMATO','fabricado':'FABRICADO','insumo':'INSUMO','proceso':'PROCESO','servicio':'SERVICIO'};
+            const tipoLabel = tipoLabels[row.tipo] || 'PRODUCTO';
             const precioRev = isGF ? Number(row.gfPrecioRevM2 || 0) : Number(row.precioRevendedor || 0);
             const precioVta = isGF ? Number(row.gfPrecioGeneralM2 || 0) : Number(row.precioVenta || 0);
             return `<tr data-prod-id="${prodEscape(row.id)}" class="${classes}">
@@ -16801,8 +17039,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderEntradaSelect = () => {
         if (!prodEntradaSelect) return;
         const term = String(prodEntradaBuscar?.value || '').toLowerCase();
-        const rows = productosData.filter((p) => p.tipo === productosTab && `${p.codigo} ${p.producto}`.toLowerCase().includes(term));
+        const rows = productosData.filter((p) => `${p.codigo} ${p.producto}`.toLowerCase().includes(term));
         prodEntradaSelect.innerHTML = rows.map((p) => `<option value="${prodEscape(p.id)}">${prodEscape(p.codigo)} - ${prodEscape(p.producto)} (${Number(p.existencias || 0)})</option>`).join('');
+        syncEntradaCategoria();
+    };
+
+    const syncEntradaCategoria = () => {
+        const id = prodEntradaSelect?.value || '';
+        const found = productosData.find((p) => p.id === id);
+        if (prodEntradaCategoria) prodEntradaCategoria.value = found ? (found.categoria || 'SIN CATEGORIA') : '';
+    };
+
+    const renderSalidaSelect = () => {
+        if (!prodSalidaSelect) return;
+        const term = String(prodSalidaBuscar?.value || '').toLowerCase();
+        const rows = productosData.filter((p) => `${p.codigo} ${p.producto}`.toLowerCase().includes(term));
+        prodSalidaSelect.innerHTML = rows.map((p) => `<option value="${prodEscape(p.id)}">${prodEscape(p.codigo)} - ${prodEscape(p.producto)} (${Number(p.existencias || 0)})</option>`).join('');
+        syncSalidaCategoria();
+    };
+
+    const syncSalidaCategoria = () => {
+        const id = prodSalidaSelect?.value || '';
+        const found = productosData.find((p) => p.id === id);
+        if (prodSalidaCategoria) prodSalidaCategoria.value = found ? (found.categoria || 'SIN CATEGORIA') : '';
+    };
+
+    const saveMovimientoStock = (mov) => {
+        try {
+            const data = JSON.parse(localStorage.getItem(MOVIMIENTOS_STOCK_KEY) || '[]');
+            data.push(mov);
+            localStorage.setItem(MOVIMIENTOS_STOCK_KEY, JSON.stringify(data));
+        } catch (_) {}
+    };
+
+    const getMovimientosStock = () => {
+        try { return JSON.parse(localStorage.getItem(MOVIMIENTOS_STOCK_KEY) || '[]'); }
+        catch (_) { return []; }
+    };
+
+    const calcularCostoPromedio = (producto, nuevoCosto, nuevaCantidad) => {
+        const costoActual = Number(producto.costoPromedio || producto.precioCompra || 0);
+        const stockActual = Number(producto.existencias || 0);
+        if (stockActual + nuevaCantidad <= 0) return nuevoCosto;
+        return ((costoActual * stockActual) + (nuevoCosto * nuevaCantidad)) / (stockActual + nuevaCantidad);
     };
 
     const generarCodigoProducto = () => {
@@ -18577,6 +18856,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // Tabs Dashboard / Reportes
+    const repTabDashboardBtn = document.getElementById('repTabDashboard');
+    const repTabReportesBtn = document.getElementById('repTabReportes');
+    if (repTabDashboardBtn) repTabDashboardBtn.addEventListener('click', () => switchRepTab('dashboard'));
+    if (repTabReportesBtn) repTabReportesBtn.addEventListener('click', () => switchRepTab('reportes'));
+
+    // Botones de reportes
+    const repBtnVentas = document.getElementById('repBtnVentas');
+    const repBtnEntradasSalidas = document.getElementById('repBtnEntradasSalidas');
+    const repBtnGastos = document.getElementById('repBtnGastos');
+    const repBtnCortesCaja = document.getElementById('repBtnCortesCaja');
+    const repBtnPagosRecibidos = document.getElementById('repBtnPagosRecibidos');
+    const repBtnHistorialCliente = document.getElementById('repBtnHistorialCliente');
+    if (repBtnVentas) repBtnVentas.addEventListener('click', generarReporteVentas);
+    if (repBtnEntradasSalidas) repBtnEntradasSalidas.addEventListener('click', generarReporteEntradasSalidas);
+    if (repBtnGastos) repBtnGastos.addEventListener('click', generarReporteGastos);
+    if (repBtnCortesCaja) repBtnCortesCaja.addEventListener('click', generarReporteCortesCaja);
+    if (repBtnPagosRecibidos) repBtnPagosRecibidos.addEventListener('click', generarReportePagosRecibidos);
+    if (repBtnHistorialCliente) repBtnHistorialCliente.addEventListener('click', generarReporteHistorialCliente);
+
     if (calPrevMonth) {
         calPrevMonth.addEventListener('click', () => {
             calViewDate = new Date(calViewDate.getFullYear(), calViewDate.getMonth() - 1, 1);
@@ -18895,6 +19194,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    const prodFiltroTipo = document.getElementById('prodFiltroTipo');
+    if (prodFiltroTipo) {
+        prodFiltroTipo.addEventListener('change', () => {
+            productosTipoFilter = prodFiltroTipo.value;
+            renderProductosTabla();
+        });
+    }
+
     if (prodActualizar) {
         prodActualizar.addEventListener('click', () => {
             loadProductos();
@@ -18959,6 +19266,10 @@ document.addEventListener('DOMContentLoaded', () => {
         prodEntradaStock.addEventListener('click', () => {
             if (prodEntradaBuscar) prodEntradaBuscar.value = '';
             if (prodEntradaCantidad) prodEntradaCantidad.value = '1';
+            if (prodEntradaCosto) prodEntradaCosto.value = '0';
+            if (prodEntradaMotivo) prodEntradaMotivo.value = 'COMPRA';
+            if (prodEntradaUsuario) prodEntradaUsuario.value = getUsuarioLogeado();
+            if (prodEntradaFecha) prodEntradaFecha.value = new Date().toLocaleString('es-MX');
             renderEntradaSelect();
             openProdModal(popupProdEntrada);
         });
@@ -18968,17 +19279,42 @@ document.addEventListener('DOMContentLoaded', () => {
         prodEntradaBuscar.addEventListener('input', renderEntradaSelect);
     }
 
+    if (prodEntradaSelect) {
+        prodEntradaSelect.addEventListener('change', syncEntradaCategoria);
+    }
+
     if (prodEntradaGuardar) {
         prodEntradaGuardar.addEventListener('click', () => {
             const id = String(prodEntradaSelect?.value || '').trim();
             const qty = Math.max(0, Number(prodEntradaCantidad?.value || 0));
-            if (!id) return alert('Selecciona un producto.');
-            if (!Number.isFinite(qty) || qty <= 0) return alert('Cantidad inválida.');
-            productosData = productosData.map((p) => p.id === id ? { ...p, existencias: Number(p.existencias || 0) + qty } : p);
+            const costo = Math.max(0, Number(prodEntradaCosto?.value || 0));
+            const motivo = prodEntradaMotivo?.value || 'COMPRA';
+            if (!id) return alert('SELECCIONA UN PRODUCTO.');
+            if (!Number.isFinite(qty) || qty <= 0) return alert('CANTIDAD INVALIDA.');
+            const usuario = getUsuarioLogeado();
+            const fecha = new Date().toISOString();
+            productosData = productosData.map((p) => {
+                if (p.id !== id) return p;
+                const nuevoPromedio = costo > 0 ? calcularCostoPromedio(p, costo, qty) : (p.costoPromedio || p.precioCompra || 0);
+                return { ...p, existencias: Number(p.existencias || 0) + qty, costoPromedio: Math.round(nuevoPromedio * 100) / 100 };
+            });
+            const prod = productosData.find((p) => p.id === id);
+            saveMovimientoStock({
+                id: 'MOV-' + Date.now(),
+                tipo: 'ENTRADA',
+                productoId: id,
+                producto: prod?.producto || '',
+                categoria: prod?.categoria || '',
+                cantidad: qty,
+                costoUnitario: costo,
+                motivo: motivo,
+                usuario: usuario,
+                fecha: fecha
+            });
             saveProductos();
             renderProductosTabla();
             closeProdModal(popupProdEntrada);
-            alert('Entrada registrada.');
+            alert('ENTRADA REGISTRADA CORRECTAMENTE.');
         });
     }
 
@@ -18989,6 +19325,72 @@ document.addEventListener('DOMContentLoaded', () => {
     if (popupProdEntrada) {
         popupProdEntrada.addEventListener('click', (ev) => {
             if (ev.target === popupProdEntrada) closeProdModal(popupProdEntrada);
+        });
+    }
+
+    if (prodSalidaStock) {
+        prodSalidaStock.addEventListener('click', () => {
+            if (prodSalidaBuscar) prodSalidaBuscar.value = '';
+            if (prodSalidaCantidad) prodSalidaCantidad.value = '1';
+            if (prodSalidaMotivo) prodSalidaMotivo.value = 'VENTA';
+            if (prodSalidaUsuario) prodSalidaUsuario.value = getUsuarioLogeado();
+            if (prodSalidaFecha) prodSalidaFecha.value = new Date().toLocaleString('es-MX');
+            renderSalidaSelect();
+            openProdModal(popupProdSalida);
+        });
+    }
+
+    if (prodSalidaBuscar) {
+        prodSalidaBuscar.addEventListener('input', renderSalidaSelect);
+    }
+
+    if (prodSalidaSelect) {
+        prodSalidaSelect.addEventListener('change', syncSalidaCategoria);
+    }
+
+    if (prodSalidaGuardar) {
+        prodSalidaGuardar.addEventListener('click', () => {
+            const id = String(prodSalidaSelect?.value || '').trim();
+            const qty = Math.max(0, Number(prodSalidaCantidad?.value || 0));
+            const motivo = prodSalidaMotivo?.value || 'VENTA';
+            if (!id) return alert('SELECCIONA UN PRODUCTO.');
+            if (!Number.isFinite(qty) || qty <= 0) return alert('CANTIDAD INVALIDA.');
+            const prod = productosData.find((p) => p.id === id);
+            if (prod && Number(prod.existencias || 0) < qty) {
+                if (!confirm('LA CANTIDAD DE SALIDA EXCEDE EL STOCK ACTUAL. ¿CONTINUAR?')) return;
+            }
+            const usuario = getUsuarioLogeado();
+            const fecha = new Date().toISOString();
+            productosData = productosData.map((p) => {
+                if (p.id !== id) return p;
+                return { ...p, existencias: Math.max(0, Number(p.existencias || 0) - qty) };
+            });
+            saveMovimientoStock({
+                id: 'MOV-' + Date.now(),
+                tipo: 'SALIDA',
+                productoId: id,
+                producto: prod?.producto || '',
+                categoria: prod?.categoria || '',
+                cantidad: qty,
+                costoUnitario: 0,
+                motivo: motivo,
+                usuario: usuario,
+                fecha: fecha
+            });
+            saveProductos();
+            renderProductosTabla();
+            closeProdModal(popupProdSalida);
+            alert('SALIDA REGISTRADA CORRECTAMENTE.');
+        });
+    }
+
+    if (prodSalidaCerrar) {
+        prodSalidaCerrar.addEventListener('click', () => closeProdModal(popupProdSalida));
+    }
+
+    if (popupProdSalida) {
+        popupProdSalida.addEventListener('click', (ev) => {
+            if (ev.target === popupProdSalida) closeProdModal(popupProdSalida);
         });
     }
 
@@ -23941,7 +24343,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 badge.className = 'login-user-badge';
                 vendedorInput.parentElement.appendChild(badge);
             }
-            const roleLabels = { admin: '🟡 Admin', vendedor: '🟢 Vendedor', disenador: '🟣 Diseñador' };
+            const roleLabels = { admin: 'ADMIN', vendedor: 'VENDEDOR', disenador: 'DISENADOR' };
             badge.textContent = roleLabels[role] || role;
         }
     };
@@ -24024,9 +24426,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     <td>
                         ${canChangeRole
                             ? `<select class="config-user-role-select" data-doc-id="${esc(u.id)}" style="font-size:0.52rem;padding:4px 8px;border-radius:6px;background:#f9fafb;color:#374151;border:1px solid #d1d5db;">
-                                <option value="vendedor"${u.rol==='vendedor'?' selected':''}>🟢 Vendedor</option>
-                                <option value="disenador"${u.rol==='disenador'?' selected':''}>🟣 Diseñador</option>
-                                <option value="admin"${u.rol==='admin'?' selected':''}>🟡 Admin</option>
+                                <option value="vendedor"${u.rol==='vendedor'?' selected':''}>VENDEDOR</option>
+                                <option value="disenador"${u.rol==='disenador'?' selected':''}>DISENADOR</option>
+                                <option value="admin"${u.rol==='admin'?' selected':''}>ADMIN</option>
                             </select>`
                             : `<span class="config-user-role-badge ${roleClass}">${roleLabel}</span>`
                         }
