@@ -6793,7 +6793,7 @@
 
 <div id="inicioSistema" class="inicio-sistema-overlay" aria-hidden="true">
     <div class="inicio-sistema-box" style="position:relative">
-        <!-- Dropdown REGISTROS eliminado: Proveedores y Configuraciones ahora en cuadricula principal -->
+        <button id="btnAjustesMain" type="button" title="Configuraciones" aria-label="Configuraciones" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.5em;cursor:pointer;z-index:10;opacity:0.7;transition:opacity .2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">⚙️</button>
         <div class="inicio-logo">
             <img src="https://i.postimg.cc/WzY3mk57/Copia-de-Copia-de-Post-Instagram-catalogo-de-productos-escolares-comercial-promocional-azul-(11).png" alt="Logo Maquileros">
         </div>
@@ -6805,13 +6805,13 @@
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCCION')"><span class="ico">🏭</span><span>PRODUCCION</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPARTO')"><span class="ico">🚚</span><span>REPARTO</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCTOS')"><span class="ico">🧾</span><span>PRODUCTOS</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPORTES')"><span class="ico">📊</span><span>REPORTES</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('DASHBOARD')"><span class="ico">📈</span><span>DASHBOARD</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CAJA')"><span class="ico">💳</span><span>CAJA</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CALENDARIO')"><span class="ico">📅</span><span>CALENDARIO</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('MUESTRARIO')"><span class="ico">🎨</span><span>MUESTRARIO</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CLIENTES')"><span class="ico">👥</span><span>CLIENTES</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PROVEEDORES')"><span class="ico">🏢</span><span>PROVEEDORES</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CONFIGURACIONES')"><span class="ico">⚙️</span><span>CONFIGURACIONES</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPORTES')"><span class="ico">📊</span><span>REPORTES</span></button>
         </div>
     </div>
 </div>
@@ -8753,9 +8753,15 @@ const imgBolsaDeliveryBase = new Image();
             return;
         }
 
-        if (key === 'REPORTES' || key === 'DASHBOARD') {
+        if (key === 'DASHBOARD') {
             ocultarInicioSistema();
-            if (window.openReportesPopupGlobal) window.openReportesPopupGlobal();
+            if (window.openReportesPopupGlobal) window.openReportesPopupGlobal('dashboard');
+            return;
+        }
+
+        if (key === 'REPORTES') {
+            ocultarInicioSistema();
+            if (window.openReportesPopupGlobal) window.openReportesPopupGlobal('reportes');
             return;
         }
 
@@ -10645,8 +10651,8 @@ const imgBolsaDeliveryBase = new Image();
                         <button id="prodExportPdf" class="productos-btn productos-icon-btn" type="button" data-tip="Exportar PDF" title="Exportar PDF" aria-label="Exportar PDF">📄</button>
                         <button id="prodFiltroCategoria" class="productos-btn productos-icon-btn" type="button" data-tip="Filtrar por categoría" title="Filtrar por categoría" aria-label="Filtrar por categoría">🗂</button>
                         <button id="prodFiltroCodigo" class="productos-btn productos-icon-btn" type="button" data-tip="Filtrar por código de producto" title="Filtrar por código de producto" aria-label="Filtrar por código de producto">#</button>
-                        <button id="prodEntradaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar entrada de stock" title="Registrar entrada de stock" aria-label="Registrar entrada de stock" style="color:#16a34a;">↑ ENTRADA</button>
-                        <button id="prodSalidaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar salida de stock" title="Registrar salida de stock" aria-label="Registrar salida de stock" style="color:#dc2626;">↓ SALIDA</button>
+                        <button id="prodEntradaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar entrada de stock" title="Registrar entrada de stock" aria-label="Registrar entrada de stock" style="color:#16a34a;font-size:1.2em;">↑</button>
+                        <button id="prodSalidaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar salida de stock" title="Registrar salida de stock" aria-label="Registrar salida de stock" style="color:#dc2626;font-size:1.2em;">↓</button>
                         <button id="prodImprimir" class="productos-btn productos-icon-btn" type="button" data-tip="Imprimir inventario" title="Imprimir inventario" aria-label="Imprimir inventario">🖨</button>
                         <button id="prodExcel" class="productos-btn productos-icon-btn" type="button" data-tip="Exportar en Excel" title="Exportar en Excel" aria-label="Exportar en Excel">📊</button>
                         <button id="prodAbrirPlantilla" class="productos-btn productos-icon-btn gray" type="button" data-tip="Abrir plantilla" title="Abrir plantilla" aria-label="Abrir plantilla">Abrir plantilla</button>
@@ -16166,14 +16172,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    const openReportesPopup = () => {
+    const openReportesPopup = (tab) => {
         if (!popupReportesModulo) return;
         loadProveedoresModulo();
         popupReportesModulo.style.display = 'flex';
         popupReportesModulo.setAttribute('aria-hidden', 'false');
         document.body.classList.add('popup-open');
         document.documentElement.classList.add('popup-open');
-        switchRepTab('dashboard');
+        switchRepTab(tab || 'dashboard');
         renderReportesModulo();
     };
 
@@ -18008,7 +18014,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.type = 'number';
                 input.min = '1';
                 input.value = String(actual);
-                input.style.cssText = 'width:60px;text-align:center;font-size:inherit;font-weight:900;border:2px solid #FF8C00;border-radius:4px;outline:none;padding:2px 4px;background:#fff3e0;';
+                input.style.cssText = 'width:60px;text-align:center;font-size:inherit;font-weight:900;border:2px solid #ccc;border-radius:4px;outline:none;padding:2px 4px;background:#ffffff;';
                 qtyCell.textContent = '';
                 qtyCell.appendChild(input);
                 input.focus();
@@ -18159,6 +18165,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         if (ordenClienteSelectPopup?.style.display === 'flex') {
             closeOrdenClienteSelectPopup();
+        }
+    });
+
+    document.addEventListener('keydown', (ev) => {
+        const tag = (ev.target?.tagName || '').toUpperCase();
+        const isInput = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+        if (ev.key === 'Backspace' && !isInput) {
+            const popupListado = document.getElementById('popupListado');
+            if (popupListado && popupListado.style.display === 'flex') {
+                ev.preventDefault();
+                if (ordenLineaActiva >= 0 && ordenLineas[ordenLineaActiva]) {
+                    const prodName = ordenLineas[ordenLineaActiva].producto || 'este producto';
+                    showConfirmPopup(`¿Eliminar "${prodName}" del ticket?`, () => {
+                        ordenLineas.splice(ordenLineaActiva, 1);
+                        ordenLineaActiva = -1;
+                        renderTabla();
+                        saveTicketActivo();
+                    });
+                }
+            }
         }
     });
 
@@ -24897,21 +24923,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('ordenBtnVentaRapida')?.click();
             return;
         }
-        if (ev.key === 'Backspace' && !isInput && isInCotizador) {
-            ev.preventDefault();
-            if (typeof ordenLineaActiva !== 'undefined' && ordenLineaActiva >= 0 && typeof ordenLineas !== 'undefined' && ordenLineas[ordenLineaActiva]) {
-                const prodName = ordenLineas[ordenLineaActiva].producto || 'este producto';
-                if (typeof showConfirmPopup === 'function') {
-                    showConfirmPopup(`¿Eliminar "${prodName}" del ticket?`, () => {
-                        ordenLineas.splice(ordenLineaActiva, 1);
-                        ordenLineaActiva = -1;
-                        renderTabla();
-                        saveTicketActivo();
-                    });
-                }
-            }
-            return;
-        }
+        // Backspace handler moved to cotizador scope (see DOMContentLoaded block)
         if (ev.key === 'Delete' && !isInput) { ev.preventDefault(); document.getElementById('ordenBtnLimpiar')?.click(); return; }
 
         // Ctrl shortcuts (cotizador)
