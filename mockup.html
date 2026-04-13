@@ -6760,18 +6760,18 @@
         <div class="inicio-title">PANEL DE VENTAS</div>
         <div class="inicio-sub">Selecciona un modulo principal para iniciar</div>
         <div class="inicio-grid">
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('NUEVA ORDEN')"><span>NUEVA ORDEN</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('MIS PEDIDOS')"><span>MIS PEDIDOS</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCCION')"><span>PRODUCCION</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPARTO')"><span>REPARTO</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCTOS')"><span>PRODUCTOS</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPORTES')"><span>REPORTES</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CAJA')"><span>CAJA</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CALENDARIO')"><span>CALENDARIO</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('MUESTRARIO')"><span>MUESTRARIO</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CLIENTES')"><span>CLIENTES</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PROVEEDORES')"><span>PROVEEDORES</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CONFIGURACIONES')"><span>CONFIGURACIONES</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('NUEVA ORDEN')"><span class="ico">🆕</span><span>NUEVA ORDEN</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('MIS PEDIDOS')"><span class="ico">📦</span><span>MIS PEDIDOS</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCCION')"><span class="ico">🏭</span><span>PRODUCCION</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPARTO')"><span class="ico">🚚</span><span>REPARTO</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCTOS')"><span class="ico">🧾</span><span>PRODUCTOS</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPORTES')"><span class="ico">📊</span><span>REPORTES</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CAJA')"><span class="ico">💳</span><span>CAJA</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CALENDARIO')"><span class="ico">📅</span><span>CALENDARIO</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('MUESTRARIO')"><span class="ico">🎨</span><span>MUESTRARIO</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CLIENTES')"><span class="ico">👥</span><span>CLIENTES</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PROVEEDORES')"><span class="ico">🏢</span><span>PROVEEDORES</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CONFIGURACIONES')"><span class="ico">⚙️</span><span>CONFIGURACIONES</span></button>
         </div>
     </div>
 </div>
@@ -20770,16 +20770,6 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
         }
         if (popup) { popup.style.display = 'none'; popup.setAttribute('aria-hidden', 'true'); }
         _applyConfirmedUbi(cp, cr, cn, cc);
-    }
-
-    // === Costo promedio automático para insumos ===
-    function calcularCostoPromedio(existenciasAnt, costoAnt, nuevaCantidad, nuevoCosto) {
-        // Promedio ponderado: ((existAnt * costoAnt) + (nuevaCantidad * nuevoCosto)) / (existAnt + nuevaCantidad)
-        const ea = Math.max(0, Number(existenciasAnt || 0));
-        const ca = Math.max(0, Number(costoAnt || 0));
-        const total = ea + nuevaCantidad;
-        if (total <= 0) return nuevoCosto;
-        return +( ((ea * ca) + (nuevaCantidad * nuevoCosto)) / total ).toFixed(4);
     }
 
     // === Urgente surtir — inventario negativo de insumos ===
