@@ -23945,7 +23945,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Load users from Firestore to get role & name
             await loadUsersFromFirestore();
-            const sysUser = findUserByEmail(email);
+            let sysUser = findUserByEmail(email);
+
+            // Auto-register in Firestore if user exists in Auth but not in system_users
+            if (!sysUser) {
+                try {
+                    const autoName = fbUser.displayName || email.split('@')[0];
+                    await saveUserToFirestore({ correo: email, nombre: autoName, rol: 'vendedor' });
+                    await loadUsersFromFirestore();
+                    sysUser = findUserByEmail(email);
+                } catch (_autoErr) { console.warn('No se pudo auto-registrar usuario en Firestore:', _autoErr); }
+            }
+
             const userName = sysUser?.nombre || fbUser.displayName || email.split('@')[0];
             const userRole = sysUser?.rol || 'vendedor';
 
