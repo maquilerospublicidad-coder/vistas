@@ -3777,26 +3777,6 @@
             justify-items: start;
         }
 
-        #prodGfToolbar {
-            display: none;
-            align-items: center;
-            justify-content: flex-start;
-            gap: 4px;
-            width: auto;
-            max-width: max-content;
-        }
-
-        #prodGfToolbar .productos-btn {
-            height: 24px;
-            padding: 3px 8px;
-            font-size: 0.53rem;
-            border-radius: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.14px;
-            white-space: nowrap;
-            text-align: center;
-        }
-
         .productos-icon-grid {
             display: flex;
             flex-wrap: wrap;
@@ -10196,8 +10176,7 @@ const imgBolsaDeliveryBase = new Image();
             </div>
 
             <div class="orden-actions-row" style="justify-content: flex-end;">
-                <button id="ordenAddStock" class="orden-btn-circular primary" type="button" title="Agregar productos de stock (F1)">📦 <span class="shortcut-hint">F1</span></button>
-                <button id="ordenAddFormato" class="orden-btn-circular primary" type="button" title="Agregar gran formato">↔</button>
+                <button id="ordenAddStock" class="orden-btn-circular primary" type="button" title="Agregar productos (F1)">📦 <span class="shortcut-hint">F1</span></button>
                 <button id="ordenEliminarProducto" class="orden-btn-circular warn" type="button" title="Eliminar producto de la tabla">🗑</button>
             </div>
 
@@ -10393,12 +10372,8 @@ const imgBolsaDeliveryBase = new Image();
 <div id="ordenStockPopup" class="orden-stock-popup" aria-hidden="true">
     <div class="orden-stock-card" role="dialog" aria-modal="true" aria-labelledby="ordenStockTitle">
         <div class="orden-stock-main">
-            <div style="display:flex;gap:6px;margin-bottom:6px;">
-                <button id="ordenStockTabStock" class="orden-btn active" type="button" style="flex:1;font-size:0.6rem;padding:6px;">📦 Productos en stock</button>
-                <button id="ordenStockTabGranFormato" class="orden-btn" type="button" style="flex:1;font-size:0.6rem;padding:6px;">↔ Gran Formato</button>
-            </div>
             <div class="orden-stock-search">
-                <label for="ordenStockSearch">Buscar producto de stock</label>
+                <label for="ordenStockSearch">Buscar producto</label>
                 <input id="ordenStockSearch" type="text" placeholder="Nombre, medida, material, categoria o codigo">
             </div>
 
@@ -10543,10 +10518,6 @@ const imgBolsaDeliveryBase = new Image();
         <div class="productos-head">
             <h2 id="productosTitulo" class="productos-title">MÓDULO DE PRODUCTOS</h2>
             <div class="productos-head-right">
-                <div class="productos-tabs">
-                    <button id="productosTabStock" class="productos-tab active" type="button" data-tab="stock">Productos en stock</button>
-                    <button id="productosTabFormato" class="productos-tab" type="button" data-tab="gran-formato">Gran formato</button>
-                </div>
                 <div class="productos-search">
                     <label for="productosSearchInput">Buscar</label>
                     <input id="productosSearchInput" type="text" placeholder="Nombre, material, medida o código">
@@ -10575,11 +10546,6 @@ const imgBolsaDeliveryBase = new Image();
                         <button id="prodExcel" class="productos-btn productos-icon-btn" type="button" data-tip="Exportar en Excel" title="Exportar en Excel" aria-label="Exportar en Excel">📊</button>
                         <button id="prodAbrirPlantilla" class="productos-btn productos-icon-btn gray" type="button" data-tip="Abrir plantilla" title="Abrir plantilla" aria-label="Abrir plantilla">Abrir plantilla</button>
                         <button id="prodImportarDesde" class="productos-btn productos-icon-btn gray" type="button" data-tip="Importar desde" title="Importar desde" aria-label="Importar desde">Importar desde</button>
-                    </div>
-                    <div id="prodGfToolbar">
-                        <button id="prodGfAbrirPlantilla" class="productos-btn gray" type="button">Abrir plantilla</button>
-                        <button id="prodGfImportarDesde" class="productos-btn gray" type="button">Importar desde</button>
-                        <button id="prodGfExportarDesde" class="productos-btn" type="button">Exportar desde</button>
                     </div>
                     <input id="prodImportFile" type="file" accept=".csv,text/csv" style="display:none;" />
                 </div>
@@ -10869,7 +10835,7 @@ const imgBolsaDeliveryBase = new Image();
                             <button id="prodFormScanCodigo" class="productos-btn" type="button" title="Escanear código de barras" style="padding:6px 10px;font-size:0.75rem;">📷 Escanear</button>
                         </div>
                     </div>
-                    <select id="prodFormTipo" style="display:none;"><option value="stock">Productos en stock</option><option value="gran-formato">Gran formato</option></select>
+                    <div class="orden-field"><label for="prodFormTipo">Tipo de producto</label><select id="prodFormTipo"><option value="stock">📦 Producto en stock</option><option value="gran-formato">📐 Gran formato</option></select></div>
                     <div class="orden-field"><label for="prodFormNaturaleza">Tipo comercial</label><select id="prodFormNaturaleza"><option value="producto">Producto</option><option value="fabricado">Producto fabricado</option><option value="insumo">Insumo</option><option value="proceso">Proceso</option><option value="servicio">Servicio</option></select></div>
                     <div class="orden-field" id="prodFormNombreWrap" data-nat="producto,fabricado,insumo,proceso,servicio"><label for="prodFormProducto">Nombre</label><input id="prodFormProducto" type="text" placeholder="Nombre del artículo"></div>
                     <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo">
@@ -16466,11 +16432,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const term = String(productosSearchTerm || '').toLowerCase();
         const code = String(productosCodigoFilter || '').toLowerCase();
         return productosData.filter((p) => {
-            if (p.tipo !== productosTab) return false;
             if (productosCategoriaFilter && p.categoria !== productosCategoriaFilter) return false;
             if (productosLowStockOnly && Number(p.existencias || 0) > Number(p.minima || 0)) return false;
             if (term) {
-                const blob = `${p.codigo} ${p.producto} ${p.medida} ${p.material} ${p.categoria}`.toLowerCase();
+                const blob = `${p.codigo} ${p.producto} ${p.medida} ${p.material} ${p.categoria} ${p.tipo || ''}`.toLowerCase();
                 if (!blob.includes(term)) return false;
             }
             if (code && !String(p.codigo || '').toLowerCase().includes(code)) return false;
@@ -16482,34 +16447,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const renderProductosHead = () => {
         if (!productosTablaHead) return;
-        if (productosTab === 'gran-formato') {
-            productosTablaHead.innerHTML = `<tr>
-                <th>ID</th>
-                <th>Producto</th>
-                <th>Material</th>
-                <th>Precio general M2</th>
-                <th>Precio M2 revendedor</th>
-                <th>Precio M/lineal general</th>
-                <th>Precio M/lineal revendedor</th>
-            </tr>`;
-            return;
-        }
         productosTablaHead.innerHTML = `<tr>
+            <th>Tipo</th>
             <th>Producto</th>
             <th>Medida</th>
             <th>Material</th>
-            <th>Cant. minima</th>
             <th>Existencias</th>
-            <th>Precio para revendedor</th>
-            <th>Precio de venta</th>
+            <th>Precio revendedor</th>
+            <th>Precio venta</th>
         </tr>`;
     };
 
     const toggleProductosToolbarByTab = () => {
-        const isGF = productosTab === 'gran-formato';
-        if (prodGfToolbar) prodGfToolbar.style.display = isGF ? 'flex' : 'none';
-        const iconGrid = document.querySelector('.productos-icon-grid');
-        if (iconGrid) iconGrid.style.display = isGF ? 'none' : 'flex';
+        // Gran formato toolbar no longer needed as separate tab
     };
 
     const syncProdFormModeByTipo = () => {
@@ -16635,15 +16585,13 @@ document.addEventListener('DOMContentLoaded', () => {
         renderProductosHead();
         toggleProductosToolbarByTab();
         if (productosLegend) {
-            const baseLabel = productosTab === 'stock' ? 'Listado de productos' : 'Listado de productos gran formato';
+            const baseLabel = 'Listado de productos';
             const low = productosLowStockOnly ? ' | agotados o por agotarse' : '';
             const cat = productosCategoriaFilter ? ` | categoría: ${productosCategoriaFilter}` : '';
             const cod = productosCodigoFilter ? ` | código: ${productosCodigoFilter}` : '';
             productosLegend.textContent = `${baseLabel}${low}${cat}${cod}`;
         }
 
-        productosTabStock?.classList.toggle('active', productosTab === 'stock');
-        productosTabFormato?.classList.toggle('active', productosTab === 'gran-formato');
         prodLowStock?.classList.toggle('active', productosLowStockOnly);
         if (prodRegistrosCount) {
             prodRegistrosCount.textContent = `Registros: ${totalTabRows}`;
@@ -16658,25 +16606,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const classes = [
                 productosSelectedIds.has(row.id) ? 'productos-row-selected' : '',
             ].filter(Boolean).join(' ');
-            if (productosTab === 'gran-formato') {
-                return `<tr data-prod-id="${prodEscape(row.id)}" class="${classes}">
-                    <td>${prodEscape(row.codigo || row.id || '')}</td>
-                    <td>${prodEscape(row.producto)}</td>
-                    <td>${prodEscape(row.material)}</td>
-                    <td>${formatMoney(Number(row.gfPrecioGeneralM2 || 0))}</td>
-                    <td>${formatMoney(Number(row.gfPrecioRevM2 || 0))}</td>
-                    <td>${formatMoney(Number(row.gfPrecioGeneralML || 0))}</td>
-                    <td>${formatMoney(Number(row.gfPrecioRevML || 0))}</td>
-                </tr>`;
-            }
+            const isGF = row.tipo === 'gran-formato';
+            const tipoLabel = isGF ? '📐 Gran formato' : '📦 Stock';
+            const precioRev = isGF ? Number(row.gfPrecioRevM2 || 0) : Number(row.precioRevendedor || 0);
+            const precioVta = isGF ? Number(row.gfPrecioGeneralM2 || 0) : Number(row.precioVenta || 0);
             return `<tr data-prod-id="${prodEscape(row.id)}" class="${classes}">
+                <td style="font-size:0.5rem;">${tipoLabel}</td>
                 <td>${prodEscape(row.producto)}</td>
-                <td>${prodEscape(row.medida)}</td>
+                <td>${prodEscape(row.medida || (isGF ? '-' : ''))}</td>
                 <td>${prodEscape(row.material)}</td>
-                <td>${Number(row.minima || 0)}</td>
-                <td>${Number(row.existencias || 0)}</td>
-                <td>${formatMoney(Number(row.precioRevendedor || 0))}</td>
-                <td>${formatMoney(Number(row.precioVenta || 0))}</td>
+                <td>${isGF ? '-' : Number(row.existencias || 0)}</td>
+                <td>${formatMoney(precioRev)}</td>
+                <td>${formatMoney(precioVta)}</td>
             </tr>`;
         }).join('');
     };
@@ -16687,33 +16628,20 @@ document.addEventListener('DOMContentLoaded', () => {
             alert('No hay productos para exportar.');
             return;
         }
-        const headers = productosTab === 'gran-formato'
-            ? ['ID', 'PRODUCTO', 'MATERIAL', 'PRECIO_GENERAL_M2', 'PRECIO_M2_REVENDEDOR', 'PRECIO_M_LINEAL_GENERAL', 'PRECIO_M_LINEAL_REVENDEDOR']
-            : ['CODIGO', 'PRODUCTO', 'MEDIDA', 'MATERIAL', 'CANT_MINIMA', 'EXISTENCIAS', 'PRECIO_REVENDEDOR', 'PRECIO_VENTA', 'CATEGORIA', 'TIPO'];
+        const headers = ['CODIGO', 'TIPO', 'PRODUCTO', 'MEDIDA', 'MATERIAL', 'EXISTENCIAS', 'PRECIO_REVENDEDOR', 'PRECIO_VENTA', 'CATEGORIA'];
         const escCsv = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
         const lines = [headers.join(',')].concat(rows.map((p) => {
-            if (productosTab === 'gran-formato') {
-                return [
-                    p.codigo || p.id,
-                    p.producto,
-                    p.material,
-                    Number(p.gfPrecioGeneralM2 || 0).toFixed(2),
-                    Number(p.gfPrecioRevM2 || 0).toFixed(2),
-                    Number(p.gfPrecioGeneralML || 0).toFixed(2),
-                    Number(p.gfPrecioRevML || 0).toFixed(2)
-                ].map(escCsv).join(',');
-            }
+            const isGF = p.tipo === 'gran-formato';
             return [
-                p.codigo,
+                p.codigo || p.id,
+                p.tipo || 'stock',
                 p.producto,
-                p.medida,
+                p.medida || '',
                 p.material,
-                Number(p.minima || 0),
-                Number(p.existencias || 0),
-                Number(p.precioRevendedor || 0).toFixed(2),
-                Number(p.precioVenta || 0).toFixed(2),
-                p.categoria,
-                p.tipo
+                isGF ? '' : Number(p.existencias || 0),
+                isGF ? Number(p.gfPrecioRevM2 || 0).toFixed(2) : Number(p.precioRevendedor || 0).toFixed(2),
+                isGF ? Number(p.gfPrecioGeneralM2 || 0).toFixed(2) : Number(p.precioVenta || 0).toFixed(2),
+                p.categoria || ''
             ].map(escCsv).join(',');
         }));
         const blob = new Blob([lines.join('\n')], { type: 'text/csv;charset=utf-8;' });
@@ -16927,7 +16855,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (typeof updateVariantesResumen === "function") updateVariantesResumen();
         if (prodFormTitulo) prodFormTitulo.textContent = 'Agregar producto';
         if (prodFormCodigo) prodFormCodigo.value = '';
-        if (prodFormTipo) prodFormTipo.value = productosTab;
+        if (prodFormTipo) prodFormTipo.value = 'stock';
         if (prodFormNaturaleza) prodFormNaturaleza.value = 'producto';
         if (prodFormProducto) prodFormProducto.value = '';
         if (prodFormCategoria) prodFormCategoria.value = '';
@@ -17314,11 +17242,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const getProductosStockOrden = () => {
         const term = String(ordenStockSearchTerm || '').trim().toLowerCase();
         const baseRows = productosData
-            .filter((p) => String(p.tipo || '').toLowerCase() === String(ordenPickerTipo || 'stock').toLowerCase())
             .map((p) => ({ ...p, sourceType: 'producto' }));
 
         let extraRows = [];
-        if (String(ordenPickerTipo || 'stock').toLowerCase() === 'stock') {
+        {
             loadInsumosModulo();
             extraRows = productosData.filter(p => (p.naturaleza||'producto') === 'insumo')
                 .filter((i) => Boolean(i.ventaPublica))
@@ -17487,10 +17414,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const rows = getProductosStockOrden();
 
         if (!rows.length) {
-            const txt = ordenPickerTipo === 'gran-formato'
-                ? 'Sin productos de gran formato para ese filtro.'
-                : 'Sin productos de stock para ese filtro.';
-            ordenStockTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#6b7280;padding:12px;">${txt}</td></tr>`;
+            ordenStockTableBody.innerHTML = `<tr><td colspan="3" style="text-align:center;color:#6b7280;padding:12px;">Sin productos para ese filtro.</td></tr>`;
             ordenStockSelectedId = '';
             if (ordenStockResultCount) ordenStockResultCount.textContent = '0 resultados';
             renderOrdenStockDetalle();
@@ -17519,22 +17443,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const openOrdenStockPopup = (tipo = 'stock') => {
         if (!ordenStockPopup) return;
         loadProductos();
-        ordenPickerTipo = tipo === 'gran-formato' ? 'gran-formato' : 'stock';
         ordenStockSearchTerm = '';
         ordenStockPriceMode = 'general';
         ordenStockSelectedId = '';
         setOrdenStockQty(1);
         closeOrdenStockQtyPopup();
         if (ordenStockSearch) {
-            ordenStockSearch.placeholder = ordenPickerTipo === 'gran-formato'
-                ? 'Nombre, medida, material, categoria o codigo de gran formato'
-                : 'Nombre, medida, material, categoria o codigo';
+            ordenStockSearch.placeholder = 'Nombre, medida, material, categoria o codigo';
         }
         const stockTitle = document.getElementById('ordenStockTitle');
         if (stockTitle) {
-            stockTitle.textContent = ordenPickerTipo === 'gran-formato'
-                ? 'Detalle del producto de gran formato'
-                : 'Detalle del producto de stock';
+            stockTitle.textContent = 'Detalle del producto';
         }
         renderOrdenStockPriceModeUI();
         renderOrdenStockTabla();
@@ -17561,8 +17480,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const qty = Math.max(1, Math.floor(Number(ordenStockQty || 1)));
+        const isGranFormato = (producto.tipo === 'gran-formato');
         const available = Math.max(0, Number(producto.existencias || 0));
-        if (qty > available) {
+        if (!isGranFormato && qty > available) {
             alert(`No hay suficiente stock. Existencias disponibles: ${available}.`);
             return;
         }
@@ -17629,11 +17549,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const addLinea = (tipo) => {
-        if (tipo === 'stock' || tipo === 'gran-formato') {
-            openOrdenStockPopup(tipo);
-            return;
-        }
-        addLineaManual(tipo);
+        openOrdenStockPopup(tipo || 'stock');
     };
 
     const resetOrden = () => {
@@ -17751,7 +17667,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const btnAddStock = el('ordenAddStock');
-    const btnAddFormato = el('ordenAddFormato');
     const btnEliminar = el('ordenEliminarProducto');
     const btnImpuestos = el('ordenBtnImpuestos');
     const btnDescuento = el('ordenBtnDescuento');
@@ -17878,7 +17793,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     if (btnAddStock) btnAddStock.onclick = () => addLinea('stock');
-    if (btnAddFormato) btnAddFormato.onclick = () => addLinea('gran-formato');
     if (btnEliminar) {
         btnEliminar.onclick = () => {
             if (ordenLineaActiva < 0 || ordenLineaActiva >= ordenLineas.length) {
@@ -18945,28 +18859,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    if (productosTabStock) {
-        productosTabStock.addEventListener('click', () => {
-            productosTab = 'stock';
-            productosSelectedIds = new Set();
-            productosSelectionAnchorId = '';
-            productosCategoriaFilter = '';
-            productosLowStockOnly = false;
-            renderProductosTabla();
-        });
-    }
-
-    if (productosTabFormato) {
-        productosTabFormato.addEventListener('click', () => {
-            productosTab = 'gran-formato';
-            productosSelectedIds = new Set();
-            productosSelectionAnchorId = '';
-            productosCategoriaFilter = '';
-            productosLowStockOnly = false;
-            renderProductosTabla();
-        });
-    }
-
     if (productosTablaBody) {
         productosTablaBody.addEventListener('click', (ev) => {
             const tr = ev.target.closest('tr[data-prod-id]');
@@ -19173,6 +19065,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (prodFormNaturaleza) {
         prodFormNaturaleza.addEventListener('change', () => {
+            syncProdFormModeByTipo();
+        });
+    }
+
+    if (prodFormTipo) {
+        prodFormTipo.addEventListener('change', () => {
             syncProdFormModeByTipo();
         });
     }
@@ -20564,7 +20462,7 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
     if (prodAgregar) {
         prodAgregar.addEventListener('click', () => {
             resetProdForm();
-            if (prodFormTipo) prodFormTipo.value = productosTab;
+            if (prodFormTipo) prodFormTipo.value = 'stock';
             if (prodFormCodigo) prodFormCodigo.value = generarCodigoProducto();
             syncProdFormModeByTipo();
             openProdModal(popupProdForm);
