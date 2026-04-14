@@ -2379,11 +2379,14 @@
             display: none;
             position: fixed;
             inset: 0;
+            width: 100vw;
+            height: 100vh;
             z-index: 2170;
             background: #eef2f7;
             align-items: center;
             justify-content: center;
             padding: 18px;
+            isolation: isolate;
         }
 
         .caja-card {
@@ -2610,6 +2613,106 @@
             font-size: 0.8rem;
             font-weight: 900;
             color: #111827;
+        }
+
+        /* Report module cards */
+        .rep-modulo-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 20px 14px;
+            border: 1px solid #e3e8f0;
+            border-radius: 14px;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            min-height: 130px;
+            justify-content: center;
+        }
+        .rep-modulo-card:hover {
+            border-color: #f59e0b;
+            background: #fffbeb;
+            box-shadow: 0 6px 16px rgba(245,158,11,0.15);
+            transform: translateY(-2px);
+        }
+        .rep-modulo-ico {
+            font-size: 2rem;
+            line-height: 1;
+        }
+        .rep-modulo-name {
+            font-size: 0.6rem;
+            font-weight: 900;
+            color: #1f2937;
+            text-transform: uppercase;
+            letter-spacing: 0.2px;
+        }
+        .rep-modulo-desc {
+            font-size: 0.48rem;
+            color: #6b7280;
+            line-height: 1.3;
+        }
+        .rep-vista-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            border-bottom: 1px solid #e3e8f0;
+            margin-bottom: 8px;
+        }
+        .rep-vista-filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            align-items: flex-end;
+            padding: 8px;
+            background: #f9fbff;
+            border: 1px solid #e3e8f0;
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+        .rep-vista-filtros .orden-field {
+            min-width: 140px;
+        }
+        .rep-vista-filtros .orden-field label {
+            font-size: 0.48rem;
+            font-weight: 800;
+            color: #6b7280;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 2px;
+        }
+        .rep-vista-filtros .orden-field input,
+        .rep-vista-filtros .orden-field select {
+            width: 100%;
+            padding: 5px 8px;
+            border: 1px solid #d4dae4;
+            border-radius: 6px;
+            font-size: 0.55rem;
+            background: #fff;
+            color: #1f2937;
+        }
+        .rep-vista-resumen {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 6px;
+        }
+        .rep-vista-resumen .rep-chip {
+            padding: 4px 10px;
+            border-radius: 999px;
+            font-size: 0.5rem;
+            font-weight: 800;
+            background: #eef2ff;
+            border: 1px solid #c7d2fe;
+            color: #4338ca;
+        }
+        .rep-vista-footer {
+            padding: 6px 0;
+            font-size: 0.5rem;
+            color: #9ca3af;
+            text-align: right;
         }
 
         .caja-actions {
@@ -5134,6 +5237,28 @@
             padding: 16px;
         }
 
+        .landing-back-btn {
+            position: absolute;
+            top: 14px;
+            left: 14px;
+            z-index: 10;
+            background: rgba(0,0,0,0.08);
+            color: #374151;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 1.3rem;
+            font-weight: 900;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .15s;
+        }
+
+        .landing-back-btn:hover { background: rgba(0,0,0,0.15); }
+
         .inicio-sistema-overlay {
             position: fixed;
             inset: 0;
@@ -6321,22 +6446,27 @@
 
         .btn-home {
             position: fixed;
-            bottom: 12px;
-            right: 12px;
-            transform: none;
-            z-index: 62;
-            background: var(--accent);
-            color: #000;
-            border: 1px solid rgba(0,0,0,0.14);
-            border-radius: 12px;
-            padding: 6px 10px;
-            font-weight: 800;
+            top: 14px;
+            left: 14px;
+            z-index: 100;
+            background: rgba(255,255,255,0.18);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 38px;
+            height: 38px;
+            font-size: 1.3rem;
+            font-weight: 900;
             cursor: pointer;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.18);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.25);
             display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+            transition: background .15s;
         }
 
-        .btn-home:hover { filter: brightness(1.06); }
+        .btn-home:hover { background: rgba(255,255,255,0.32); }
 
         /* ── Dropdown Registros ── */
         .registros-dropdown-wrap {
@@ -6789,7 +6919,7 @@
     </div>
 </div>
 
-<button id="btnHome" class="btn-home" onclick="irMenuPrincipal()">MENU</button>
+<button id="btnHome" class="btn-home" onclick="irAtrasConfigurador()" title="Volver al muestrario" aria-label="Volver al muestrario">←</button>
 
 <div id="inicioSistema" class="inicio-sistema-overlay" aria-hidden="true">
     <div class="inicio-sistema-box" style="position:relative">
@@ -6817,6 +6947,7 @@
 </div>
 
 <div id="landing" class="landing-overlay">
+    <button id="btnLandingBack" class="landing-back-btn" onclick="irAtrasLanding()" title="Volver al menú principal" aria-label="Volver al menú principal">←</button>
     <div class="landing-box">
         <button id="btnListadoRapido" class="landing-corner-btn left">Listado rápido</button>
         <!-- Ocultados temporalmente: ACCESS y Seguimiento Diseño -->
@@ -7286,10 +7417,8 @@ function abrirPopupProveedorDesdeProductos() {
     <div class="clientesmod-card" role="dialog" aria-modal="true" aria-labelledby="reportesmodTitulo">
         <button id="reportesmodBack" class="clientesmod-back" type="button" title="VOLVER AL MENU PRINCIPAL" aria-label="VOLVER AL MENU PRINCIPAL">&#8592;</button>
         <div class="clientesmod-head">
-            <h2 id="reportesmodTitulo" class="clientesmod-title">REPORTES Y DASHBOARD</h2>
-            <div class="clientesmod-head-right">
-                <button id="repTabDashboard" class="productos-btn primary" type="button" style="font-size:0.48rem;padding:6px 14px;">DASHBOARD</button>
-                <button id="repTabReportes" class="productos-btn" type="button" style="font-size:0.48rem;padding:6px 14px;">REPORTES</button>
+            <h2 id="reportesmodTitulo" class="clientesmod-title">DASHBOARD</h2>
+            <div class="clientesmod-head-right" id="repHeadRight">
             </div>
         </div>
         <div class="clientesmod-main">
@@ -7299,7 +7428,9 @@ function abrirPopupProveedorDesdeProductos() {
                     <div class="clientesmod-label">RESUMEN EJECUTIVO</div>
                     <div class="clientesmod-toolbar-right">
                         <select id="reportesRango" class="clientesmod-search" style="width:220px;min-width:220px;">
-                            <option value="30">ULTIMOS 30 DIAS</option>
+                            <option value="7">ULTIMOS 7 DIAS</option>
+                            <option value="15">ULTIMOS 15 DIAS</option>
+                            <option value="30" selected>ULTIMOS 30 DIAS</option>
                             <option value="60">ULTIMOS 60 DIAS</option>
                             <option value="90">ULTIMOS 90 DIAS</option>
                             <option value="365">ULTIMO AÑO</option>
@@ -7308,21 +7439,44 @@ function abrirPopupProveedorDesdeProductos() {
                     </div>
                 </div>
 
-                <div style="display:grid;grid-template-columns:repeat(6,minmax(140px,1fr));gap:8px;">
-                    <div class="caja-kpi"><b>VENTAS</b><span id="repKpiVentas">$0.00</span></div>
-                    <div class="caja-kpi"><b>INVERSION</b><span id="repKpiInversion">$0.00</span></div>
-                    <div class="caja-kpi"><b>GANANCIA</b><span id="repKpiGanancia">$0.00</span></div>
-                    <div class="caja-kpi"><b>ORDENES</b><span id="repKpiOrdenes">0</span></div>
-                    <div class="caja-kpi"><b>TICKET PROMEDIO</b><span id="repKpiTicket">$0.00</span></div>
-                    <div class="caja-kpi"><b>ADEUDO PENDIENTE</b><span id="repKpiAdeudo">$0.00</span></div>
+                <!-- KPIs principales -->
+                <div style="display:grid;grid-template-columns:repeat(4,minmax(140px,1fr));gap:8px;">
+                    <div class="caja-kpi" style="border-left:3px solid #16a34a;"><b>💰 VENTAS TOTALES</b><span id="repKpiVentas" style="color:#16a34a;">$0.00</span></div>
+                    <div class="caja-kpi" style="border-left:3px solid #dc2626;"><b>📉 INVERSIÓN</b><span id="repKpiInversion" style="color:#dc2626;">$0.00</span></div>
+                    <div class="caja-kpi" style="border-left:3px solid #2563eb;"><b>📈 GANANCIA</b><span id="repKpiGanancia" style="color:#2563eb;">$0.00</span></div>
+                    <div class="caja-kpi" style="border-left:3px solid #f59e0b;"><b>🧾 ORDENES</b><span id="repKpiOrdenes" style="color:#f59e0b;">0</span></div>
                 </div>
 
-                <div style="display:grid;grid-template-columns:repeat(3,minmax(120px,1fr));gap:8px;margin-top:10px;">
-                    <div class="caja-kpi"><b>ENTRADAS HOY</b><span id="repKpiEntradasHoy">0</span></div>
-                    <div class="caja-kpi"><b>SALIDAS HOY</b><span id="repKpiSalidasHoy">0</span></div>
-                    <div class="caja-kpi"><b>MOVIMIENTOS PERIODO</b><span id="repKpiMovsPeriodo">0</span></div>
+                <!-- KPIs secundarios -->
+                <div style="display:grid;grid-template-columns:repeat(5,minmax(120px,1fr));gap:8px;margin-top:8px;">
+                    <div class="caja-kpi"><b>🎫 TICKET PROMEDIO</b><span id="repKpiTicket">$0.00</span></div>
+                    <div class="caja-kpi"><b>⚠️ ADEUDO PENDIENTE</b><span id="repKpiAdeudo" style="color:#dc2626;">$0.00</span></div>
+                    <div class="caja-kpi"><b>📊 % GANANCIA</b><span id="repKpiPctGanancia">0%</span></div>
+                    <div class="caja-kpi"><b>👥 CLIENTES ACTIVOS</b><span id="repKpiClientesActivos">0</span></div>
+                    <div class="caja-kpi"><b>📋 PEDIDOS PENDIENTES</b><span id="repKpiPedidosPend">0</span></div>
                 </div>
 
+                <!-- KPIs de inventario -->
+                <div style="display:grid;grid-template-columns:repeat(4,minmax(120px,1fr));gap:8px;margin-top:8px;">
+                    <div class="caja-kpi"><b>⬆️ ENTRADAS HOY</b><span id="repKpiEntradasHoy" style="color:#16a34a;">0</span></div>
+                    <div class="caja-kpi"><b>⬇️ SALIDAS HOY</b><span id="repKpiSalidasHoy" style="color:#dc2626;">0</span></div>
+                    <div class="caja-kpi"><b>🔄 MOVS. PERIODO</b><span id="repKpiMovsPeriodo">0</span></div>
+                    <div class="caja-kpi"><b>💳 MÉTODO TOP</b><span id="repKpiMetodoTop" style="font-size:0.65rem;">--</span></div>
+                </div>
+
+                <!-- Gráficas -->
+                <div style="display:grid;grid-template-columns:2fr 1fr;gap:8px;margin-top:10px;">
+                    <div style="background:#fff;border:1px solid #e3e8f0;border-radius:9px;padding:10px;">
+                        <b style="font-size:0.54rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.18px;">📊 VENTAS POR DÍA</b>
+                        <canvas id="repChartVentas" style="width:100%;height:180px;margin-top:6px;"></canvas>
+                    </div>
+                    <div style="background:#fff;border:1px solid #e3e8f0;border-radius:9px;padding:10px;">
+                        <b style="font-size:0.54rem;color:#6b7280;text-transform:uppercase;letter-spacing:0.18px;">🥧 DISTRIBUCIÓN DE PRODUCTOS</b>
+                        <canvas id="repChartProductos" style="width:100%;height:180px;margin-top:6px;"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tablas -->
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;min-height:0;margin-top:8px;">
                     <div class="clientesmod-table-wrap">
                         <table class="clientesmod-table">
@@ -7346,6 +7500,20 @@ function abrirPopupProveedorDesdeProductos() {
                     </div>
                 </div>
 
+                <!-- Tabla de últimas órdenes -->
+                <div style="margin-top:8px;">
+                    <div class="clientesmod-table-wrap">
+                        <table class="clientesmod-table">
+                            <thead>
+                                <tr><th>FOLIO</th><th>CLIENTE</th><th>PRODUCTO</th><th>TOTAL</th><th>ESTADO</th><th>FECHA</th></tr>
+                            </thead>
+                            <tbody id="repUltimasOrdenesBody">
+                                <tr><td colspan="6" class="clientesmod-empty">SIN DATOS</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <div class="clientesmod-foot">
                     <span id="repUltimaActualizacion">ACTUALIZACION: --</span>
                 </div>
@@ -7353,19 +7521,96 @@ function abrirPopupProveedorDesdeProductos() {
 
             <!-- ======= REPORTES TAB ======= -->
             <div id="repSeccionReportes" style="display:none;">
-                <div class="clientesmod-toolbar">
-                    <div class="clientesmod-label">GENERAR REPORTES</div>
+                <!-- Vista de módulos (cuadrícula) -->
+                <div id="repModulosGrid">
+                    <div style="text-align:center;padding:18px 0 8px;">
+                        <h3 style="margin:0;font-size:0.9rem;font-weight:900;color:#1f2937;letter-spacing:0.3px;">CENTRO DE REPORTES</h3>
+                        <p style="margin:4px 0 0;font-size:0.6rem;color:#6b7280;">Selecciona un módulo para generar un reporte detallado</p>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;padding:16px 40px;max-width:900px;margin:0 auto;">
+                        <button id="repBtnVentas" class="rep-modulo-card" type="button">
+                            <span class="rep-modulo-ico">📊</span>
+                            <span class="rep-modulo-name">REPORTE DE VENTAS</span>
+                            <span class="rep-modulo-desc">Ventas realizadas, totales y por cliente</span>
+                        </button>
+                        <button id="repBtnEntradasSalidas" class="rep-modulo-card" type="button">
+                            <span class="rep-modulo-ico">📦</span>
+                            <span class="rep-modulo-name">ENTRADAS Y SALIDAS</span>
+                            <span class="rep-modulo-desc">Movimientos de inventario y stock</span>
+                        </button>
+                        <button id="repBtnGastos" class="rep-modulo-card" type="button">
+                            <span class="rep-modulo-ico">💸</span>
+                            <span class="rep-modulo-name">REPORTE DE GASTOS</span>
+                            <span class="rep-modulo-desc">Gastos registrados por período</span>
+                        </button>
+                        <button id="repBtnCortesCaja" class="rep-modulo-card" type="button">
+                            <span class="rep-modulo-ico">🏦</span>
+                            <span class="rep-modulo-name">CORTES DE CAJA</span>
+                            <span class="rep-modulo-desc">Historial de cortes y balances</span>
+                        </button>
+                        <button id="repBtnPagosRecibidos" class="rep-modulo-card" type="button">
+                            <span class="rep-modulo-ico">💳</span>
+                            <span class="rep-modulo-name">PAGOS RECIBIDOS</span>
+                            <span class="rep-modulo-desc">Anticipos y pagos por cliente y método</span>
+                        </button>
+                        <button id="repBtnHistorialCliente" class="rep-modulo-card" type="button">
+                            <span class="rep-modulo-ico">👤</span>
+                            <span class="rep-modulo-name">HISTORIAL DE CLIENTE</span>
+                            <span class="rep-modulo-desc">Registro completo de un cliente</span>
+                        </button>
+                        <button id="repBtnProductosVendidos" class="rep-modulo-card" type="button">
+                            <span class="rep-modulo-ico">🛒</span>
+                            <span class="rep-modulo-name">PRODUCTOS VENDIDOS</span>
+                            <span class="rep-modulo-desc">Ventas por producto y variantes</span>
+                        </button>
+                    </div>
                 </div>
-                <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px 0;">
-                    <button id="repBtnVentas" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>REPORTE DE VENTAS</span></button>
-                    <button id="repBtnEntradasSalidas" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>REPORTE DE ENTRADAS Y SALIDAS</span></button>
-                    <button id="repBtnGastos" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>REPORTE DE GASTOS</span></button>
-                    <button id="repBtnCortesCaja" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>REPORTE DE CORTES DE CAJA</span></button>
-                    <button id="repBtnPagosRecibidos" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>REPORTE DE PAGOS RECIBIDOS</span></button>
-                    <button id="repBtnHistorialCliente" class="inicio-card" type="button" style="min-height:70px;font-size:0.5rem;"><span>HISTORIAL DEL CLIENTE</span></button>
-                </div>
-                <div id="repContenidoReporte" style="margin-top:10px;">
-                    <div class="clientesmod-table-wrap">
+                <!-- Vista de reporte expandido (pantalla completa) -->
+                <div id="repVistaReporte" style="display:none;">
+                    <div class="rep-vista-toolbar">
+                        <button id="repVistaBack" class="clientesmod-btn" type="button" style="font-size:0.52rem;">← VOLVER A REPORTES</button>
+                        <h3 id="repVistaTitulo" style="margin:0;font-size:0.72rem;font-weight:900;color:#1f2937;flex:1;text-align:center;">REPORTE</h3>
+                        <button id="repVistaExport" class="clientesmod-btn primary" type="button" style="font-size:0.52rem;">📄 EXPORTAR</button>
+                    </div>
+                    <div class="rep-vista-filtros">
+                        <div class="orden-field">
+                            <label for="repFiltroDesde">DESDE</label>
+                            <input id="repFiltroDesde" type="date">
+                        </div>
+                        <div class="orden-field">
+                            <label for="repFiltroHasta">HASTA</label>
+                            <input id="repFiltroHasta" type="date">
+                        </div>
+                        <div class="orden-field" id="repFiltroClienteWrap">
+                            <label for="repFiltroCliente">CLIENTE</label>
+                            <input id="repFiltroCliente" type="text" placeholder="Todos los clientes">
+                        </div>
+                        <div class="orden-field" id="repFiltroEstadoWrap">
+                            <label for="repFiltroEstado">ESTADO</label>
+                            <select id="repFiltroEstado">
+                                <option value="">TODOS</option>
+                                <option value="pendiente">PENDIENTE</option>
+                                <option value="en-produccion">EN PRODUCCIÓN</option>
+                                <option value="terminado">TERMINADO</option>
+                                <option value="entregado">ENTREGADO</option>
+                            </select>
+                        </div>
+                        <!-- Filtros especiales para Productos Vendidos -->
+                        <div class="orden-field" id="repFiltroProductoWrap" style="display:none;">
+                            <label for="repFiltroProducto">PRODUCTO</label>
+                            <select id="repFiltroProducto">
+                                <option value="">TODOS LOS PRODUCTOS</option>
+                            </select>
+                        </div>
+                        <div class="orden-field" id="repFiltroVarianteWrap" style="display:none;">
+                            <label for="repFiltroVariante">VARIANTE / MEDIDA</label>
+                            <select id="repFiltroVariante" multiple style="min-height:60px;">
+                            </select>
+                        </div>
+                        <button id="repFiltroAplicar" class="clientesmod-btn primary" type="button" style="align-self:flex-end;">APLICAR FILTROS</button>
+                    </div>
+                    <div class="rep-vista-resumen" id="repVistaResumen"></div>
+                    <div class="clientesmod-table-wrap" style="flex:1;min-height:0;">
                         <table class="clientesmod-table">
                             <thead id="repReporteHead"></thead>
                             <tbody id="repReporteBody">
@@ -7373,6 +7618,7 @@ function abrirPopupProveedorDesdeProductos() {
                             </tbody>
                         </table>
                     </div>
+                    <div class="rep-vista-footer" id="repVistaFooter"></div>
                 </div>
             </div>
         </div>
@@ -8641,7 +8887,7 @@ const imgBolsaDeliveryBase = new Image();
         const landing = document.getElementById('landing');
         if (landing) landing.style.display = 'none';
         const btnHome = document.getElementById('btnHome');
-        if (btnHome) btnHome.style.display = 'block';
+        if (btnHome) btnHome.style.display = 'flex';
         document.body.classList.toggle('mod-bolsa', !esProductoTarjeta());
         document.body.classList.toggle('mod-tarjeta', esProductoTarjeta());
         document.body.classList.toggle('mod-kraft', esProductoKraft(p));
@@ -8661,8 +8907,12 @@ const imgBolsaDeliveryBase = new Image();
         const landing = document.getElementById('landing');
         const chatFab = document.getElementById('btnOpenClientChatMini');
         const loginOv = document.getElementById('loginOverlay');
+        const sidebar = document.querySelector('.sidebar');
+        const mainArea = document.querySelector('.main-area');
         if (loginOv && localStorage.getItem('logged_user_email')) loginOv.style.display = 'none';
-        if (landing) landing.style.display = 'none';
+        if (landing) { landing.style.display = 'none'; landing.style.visibility = ''; }
+        if (sidebar) { sidebar.style.display = ''; sidebar.style.visibility = ''; }
+        if (mainArea) { mainArea.style.display = ''; mainArea.style.visibility = ''; }
         if (inicio) {
             inicio.style.display = 'flex';
             inicio.setAttribute('aria-hidden', 'false');
@@ -8720,7 +8970,15 @@ const imgBolsaDeliveryBase = new Image();
             // Oculta absolutamente todo lo demás
             ocultarInicioSistema();
             var landing = document.getElementById('landing');
-            if (landing) landing.style.display = 'none';
+            if (landing) { landing.style.display = 'none'; landing.style.visibility = 'hidden'; }
+            // Oculta sidebar y main-area para evitar que se muestre el muestrario
+            var sidebar = document.querySelector('.sidebar');
+            if (sidebar) { sidebar.style.display = 'none'; sidebar.style.visibility = 'hidden'; }
+            var mainArea = document.querySelector('.main-area');
+            if (mainArea) { mainArea.style.display = 'none'; mainArea.style.visibility = 'hidden'; }
+            // Oculta btnHome
+            var btnHome = document.getElementById('btnHome');
+            if (btnHome) btnHome.style.display = 'none';
             // Oculta todos los overlays posibles
             Array.from(document.querySelectorAll('.caja-overlay, .clientesmod-overlay, .clientesform-overlay, .proveedoresmod-overlay, .proveedorform-overlay, .insumosmod-overlay, .insumoform-overlay, .almacenmod-overlay, .almacenform-overlay, .reportesmod-overlay, .misPedidos-overlay, .productos-overlay, .ajustes-tabuladores-overlay, .prod-tabulador-overlay, .popup-overlay, .popup, .modal, .overlay, [id^=popup], [id$=Overlay], [id$=overlay]')).forEach(function(el){ el.style.display = 'none'; el.setAttribute('aria-hidden','true'); });
             document.body.classList.remove('popup-open');
@@ -8803,6 +9061,25 @@ const imgBolsaDeliveryBase = new Image();
     function irMenuPrincipal() {
         mostrarInicioSistema();
         document.body.classList.remove('reloading', 'mod-bolsa', 'mod-tarjeta');
+        const ov = document.getElementById('reloadOverlay'); if (ov) ov.style.display = 'none';
+        try { sessionStorage.removeItem('nextProducto'); } catch (_) {}
+    }
+
+    // Desde el configurador de producto → volver al muestrario (landing)
+    function irAtrasConfigurador() {
+        const landing = document.getElementById('landing');
+        if (landing) landing.style.display = 'flex';
+        const btnHome = document.getElementById('btnHome');
+        if (btnHome) btnHome.style.display = 'none';
+        document.body.classList.remove('reloading', 'mod-bolsa', 'mod-tarjeta', 'mod-kraft');
+        const ov = document.getElementById('reloadOverlay'); if (ov) ov.style.display = 'none';
+        try { sessionStorage.removeItem('nextProducto'); } catch (_) {}
+    }
+
+    // Desde el landing (muestrario) → volver al menú principal
+    function irAtrasLanding() {
+        mostrarInicioSistema();
+        document.body.classList.remove('reloading', 'mod-bolsa', 'mod-tarjeta', 'mod-kraft');
         const ov = document.getElementById('reloadOverlay'); if (ov) ov.style.display = 'none';
         try { sessionStorage.removeItem('nextProducto'); } catch (_) {}
     }
@@ -14761,7 +15038,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     razonSocial: String(c.razonSocial || '').trim(),
                     rfc: String(c.rfc || '').trim(),
                     referenciaBancaria: String(c.referenciaBancaria || '').trim(),
-                    tipoCliente: String(c.tipoCliente || 'Publico en general').trim() || 'Publico en general'
+                    tipoCliente: String(c.tipoCliente || 'Publico en general').trim() || 'Publico en general',
+                    deshabilitado: !!c.deshabilitado
                 }));
                 return;
             }
@@ -16155,6 +16433,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const renderReportesModulo = () => {
         loadMisPedidos();
         loadProductos();
+        loadClientesModulo();
 
         const rangoDias = Math.max(1, Number(reportesRango?.value || 30));
         const since = getDateDaysAgo(rangoDias - 1);
@@ -16170,6 +16449,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const adeudo = rows.reduce((acc, r) => acc + Number(r.adeudoCliente || 0), 0);
         const ordenes = rows.length;
         const ticket = ordenes ? (ventas / ordenes) : 0;
+        const pctGanancia = ventas > 0 ? ((ganancia / ventas) * 100).toFixed(1) : '0.0';
+        const clientesActivos = clientesModuloData.filter(c => !c.deshabilitado).length;
+        const pedidosPendientes = misPedidosData.filter(r => {
+            const s = normalizeStatus(r.estatusProduccion || r.estado || '').replace(/\s+/g, '-');
+            return s !== 'entregado' && s !== 'cancelado';
+        }).length;
 
         if (repKpiVentas) repKpiVentas.textContent = formatMoney(ventas);
         if (repKpiInversion) repKpiInversion.textContent = formatMoney(inversion);
@@ -16177,6 +16462,19 @@ document.addEventListener('DOMContentLoaded', () => {
         if (repKpiOrdenes) repKpiOrdenes.textContent = String(ordenes);
         if (repKpiTicket) repKpiTicket.textContent = formatMoney(ticket);
         if (repKpiAdeudo) repKpiAdeudo.textContent = formatMoney(adeudo);
+        const elPctGan = document.getElementById('repKpiPctGanancia');
+        if (elPctGan) elPctGan.textContent = pctGanancia + '%';
+        const elCliAct = document.getElementById('repKpiClientesActivos');
+        if (elCliAct) elCliAct.textContent = String(clientesActivos);
+        const elPedPend = document.getElementById('repKpiPedidosPend');
+        if (elPedPend) elPedPend.textContent = String(pedidosPendientes);
+
+        // Método de pago top
+        const metodosMap = {};
+        rows.forEach(r => { const m = String(r.metodoPago || 'N/A').toUpperCase(); metodosMap[m] = (metodosMap[m] || 0) + 1; });
+        const metodoTop = Object.entries(metodosMap).sort((a, b) => b[1] - a[1])[0];
+        const elMetodoTop = document.getElementById('repKpiMetodoTop');
+        if (elMetodoTop) elMetodoTop.textContent = metodoTop ? `${metodoTop[0]} (${metodoTop[1]})` : '--';
 
         // Movimientos de stock - estadisticas
         const movs = getMovimientosStock();
@@ -16235,49 +16533,245 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
+        // Últimas órdenes
+        const repUltimasOrdenesBody = document.getElementById('repUltimasOrdenesBody');
+        if (repUltimasOrdenesBody) {
+            const lastOrders = rows.slice(0, 10);
+            if (!lastOrders.length) {
+                repUltimasOrdenesBody.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN ÓRDENES</td></tr>';
+            } else {
+                repUltimasOrdenesBody.innerHTML = lastOrders.map(r => {
+                    const prod = Array.isArray(r.lineas) && r.lineas.length ? r.lineas[0].producto : (r.producto || '--');
+                    return `<tr><td>${escCliMod(r.folio || r.id || '')}</td><td>${escCliMod(r.clienteNombre || r.cliente || '')}</td><td>${escCliMod(prod)}</td><td>${formatMoney(Number(r.total||0))}</td><td>${escCliMod(r.estatusProduccion || r.estado || '')}</td><td>${escCliMod(r.fechaEmitida || '')}</td></tr>`;
+                }).join('');
+            }
+        }
+
+        // Gráfica de ventas por día (barras simples con canvas)
+        renderRepChartVentas(rows, rangoDias);
+        // Gráfica de distribución de productos (dona)
+        renderRepChartProductos(topRows);
+
         if (repUltimaActualizacion) {
             repUltimaActualizacion.textContent = `ACTUALIZACION: ${new Date().toLocaleString('es-MX')}`;
         }
     };
 
+    const renderRepChartVentas = (rows, rangoDias) => {
+        const canvas = document.getElementById('repChartVentas');
+        if (!canvas || !canvas.getContext) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width = canvas.offsetWidth * 2;
+        const h = canvas.height = 360;
+        ctx.clearRect(0, 0, w, h);
+        const days = Math.min(rangoDias, 30);
+        const buckets = [];
+        for (let i = days - 1; i >= 0; i--) {
+            const d = new Date(); d.setDate(d.getDate() - i); d.setHours(0,0,0,0);
+            const key = d.toISOString().slice(0, 10);
+            const total = rows.filter(r => (r.fechaEmitida || '') === key).reduce((a, r) => a + Number(r.total || 0), 0);
+            buckets.push({ label: key.slice(5), total });
+        }
+        const maxVal = Math.max(1, ...buckets.map(b => b.total));
+        const pad = 40;
+        const barW = Math.max(4, (w - pad * 2) / buckets.length - 2);
+        ctx.fillStyle = '#e5e7eb';
+        ctx.fillRect(pad, 0, w - pad * 2, h - 30);
+        buckets.forEach((b, i) => {
+            const x = pad + i * ((w - pad * 2) / buckets.length) + 1;
+            const barH = (b.total / maxVal) * (h - 50);
+            ctx.fillStyle = '#f59e0b';
+            ctx.fillRect(x, h - 30 - barH, barW, barH);
+            ctx.fillStyle = '#6b7280';
+            ctx.font = '16px sans-serif';
+            if (buckets.length <= 15 || i % 2 === 0) {
+                ctx.save(); ctx.translate(x + barW / 2, h - 4); ctx.rotate(-0.5);
+                ctx.fillText(b.label, 0, 0); ctx.restore();
+            }
+        });
+    };
+
+    const renderRepChartProductos = (topRows) => {
+        const canvas = document.getElementById('repChartProductos');
+        if (!canvas || !canvas.getContext) return;
+        const ctx = canvas.getContext('2d');
+        const w = canvas.width = canvas.offsetWidth * 2;
+        const h = canvas.height = 360;
+        ctx.clearRect(0, 0, w, h);
+        if (!topRows.length) { ctx.fillStyle = '#9ca3af'; ctx.font = '20px sans-serif'; ctx.fillText('SIN DATOS', w/2 - 40, h/2); return; }
+        const total = topRows.reduce((a, t) => a + t.total, 0) || 1;
+        const colors = ['#f59e0b', '#3b82f6', '#10b981', '#ef4444', '#8b5cf6', '#ec4899', '#14b8a6', '#f97316'];
+        const cx = w / 2 - 60; const cy = h / 2; const r = Math.min(w, h) / 2 - 20;
+        let startAngle = -Math.PI / 2;
+        topRows.forEach((t, i) => {
+            const slice = (t.total / total) * Math.PI * 2;
+            ctx.beginPath(); ctx.moveTo(cx, cy);
+            ctx.arc(cx, cy, r, startAngle, startAngle + slice);
+            ctx.fillStyle = colors[i % colors.length]; ctx.fill();
+            startAngle += slice;
+        });
+        // Legend
+        let ly = 14;
+        topRows.slice(0, 6).forEach((t, i) => {
+            ctx.fillStyle = colors[i % colors.length];
+            ctx.fillRect(w - 180, ly, 12, 12);
+            ctx.fillStyle = '#374151'; ctx.font = '16px sans-serif';
+            const label = t.name.length > 14 ? t.name.slice(0, 14) + '…' : t.name;
+            ctx.fillText(label, w - 162, ly + 11);
+            ly += 20;
+        });
+    };
+
     let repTabActivo = 'dashboard';
+    let repModoActual = 'dashboard';
+    let repReporteActivo = '';
 
     const switchRepTab = (tab) => {
         repTabActivo = tab;
+        repModoActual = tab;
         const secDash = document.getElementById('repSeccionDashboard');
         const secRep = document.getElementById('repSeccionReportes');
-        const btnDash = document.getElementById('repTabDashboard');
-        const btnRep = document.getElementById('repTabReportes');
-        if (secDash) secDash.style.display = tab === 'dashboard' ? '' : 'none';
-        if (secRep) secRep.style.display = tab === 'reportes' ? '' : 'none';
-        if (btnDash) { btnDash.classList.toggle('primary', tab === 'dashboard'); }
-        if (btnRep) { btnRep.classList.toggle('primary', tab === 'reportes'); }
+        const titulo = document.getElementById('reportesmodTitulo');
+        if (tab === 'dashboard') {
+            if (secDash) secDash.style.display = '';
+            if (secRep) secRep.style.display = 'none';
+            if (titulo) titulo.textContent = 'DASHBOARD';
+        } else {
+            if (secDash) secDash.style.display = 'none';
+            if (secRep) secRep.style.display = '';
+            if (titulo) titulo.textContent = 'REPORTES';
+            // Mostrar cuadrícula de módulos
+            const grid = document.getElementById('repModulosGrid');
+            const vista = document.getElementById('repVistaReporte');
+            if (grid) grid.style.display = '';
+            if (vista) vista.style.display = 'none';
+        }
+    };
+
+    const abrirReporteVista = (titulo, generarFn) => {
+        repReporteActivo = titulo;
+        const grid = document.getElementById('repModulosGrid');
+        const vista = document.getElementById('repVistaReporte');
+        const tituloEl = document.getElementById('repVistaTitulo');
+        if (grid) grid.style.display = 'none';
+        if (vista) vista.style.display = '';
+        if (tituloEl) tituloEl.textContent = titulo;
+        // Set default date range
+        const repFiltroDesde = document.getElementById('repFiltroDesde');
+        const repFiltroHasta = document.getElementById('repFiltroHasta');
+        const today = new Date().toISOString().slice(0, 10);
+        const d30 = new Date(); d30.setDate(d30.getDate() - 30);
+        if (repFiltroDesde && !repFiltroDesde.value) repFiltroDesde.value = d30.toISOString().slice(0, 10);
+        if (repFiltroHasta && !repFiltroHasta.value) repFiltroHasta.value = today;
+        // Show/hide product-specific filters
+        const prodWrap = document.getElementById('repFiltroProductoWrap');
+        const varWrap = document.getElementById('repFiltroVarianteWrap');
+        const cliWrap = document.getElementById('repFiltroClienteWrap');
+        const estWrap = document.getElementById('repFiltroEstadoWrap');
+        if (prodWrap) prodWrap.style.display = titulo === 'PRODUCTOS VENDIDOS' ? '' : 'none';
+        if (varWrap) varWrap.style.display = titulo === 'PRODUCTOS VENDIDOS' ? '' : 'none';
+        if (cliWrap) cliWrap.style.display = titulo === 'HISTORIAL DEL CLIENTE' || titulo === 'REPORTE DE VENTAS' || titulo === 'PAGOS RECIBIDOS' ? '' : 'none';
+        if (estWrap) estWrap.style.display = titulo === 'REPORTE DE VENTAS' ? '' : 'none';
+        // Populate product filter for Productos Vendidos
+        if (titulo === 'PRODUCTOS VENDIDOS') populateProductFilter();
+        generarFn();
+    };
+
+    const volverAModulosReportes = () => {
+        const grid = document.getElementById('repModulosGrid');
+        const vista = document.getElementById('repVistaReporte');
+        if (grid) grid.style.display = '';
+        if (vista) vista.style.display = 'none';
+        repReporteActivo = '';
+        // Clear filters
+        const repFiltroDesde = document.getElementById('repFiltroDesde');
+        const repFiltroHasta = document.getElementById('repFiltroHasta');
+        const repFiltroCliente = document.getElementById('repFiltroCliente');
+        const repFiltroEstado = document.getElementById('repFiltroEstado');
+        if (repFiltroDesde) repFiltroDesde.value = '';
+        if (repFiltroHasta) repFiltroHasta.value = '';
+        if (repFiltroCliente) repFiltroCliente.value = '';
+        if (repFiltroEstado) repFiltroEstado.value = '';
+    };
+
+    const getRepFiltroDates = () => {
+        const desde = document.getElementById('repFiltroDesde')?.value || '';
+        const hasta = document.getElementById('repFiltroHasta')?.value || '';
+        return {
+            since: desde ? new Date(`${desde}T00:00:00`) : getDateDaysAgo(30),
+            until: hasta ? new Date(`${hasta}T23:59:59`) : new Date()
+        };
+    };
+
+    const populateProductFilter = () => {
+        const sel = document.getElementById('repFiltroProducto');
+        if (!sel) return;
+        loadMisPedidos();
+        const productNames = new Set();
+        misPedidosData.forEach(r => {
+            if (Array.isArray(r.lineas)) r.lineas.forEach(ln => { if (ln.producto) productNames.add(String(ln.producto).trim().toUpperCase()); });
+            else if (r.producto) productNames.add(String(r.producto).trim().toUpperCase());
+        });
+        sel.innerHTML = '<option value="">TODOS LOS PRODUCTOS</option>';
+        Array.from(productNames).sort().forEach(p => {
+            const opt = document.createElement('option'); opt.value = p; opt.textContent = p; sel.appendChild(opt);
+        });
+        sel.onchange = () => populateVariantFilter(sel.value);
+    };
+
+    const populateVariantFilter = (productName) => {
+        const sel = document.getElementById('repFiltroVariante');
+        if (!sel) return;
+        sel.innerHTML = '';
+        if (!productName) { const opt = document.createElement('option'); opt.value = ''; opt.textContent = 'TODAS LAS VARIANTES'; sel.appendChild(opt); return; }
+        const variants = new Set();
+        misPedidosData.forEach(r => {
+            if (Array.isArray(r.lineas)) r.lineas.forEach(ln => {
+                if (String(ln.producto || '').trim().toUpperCase() === productName) {
+                    variants.add(String(ln.medida || 'SIN MEDIDA').trim().toUpperCase());
+                }
+            });
+        });
+        const optAll = document.createElement('option'); optAll.value = ''; optAll.textContent = 'TODAS LAS VARIANTES'; sel.appendChild(optAll);
+        Array.from(variants).sort().forEach(v => {
+            const opt = document.createElement('option'); opt.value = v; opt.textContent = v; sel.appendChild(opt);
+        });
     };
 
     const generarReporteVentas = () => {
-        const rangoDias = Math.max(1, Number(reportesRango?.value || 30));
-        const since = getDateDaysAgo(rangoDias - 1);
+        const { since, until } = getRepFiltroDates();
+        const clienteFilter = String(document.getElementById('repFiltroCliente')?.value || '').trim().toLowerCase();
+        const estadoFilter = String(document.getElementById('repFiltroEstado')?.value || '').trim().toLowerCase();
         loadMisPedidos();
         const rows = misPedidosData.filter((r) => {
             const dt = new Date(`${r.fechaEmitida || ''}T00:00:00`);
-            return !Number.isNaN(dt.getTime()) && dt >= since;
+            if (Number.isNaN(dt.getTime()) || dt < since || dt > until) return false;
+            if (clienteFilter && !String(r.cliente || r.clienteNombre || '').toLowerCase().includes(clienteFilter)) return false;
+            if (estadoFilter && normalizeStatus(r.estatusProduccion || r.estado || '').replace(/\s+/g, '-') !== estadoFilter) return false;
+            return true;
         });
         const head = document.getElementById('repReporteHead');
         const body = document.getElementById('repReporteBody');
         if (head) head.innerHTML = '<tr><th>FECHA</th><th>ORDEN</th><th>CLIENTE</th><th>VENDEDOR</th><th>TOTAL</th><th>ESTADO</th></tr>';
+        const resumen = document.getElementById('repVistaResumen');
+        const totalVentas = rows.reduce((a, r) => a + Number(r.total || 0), 0);
+        if (resumen) resumen.innerHTML = `<span class="rep-chip">REGISTROS: ${rows.length}</span><span class="rep-chip">TOTAL: ${formatMoney(totalVentas)}</span>`;
         if (body) {
             if (!rows.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN VENTAS EN EL PERIODO</td></tr>'; return; }
-            body.innerHTML = rows.map((r) => `<tr><td>${escCliMod(r.fechaEmitida||'')}</td><td>${escCliMod(r.id||'')}</td><td>${escCliMod(r.cliente||'')}</td><td>${escCliMod(r.vendedor||'')}</td><td>${formatMoney(Number(r.total||0))}</td><td>${escCliMod(r.estado||'')}</td></tr>`).join('');
+            body.innerHTML = rows.map((r) => `<tr><td>${escCliMod(r.fechaEmitida||'')}</td><td>${escCliMod(r.id||'')}</td><td>${escCliMod(r.cliente || r.clienteNombre||'')}</td><td>${escCliMod(r.vendedor||'')}</td><td>${formatMoney(Number(r.total||0))}</td><td>${escCliMod(r.estatusProduccion || r.estado||'')}</td></tr>`).join('');
         }
     };
 
     const generarReporteEntradasSalidas = () => {
-        const rangoDias = Math.max(1, Number(reportesRango?.value || 30));
-        const since = getDateDaysAgo(rangoDias - 1);
-        const movs = getMovimientosStock().filter((m) => new Date(m.fecha) >= since);
+        const { since, until } = getRepFiltroDates();
+        const movs = getMovimientosStock().filter((m) => { const d = new Date(m.fecha); return d >= since && d <= until; });
         const head = document.getElementById('repReporteHead');
         const body = document.getElementById('repReporteBody');
         if (head) head.innerHTML = '<tr><th>FECHA</th><th>TIPO</th><th>PRODUCTO</th><th>CANTIDAD</th><th>MOTIVO</th><th>USUARIO</th></tr>';
+        const resumen = document.getElementById('repVistaResumen');
+        const entradas = movs.filter(m => m.tipo === 'ENTRADA').length;
+        const salidas = movs.filter(m => m.tipo === 'SALIDA').length;
+        if (resumen) resumen.innerHTML = `<span class="rep-chip">TOTAL: ${movs.length}</span><span class="rep-chip">ENTRADAS: ${entradas}</span><span class="rep-chip">SALIDAS: ${salidas}</span>`;
         if (body) {
             if (!movs.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN MOVIMIENTOS EN EL PERIODO</td></tr>'; return; }
             body.innerHTML = movs.reverse().map((m) => `<tr><td>${escCliMod(new Date(m.fecha).toLocaleString('es-MX'))}</td><td>${escCliMod(m.tipo)}</td><td>${escCliMod(m.producto)}</td><td>${m.cantidad}</td><td>${escCliMod(m.motivo)}</td><td>${escCliMod(m.usuario)}</td></tr>`).join('');
@@ -16285,17 +16779,17 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const generarReporteGastos = () => {
-        const rangoDias = Math.max(1, Number(reportesRango?.value || 30));
-        const since = getDateDaysAgo(rangoDias - 1);
-        const movs = getMovimientosStock().filter((m) => m.tipo === 'ENTRADA' && new Date(m.fecha) >= since);
+        const { since, until } = getRepFiltroDates();
+        const movs = getMovimientosStock().filter((m) => m.tipo === 'ENTRADA' && (() => { const d = new Date(m.fecha); return d >= since && d <= until; })());
         const totalGasto = movs.reduce((a, m) => a + (m.costoUnitario || 0) * (m.cantidad || 0), 0);
         const head = document.getElementById('repReporteHead');
         const body = document.getElementById('repReporteBody');
         if (head) head.innerHTML = '<tr><th>FECHA</th><th>PRODUCTO</th><th>CANTIDAD</th><th>COSTO UNITARIO</th><th>TOTAL</th><th>MOTIVO</th></tr>';
+        const resumen = document.getElementById('repVistaResumen');
+        if (resumen) resumen.innerHTML = `<span class="rep-chip">REGISTROS: ${movs.length}</span><span class="rep-chip">TOTAL GASTOS: ${formatMoney(totalGasto)}</span>`;
         if (body) {
             if (!movs.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN GASTOS EN EL PERIODO</td></tr>'; return; }
             body.innerHTML = movs.reverse().map((m) => `<tr><td>${escCliMod(new Date(m.fecha).toLocaleString('es-MX'))}</td><td>${escCliMod(m.producto)}</td><td>${m.cantidad}</td><td>${formatMoney(m.costoUnitario||0)}</td><td>${formatMoney((m.costoUnitario||0)*(m.cantidad||0))}</td><td>${escCliMod(m.motivo)}</td></tr>`).join('');
-            body.innerHTML += `<tr style="font-weight:bold;"><td colspan="4">TOTAL GASTOS</td><td>${formatMoney(totalGasto)}</td><td></td></tr>`;
         }
     };
 
@@ -16305,6 +16799,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let aperturas = [];
         try { aperturas = JSON.parse(localStorage.getItem(CAJA_APERTURAS_KEY) || '[]'); } catch(_){}
         if (head) head.innerHTML = '<tr><th>FECHA APERTURA</th><th>FECHA CIERRE</th><th>FONDO INICIAL</th><th>VENTAS</th><th>DIFERENCIA</th><th>ESTADO</th></tr>';
+        const resumen = document.getElementById('repVistaResumen');
+        if (resumen) resumen.innerHTML = `<span class="rep-chip">CORTES: ${aperturas.length}</span>`;
         if (body) {
             if (!aperturas.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN CORTES DE CAJA</td></tr>'; return; }
             body.innerHTML = aperturas.reverse().map((a) => `<tr><td>${escCliMod(a.fechaApertura||'')}</td><td>${escCliMod(a.fechaCierre||'ABIERTA')}</td><td>${formatMoney(Number(a.fondoInicial||0))}</td><td>${formatMoney(Number(a.totalVentas||0))}</td><td>${formatMoney(Number(a.diferencia||0))}</td><td>${a.fechaCierre?'CERRADA':'ABIERTA'}</td></tr>`).join('');
@@ -16312,34 +16808,109 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const generarReportePagosRecibidos = () => {
-        const rangoDias = Math.max(1, Number(reportesRango?.value || 30));
-        const since = getDateDaysAgo(rangoDias - 1);
+        const { since, until } = getRepFiltroDates();
+        const clienteFilter = String(document.getElementById('repFiltroCliente')?.value || '').trim().toLowerCase();
         loadMisPedidos();
         const rows = misPedidosData.filter((r) => {
             const dt = new Date(`${r.fechaEmitida || ''}T00:00:00`);
-            return !Number.isNaN(dt.getTime()) && dt >= since && Number(r.totalPagado || 0) > 0;
+            if (Number.isNaN(dt.getTime()) || dt < since || dt > until) return false;
+            if (Number(r.totalPagado || 0) <= 0) return false;
+            if (clienteFilter && !String(r.cliente || r.clienteNombre || '').toLowerCase().includes(clienteFilter)) return false;
+            return true;
         });
         const head = document.getElementById('repReporteHead');
         const body = document.getElementById('repReporteBody');
         if (head) head.innerHTML = '<tr><th>FECHA</th><th>ORDEN</th><th>CLIENTE</th><th>TOTAL PAGADO</th><th>ADEUDO</th><th>METODO</th></tr>';
+        const totalPagado = rows.reduce((a, r) => a + Number(r.totalPagado || 0), 0);
+        const resumen = document.getElementById('repVistaResumen');
+        if (resumen) resumen.innerHTML = `<span class="rep-chip">REGISTROS: ${rows.length}</span><span class="rep-chip">TOTAL PAGADO: ${formatMoney(totalPagado)}</span>`;
         if (body) {
             if (!rows.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN PAGOS EN EL PERIODO</td></tr>'; return; }
-            body.innerHTML = rows.map((r) => `<tr><td>${escCliMod(r.fechaEmitida||'')}</td><td>${escCliMod(r.id||'')}</td><td>${escCliMod(r.cliente||'')}</td><td>${formatMoney(Number(r.totalPagado||0))}</td><td>${formatMoney(Number(r.adeudoCliente||0))}</td><td>${escCliMod(r.metodoPago||'')}</td></tr>`).join('');
+            body.innerHTML = rows.map((r) => `<tr><td>${escCliMod(r.fechaEmitida||'')}</td><td>${escCliMod(r.id||'')}</td><td>${escCliMod(r.cliente || r.clienteNombre||'')}</td><td>${formatMoney(Number(r.totalPagado||0))}</td><td>${formatMoney(Number(r.adeudoCliente||0))}</td><td>${escCliMod(r.metodoPago||'')}</td></tr>`).join('');
         }
     };
 
     const generarReporteHistorialCliente = () => {
-        const clienteNombre = prompt('NOMBRE DEL CLIENTE PARA CONSULTAR HISTORIAL:');
-        if (!clienteNombre) return;
+        const clienteFilter = String(document.getElementById('repFiltroCliente')?.value || '').trim().toLowerCase();
+        if (!clienteFilter) {
+            const clienteNombre = prompt('NOMBRE DEL CLIENTE PARA CONSULTAR HISTORIAL:');
+            if (!clienteNombre) return;
+            const el = document.getElementById('repFiltroCliente');
+            if (el) el.value = clienteNombre;
+        }
+        const term = String(document.getElementById('repFiltroCliente')?.value || '').trim().toLowerCase();
+        if (!term) return;
+        const { since, until } = getRepFiltroDates();
         loadMisPedidos();
-        const term = clienteNombre.trim().toLowerCase();
-        const rows = misPedidosData.filter((r) => String(r.cliente || '').toLowerCase().includes(term));
+        const rows = misPedidosData.filter((r) => {
+            const dt = new Date(`${r.fechaEmitida || ''}T00:00:00`);
+            if (!Number.isNaN(dt.getTime()) && (dt < since || dt > until)) return false;
+            return String(r.cliente || r.clienteNombre || '').toLowerCase().includes(term);
+        });
         const head = document.getElementById('repReporteHead');
         const body = document.getElementById('repReporteBody');
         if (head) head.innerHTML = '<tr><th>FECHA</th><th>ORDEN</th><th>TOTAL</th><th>PAGADO</th><th>ADEUDO</th><th>ESTADO</th></tr>';
+        const totalCompras = rows.reduce((a, r) => a + Number(r.total || 0), 0);
+        const resumen = document.getElementById('repVistaResumen');
+        if (resumen) resumen.innerHTML = `<span class="rep-chip">REGISTROS: ${rows.length}</span><span class="rep-chip">TOTAL COMPRAS: ${formatMoney(totalCompras)}</span>`;
         if (body) {
             if (!rows.length) { body.innerHTML = '<tr><td colspan="6" class="clientesmod-empty">SIN ORDENES PARA ESTE CLIENTE</td></tr>'; return; }
-            body.innerHTML = rows.map((r) => `<tr><td>${escCliMod(r.fechaEmitida||'')}</td><td>${escCliMod(r.id||'')}</td><td>${formatMoney(Number(r.total||0))}</td><td>${formatMoney(Number(r.totalPagado||0))}</td><td>${formatMoney(Number(r.adeudoCliente||0))}</td><td>${escCliMod(r.estado||'')}</td></tr>`).join('');
+            body.innerHTML = rows.map((r) => `<tr><td>${escCliMod(r.fechaEmitida||'')}</td><td>${escCliMod(r.id||'')}</td><td>${formatMoney(Number(r.total||0))}</td><td>${formatMoney(Number(r.totalPagado||0))}</td><td>${formatMoney(Number(r.adeudoCliente||0))}</td><td>${escCliMod(r.estatusProduccion || r.estado||'')}</td></tr>`).join('');
+        }
+    };
+
+    const generarReporteProductosVendidos = () => {
+        const { since, until } = getRepFiltroDates();
+        const productoFilter = String(document.getElementById('repFiltroProducto')?.value || '').trim().toUpperCase();
+        const varianteSel = document.getElementById('repFiltroVariante');
+        const variantesSeleccionadas = varianteSel ? Array.from(varianteSel.selectedOptions).map(o => o.value).filter(v => v) : [];
+        loadMisPedidos();
+        const lineasData = [];
+        misPedidosData.forEach(r => {
+            const dt = new Date(`${r.fechaEmitida || ''}T00:00:00`);
+            if (Number.isNaN(dt.getTime()) || dt < since || dt > until) return;
+            if (Array.isArray(r.lineas)) {
+                r.lineas.forEach(ln => {
+                    const prod = String(ln.producto || '').trim().toUpperCase();
+                    const medida = String(ln.medida || 'SIN MEDIDA').trim().toUpperCase();
+                    if (productoFilter && prod !== productoFilter) return;
+                    if (variantesSeleccionadas.length && !variantesSeleccionadas.includes(medida)) return;
+                    lineasData.push({
+                        fecha: r.fechaEmitida || '',
+                        orden: r.id || r.folio || '',
+                        cliente: r.cliente || r.clienteNombre || '',
+                        producto: prod,
+                        medida: medida,
+                        cantidad: Math.max(0, Number(ln.cantidad || 0)),
+                        precio: Math.max(0, Number(ln.precio || 0)),
+                        total: Math.max(0, Number(ln.cantidad || 0)) * Math.max(0, Number(ln.precio || 0))
+                    });
+                });
+            } else if (r.producto) {
+                const prod = String(r.producto || '').trim().toUpperCase();
+                if (productoFilter && prod !== productoFilter) return;
+                lineasData.push({
+                    fecha: r.fechaEmitida || '',
+                    orden: r.id || r.folio || '',
+                    cliente: r.cliente || r.clienteNombre || '',
+                    producto: prod,
+                    medida: String(r.medida || 'SIN MEDIDA').trim().toUpperCase(),
+                    cantidad: 1,
+                    precio: Number(r.total || 0),
+                    total: Number(r.total || 0)
+                });
+            }
+        });
+        const head = document.getElementById('repReporteHead');
+        const body = document.getElementById('repReporteBody');
+        if (head) head.innerHTML = '<tr><th>FECHA</th><th>ORDEN</th><th>CLIENTE</th><th>PRODUCTO</th><th>MEDIDA/VARIANTE</th><th>CANTIDAD</th><th>PRECIO</th><th>TOTAL</th></tr>';
+        const totalCantidad = lineasData.reduce((a, l) => a + l.cantidad, 0);
+        const totalVenta = lineasData.reduce((a, l) => a + l.total, 0);
+        const resumen = document.getElementById('repVistaResumen');
+        if (resumen) resumen.innerHTML = `<span class="rep-chip">LÍNEAS: ${lineasData.length}</span><span class="rep-chip">UNIDADES: ${totalCantidad}</span><span class="rep-chip">VENTA TOTAL: ${formatMoney(totalVenta)}</span>`;
+        if (body) {
+            if (!lineasData.length) { body.innerHTML = '<tr><td colspan="8" class="clientesmod-empty">SIN PRODUCTOS VENDIDOS EN EL PERIODO</td></tr>'; return; }
+            body.innerHTML = lineasData.map(l => `<tr><td>${escCliMod(l.fecha)}</td><td>${escCliMod(l.orden)}</td><td>${escCliMod(l.cliente)}</td><td>${escCliMod(l.producto)}</td><td>${escCliMod(l.medida)}</td><td>${l.cantidad}</td><td>${formatMoney(l.precio)}</td><td>${formatMoney(l.total)}</td></tr>`).join('');
         }
     };
 
@@ -16351,7 +16922,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.add('popup-open');
         document.documentElement.classList.add('popup-open');
         switchRepTab(tab || 'dashboard');
-        renderReportesModulo();
+        if (tab === 'dashboard') renderReportesModulo();
     };
 
     const closeReportesPopup = () => {
@@ -18886,13 +19457,30 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cajaBack) {
         cajaBack.addEventListener('click', () => {
             closeCajaPopup();
+            // Restaurar sidebar y main-area
+            var sidebar = document.querySelector('.sidebar');
+            if (sidebar) { sidebar.style.display = ''; sidebar.style.visibility = ''; }
+            var mainArea = document.querySelector('.main-area');
+            if (mainArea) { mainArea.style.display = ''; mainArea.style.visibility = ''; }
+            var landing = document.getElementById('landing');
+            if (landing) { landing.style.visibility = ''; }
             if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
         });
     }
 
     if (popupCaja) {
         popupCaja.addEventListener('click', (ev) => {
-            if (ev.target === popupCaja) closeCajaPopup();
+            if (ev.target === popupCaja) {
+                closeCajaPopup();
+                // Restaurar sidebar y main-area
+                var sidebar = document.querySelector('.sidebar');
+                if (sidebar) { sidebar.style.display = ''; sidebar.style.visibility = ''; }
+                var mainArea = document.querySelector('.main-area');
+                if (mainArea) { mainArea.style.display = ''; mainArea.style.visibility = ''; }
+                var landing = document.getElementById('landing');
+                if (landing) { landing.style.visibility = ''; }
+                if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
+            }
         });
     }
 
@@ -18993,8 +19581,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 notifyError('No se encontró el cliente seleccionado.', 'Clientes');
                 return;
             }
+            const idToDisable = clientesModuloSelectedId;
             window.showGlobalConfirmPopup(`¿Deshabilitar cliente "${target.nombre}" (${target.id})? Sus datos se conservarán para el historial.`, () => {
-                const idx = clientesModuloData.findIndex((c) => c.id === clientesModuloSelectedId);
+                const idx = clientesModuloData.findIndex((c) => c.id === idToDisable);
                 if (idx >= 0) clientesModuloData[idx] = { ...clientesModuloData[idx], deshabilitado: true };
                 clientesModuloSelectedId = '';
                 saveClientesModulo();
@@ -19357,25 +19946,39 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Tabs Dashboard / Reportes
-    const repTabDashboardBtn = document.getElementById('repTabDashboard');
-    const repTabReportesBtn = document.getElementById('repTabReportes');
-    if (repTabDashboardBtn) repTabDashboardBtn.addEventListener('click', () => switchRepTab('dashboard'));
-    if (repTabReportesBtn) repTabReportesBtn.addEventListener('click', () => switchRepTab('reportes'));
+    // Tabs Dashboard / Reportes (already separated as independent modules)
 
-    // Botones de reportes
+    // Botones de reportes (abren vista expandida)
     const repBtnVentas = document.getElementById('repBtnVentas');
     const repBtnEntradasSalidas = document.getElementById('repBtnEntradasSalidas');
     const repBtnGastos = document.getElementById('repBtnGastos');
     const repBtnCortesCaja = document.getElementById('repBtnCortesCaja');
     const repBtnPagosRecibidos = document.getElementById('repBtnPagosRecibidos');
     const repBtnHistorialCliente = document.getElementById('repBtnHistorialCliente');
-    if (repBtnVentas) repBtnVentas.addEventListener('click', generarReporteVentas);
-    if (repBtnEntradasSalidas) repBtnEntradasSalidas.addEventListener('click', generarReporteEntradasSalidas);
-    if (repBtnGastos) repBtnGastos.addEventListener('click', generarReporteGastos);
-    if (repBtnCortesCaja) repBtnCortesCaja.addEventListener('click', generarReporteCortesCaja);
-    if (repBtnPagosRecibidos) repBtnPagosRecibidos.addEventListener('click', generarReportePagosRecibidos);
-    if (repBtnHistorialCliente) repBtnHistorialCliente.addEventListener('click', generarReporteHistorialCliente);
+    const repBtnProductosVendidos = document.getElementById('repBtnProductosVendidos');
+    if (repBtnVentas) repBtnVentas.addEventListener('click', () => abrirReporteVista('REPORTE DE VENTAS', generarReporteVentas));
+    if (repBtnEntradasSalidas) repBtnEntradasSalidas.addEventListener('click', () => abrirReporteVista('ENTRADAS Y SALIDAS', generarReporteEntradasSalidas));
+    if (repBtnGastos) repBtnGastos.addEventListener('click', () => abrirReporteVista('REPORTE DE GASTOS', generarReporteGastos));
+    if (repBtnCortesCaja) repBtnCortesCaja.addEventListener('click', () => abrirReporteVista('CORTES DE CAJA', generarReporteCortesCaja));
+    if (repBtnPagosRecibidos) repBtnPagosRecibidos.addEventListener('click', () => abrirReporteVista('PAGOS RECIBIDOS', generarReportePagosRecibidos));
+    if (repBtnHistorialCliente) repBtnHistorialCliente.addEventListener('click', () => abrirReporteVista('HISTORIAL DEL CLIENTE', generarReporteHistorialCliente));
+    if (repBtnProductosVendidos) repBtnProductosVendidos.addEventListener('click', () => abrirReporteVista('PRODUCTOS VENDIDOS', generarReporteProductosVendidos));
+
+    // Botón volver de vista reporte
+    const repVistaBack = document.getElementById('repVistaBack');
+    if (repVistaBack) repVistaBack.addEventListener('click', volverAModulosReportes);
+
+    // Botón aplicar filtros
+    const repFiltroAplicar = document.getElementById('repFiltroAplicar');
+    if (repFiltroAplicar) repFiltroAplicar.addEventListener('click', () => {
+        if (repReporteActivo === 'REPORTE DE VENTAS') generarReporteVentas();
+        else if (repReporteActivo === 'ENTRADAS Y SALIDAS') generarReporteEntradasSalidas();
+        else if (repReporteActivo === 'REPORTE DE GASTOS') generarReporteGastos();
+        else if (repReporteActivo === 'CORTES DE CAJA') generarReporteCortesCaja();
+        else if (repReporteActivo === 'PAGOS RECIBIDOS') generarReportePagosRecibidos();
+        else if (repReporteActivo === 'HISTORIAL DEL CLIENTE') generarReporteHistorialCliente();
+        else if (repReporteActivo === 'PRODUCTOS VENDIDOS') generarReporteProductosVendidos();
+    });
 
     if (calPrevMonth) {
         calPrevMonth.addEventListener('click', () => {
