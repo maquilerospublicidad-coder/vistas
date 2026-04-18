@@ -2116,7 +2116,8 @@
         }
 
         .mispedidos-row-selected {
-            background: #eaf2ff;
+            background: #ffedd5;
+            box-shadow: inset 3px 0 0 #f07a00;
         }
 
         .mispedidos-foot {
@@ -2344,7 +2345,8 @@
         }
 
         .productos-row-selected {
-            background: #eaf2ff;
+            background: #ffedd5;
+            box-shadow: inset 3px 0 0 #f07a00;
         }
 
 
@@ -2376,22 +2378,24 @@
             background: #eef2f7;
             align-items: center;
             justify-content: center;
-            padding: 18px;
+            padding: 0;
             isolation: isolate;
         }
 
         .caja-card {
-            width: min(96vw, 1180px);
-            height: min(92dvh, 760px);
+            width: 100vw;
+            height: 100vh;
+            max-width: 100vw;
+            max-height: 100vh;
             background: #f5f7fb;
-            border: 1px solid #dbe3ef;
-            border-radius: 16px;
+            border: none;
+            border-radius: 0;
             display: grid;
             grid-template-rows: auto 1fr;
             gap: 10px;
             padding: 12px;
             position: relative;
-            box-shadow: 0 18px 38px rgba(15, 23, 42, 0.18);
+            box-shadow: none;
         }
 
         .caja-back {
@@ -3428,8 +3432,8 @@
         }
 
         .clientesmod-btn.edit {
-            background: #ff9900;
-            border-color: #e68a00;
+            background: #2563eb;
+            border-color: #1d4ed8;
             color: #ffffff;
         }
 
@@ -3480,6 +3484,7 @@
 
         .clientesmod-table tbody tr:hover {
             background: #fff7ed;
+            cursor: pointer;
         }
 
         .clientesmod-table th {
@@ -4038,8 +4043,8 @@
         }
 
         .productos-btn.edit {
-            background: #ff9900;
-            border-color: #e68a00;
+            background: #2563eb;
+            border-color: #1d4ed8;
             color: #ffffff;
         }
 
@@ -5253,31 +5258,34 @@
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 24px;
+            padding: 10px;
             background: #f2f4f7;
         }
 
         .inicio-sistema-box {
-            width: min(1000px, 96vw);
+            width: min(1100px, 98vw);
+            max-height: 98vh;
             border-radius: 20px;
             background: #ffffff;
             box-shadow: 0 4px 32px rgba(0,0,0,0.08);
-            padding: 36px 32px 32px;
+            padding: 20px 24px 18px;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 8px;
             align-items: center;
+            overflow-y: auto;
         }
 
         .inicio-logo {
-            width: 88px;
-            height: 88px;
+            width: 64px;
+            height: 64px;
             border-radius: 50%;
             background: #f5f5f5;
             border: 2px solid #e8e8e8;
             display: grid;
             place-items: center;
             overflow: hidden;
+            flex-shrink: 0;
         }
 
         .inicio-logo img {
@@ -5288,17 +5296,18 @@
         }
 
         .inicio-title {
-            font-size: 1rem;
+            font-size: 1.05rem;
             font-weight: 700;
             color: #1a1a1a;
             letter-spacing: 0.5px;
             text-align: center;
             text-transform: uppercase;
+            margin: 0;
         }
 
         .inicio-sub {
-            margin-top: -14px;
-            font-size: 0.72rem;
+            margin-top: -4px;
+            font-size: 0.68rem;
             color: #888;
             text-align: center;
             font-weight: 400;
@@ -5310,7 +5319,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            margin: 6px 0 2px;
+            margin: 2px 0 0;
         }
         .demo-toggle-label {
             font-size: 0.62rem;
@@ -5361,8 +5370,9 @@
         .inicio-grid {
             width: 100%;
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 12px;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 8px;
+            flex: 1 1 auto;
         }
 
         .inicio-card {
@@ -5370,18 +5380,20 @@
             border-radius: 14px;
             background: #fafafa;
             color: #1a1a1a;
-            min-height: 96px;
+            min-height: 70px;
+            width: 100%;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 7px;
-            font-size: 0.62rem;
+            gap: 6px;
+            font-size: 0.64rem;
             font-weight: 700;
             letter-spacing: 0.4px;
             cursor: pointer;
             transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
             text-transform: uppercase;
+            padding: 8px 4px;
         }
 
         .inicio-card:hover {
@@ -5391,12 +5403,43 @@
         }
 
         .inicio-card .ico {
-            font-size: 1.4rem;
+            font-size: 1.6rem;
             line-height: 1;
         }
 
+        .inicio-separado {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            margin-top: 4px;
+            padding-top: 8px;
+            border-top: 1px dashed #e0e0e0;
+        }
+
+        .inicio-separado .inicio-card {
+            max-width: 220px;
+            min-height: 52px;
+            flex-direction: row;
+            gap: 8px;
+            font-size: 0.58rem;
+            border-color: #d0d0d0;
+            border-style: dashed;
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .inicio-separado .inicio-card:hover {
+            background: #fff;
+            border-color: #999;
+            color: #333;
+        }
+
+        .inicio-separado .inicio-card .ico {
+            font-size: 1.2rem;
+        }
+
         @media (max-width: 860px) {
-            .inicio-grid { grid-template-columns: repeat(3, 1fr); }
+            .inicio-grid { grid-template-columns: repeat(4, 1fr); }
         }
         @media (max-width: 540px) {
             .inicio-grid { grid-template-columns: repeat(2, 1fr); }
@@ -7039,6 +7082,64 @@
         .orden-costo-extra-card .login-field { margin-bottom: 12px; }
         .orden-costo-extra-card .popup-actions { display: flex; gap: 8px; justify-content: flex-end; }
 
+        /* ===== ENVIO COTIZAR POPUP ===== */
+        .envio-cotizar-card {
+            background: #ffffff; border: 1px solid #e5e7eb;
+            border-radius: 14px; padding: 0; width: 94vw; max-width: 1100px;
+            height: 82vh; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+            display: flex; flex-direction: row;
+        }
+        .envio-col-left {
+            flex: 1; padding: 16px 18px; overflow-y: auto; border-right: 1px solid #e5e7eb;
+            display: flex; flex-direction: column;
+        }
+        .envio-col-left::-webkit-scrollbar, .envio-col-right::-webkit-scrollbar { width: 4px; }
+        .envio-col-left::-webkit-scrollbar-thumb, .envio-col-right::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+        .envio-col-right {
+            width: 340px; min-width: 300px; padding: 16px; overflow-y: auto;
+            display: flex; flex-direction: column; background: #fafafa;
+        }
+        @media (max-width: 768px) {
+            .envio-cotizar-card { flex-direction: column; width: 98vw; height: 94vh; }
+            .envio-col-left { border-right: none; border-bottom: 1px solid #e5e7eb; flex: 1; }
+            .envio-col-right { width: 100%; min-width: unset; flex: 1; }
+        }
+        .envio-cotizar-card h3 { color: #1f2937; font-size: 0.78rem; margin: 0; }
+        .envio-cotizar-card .login-field { margin-bottom: 4px; }
+        .envio-cotizar-card .login-field label { font-size: 0.48rem; color: #6b7280; font-weight: 700; margin-bottom: 1px; display: block; }
+        .envio-cotizar-card .login-field input, .envio-cotizar-card .login-field select {
+            width: 100%; padding: 4px 7px; border-radius: 5px; border: 1px solid #d1d5db;
+            background: #f9fafb; color: #1f2937; font-size: 0.56rem; box-sizing: border-box;
+        }
+        .envio-cotizar-card .login-field input:focus, .envio-cotizar-card .login-field select:focus { border-color: #ff9900; outline: none; box-shadow: 0 0 0 2px rgba(255,153,0,0.15); }
+        .envio-dir-btn {
+            padding: 3px 8px; border-radius: 6px; border: 1px solid #d1d5db;
+            background: #f9fafb; color: #6b7280; font-size: 0.48rem; font-weight: 700;
+            cursor: pointer; transition: all 0.15s;
+        }
+        .envio-dir-btn:hover { border-color: #ff9900; color: #ff9900; }
+        .envio-dir-btn.active { background: #ff9900; color: #fff; border-color: #ff9900; font-weight: 900; }
+        .envio-section-title { font-size: 0.5rem; font-weight: 800; color: #ff9900; margin: 6px 0 4px; display: flex; align-items: center; gap: 4px; text-transform: uppercase; }
+        .envio-pkg-preset {
+            padding: 4px 10px; border-radius: 6px; border: 1px solid #d1d5db; background: #fff;
+            color: #374151; font-size: 0.48rem; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        }
+        .envio-pkg-preset:hover { border-color: #ff9900; color: #ff9900; }
+        .envio-pkg-preset.active { background: #ff9900; color: #fff; border-color: #ff9900; }
+        .envio-rate-card {
+            display: flex; align-items: center; gap: 8px; padding: 8px 10px;
+            border: 1px solid #e5e7eb; border-radius: 8px; cursor: pointer;
+            transition: all 0.15s; background: #ffffff;
+        }
+        .envio-rate-card:hover { border-color: #ff9900; background: #fff7ed; }
+        .envio-rate-card.selected { border-color: #ff9900; background: #fff7ed; box-shadow: 0 0 0 2px rgba(255,153,0,0.3); }
+        .envio-rate-card .carrier-logo { width: 36px; height: 24px; object-fit: contain; border-radius: 3px; flex-shrink: 0; }
+        .envio-rate-card .carrier-logo-placeholder { width: 36px; height: 24px; border-radius: 3px; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-size: 0.5rem; font-weight: 800; color: #9ca3af; flex-shrink: 0; }
+        @keyframes envioFadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+        .envio-rate-card { animation: envioFadeIn 0.2s ease; }
+        .envio-right-empty { flex:1; display:flex; align-items:center; justify-content:center; color:#d1d5db; font-size:0.55rem; text-align:center; padding:20px; }
+        .envio-vol-weight { font-size:0.46rem; color:#6b7280; margin-top:2px; font-style:italic; }
+
         /* ===== CONFIG USERS TABLE (light theme) ===== */
         #tabUsuarios .popup-panel { display: block !important; grid-template-columns: unset !important; background: transparent !important; padding: 0 !important; border: none !important; }
         .config-users-table { width: 100%; border-collapse: collapse; font-size: 0.62rem; background: #fff; border-radius: 10px; overflow: hidden; border: 1px solid #e5e7eb; }
@@ -7125,6 +7226,7 @@
     <div class="inicio-sistema-box" style="position:relative">
         <button id="btnScanRecepcion" type="button" title="Recepción Sucursal" aria-label="Recepción Sucursal" style="position:absolute;top:12px;left:12px;background:none;border:none;font-size:1.5em;cursor:pointer;z-index:10;opacity:0.7;transition:opacity .2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">📷</button>
         <button id="btnAjustesMain" type="button" title="Configuraciones" aria-label="Configuraciones" style="position:absolute;top:12px;right:12px;background:none;border:none;font-size:1.5em;cursor:pointer;z-index:10;opacity:0.7;transition:opacity .2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">⚙️</button>
+        <button id="btnCerrarSesionInicio" type="button" title="Cerrar sesión" aria-label="Cerrar sesión" onclick="cerrarSesion()" style="position:absolute;top:12px;right:52px;background:#e53935;border:1px solid #c62828;color:#fff;font-size:0.52rem;font-weight:800;cursor:pointer;z-index:10;padding:6px 12px;border-radius:8px;text-transform:uppercase;letter-spacing:0.3px;display:inline-flex;align-items:center;gap:5px;transition:background .2s;" onmouseover="this.style.background='#c62828'" onmouseout="this.style.background='#e53935'">🚪 Cerrar sesión</button>
         <div class="inicio-logo">
             <img src="https://i.postimg.cc/WzY3mk57/Copia-de-Copia-de-Post-Instagram-catalogo-de-productos-escolares-comercial-promocional-azul-(11).png" alt="Logo Maquileros">
         </div>
@@ -7145,15 +7247,17 @@
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCCION')"><span class="ico">🏭</span><span>PRODUCCIÓN</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('ALMACEN PEDIDOS')"><span class="ico">📦</span><span>ALMACÉN PEDIDOS</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPARTO')"><span class="ico">🚚</span><span>REPARTO</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPARTO TEMPORAL')"><span class="ico">📋</span><span>REPARTO TEMPORAL</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PRODUCTOS')"><span class="ico">🧾</span><span>PRODUCTOS</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('DASHBOARD')"><span class="ico">📈</span><span>DASHBOARD</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CAJA')"><span class="ico">💳</span><span>CAJA</span></button>
-            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CALENDARIO')"><span class="ico">📅</span><span>CALENDARIO</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('MUESTRARIO')"><span class="ico">🎨</span><span>MUESTRARIO</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CLIENTES')"><span class="ico">👥</span><span>CLIENTES</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('PROVEEDORES')"><span class="ico">🏢</span><span>PROVEEDORES</span></button>
             <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPORTES')"><span class="ico">📊</span><span>REPORTES</span></button>
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('CALENDARIO')"><span class="ico">📅</span><span>CALENDARIO</span></button>
+        </div>
+        <div class="inicio-separado">
+            <button class="inicio-card" type="button" onclick="abrirModuloPrincipal('REPARTO TEMPORAL')"><span class="ico">📋</span><span>REPARTO TEMPORAL</span></button>
         </div>
     </div>
 </div>
@@ -7161,7 +7265,7 @@
 <div id="landing" class="landing-overlay">
     <button id="btnLandingBack" class="landing-back-btn" onclick="irAtrasLanding()" title="Volver al menú principal" aria-label="Volver al menú principal">←</button>
     <div class="landing-box">
-        <button id="btnListadoRapido" class="landing-corner-btn left">Listado rápido</button>
+        <button id="btnListadoRapido" class="landing-corner-btn left" style="display:none">Listado rápido</button>
         <!-- Ocultados temporalmente: ACCESS y Seguimiento Diseño -->
         <button id="btnAccessData" class="landing-corner-btn right" style="display:none">🗄️ ACCESS</button>
         <button id="btnSeguimientoDiseno" class="landing-corner-btn center" style="display:none">🎨 Seguimiento Diseño</button>
@@ -7441,7 +7545,7 @@
                 <div class="clientesmod-toolbar-right">
                     <input id="proveedoresSearch" class="clientesmod-search" type="text" placeholder="Buscar por ID, proveedor, empresa, correo o teléfono...">
                     <button id="proveedoresAdd" class="clientesmod-btn primary" type="button">➕ Agregar</button>
-                    <button id="proveedoresEdit" class="clientesmod-btn" type="button">✏ Editar</button>
+                    <button id="proveedoresEdit" class="clientesmod-btn edit" type="button">✏ Editar</button>
                     <button id="proveedoresDelete" class="clientesmod-btn danger" type="button">⛔ Deshabilitar</button>
                 </div>
             </div>
@@ -15051,19 +15155,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const minFondo = Math.max(1, Number(getConfigValue('caja', 'fondoMinimo') || 1));
         const current = Number(cajaAperturas[day]);
         if (Number.isFinite(current) && current >= minFondo) return current;
-        let fondo = NaN;
-        while (!Number.isFinite(fondo) || fondo < minFondo) {
-            const raw = prompt(`Ingresa el fondo inicial de caja para hoy (mínimo ${formatMoney(minFondo)}):`, String(minFondo));
-            if (raw === null) {
-                fondo = minFondo;
-                break;
-            }
-            fondo = Number(raw);
-            if (!Number.isFinite(fondo) || fondo < minFondo) {
-                notifyError(`El fondo inicial debe ser mayor o igual a ${formatMoney(minFondo)}.`, 'Caja');
-            }
-        }
-        cajaAperturas[day] = Math.max(minFondo, fondo);
+        // Si ya se inicio sesion y no hay fondo, asignar el minimo sin preguntar
+        cajaAperturas[day] = minFondo;
         saveCajaAperturas();
         return cajaAperturas[day];
     };
@@ -21296,8 +21389,8 @@ document.addEventListener('DOMContentLoaded', () => {
             clearTimeout(_mpClickTimer);
             _mpClickTimer = setTimeout(() => {
                 if (_mpDblClicked) return;
-                if (mpSelectedIds.has(id)) mpSelectedIds.delete(id);
-                else mpSelectedIds.add(id);
+                mpSelectedIds.clear();
+                mpSelectedIds.add(id);
                 renderMisPedidos();
             }, 250);
         });
@@ -25726,7 +25819,7 @@ document.addEventListener('DOMContentLoaded', function() {
                   (o.estado === 'pendiente' ? '<button class="prod-btn-action print" data-action="imprimir-instrucciones" data-id="'+esc(o.id)+'">🖨 IMPRIMIR ORDEN</button>' : '')+
                   (o.estado === 'pendiente' && checkPermitirImprimirDiseno(o.producto) ? '<button class="prod-btn-action print" data-action="imprimir-diseno" data-id="'+esc(o.id)+'" style="background:#fff7ed;border-color:#fde8c8;color:#92400e;">🎨 IMPRIMIR DISEÑO</button>' : '')+
                   (o.estado === 'pendiente' ? '<button class="prod-btn-action" style="background:#ff9900;border-color:#ff9900;color:#fff;font-weight:800;" data-action="iniciar" data-id="'+esc(o.id)+'">▶ COMENZAR</button>' : '')+
-                  (o.estado === 'en_proceso' && checkPermitirImprimirDiseno(o.producto) ? '<button class="prod-btn-action" title="Imprimir Diseño" data-action="imprimir-diseno" data-id="'+esc(o.id)+'" style="background:#fff7ed;border-color:#fde8c8;color:#92400e;padding:8px 10px;font-size:0.8rem;">🖼</button>' : '')+
+                  (o.estado === 'en_proceso' && checkPermitirImprimirDiseno(o.producto) ? '<button class="prod-btn-action" title="Imprimir Diseño" data-action="imprimir-diseno" data-id="'+esc(o.id)+'" style="background:#fff7ed;border-color:#fde8c8;color:#92400e;padding:8px 10px;font-size:0.8rem;">� Imprimir Diseño</button>' : '')+
                   (o.estado === 'en_proceso' ? '<button class="prod-btn-action" title="Imprimir Orden" data-action="imprimir-instrucciones" data-id="'+esc(o.id)+'" style="padding:8px 10px;font-size:0.8rem;">📋</button>' : '')+
                   (o.estado === 'en_proceso' ? '<button class="prod-btn-action" title="Regresar a Pendiente" style="background:#fef2f2;border-color:#fecaca;color:#dc2626;padding:8px 10px;font-size:0.8rem;" data-action="a-pendiente" data-id="'+esc(o.id)+'">⏸</button>' : '')+
                   (o.estado === 'en_proceso' ? '<button class="prod-btn-action" title="Terminado" style="background:#f0fdf4;border-color:#bbf7d0;color:#166534;font-weight:800;padding:8px 10px;font-size:0.8rem;" data-action="terminado" data-id="'+esc(o.id)+'">✅</button>' : '')+
@@ -26331,7 +26424,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 btns = '<button class="prod-btn-action" style="background:#ff9900;border-color:#ff9900;color:#fff;font-weight:800;font-size:0.7rem;padding:8px 18px;" data-action="dis-comenzar" data-id="'+esc(o.id)+'">▶ COMENZAR</button>';
             } else if (o.estado==='en_proceso') {
                 var fotosCount = (o.disenoFotos||[]).length;
-                btns = '<button class="prod-btn-action" style="background:#fff7ed;border-color:#fde8c8;color:#92400e;" data-action="dis-upload" data-id="'+esc(o.id)+'">📁 Subir Fotos'+(fotosCount?' ('+fotosCount+')':'')+'</button>';
+                btns = '<button class="prod-btn-action" style="background:#fff7ed;border-color:#fde8c8;color:#92400e;" data-action="dis-upload" data-id="'+esc(o.id)+'">📁 Subir Diseño'+(fotosCount?' ('+fotosCount+')':'')+'</button>';
                 btns += ' <button class="prod-btn-action" style="background:#f0fdf4;border-color:#bbf7d0;color:#166534;font-weight:800;" data-action="dis-terminar" data-id="'+esc(o.id)+'">✅ Terminar Diseño</button>';
                 if (o.disenoUrl) btns += ' <a href="'+esc(o.disenoUrl)+'" target="_blank" style="font-size:0.55rem;color:#ff9900;font-weight:700;">🎨 Ver diseño</a>';
             }
@@ -26692,7 +26785,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
     <div class="almacenpedidos-body">
       <div style="display:flex;gap:6px;flex-shrink:0;flex-wrap:wrap;">
-        <button class="prod-tab active" data-alm-status="almacenado" style="background:#ff9900;border-color:#e68a00;color:#fff;">📦 Escaneados</button>
+        <button class="prod-tab active" data-alm-status="almacenado" style="background:#ff9900;border-color:#e68a00;color:#fff;">📦 Almacenados</button>
         <button id="btnRecolectarPedidos" class="prod-tab" style="background:#ff9900;border-color:#e68a00;color:#fff;margin-left:auto;">📷 Recolectar</button>
         <button id="btnEnviarLoteSucursal" class="prod-tab" style="background:#ff9900;border-color:#ff9900;color:#fff;">🏬 Entregar a Sucursal</button>
         <button id="btnConfirmarLlegadaSucursal" class="prod-tab" style="background:#1e40af;border-color:#1e40af;color:#fff;display:none;">📍 Confirmar Llegada</button>
@@ -29845,6 +29938,622 @@ document.addEventListener('DOMContentLoaded', function() {
     window.costoEnvio = 0;
     window.costoInstalacion = 0;
 
+    // ===== ENVIA.COM API INTEGRATION =====
+    const ENVIA_API_KEY = '207aa912ab3f433807ba6e3bfd70cb69f305bad60a64ab96b947678fe089d619';
+    const ENVIA_API_URL = 'https://api-test.envia.com';
+
+    // Agrega el envío como línea de producto en la tabla de orden
+    const addEnvioToOrdenLineas = (carrier, service, price) => {
+        if (typeof ordenLineas === 'undefined') return;
+        // Remove any previous shipping line
+        const prevIdx = ordenLineas.findIndex(r => r._isEnvio);
+        if (prevIdx !== -1) ordenLineas.splice(prevIdx, 1);
+        const carrierName = String(carrier || 'Paquetería').toUpperCase();
+        const desc = service ? '(' + carrierName + ' — ' + service + ')' : '(' + carrierName + ')';
+        ordenLineas.push({
+            producto: '🚚 Envío ' + desc,
+            medida: '-',
+            material: 'ENVÍO',
+            precio: Number(price) || 0,
+            cantidad: 1,
+            _isEnvio: true
+        });
+        // Set costoEnvio to 0 so updateExtraCosts doesn't double-count
+        window.costoEnvio = 0;
+        if (typeof renderTabla === 'function') renderTabla();
+    };
+
+    // Remueve la línea de envío de la tabla de orden
+    const removeEnvioFromOrdenLineas = () => {
+        if (typeof ordenLineas === 'undefined') return;
+        const idx = ordenLineas.findIndex(r => r._isEnvio);
+        if (idx !== -1) {
+            ordenLineas.splice(idx, 1);
+            if (typeof renderTabla === 'function') renderTabla();
+        }
+    };
+
+    const ORIGEN_ENVIO = {
+        name: 'Axel Brayan Gonzalez Aquino',
+        company: 'MAQUILEROS',
+        email: 'maquileros.publicidad@gmail.com',
+        street: 'Bustamante',
+        number: '810',
+        district: 'Centro',
+        city: 'Oaxaca de Juárez',
+        state: 'OA',
+        country: 'MX',
+        postalCode: '71294',
+        phone: '9519415828'
+    };
+
+    const showEnvioPopup = (cb) => {
+        const escapeHtml = window._escHtml || function(s) { return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); };
+        const existing = document.getElementById('envioPopupOverlay');
+        if (existing) existing.remove();
+
+        // Buscar datos del cliente seleccionado
+        const clienteIdEl = document.getElementById('ordenClienteId');
+        const clienteId = clienteIdEl ? clienteIdEl.value : '';
+        let allClientes = [];
+        try { allClientes = JSON.parse(localStorage.getItem('mock_clientes_modulo_v1') || '[]'); } catch(_) {}
+        const cliente = allClientes.find(c => String(c.id || '').trim() === clienteId) || {};
+
+        const tieneUbiDomicilio = !!(cliente.ubiDomicilio || '').trim();
+        const tieneUbiNegocio = !!(cliente.ubiNegocio || '').trim();
+        const tieneUbiPuntoMedio = !!(cliente.ubiPuntoMedio || '').trim();
+        const tieneDireccionBase = !!(cliente.calle || '').trim() && !!(cliente.cp || '').trim();
+        const tieneAlgunaDireccion = tieneUbiDomicilio || tieneUbiNegocio || tieneUbiPuntoMedio || tieneDireccionBase;
+
+        let opcionesDirHtml = '';
+        if (tieneAlgunaDireccion) {
+            opcionesDirHtml = '<div class="envio-dir-selector">' +
+                '<label style="font-size:0.6rem;font-weight:800;color:#ff9900;margin-bottom:4px;display:block;">DIRECCIÓN DE DESTINO</label>' +
+                '<div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;">';
+            if (tieneDireccionBase) opcionesDirHtml += '<button class="envio-dir-btn active" data-dir="base">📍 Dirección principal</button>';
+            if (tieneUbiDomicilio) opcionesDirHtml += '<button class="envio-dir-btn" data-dir="domicilio">🏠 Domicilio</button>';
+            if (tieneUbiNegocio) opcionesDirHtml += '<button class="envio-dir-btn" data-dir="negocio">🏢 Negocio</button>';
+            if (tieneUbiPuntoMedio) opcionesDirHtml += '<button class="envio-dir-btn" data-dir="puntoMedio">📌 Punto medio</button>';
+            opcionesDirHtml += '<button class="envio-dir-btn" data-dir="nueva">➕ Nueva dirección</button>';
+            opcionesDirHtml += '</div></div>';
+        }
+
+        const overlay = document.createElement('div');
+        overlay.id = 'envioPopupOverlay';
+        overlay.className = 'orden-costo-extra-popup';
+        overlay.innerHTML = `<div class="envio-cotizar-card">
+            <!-- ===== COLUMNA IZQUIERDA: FORMULARIO ===== -->
+            <div class="envio-col-left">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;border-bottom:2px solid #ff9900;padding-bottom:6px;">
+                    <span style="font-size:1rem;">📦</span>
+                    <div style="flex:1"><h3 style="margin:0;font-size:0.74rem;color:#1f2937;">COTIZAR ENVÍO</h3></div>
+                    <span style="font-size:0.42rem;color:#9ca3af;font-weight:600;">ENVIA.COM</span>
+                </div>
+                ${opcionesDirHtml}
+                <div id="envioFormDireccion" style="display:flex;flex-direction:column;gap:2px;">
+                    <span class="envio-section-title">👤 Destinatario</span>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+                        <div class="login-field"><label>Nombre *</label><input id="envioNombre" type="text" value="${escapeHtml(cliente.nombre || '')}" placeholder="Nombre completo"></div>
+                        <div class="login-field"><label>Empresa</label><input id="envioEmpresa" type="text" value="${escapeHtml(cliente.empresa || '')}" placeholder="Opcional"></div>
+                        <div class="login-field"><label>Email</label><input id="envioEmail" type="email" value="${escapeHtml(cliente.email || '')}" placeholder="correo@ej.com"></div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:60px 1fr 1fr 1fr;gap:6px;">
+                        <div class="login-field"><label>Tel *</label>
+                            <div style="display:flex;gap:2px;align-items:center;">
+                                <span style="font-size:0.46rem;color:#9ca3af;">+52</span>
+                                <input id="envioTelefono" type="tel" value="${escapeHtml(cliente.telefono || '')}" placeholder="10 dígitos" style="flex:1;min-width:0;">
+                            </div>
+                        </div>
+                        <div class="login-field"><label>CP *</label><input id="envioCp" type="text" value="${escapeHtml(cliente.cp || '')}" placeholder="06600" maxlength="5" style="font-weight:800;letter-spacing:1px;text-align:center;"></div>
+                        <div class="login-field"><label>Calle *</label><input id="envioCalle" type="text" value="${escapeHtml(cliente.calle || '')}" placeholder="Calle"></div>
+                        <div class="login-field"><label>Número</label><input id="envioNumero" type="text" value="${escapeHtml(cliente.numero || '')}" placeholder="#"></div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+                        <div class="login-field"><label>Colonia</label>
+                            <select id="envioColonia"><option value="">— CP para colonias —</option></select>
+                        </div>
+                        <div class="login-field"><label>Ciudad</label><input id="envioCiudad" type="text" value="${escapeHtml(cliente.ciudad || '')}" readonly style="opacity:0.7;"></div>
+                        <div class="login-field"><label>Estado</label><input id="envioEstado" type="text" value="${escapeHtml(cliente.estado || '')}" readonly style="opacity:0.7;"></div>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;">
+                        <div class="login-field"><label>RFC</label><input id="envioRfc" type="text" placeholder="Opcional"></div>
+                        <div class="login-field"><label>Referencia</label><input id="envioReferencia" type="text" placeholder="Entre calles..."></div>
+                        <div class="login-field"><label>País</label>
+                            <select id="envioPais"><option value="MX" selected>🇲🇽 MX — Mexico</option></select>
+                        </div>
+                    </div>
+                    <div id="envioCpStatus" style="font-size:0.44rem;color:#6b7280;min-height:10px;"></div>
+
+                    <span class="envio-section-title">📐 Paquete
+                        <button id="envioSavePkg" type="button" style="margin-left:auto;padding:2px 8px;border-radius:5px;border:1px solid #d1d5db;background:#fff;color:#ff9900;font-size:0.44rem;font-weight:700;cursor:pointer;">💾 Guardar</button>
+                    </span>
+                    <div id="envioPkgPresets" style="display:flex;gap:4px;flex-wrap:wrap;margin-bottom:4px;"></div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr 1fr;gap:6px;align-items:end;">
+                        <div class="login-field"><label>Contenido *</label><input id="envioPkgContenido" type="text" value="Bolsas" placeholder="Contenido"></div>
+                        <div class="login-field"><label>Largo</label>
+                            <div style="display:flex;align-items:center;gap:2px;"><input id="envioPkgLargo" type="number" min="1" value="40" style="flex:1;min-width:0;"><span style="font-size:0.42rem;color:#9ca3af;">cm</span></div>
+                        </div>
+                        <div class="login-field"><label>Ancho</label>
+                            <div style="display:flex;align-items:center;gap:2px;"><input id="envioPkgAncho" type="number" min="1" value="30" style="flex:1;min-width:0;"><span style="font-size:0.42rem;color:#9ca3af;">cm</span></div>
+                        </div>
+                        <div class="login-field"><label>Alto</label>
+                            <div style="display:flex;align-items:center;gap:2px;"><input id="envioPkgAlto" type="number" min="1" value="30" style="flex:1;min-width:0;"><span style="font-size:0.42rem;color:#9ca3af;">cm</span></div>
+                        </div>
+                        <div class="login-field"><label>Peso</label>
+                            <div style="display:flex;align-items:center;gap:2px;"><input id="envioPkgPeso" type="number" min="0.1" step="0.1" value="10" style="flex:1;min-width:0;"><span style="font-size:0.42rem;color:#9ca3af;">kg</span></div>
+                        </div>
+                        <div class="login-field"><label>Cant.</label><input id="envioPkgCantidad" type="number" min="1" value="1" style="text-align:center;"></div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:10px;margin-top:2px;">
+                        <span id="envioVolWeight" class="envio-vol-weight">Peso vol: 4.8 kg</span>
+                        <select id="envioUnidad" style="padding:2px 6px;border-radius:4px;border:1px solid #d1d5db;font-size:0.44rem;color:#374151;background:#f9fafb;">
+                            <option value="KG_CM" selected>KG / CM</option>
+                            <option value="LB_IN">LB / IN</option>
+                        </select>
+                    </div>
+
+                    <div style="display:flex;gap:6px;margin-top:8px;">
+                        <button id="envioCotizar" class="orden-btn primary" type="button" style="background:#ff9900;border-color:#e68a00;color:#fff;font-size:0.56rem;flex:1;padding:6px 0;">🔍 COTIZAR</button>
+                        <button id="envioManualBtn" class="orden-btn" type="button" style="border-color:#ff9900;color:#ff9900;font-size:0.52rem;padding:6px 12px;">✏️ MANUAL</button>
+                        <button id="envioCancelar" class="orden-btn" type="button" style="color:#6b7280;border-color:#d1d5db;font-size:0.52rem;padding:6px 12px;">✖ CERRAR</button>
+                    </div>
+                    <div id="envioManualFallback" style="display:none;border-top:1px solid #e5e7eb;margin-top:6px;padding-top:6px;">
+                        <div style="display:flex;gap:6px;align-items:center;">
+                            <span style="color:#6b7280;font-size:0.55rem;">$</span>
+                            <input id="envioManualCosto" type="number" min="0" step="0.01" placeholder="Costo" style="flex:1;padding:4px 7px;border-radius:5px;border:1px solid #d1d5db;background:#f9fafb;color:#1f2937;font-size:0.55rem;">
+                            <button id="envioManualAplicar" class="orden-btn primary" type="button" style="background:#ff9900;border-color:#e68a00;color:#fff;font-size:0.5rem;padding:4px 10px;">✅ APLICAR</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- ===== COLUMNA DERECHA: RESULTADOS ===== -->
+            <div class="envio-col-right">
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                    <span style="font-size:0.56rem;font-weight:800;color:#1f2937;">🚚 PAQUETERÍAS</span>
+                    <span id="envioRateCount" style="font-size:0.44rem;color:#9ca3af;font-weight:600;"></span>
+                </div>
+                <div id="envioStatus" style="font-size:0.48rem;color:#6b7280;text-align:center;min-height:14px;margin-bottom:4px;"></div>
+                <div id="envioListaCotizaciones" style="flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:5px;"></div>
+                <div id="envioRightEmpty" class="envio-right-empty">
+                    <div>
+                        <div style="font-size:1.3rem;margin-bottom:6px;">🔍</div>
+                        <div>Llena los datos y presiona<br><strong style="color:#ff9900;">COTIZAR</strong></div>
+                    </div>
+                </div>
+                <button id="envioAceptar" class="orden-btn primary" type="button" style="display:none;background:#ff9900;border-color:#e68a00;color:#fff;width:100%;font-size:0.56rem;margin-top:8px;padding:8px 0;">✅ APLICAR ENVÍO SELECCIONADO</button>
+            </div>
+        </div>`;
+        document.body.appendChild(overlay);
+
+        // ===== PAQUETES GUARDADOS (localStorage) =====
+        const PKG_STORAGE_KEY = 'envio_paquetes_guardados';
+        let savedPkgs = [];
+        try { savedPkgs = JSON.parse(localStorage.getItem(PKG_STORAGE_KEY) || '[]'); } catch(_) {}
+        if (!savedPkgs.length) savedPkgs = [{ nombre: 'Bolsas', contenido: 'Bolsas', largo: 40, ancho: 30, alto: 30, peso: 10 }];
+
+        const presetsContainer = document.getElementById('envioPkgPresets');
+        const renderPresets = () => {
+            if (!presetsContainer) return;
+            presetsContainer.innerHTML = savedPkgs.map((p, i) =>
+                '<button class="envio-pkg-preset" data-pkg-idx="' + i + '" title="' + p.largo + 'x' + p.ancho + 'x' + p.alto + ' cm, ' + p.peso + 'kg">' +
+                '📦 ' + (p.nombre || p.contenido) + ' <span style="color:#9ca3af;font-size:0.4rem;">(' + p.largo + '×' + p.ancho + '×' + p.alto + ', ' + p.peso + 'kg)</span>' +
+                '<span class="pkg-del" data-pkg-del="' + i + '" style="margin-left:4px;color:#ef4444;cursor:pointer;font-size:0.5rem;" title="Eliminar">✕</span></button>'
+            ).join('');
+            presetsContainer.querySelectorAll('.envio-pkg-preset').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    if (e.target.dataset.pkgDel !== undefined) {
+                        savedPkgs.splice(Number(e.target.dataset.pkgDel), 1);
+                        localStorage.setItem(PKG_STORAGE_KEY, JSON.stringify(savedPkgs));
+                        renderPresets();
+                        return;
+                    }
+                    const idx = Number(btn.dataset.pkgIdx);
+                    const p = savedPkgs[idx]; if (!p) return;
+                    presetsContainer.querySelectorAll('.envio-pkg-preset').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    const s = (id, v) => { const el = document.getElementById(id); if (el) el.value = v; };
+                    s('envioPkgContenido', p.contenido || p.nombre);
+                    s('envioPkgLargo', p.largo);
+                    s('envioPkgAncho', p.ancho);
+                    s('envioPkgAlto', p.alto);
+                    s('envioPkgPeso', p.peso);
+                    updateVolWeight();
+                });
+            });
+        };
+        renderPresets();
+
+        document.getElementById('envioSavePkg')?.addEventListener('click', () => {
+            const g = (id) => document.getElementById(id)?.value || '';
+            const pkg = {
+                nombre: g('envioPkgContenido') || 'Paquete',
+                contenido: g('envioPkgContenido') || 'Paquete',
+                largo: Number(g('envioPkgLargo')) || 30,
+                ancho: Number(g('envioPkgAncho')) || 30,
+                alto: Number(g('envioPkgAlto')) || 15,
+                peso: Number(g('envioPkgPeso')) || 2
+            };
+            savedPkgs.push(pkg);
+            localStorage.setItem(PKG_STORAGE_KEY, JSON.stringify(savedPkgs));
+            renderPresets();
+        });
+
+        // ===== PESO VOLUMÉTRICO =====
+        const volWeightEl = document.getElementById('envioVolWeight');
+        const updateVolWeight = () => {
+            const l = Number(document.getElementById('envioPkgLargo')?.value || 0);
+            const w = Number(document.getElementById('envioPkgAncho')?.value || 0);
+            const h = Number(document.getElementById('envioPkgAlto')?.value || 0);
+            const unit = document.getElementById('envioUnidad')?.value || 'KG_CM';
+            const divisor = unit === 'LB_IN' ? 166 : 5000;
+            const vol = (l * w * h) / divisor;
+            const label = unit === 'LB_IN' ? 'lb' : 'kg';
+            if (volWeightEl) volWeightEl.textContent = 'Peso vol: ' + vol.toFixed(1) + ' ' + label;
+        };
+        ['envioPkgLargo','envioPkgAncho','envioPkgAlto'].forEach(id => {
+            document.getElementById(id)?.addEventListener('input', updateVolWeight);
+        });
+        document.getElementById('envioUnidad')?.addEventListener('change', updateVolWeight);
+        updateVolWeight();
+
+        // ===== AUTOCOMPLETAR POR CÓDIGO POSTAL (Geocodes API) =====
+        let _cpTimer = null;
+        const cpInput = document.getElementById('envioCp');
+        const coloniaSelect = document.getElementById('envioColonia');
+        const ciudadInput = document.getElementById('envioCiudad');
+        const estadoInput = document.getElementById('envioEstado');
+        const cpStatusEl = document.getElementById('envioCpStatus');
+
+        const fetchGeocode = async (cp) => {
+            if (!cp || cp.length < 5) return;
+            if (cpStatusEl) { cpStatusEl.textContent = '🔍 Buscando CP ' + cp + '...'; cpStatusEl.style.color = '#60a5fa'; }
+            try {
+                const resp = await fetch('https://geocodes.envia.com/zipcode/MX/' + encodeURIComponent(cp));
+                if (!resp.ok) {
+                    if (cpStatusEl) { cpStatusEl.textContent = '⚠️ CP no encontrado'; cpStatusEl.style.color = '#f59e0b'; }
+                    return;
+                }
+                const data = await resp.json();
+                const info = Array.isArray(data) ? data[0] : data;
+                if (!info) {
+                    if (cpStatusEl) { cpStatusEl.textContent = '⚠️ Sin resultados para este CP'; cpStatusEl.style.color = '#f59e0b'; }
+                    return;
+                }
+                // Rellenar ciudad y estado
+                const ciudad = info.locality || info.city || '';
+                const estadoCode = (info.state && info.state.code && info.state.code['2digit']) || '';
+                const estadoNombre = (info.state && info.state.name) || estadoCode;
+                if (ciudadInput) { ciudadInput.value = ciudad; ciudadInput.style.opacity = '1'; }
+                if (estadoInput) { estadoInput.value = estadoNombre; estadoInput.style.opacity = '1'; }
+                // Rellenar colonias
+                const suburbs = info.suburbs || [];
+                if (coloniaSelect) {
+                    coloniaSelect.innerHTML = '';
+                    if (suburbs.length > 1) {
+                        coloniaSelect.innerHTML = '<option value="">— Selecciona colonia (' + suburbs.length + ') —</option>';
+                    }
+                    suburbs.forEach(s => {
+                        const opt = document.createElement('option');
+                        opt.value = s; opt.textContent = s;
+                        coloniaSelect.appendChild(opt);
+                    });
+                    if (suburbs.length === 1) coloniaSelect.value = suburbs[0];
+                    if (!suburbs.length) coloniaSelect.innerHTML = '<option value="">Sin colonias disponibles</option>';
+                }
+                if (cpStatusEl) { cpStatusEl.textContent = '✅ ' + ciudad + ', ' + estadoNombre + ' — ' + suburbs.length + ' colonias'; cpStatusEl.style.color = '#16a34a'; }
+            } catch (e) {
+                if (cpStatusEl) { cpStatusEl.textContent = '❌ Error al consultar: ' + e.message; cpStatusEl.style.color = '#ef4444'; }
+            }
+        };
+
+        if (cpInput) {
+            cpInput.addEventListener('input', () => {
+                clearTimeout(_cpTimer);
+                const val = cpInput.value.replace(/\D/g, '');
+                cpInput.value = val;
+                if (val.length === 5) {
+                    _cpTimer = setTimeout(() => fetchGeocode(val), 300);
+                } else {
+                    if (cpStatusEl) cpStatusEl.textContent = '';
+                }
+            });
+            // Auto-buscar si ya tiene CP del cliente
+            if (cpInput.value.length === 5) fetchGeocode(cpInput.value);
+        }
+
+        let envioSeleccionado = null;
+
+        // Direccion selector buttons
+        overlay.querySelectorAll('.envio-dir-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                overlay.querySelectorAll('.envio-dir-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const dir = btn.dataset.dir;
+                const form = document.getElementById('envioFormDireccion');
+                if (dir === 'nueva') {
+                    ['envioCalle','envioNumero','envioCiudad','envioEstado','envioCp','envioNombre','envioEmpresa','envioEmail','envioTelefono','envioRfc','envioReferencia'].forEach(id => {
+                        const el = document.getElementById(id); if (el) el.value = '';
+                    });
+                    if (coloniaSelect) coloniaSelect.innerHTML = '<option value="">— Escribe el CP para cargar colonias —</option>';
+                    if (cpStatusEl) cpStatusEl.textContent = '';
+                    if (form) form.style.display = '';
+                } else if (dir === 'domicilio' || dir === 'negocio' || dir === 'puntoMedio') {
+                    const ubiKey = dir === 'domicilio' ? 'ubiDomicilio' : dir === 'negocio' ? 'ubiNegocio' : 'ubiPuntoMedio';
+                    const ubiVal = (cliente[ubiKey] || '').trim();
+                    ['envioCalle','envioNumero','envioCiudad','envioEstado'].forEach(id => {
+                        const el = document.getElementById(id); if (el) el.value = '';
+                    });
+                    const cpMatch = ubiVal.match(/\b(\d{5})\b/);
+                    const cpVal = cpMatch ? cpMatch[1] : (cliente.cp || '');
+                    if (cpInput) cpInput.value = cpVal;
+                    if (cpVal.length === 5) fetchGeocode(cpVal);
+                    // Fill contact data from client
+                    const el = (id) => document.getElementById(id);
+                    if (el('envioNombre')) el('envioNombre').value = cliente.nombre || '';
+                    if (el('envioTelefono')) el('envioTelefono').value = cliente.telefono || '';
+                    if (el('envioEmail')) el('envioEmail').value = cliente.email || '';
+                    if (form) form.style.display = '';
+                } else {
+                    // base
+                    if (cpInput) cpInput.value = cliente.cp || '';
+                    const el = (id) => document.getElementById(id);
+                    if (el('envioCalle')) el('envioCalle').value = cliente.calle || '';
+                    if (el('envioNumero')) el('envioNumero').value = cliente.numero || '';
+                    if (el('envioCiudad')) el('envioCiudad').value = cliente.ciudad || '';
+                    if (el('envioEstado')) el('envioEstado').value = cliente.estado || '';
+                    if (el('envioNombre')) el('envioNombre').value = cliente.nombre || '';
+                    if (el('envioTelefono')) el('envioTelefono').value = cliente.telefono || '';
+                    if (el('envioEmail')) el('envioEmail').value = cliente.email || '';
+                    if (el('envioEmpresa')) el('envioEmpresa').value = cliente.empresa || '';
+                    if (cpInput && cpInput.value.length === 5) fetchGeocode(cpInput.value);
+                    if (form) form.style.display = '';
+                }
+                // Reset resultados
+                const emptyEl = document.getElementById('envioRightEmpty');
+                if (emptyEl) emptyEl.style.display = '';
+                document.getElementById('envioListaCotizaciones').innerHTML = '';
+                document.getElementById('envioAceptar').style.display = 'none';
+                envioSeleccionado = null;
+            });
+        });
+
+        const ENVIA_CARRIERS = [
+            'fedex','dhl','paquetexpress','sendex','noventa9Minutos','ups','estafeta',
+            'dostavista','almex','fletesMexico','envia','entrega',
+            'mensajerosUrbanos','amPm','jtexpress','tresGuerras','bigLogistics',
+            'afimex','castores'
+        ];
+
+        const CARRIER_LOGOS = {
+            fedex: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/FedEx_Corporation_-_2016_Logo.svg/200px-FedEx_Corporation_-_2016_Logo.svg.png',
+            dhl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/DHL_Logo.svg/200px-DHL_Logo.svg.png',
+            ups: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/United_Parcel_Service_logo_2014.svg/200px-United_Parcel_Service_logo_2014.svg.png',
+            estafeta: 'https://www.estafeta.com/images/logo-estafeta.svg',
+            paquetexpress: 'https://www.paquetexpress.com.mx/assets/img/logo-paquetexpress.svg',
+        };
+        const CARRIER_ABBREV = {
+            fedex:'FDX', dhl:'DHL', ups:'UPS', estafeta:'EST', paquetexpress:'PEX',
+            sendex:'SDX', noventa9Minutos:'99M', dostavista:'DST', almex:'ALM',
+            fletesMexico:'FMX', envia:'ENV', entrega:'ENT', mensajerosUrbanos:'MUR',
+            amPm:'APM', jtexpress:'JTX', tresGuerras:'3GR', bigLogistics:'BIG',
+            afimex:'AFX', castores:'CAS'
+        };
+
+        const MX_STATE_CODES = {
+            'aguascalientes':'AG','baja california':'BC','baja california sur':'BS','campeche':'CM',
+            'chiapas':'CS','chihuahua':'CH','ciudad de mexico':'CX','cdmx':'CX','coahuila':'CO',
+            'colima':'CL','durango':'DG','estado de mexico':'EM','guanajuato':'GT','guerrero':'GR',
+            'hidalgo':'HG','jalisco':'JA','mexico':'EM','michoacan':'MI','morelos':'MO','nayarit':'NA',
+            'nuevo leon':'NL','oaxaca':'OA','puebla':'PU','queretaro':'QE','quintana roo':'QR',
+            'san luis potosi':'SL','sinaloa':'SI','sonora':'SO','tabasco':'TB','tamaulipas':'TM',
+            'tlaxcala':'TL','veracruz':'VE','yucatan':'YU','zacatecas':'ZA',
+            'df':'CX','distrito federal':'CX','edomex':'EM','michoacán':'MI',
+            'nuevo león':'NL','querétaro':'QE','san luis potosí':'SL','yucatán':'YU'
+        };
+        const toStateCode = (s) => {
+            if (!s) return '';
+            const t = s.trim();
+            if (t.length <= 2) return t.toUpperCase();
+            return MX_STATE_CODES[t.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')] || t.substring(0, 2).toUpperCase();
+        };
+
+        const doCotizar = async () => {
+            const cpOrigen = ORIGEN_ENVIO.postalCode;
+            const cpDestino = (document.getElementById('envioCp')?.value || '').trim();
+            const largo = Number(document.getElementById('envioPkgLargo')?.value || 40);
+            const ancho = Number(document.getElementById('envioPkgAncho')?.value || 30);
+            const alto = Number(document.getElementById('envioPkgAlto')?.value || 30);
+            const peso = Number(document.getElementById('envioPkgPeso')?.value || 10);
+            const cantidad = Number(document.getElementById('envioPkgCantidad')?.value || 1);
+            const contenido = (document.getElementById('envioPkgContenido')?.value || 'Paquete').trim();
+            const unidad = document.getElementById('envioUnidad')?.value || 'KG_CM';
+            const lengthUnit = unidad === 'LB_IN' ? 'IN' : 'CM';
+            const weightUnit = unidad === 'LB_IN' ? 'LB' : 'KG';
+            const statusEl = document.getElementById('envioStatus');
+            // resultadosEl removed - right column is always visible
+            const listaEl = document.getElementById('envioListaCotizaciones');
+            const aceptarBtn = document.getElementById('envioAceptar');
+
+            if (!cpDestino || cpDestino.length < 5) {
+                if (statusEl) statusEl.textContent = '⚠️ Ingresa un código postal de destino válido (5 dígitos)';
+                if (statusEl) statusEl.style.color = '#f59e0b';
+                return;
+            }
+            if (!cpOrigen || cpOrigen.length < 5) {
+                if (statusEl) statusEl.textContent = '⚠️ Configura el CP de origen en ORIGEN_ENVIO';
+                if (statusEl) statusEl.style.color = '#f59e0b';
+                return;
+            }
+
+            if (statusEl) { statusEl.textContent = '⏳ Cotizando con Envia.com (consultando ' + ENVIA_CARRIERS.length + ' paqueterías)...'; statusEl.style.color = '#60a5fa'; }
+            if (listaEl) listaEl.innerHTML = '';
+            const emptyEl = document.getElementById('envioRightEmpty');
+            if (emptyEl) emptyEl.style.display = 'none';
+            if (aceptarBtn) aceptarBtn.style.display = 'none';
+            envioSeleccionado = null;
+
+            const destName = (document.getElementById('envioNombre')?.value || cliente.nombre || 'Cliente').trim();
+            const destPhone = (document.getElementById('envioTelefono')?.value || cliente.telefono || '0000000000').trim();
+            const destEmail = (document.getElementById('envioEmail')?.value || '').trim();
+            const destCompany = (document.getElementById('envioEmpresa')?.value || '').trim();
+
+            const baseBody = {
+                origin: {
+                    name: ORIGEN_ENVIO.name,
+                    phone: '+52 ' + (ORIGEN_ENVIO.phone || '0000000000'),
+                    street: ORIGEN_ENVIO.street || 'Calle origen',
+                    city: ORIGEN_ENVIO.city || '',
+                    state: toStateCode(ORIGEN_ENVIO.state),
+                    country: ORIGEN_ENVIO.country || 'MX',
+                    postalCode: cpOrigen
+                },
+                destination: {
+                    name: destName,
+                    company: destCompany,
+                    email: destEmail,
+                    phone: '+52 ' + destPhone,
+                    street: (document.getElementById('envioCalle')?.value || 'Calle').trim() || 'Calle',
+                    number: (document.getElementById('envioNumero')?.value || '').trim(),
+                    district: (document.getElementById('envioColonia')?.value || '').trim(),
+                    city: (document.getElementById('envioCiudad')?.value || '').trim(),
+                    state: toStateCode(document.getElementById('envioEstado')?.value || ''),
+                    country: 'MX',
+                    postalCode: cpDestino
+                },
+                packages: [{
+                    type: 'box',
+                    content: contenido,
+                    amount: cantidad,
+                    declaredValue: 500,
+                    lengthUnit: lengthUnit,
+                    weightUnit: weightUnit,
+                    weight: peso,
+                    dimensions: { length: largo, width: ancho, height: alto }
+                }]
+            };
+
+            const fetchCarrier = async (carrier) => {
+                try {
+                    const body = { ...baseBody, shipment: { type: 1, carrier } };
+                    const resp = await fetch(ENVIA_API_URL + '/ship/rate/', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + ENVIA_API_KEY
+                        },
+                        body: JSON.stringify(body)
+                    });
+                    const data = await resp.json();
+                    if (!resp.ok || data.error || data.meta === 'error') return [];
+                    // Documentación: respuesta { meta: "rate", data: [...] }
+                    let arr = [];
+                    if (data.meta === 'rate' && Array.isArray(data.data)) arr = data.data;
+                    else if (Array.isArray(data)) arr = data;
+                    else if (Array.isArray(data.data)) arr = data.data;
+                    else if (Array.isArray(data.rates)) arr = data.rates;
+                    return arr.map(r => ({ ...r, _carrier: carrier }));
+                } catch (e) { return []; }
+            };
+
+            try {
+                let completed = 0;
+                const allRates = [];
+                const rateCountEl = document.getElementById('envioRateCount');
+                if (listaEl) listaEl.innerHTML = '<div style="text-align:center;padding:16px;color:#9ca3af;font-size:0.55rem;">⏳ Consultando paqueterías...</div>';
+
+                const renderRates = () => {
+                    const sorted = [...allRates].sort((a, b) => Number(a.totalPrice || a.total_price || 999) - Number(b.totalPrice || b.total_price || 999));
+                    overlay._enviaRates = sorted;
+                    if (rateCountEl) rateCountEl.textContent = sorted.length + ' opciones · ' + completed + '/' + ENVIA_CARRIERS.length + ' consultadas';
+                    listaEl.innerHTML = sorted.map((r, i) => {
+                        const carrier = r.carrier || r._carrier || 'Paquetería';
+                        const carrierKey = (r._carrier || carrier).toLowerCase();
+                        const service = r.serviceDescription || r.service || '';
+                        const price = Number(r.totalPrice || r.total_price || 0);
+                        const days = r.deliveryEstimate || r.delivery_estimate || '';
+                        const currency = r.currency || 'MXN';
+                        const logoUrl = CARRIER_LOGOS[carrierKey] || CARRIER_LOGOS[r._carrier] || '';
+                        const abbrev = CARRIER_ABBREV[r._carrier] || CARRIER_ABBREV[carrierKey] || carrier.substring(0,3).toUpperCase();
+                        const logoHtml = logoUrl
+                            ? '<img src="' + escapeHtml(logoUrl) + '" class="carrier-logo" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'"><div class="carrier-logo-placeholder" style="display:none">' + escapeHtml(abbrev) + '</div>'
+                            : '<div class="carrier-logo-placeholder">' + escapeHtml(abbrev) + '</div>';
+                        const isFirst = i === 0;
+                        return '<div class="envio-rate-card" data-idx="' + i + '"' + (isFirst ? ' style="border-color:#ff9900;background:#fff7ed;"' : '') + '>' +
+                            logoHtml +
+                            '<div style="flex:1;display:flex;flex-direction:column;gap:2px;">' +
+                                '<div style="font-size:0.68rem;font-weight:800;color:#1f2937;">' + escapeHtml(carrier.toUpperCase()) + '</div>' +
+                                '<div style="font-size:0.52rem;color:#6b7280;">' + escapeHtml(service) + (days ? ' · 🕐 ' + escapeHtml(days) : '') + '</div>' +
+                            '</div>' +
+                            '<div style="font-size:0.78rem;font-weight:900;color:#ff9900;">$' + price.toFixed(2) + ' <span style="font-size:0.5rem;color:#9ca3af;">' + currency + '</span></div>' +
+                        '</div>';
+                    }).join('');
+                    // Re-bind click events
+                    listaEl.querySelectorAll('.envio-rate-card').forEach(card => {
+                        card.addEventListener('click', () => {
+                            listaEl.querySelectorAll('.envio-rate-card').forEach(c => { c.classList.remove('selected'); c.style.borderColor = ''; c.style.background = ''; });
+                            card.classList.add('selected');
+                            const idx = Number(card.dataset.idx);
+                            envioSeleccionado = overlay._enviaRates[idx];
+                            if (aceptarBtn) aceptarBtn.style.display = '';
+                        });
+                    });
+                };
+
+                const promises = ENVIA_CARRIERS.map(c => fetchCarrier(c).then(rates => {
+                    completed++;
+                    allRates.push(...rates);
+                    if (statusEl) statusEl.textContent = '⏳ Consultando paqueterías... (' + completed + '/' + ENVIA_CARRIERS.length + ')';
+                    if (allRates.length > 0) renderRates();
+                }));
+                await Promise.all(promises);
+
+                if (!allRates.length) {
+                    if (statusEl) { statusEl.textContent = '⚠️ Ningún carrier respondió con tarifas. Ingresa el costo manualmente.'; statusEl.style.color = '#f59e0b'; }
+                    if (listaEl) listaEl.innerHTML = '<div style="text-align:center;padding:16px;color:#9ca3af;font-size:0.55rem;">Sin resultados</div>';
+                    const manualFallback = document.getElementById('envioManualFallback');
+                    if (manualFallback) manualFallback.style.display = '';
+                    return;
+                }
+
+                // Final render sorted
+                renderRates();
+                if (rateCountEl) rateCountEl.textContent = allRates.length + ' opciones encontradas';
+                if (statusEl) { statusEl.textContent = '✅ ' + allRates.length + ' opciones encontradas. Selecciona una paquetería.'; statusEl.style.color = '#16a34a'; }
+
+            } catch (err) {
+                console.error('Envia.com error:', err);
+                if (statusEl) { statusEl.textContent = '❌ Error de conexión: ' + (err.message || err); statusEl.style.color = '#ef4444'; }
+            }
+        };
+
+        document.getElementById('envioCotizar').addEventListener('click', doCotizar);
+        document.getElementById('envioCancelar').addEventListener('click', () => { overlay.remove(); cb(null); });
+        document.getElementById('envioManualBtn').addEventListener('click', () => {
+            document.getElementById('envioManualFallback').style.display = '';
+        });
+        document.getElementById('envioManualAplicar').addEventListener('click', () => {
+            const val = Number(document.getElementById('envioManualCosto')?.value || 0);
+            if (val > 0) {
+                // Add as product row in order table
+                addEnvioToOrdenLineas('Manual', '', val);
+                overlay.remove();
+                cb(val);
+            }
+        });
+        document.getElementById('envioAceptar').addEventListener('click', () => {
+            if (!envioSeleccionado) return;
+            const price = Number(envioSeleccionado.totalPrice || 0);
+            const carrier = envioSeleccionado.carrier || envioSeleccionado._carrier || 'Paquetería';
+            const service = envioSeleccionado.serviceDescription || envioSeleccionado.service || '';
+            window._envioSeleccionado = { carrier, service, price, rate: envioSeleccionado };
+            // Add as product row in order table
+            addEnvioToOrdenLineas(carrier, service, price);
+            overlay.remove();
+            cb(price);
+        });
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) { overlay.remove(); cb(null); } });
+    };
+
     const showCostoExtraPopup = (tipo, cb) => {
         const existing = document.getElementById('costoExtraPopupOverlay');
         if (existing) existing.remove();
@@ -29897,13 +30606,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (chkEnvio) {
             chkEnvio.addEventListener('change', () => {
                 if (chkEnvio.checked) {
-                    showCostoExtraPopup('envio', (val) => {
-                        if (val === null || val === 0) { chkEnvio.checked = false; window.costoEnvio = 0; }
-                        else { window.costoEnvio = val; }
+                    showEnvioPopup((val) => {
+                        if (val === null || val === 0) { chkEnvio.checked = false; window.costoEnvio = 0; removeEnvioFromOrdenLineas(); }
+                        // costoEnvio stays 0 because addEnvioToOrdenLineas handles the cost via the table row
                         updateExtraCosts();
                     });
                 } else {
                     window.costoEnvio = 0;
+                    window._envioSeleccionado = null;
+                    removeEnvioFromOrdenLineas();
                     updateExtraCosts();
                 }
             });
