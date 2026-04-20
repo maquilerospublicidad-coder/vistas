@@ -3,3 +3,5 @@
 window.ACCESS_API_CONFIG = window.ACCESS_API_CONFIG || {
   baseUrl: ''
 };
+
+window.DEFAULT_ZONAS = ['Centro', 'Norte', 'Sur', 'Este', 'Oeste'];

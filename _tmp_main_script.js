@@ -1229,7 +1229,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (configClientesAlertaBajaExistencia) configClientesAlertaBajaExistencia.value = getConfigValue('clientes', 'alertaBajaExistencia') || 5000;
         if (configClientesAceptarOrdenesSinCliente) configClientesAceptarOrdenesSinCliente.checked = getConfigValue('clientes', 'aceptarOrdenesSinCliente') !== false;
 
+        if (configZonasLista) {
+            const zonas = getConfigValue('zonas', 'lista') || window.DEFAULT_ZONAS || [];
+            configZonasLista.value = zonas.join('\n');
+        }
+
         // Productos
+
         if (configProductosUnidadPorDefecto) configProductosUnidadPorDefecto.value = getConfigValue('productos', 'unidadPorDefecto') || 'pza';
         if (configProductosMargenPorDefecto) configProductosMargenPorDefecto.value = getConfigValue('productos', 'margenPorDefecto') || 30;
         if (configProductosAlertaBajaExistencia) configProductosAlertaBajaExistencia.value = getConfigValue('productos', 'alertaBajaExistencia') || 10;
