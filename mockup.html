@@ -2118,6 +2118,36 @@
             align-items: end;
         }
 
+        /* ── Mis Pedidos: payment grid uses orden-pay-btn (same as Nueva Orden) ── */
+
+        /* ── Mini calendario ── */
+        .mp-cal-quick {
+            padding: 5px 12px;
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.6rem;
+            font-weight: 700;
+            color: #374151;
+            transition: background 0.15s;
+            white-space: nowrap;
+        }
+        .mp-cal-quick:hover, .mp-cal-quick.active { background: #fff7ed; color: #92400e; border-color: #fde8c8; }
+        .mp-cal-month { font-size: 0.72rem; min-width: 220px; }
+        .mp-cal-month .cal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; font-weight:800; color:#1f2937; font-size:0.72rem; }
+        .mp-cal-month .cal-header button { background:none; border:none; cursor:pointer; font-size:1rem; color:#6b7280; padding:2px 8px; line-height:1; }
+        .mp-cal-month .cal-header button:hover { color:#ff9900; }
+        .mp-cal-month .cal-grid { display:grid; grid-template-columns:repeat(7, 1fr); gap:2px; }
+        .mp-cal-month .cal-dow { text-align:center; font-weight:800; color:#9ca3af; font-size:0.58rem; padding:4px 0; }
+        .mp-cal-month .cal-day { text-align:center; padding:6px 3px; border-radius:5px; cursor:pointer; transition:all 0.1s; font-size:0.7rem; color:#374151; line-height:1.2; }
+        .mp-cal-month .cal-day:hover { background:#fff7ed; color:#92400e; }
+        .mp-cal-month .cal-day.today { font-weight:900; color:#ff9900; }
+        .mp-cal-month .cal-day.in-range { background:#fff7ed; color:#92400e; }
+        .mp-cal-month .cal-day.range-start, .mp-cal-month .cal-day.range-end { background:#ff9900; color:#fff; border-radius:50%; font-weight:900; }
+        .mp-cal-month .cal-day.other-month { color:#d1d5db; }
+        .mp-cal-month .cal-day.empty { cursor:default; pointer-events:none; }
+
         .mispedidos-filters .orden-field {
             font-size: 0.54rem;
         }
@@ -4666,6 +4696,77 @@
             overflow: hidden;
             flex: 1 1 0;
         }
+
+        /* ── Wizard de producto ── */
+        .prod-wizard-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 10px;
+            background: linear-gradient(90deg,#1e293b,#334155);
+            border-radius: 6px 6px 0 0;
+            border-bottom: 2px solid #f07a00;
+            flex-shrink: 0;
+        }
+        .prod-wizard-title {
+            font-size: 0.68rem;
+            font-weight: 900;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        .prod-wizard-count {
+            font-size: 0.56rem;
+            font-weight: 700;
+            color: #f07a00;
+            border: 1px solid rgba(240,122,0,0.5);
+            border-radius: 10px;
+            padding: 1px 8px;
+            background: rgba(240,122,0,0.08);
+        }
+        .prod-step-panel {
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            flex: 1 1 0;
+            min-height: 0;
+            padding: 8px 10px;
+            background: #fff;
+            border-radius: 0 0 6px 6px;
+        }
+        .prod-step-panel.active { display: flex; }
+        .prod-step-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        .prod-step-navbtn {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 7px;
+            border: none;
+            border-radius: 5px;
+            background: rgba(255,255,255,0.08);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.56rem;
+            font-weight: 700;
+            cursor: default;
+            text-align: left;
+            transition: background 0.15s;
+            letter-spacing: 0.2px;
+        }
+        .prod-step-navbtn.active {
+            background: rgba(240,122,0,0.85);
+            color: #fff;
+            cursor: pointer;
+        }
+        .prod-step-navbtn.done {
+            background: rgba(34,197,94,0.2);
+            color: #bbf7d0;
+            cursor: pointer;
+        }
+        .prod-step-navbtn .step-icon { font-size: 0.7rem; }
 
         .prod-tab-step-layout {
             display: grid;
@@ -7334,6 +7435,14 @@
 
 <button id="btnHome" class="btn-home" onclick="irAtrasConfigurador()" title="Volver al muestrario" aria-label="Volver al muestrario">←</button>
 
+<div id="accesoDenegadoOverlay" style="display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.82);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0;" aria-modal="true" role="alertdialog">
+  <div style="background:#fff;border-radius:16px;padding:36px 40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+    <div style="font-size:3rem;margin-bottom:12px;">🚫</div>
+    <h2 style="margin:0 0 8px;font-size:1.1rem;color:#dc2626;font-weight:900;">ACCESO DENEGADO</h2>
+    <p id="accesoDenegadoMsg" style="margin:0 0 20px;font-size:0.7rem;color:#6b7280;line-height:1.5;">No tienes permisos para acceder a este módulo.</p>
+    <button id="accesoDenegadoVolverBtn" type="button" style="background:#ff9900;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:0.7rem;font-weight:800;cursor:pointer;">← Volver al inicio</button>
+  </div>
+</div>
 <div id="inicioSistema" class="inicio-sistema-overlay" aria-hidden="true">
     <div class="inicio-sistema-box" style="position:relative">
         <button id="btnScanRecepcion" type="button" title="Recepción Sucursal" aria-label="Recepción Sucursal" style="position:absolute;top:12px;left:12px;background:none;border:none;font-size:1.5em;cursor:pointer;z-index:10;opacity:0.7;transition:opacity .2s;" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.7'">📷</button>
@@ -9350,7 +9459,7 @@ const imgBolsaDeliveryBase = new Image();
         const loginOv = document.getElementById('loginOverlay');
         const sidebar = document.querySelector('.sidebar');
         const mainArea = document.querySelector('.main-area');
-        if (loginOv && localStorage.getItem('logged_user_email')) loginOv.style.display = 'none';
+        // loginOverlay se oculta únicamente via onAuthStateChanged (Firebase Auth real)
         if (landing) { landing.style.display = 'none'; landing.style.visibility = ''; }
         if (sidebar) { sidebar.style.display = ''; sidebar.style.visibility = ''; }
         if (mainArea) { mainArea.style.display = ''; mainArea.style.visibility = ''; }
@@ -9375,6 +9484,23 @@ const imgBolsaDeliveryBase = new Image();
 
     function abrirModuloPrincipal(modulo) {
         const key = String(modulo || '').trim().toUpperCase();
+
+        // ── GUARDIA DE PERMISOS ──
+        // Verificar que hay una sesión Firebase activa
+        const _fbUser = (window._currentFirebaseUser !== undefined)
+            ? window._currentFirebaseUser
+            : null;
+        const _role = localStorage.getItem('logged_user_role') || '';
+        if (!_role) {
+            // No hay sesión conocida — mostrar login
+            const lo = document.getElementById('loginOverlay');
+            if (lo) lo.style.display = 'flex';
+            return;
+        }
+        if (!canAccessModule(_role, key)) {
+            showAccesoDenegado(key);
+            return;
+        }
 
         if (key === 'NUEVA ORDEN') {
             ocultarInicioSistema();
@@ -11131,6 +11257,17 @@ const imgBolsaDeliveryBase = new Image();
     </div>
 </div>
 
+<div id="mpPagoPopup" class="orden-pay-popup" aria-hidden="true" style="z-index:100030;">
+    <div class="orden-pay-card" role="dialog" aria-modal="true" aria-labelledby="mpPagoTitulo">
+        <h3 id="mpPagoTitulo" style="margin:0;font-size:0.9rem;font-weight:900;color:#111827;">REGISTRAR ABONO</h3>
+        <div id="mpPagoBody" class="orden-pay-grid"></div>
+        <div class="orden-pay-actions">
+            <button id="mpPagoCancelar" class="orden-btn" type="button">CANCELAR</button>
+            <button id="mpPagoAceptar" class="orden-btn primary" type="button">REGISTRAR</button>
+        </div>
+    </div>
+</div>
+
 <div id="ordenConfirmPopup" class="orden-pay-popup" aria-hidden="true">
     <div class="orden-pay-card" role="dialog" aria-modal="true" aria-labelledby="ordenConfirmTitulo">
         <h3 id="ordenConfirmTitulo" style="margin:0;font-size:0.9rem;font-weight:900;color:#111827;">Confirmación</h3>
@@ -11319,40 +11456,82 @@ const imgBolsaDeliveryBase = new Image();
             </div>
         </div>
 
-        <div class="mispedidos-filters">
-            <div class="orden-field"><label>Folio</label><input id="mpFiltroFolio" type="text"></div>
-            <div class="orden-field"><label>Nombre del cliente</label><input id="mpFiltroNombre" type="text"></div>
-            <div class="orden-field"><label>Teléfono</label><input id="mpFiltroTelefono" type="text"></div>
-            <div class="orden-field">
+        <div class="mispedidos-filters" style="gap:10px;align-items:flex-end;">
+            <div class="orden-field" style="flex:2;min-width:180px;">
+                <input id="mpFiltroBuscar" type="text" placeholder="🔍  Folio, nombre o teléfono..." aria-label="Buscar por folio, nombre o teléfono">
+                <input id="mpFiltroFolio" type="hidden">
+                <input id="mpFiltroNombre" type="hidden">
+                <input id="mpFiltroTelefono" type="hidden">
+            </div>
+            <div class="orden-field" style="min-width:130px;">
                 <label>Diseñador</label>
                 <select id="mpFiltroDisenador">
                     <option value="">Todos</option>
                 </select>
             </div>
-            <div class="orden-field">
+            <div class="orden-field" style="min-width:130px;">
                 <label>Fecha</label>
-                <select id="mpFiltroFechaRapido">
-                    <option value="">Todos</option>
+                <!-- selector oculto, solo para que getMpDateRange() lea su valor -->
+                <select id="mpFiltroFechaRapido" style="display:none;" aria-hidden="true">
+                    <option value=""></option>
                     <option value="hoy">Hoy</option>
-                    <option value="semana">Última semana</option>
-                    <option value="mes">Último mes</option>
-                    <option value="rango">Rango personalizado</option>
+                    <option value="semana">Semana</option>
+                    <option value="mes">Mes</option>
+                    <option value="ano">Año</option>
+                    <option value="90dias">90 días</option>
+                    <option value="3meses">3 meses</option>
+                    <option value="rango">Rango</option>
                 </select>
+                <button id="mpFechaCalBtn" type="button"
+                    style="width:100%;padding:7px 10px;background:#fff;border:1px solid #d1d5db;border-radius:6px;cursor:pointer;font-size:0.6rem;color:#374151;text-align:left;display:flex;align-items:center;gap:5px;">
+                    📅 <span id="mpFechaCalLabel" style="flex:1;color:#9ca3af;">Todas las fechas</span>
+                </button>
+                <input id="mpFiltroFechaDesde" type="hidden">
+                <input id="mpFiltroFechaHasta" type="hidden">
+                <div id="mpFechaRangoWrap" style="display:none;"></div>
+                <div id="mpFechaRangoWrap2" style="display:none;"></div>
             </div>
-            <div class="orden-field" id="mpFechaRangoWrap" style="display:none;">
-                <label>Desde</label><input id="mpFiltroFechaDesde" type="date">
-            </div>
-            <div class="orden-field" id="mpFechaRangoWrap2" style="display:none;">
-                <label>Hasta</label><input id="mpFiltroFechaHasta" type="date">
-            </div>
-            <div class="orden-field">
-                <label>Estatus de producción</label>
+            <div class="orden-field" style="min-width:130px;">
+                <label>Estatus</label>
                 <select id="mpFiltroEstatus">
                     <option value="">Todos</option>
                 </select>
             </div>
-            <div class="orden-field"><label>Adeudos del cliente</label><input id="mpFiltroAdeudo" type="number" min="0" step="0.01" placeholder="Min"></div>
-            <div class="orden-field"><label> </label><button id="mpLimpiarFiltros" class="orden-btn" type="button">Limpiar filtros</button></div>
+            <div class="orden-field" style="min-width:90px;">
+                <label>Adeudo</label>
+                <input id="mpFiltroAdeudo" type="number" min="0" step="0.01" placeholder="Mínimo">
+            </div>
+            <div class="orden-field" style="min-width:70px;">
+                <label>&nbsp;</label>
+                <button id="mpLimpiarFiltros" class="orden-btn" type="button">Limpiar</button>
+            </div>
+        </div>
+
+        <!-- MINI POPUP CALENDARIO DE RANGO -->
+        <div id="mpCalPopup" style="display:none;position:fixed;z-index:100020;background:#fff;border:1px solid #e5e7eb;border-radius:12px;box-shadow:0 12px 40px rgba(0,0,0,0.18);padding:16px;min-width:540px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <span style="font-size:0.62rem;font-weight:800;color:#92400e;text-transform:uppercase;">Seleccionar rango de fechas</span>
+                <button id="mpCalCerrar" type="button" style="background:none;border:none;font-size:1rem;cursor:pointer;color:#6b7280;">✕</button>
+            </div>
+            <!-- Quick buttons row -->
+            <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;">
+                <button class="mp-cal-quick" data-q="hoy" type="button">Hoy</button>
+                <button class="mp-cal-quick" data-q="semana" type="button">Semana</button>
+                <button class="mp-cal-quick" data-q="mes" type="button">Mes</button>
+                <button class="mp-cal-quick" data-q="ano" type="button">Año</button>
+                <button class="mp-cal-quick" data-q="3meses" type="button">Últimos 3 meses</button>
+                <button class="mp-cal-quick" data-q="90dias" type="button">Últimos 90 días</button>
+            </div>
+            <!-- Dual calendar -->
+            <div style="display:flex;gap:16px;">
+                <div id="mpCal1" class="mp-cal-month"></div>
+                <div id="mpCal2" class="mp-cal-month"></div>
+            </div>
+            <div id="mpCalRangeLabel" style="margin-top:10px;font-size:0.58rem;color:#374151;text-align:center;min-height:16px;"></div>
+            <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px;">
+                <button id="mpCalLimpiar" type="button" style="padding:6px 14px;background:#f3f4f6;color:#374151;border:none;border-radius:6px;cursor:pointer;font-size:0.6rem;font-weight:700;">Limpiar</button>
+                <button id="mpCalAceptar" type="button" style="padding:6px 14px;background:#ff9900;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.6rem;font-weight:800;">✓ Aplicar</button>
+            </div>
         </div>
 
         <div class="mispedidos-table-wrap">
@@ -11413,7 +11592,15 @@ const imgBolsaDeliveryBase = new Image();
                     <div id="mpDetMetodoPagoWrap"><div style="font-size:0.5rem;color:#ff9900;font-weight:800;text-transform:uppercase;">Método de Pago</div><div id="mpDetMetodoPago" style="font-weight:700;font-size:0.68rem;color:#374151;background:#fff7ed;display:inline-block;padding:2px 10px;border-radius:6px;border:1px solid #fed7aa;"></div></div>
                 </div>
                 <!-- Products table -->
-                <div style="font-size:0.55rem;font-weight:800;color:#ff9900;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Productos Solicitados</div>
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
+                    <div style="font-size:0.55rem;font-weight:800;color:#ff9900;text-transform:uppercase;letter-spacing:0.5px;">Productos Solicitados</div>
+                    <div id="mpDetProdAcciones" style="display:none;gap:4px;display:none;">
+                        <button id="mpDetAgregarProdBtn" type="button"
+                            style="padding:3px 9px;font-size:0.52rem;font-weight:800;background:#fff7ed;color:#92400e;border:1px solid #fde8c8;border-radius:5px;cursor:pointer;">＋ Agregar</button>
+                        <button id="mpDetEliminarProdBtn" type="button"
+                            style="padding:3px 9px;font-size:0.52rem;font-weight:800;background:#fef2f2;color:#dc2626;border:1px solid #fecaca;border-radius:5px;cursor:pointer;">− Eliminar</button>
+                    </div>
+                </div>
                 <table style="width:100%;border-collapse:collapse;font-size:0.6rem;">
                     <thead>
                         <tr style="background:#fff7ed;">
@@ -11436,6 +11623,13 @@ const imgBolsaDeliveryBase = new Image();
                     <div><div style="font-size:0.5rem;color:#ff9900;font-weight:800;text-transform:uppercase;">Vendedor</div><div id="mpDetVendedor" style="font-weight:700;font-size:0.68rem;color:#374151;"></div></div>
                     <div><div style="font-size:0.5rem;color:#ff9900;font-weight:800;text-transform:uppercase;">Diseñador Asignado</div><div id="mpDetDisenador" style="font-weight:700;font-size:0.68rem;color:#374151;"></div></div>
                 </div>
+                <!-- Acciones secundarias: historial, whatsapp, pdf, estatus -->
+                <div id="mpDetAccionesSecundarias" style="display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;">
+                    <button id="mpDetPagosBtn" type="button" style="flex:1;min-width:120px;font-size:0.55rem;padding:7px 8px;background:#fff;color:#92400e;border:1px solid #fde8c8;border-radius:7px;cursor:pointer;font-weight:700;">💰 Historial de pagos</button>
+                    <button id="mpDetWhatsapp" type="button" style="flex:1;min-width:120px;font-size:0.55rem;padding:7px 8px;background:#dcfce7;color:#15803d;border:1px solid #86efac;border-radius:7px;cursor:pointer;font-weight:700;">📱 Enviar por WhatsApp</button>
+                    <button id="mpDetPdf" type="button" style="flex:1;min-width:120px;font-size:0.55rem;padding:7px 8px;background:#fff;color:#374151;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-weight:700;">📄 Exportar PDF</button>
+                    <button id="mpDetStatusWA" type="button" style="flex:1;min-width:120px;font-size:0.55rem;padding:7px 8px;background:#fff;color:#374151;border:1px solid #e5e7eb;border-radius:7px;cursor:pointer;font-weight:700;">📩 Estatus por WhatsApp</button>
+                </div>
             </div>
             <!-- RIGHT: Totals + Actions -->
             <div style="padding:18px 20px;background:#fefce8;background:#fff7ed;">
@@ -11452,27 +11646,19 @@ const imgBolsaDeliveryBase = new Image();
                     <div style="display:flex;justify-content:space-between;margin-top:10px;border-top:1px solid #fde8c8;padding-top:8px;"><span style="color:#9ca3af;">Inversión</span><span id="mpDetInversion" style="font-weight:700;"></span></div>
                     <div style="display:flex;justify-content:space-between;color:#b45309;font-weight:700;"><span>Ganancia</span><span id="mpDetGanancia"></span></div>
                 </div>
-                <!-- Abono section (ventas only) -->
-                <div id="mpDetAbonoWrap" style="margin-top:14px;border-top:2px solid #fde8c8;padding-top:12px;">
-                    <div style="font-size:0.55rem;font-weight:800;color:#92400e;margin-bottom:8px;text-transform:uppercase;">Abonar al Restante</div>
-                    <div style="display:flex;flex-direction:column;gap:6px;">
-                        <input id="mpDetAbonoMonto" type="number" min="0" step="0.01" placeholder="Monto a abonar" style="width:100%;padding:8px 10px;font-size:0.6rem;border:1px solid #fde8c8;border-radius:8px;box-sizing:border-box;">
-                        <select id="mpDetAbonoMetodo" style="width:100%;padding:8px 10px;font-size:0.6rem;border:1px solid #fde8c8;border-radius:8px;">
-                            <option value="EFECTIVO">Efectivo</option>
-                            <option value="TARJETA">Tarjeta</option>
-                            <option value="TRANSFERENCIA">Transferencia</option>
-                            <option value="DEPOSITO">Depósito</option>
-                        </select>
-                        <button id="mpDetAbonoBtn" type="button" style="width:100%;font-size:0.6rem;padding:10px;background:#ff9900;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:800;">💰 REGISTRAR ABONO</button>
+                <!-- Abono section: método de pago (ventas only) -->
+                <div id="mpDetAbonoWrap" style="margin-top:12px;">
+                    <div style="font-size:0.5rem;font-weight:800;color:#9ca3af;margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;">Registrar abono</div>
+                    <div id="mpDetPayGrid" class="orden-pagos-grid" style="grid-template-columns:repeat(2,1fr);">
+                        <button class="orden-btn orden-pay-btn" data-mp-pay="EFECTIVO" type="button" title="Efectivo"><span class="orden-pay-icon">◉</span><span class="orden-pay-label">EFECTIVO</span><span class="shortcut-hint">F4</span></button>
+                        <button class="orden-btn orden-pay-btn" data-mp-pay="TARJETA" type="button" title="Tarjeta"><span class="orden-pay-icon">▣</span><span class="orden-pay-label">TARJETA</span><span class="shortcut-hint">F5</span></button>
+                        <button class="orden-btn orden-pay-btn" data-mp-pay="TRANSFERENCIA" type="button" title="Transferencia"><span class="orden-pay-icon">⇄</span><span class="orden-pay-label">TRANSFERENCIA</span><span class="shortcut-hint">F6</span></button>
+                        <button class="orden-btn orden-pay-btn" data-mp-pay="DEPOSITO" type="button" title="Depósito"><span class="orden-pay-icon">↓</span><span class="orden-pay-label">DEPÓSITO</span><span class="shortcut-hint">F7</span></button>
                     </div>
-                </div>
-                <!-- Action buttons -->
-                <div style="margin-top:14px;display:flex;flex-direction:column;gap:6px;">
-                    <button id="mpDetImprimir" type="button" style="width:100%;font-size:0.6rem;padding:10px;background:#ff9900;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:800;">🖨 IMPRIMIR ORDEN</button>
-                    <button id="mpDetPagosBtn" type="button" style="width:100%;font-size:0.6rem;padding:10px;background:#fff;color:#92400e;border:2px solid #ff9900;border-radius:8px;cursor:pointer;font-weight:800;">💰 HISTORIAL DE PAGOS</button>
-                    <button id="mpDetWhatsapp" type="button" style="width:100%;font-size:0.6rem;padding:10px;background:#25d366;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:800;">📱 ENVIAR POR WHATSAPP</button>
-                    <button id="mpDetPdf" type="button" style="width:100%;font-size:0.6rem;padding:10px;background:#fff;color:#374151;border:1px solid #e5e7eb;border-radius:8px;cursor:pointer;font-weight:700;">📄 EXPORTAR PDF</button>
-                    <button id="mpDetStatusWA" type="button" style="width:100%;font-size:0.6rem;padding:10px;background:#fff;color:#374151;border:1px solid #e5e7eb;border-radius:8px;cursor:pointer;font-weight:700;">📩 ESTATUS POR WHATSAPP</button>
+                    <input id="mpDetAbonoMonto" type="hidden" value="">
+                    <input id="mpDetAbonoMetodo" type="hidden" value="EFECTIVO">
+                    <!-- IMPRIMIR debajo de los botones de pago -->
+                    <button id="mpDetImprimir" type="button" style="width:100%;font-size:0.6rem;padding:10px;background:#1e3a5f;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:800;margin-top:8px;">🖨 IMPRIMIR ORDEN</button>
                 </div>
             </div>
         </div>
@@ -12361,16 +12547,14 @@ const imgBolsaDeliveryBase = new Image();
                         </div>
                     </div>
                     <div id="prodFormUbiCodigoWrap" class="ubicacion-codigo empty">Sin ubicación asignada</div>
-                    <div id="prodFormUbiEstatus" class="ubicacion-pendiente-badge pendiente" style="display:none;">⏳ Pendiente de confirmar al guardar</div>
                     <div style="display:flex;gap:3px;">
                         <button type="button" id="prodFormEtiquetaContenedor" class="btn-generar-etiqueta" disabled style="flex:1;font-size:0.48rem;">🏷️ Contenedor</button>
                         <button type="button" id="prodFormEtiquetaProducto" class="btn-generar-etiqueta" disabled style="flex:1;font-size:0.48rem;">Producto</button>
                     </div>
                     <hr class="photo-pane-separator">
-                    <div>
-                        <label>Notas internas</label>
-                        <textarea id="prodFormNotasInternas" rows="2" placeholder="Notas solo visibles para el equipo..." style="resize:none;"></textarea>
-                    </div>
+                    <label style="font-size:0.52rem;font-weight:900;letter-spacing:0.3px;color:rgba(255,255,255,0.75);margin-bottom:3px;display:block;">📋 PASOS</label>
+                    <div id="prodStepNav" class="prod-step-nav"></div>
+                    <textarea id="prodFormNotasInternas" style="display:none;" placeholder="Notas solo visibles para el equipo..."></textarea>
                     <hr class="photo-pane-separator">
                     <label class="photo-pane-toggle">
                         <input type="checkbox" id="prodFormActivo" checked>
@@ -12379,100 +12563,140 @@ const imgBolsaDeliveryBase = new Image();
                 </div>
             </aside>
             <div class="prod-form-main">
-                <div class="productos-modal-grid">
-                    <div class="orden-field productos-field-span3">
-                        <label for="prodFormCodigo">Código de producto (15 dígitos)</label>
-                        <div class="productos-code-row" style="display:flex;gap:4px;align-items:center;">
-                            <input id="prodFormCodigo" type="text" maxlength="15" placeholder="15 dígitos" style="flex:1;">
-                            <button id="prodFormGenerarCodigo" class="productos-btn" type="button">Generar</button>
-                            <button id="prodFormScanCodigo" class="productos-btn" type="button" title="Escanear código de barras" style="padding:6px 10px;font-size:0.75rem;">📷 Escanear</button>
-                        </div>
-                    </div>
-                    <div class="orden-field"><label for="prodFormTipo">TIPO DE PRODUCTO</label><select id="prodFormTipo"><option value="stock">PRODUCTO</option><option value="gran-formato">GRAN FORMATO</option><option value="fabricado">FABRICADO</option><option value="insumo">INSUMO</option><option value="proceso">PROCESO</option><option value="servicio">SERVICIO</option></select></div>
-                    <div class="orden-field" id="prodFormNombreWrap" data-nat="producto,fabricado,insumo,proceso,servicio"><label for="prodFormProducto">Nombre</label><input id="prodFormProducto" type="text" placeholder="Nombre del artículo"></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo">
-                        <label for="prodFormUMCompra">U. medida compra</label>
-                        <select id="prodFormUMCompra" style="width:100%;"></select>
-                    </div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo">
-                        <label for="prodFormUMVenta">U. medida venta</label>
-                        <div style="display:flex;gap:4px;align-items:center;">
-                            <select id="prodFormUMVenta" style="flex:1;"></select>
-                            <button type="button" id="prodFormUMConfig" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;" title="Configurar unidades de medida">⚙</button>
-                        </div>
-                    </div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormCategoria">Categoría</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormCategoria" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormCategoriaAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar categoría">+</button></div></div>
-                    <div class="orden-field" data-nat="producto,fabricado,insumo"><label for="prodFormMaterial">Material</label><input id="prodFormMaterial" type="text"></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado"><label for="prodFormMinima">Cantidad minima</label><input id="prodFormMinima" type="number" min="0" step="1"></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormExistencias">Existencias</label><input id="prodFormExistencias" type="number" min="0" step="1"></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormPrecioCompra">Precio de compra</label><input id="prodFormPrecioCompra" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto,fabricado"><label style="margin-bottom:2px;">⚙️ Procesos asignados</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormProcesosBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border:none;border-radius:6px;">⚙️ Seleccionar procesos</button><span id="prodFormProcesosResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin procesos asignados</span></div><div id="prodFormProcesosPreview" style="margin-top:4px;font-size:0.6rem;"></div></div>
-                    <div class="orden-field productos-field-span3" data-nat="fabricado"><label style="margin-bottom:2px;">🧪 Receta de fabricación</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormRecetaBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border:none;border-radius:6px;">🧪 Configurar receta</button><span id="prodFormRecetaResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin insumos en la receta</span></div><div id="prodFormRecetaPreview" style="margin-top:4px;max-height:45px;overflow-y:auto;font-size:0.6rem;"></div></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormProveedor">Proveedor</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormProveedor" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormProveedorAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar proveedor" onclick="abrirPopupProveedorDesdeProductos()">+</button></div></div>
-                    <div class="orden-field prod-stock-only" id="prodFormVentaWrap" data-nat="producto,fabricado,insumo,servicio"><label for="prodFormVenta">Precio unitario venta general</label><input id="prodFormVenta" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-stock-only" data-nat="producto,fabricado"><label for="prodFormRevendedor">Precio unitario revendedor</label><input id="prodFormRevendedor" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field" data-nat="insumo"><label for="prodFormDesgastePorUso">Desgaste por unidad usada</label><input id="prodFormDesgastePorUso" type="number" min="0" step="0.001" value="1" placeholder="Cantidad que se consume por uso"></div>
-                    <div class="orden-field productos-field-span3" data-nat="proceso"><label style="margin-bottom:2px;">🧰 Insumos del proceso</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormProcesoInsumosBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border:none;border-radius:6px;">🧰 Enlazar insumos</button><span id="prodFormProcesoInsumosResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin insumos enlazados</span></div><div id="prodFormProcesoInsumosPreview" style="margin-top:4px;font-size:0.6rem;"></div></div>
-                    <div class="orden-field prod-stock-only productos-field-span3" data-nat="producto,fabricado,insumo,proceso,servicio"><label for="prodFormDescripcion">Descripción</label><textarea id="prodFormDescripcion" rows="1" placeholder="Descripción del producto" style="resize:none;"></textarea></div>
+                <div class="prod-wizard-header" id="prodWizardHeader">
+                    <span id="prodWizardStepTitle" class="prod-wizard-title">Identificación</span>
+                    <span id="prodWizardStepCount" class="prod-wizard-count">Paso 1 de 6</span>
+                </div>
 
-                    <!-- MEDIDAS Y PESO DEL PAQUETE PARA ENVÍO -->
-                    <div class="orden-field productos-field-span3" data-nat="producto,fabricado,insumo">
-                        <label style="font-size:0.62rem;font-weight:900;color:#ff9900;letter-spacing:0.5px;margin-bottom:4px;display:block;">📦 MEDIDAS Y PESO DEL PAQUETE (para cotizar envíos)</label>
-                        <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:4px;">
-                            <div class="orden-field"><label for="prodFormPkgLargo">Largo (cm)</label><input id="prodFormPkgLargo" type="number" min="0" step="0.1" value="0" placeholder="cm"></div>
-                            <div class="orden-field"><label for="prodFormPkgAncho">Ancho (cm)</label><input id="prodFormPkgAncho" type="number" min="0" step="0.1" value="0" placeholder="cm"></div>
-                            <div class="orden-field"><label for="prodFormPkgAlto">Alto (cm)</label><input id="prodFormPkgAlto" type="number" min="0" step="0.1" value="0" placeholder="cm"></div>
-                            <div class="orden-field"><label for="prodFormPkgPeso">Peso (kg)</label><input id="prodFormPkgPeso" type="number" min="0" step="0.01" value="0" placeholder="kg"></div>
-                            <div class="orden-field"><label>Vol. (cm³)</label><input id="prodFormPkgVol" type="text" readonly style="background:#f3f4f6;opacity:0.8;" value="0"></div>
+                <!-- PASO: basico ─ Identificación -->
+                <div class="prod-step-panel active" data-step="basico">
+                    <div class="productos-modal-grid">
+                        <div class="orden-field productos-field-span3">
+                            <label for="prodFormCodigo">Código de producto (15 dígitos)</label>
+                            <div class="productos-code-row" style="display:flex;gap:4px;align-items:center;">
+                                <input id="prodFormCodigo" type="text" maxlength="15" placeholder="15 dígitos" style="flex:1;">
+                                <button id="prodFormGenerarCodigo" class="productos-btn" type="button">Generar</button>
+                                <button id="prodFormScanCodigo" class="productos-btn" type="button" title="Escanear código de barras" style="padding:6px 10px;font-size:0.75rem;">📷 Escanear</button>
+                            </div>
                         </div>
-                        <div id="prodFormPkgVolInfo" style="font-size:0.5rem;color:#9ca3af;margin-top:2px;font-style:italic;">Peso volumétrico: 0 kg (÷5000)</div>
-                    </div>
-
-                    <div class="orden-field productos-field-span3" data-nat="producto,fabricado"><label for="prodFormMuestrarioAsociado">📁 Muestrario asociado</label><select id="prodFormMuestrarioAsociado"><option value="">Sin muestrario</option><option value="BOLSA BOUTIQUE TROQUELADA">BOLSA BOUTIQUE TROQUELADA</option><option value="BOLSAS KRAFT">BOLSAS KRAFT</option><option value="BOLSAS KRAFT BLANCAS">BOLSAS KRAFT BLANCAS</option><option value="TARJETAS DE PRESENTACIÓN">TARJETAS DE PRESENTACIÓN</option><option value="VOLANTES">VOLANTES</option></select></div>
-                    <div class="orden-field" data-nat="producto,fabricado"><label for="prodFormRevisionesGratis">🔄 Revisiones gratis</label><input id="prodFormRevisionesGratis" type="number" min="0" max="20" value="2" step="1" placeholder="Ej: 2"></div>
-                    <div class="orden-field" data-nat="producto,fabricado"><label for="prodFormCobroRevision">💰 Cobro extra por revisión</label><input id="prodFormCobroRevision" type="number" min="0" step="0.01" value="0" placeholder="Ej: 150.00"></div>
-                    <div class="orden-field productos-field-span3" data-nat="producto,fabricado"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="prodFormImprimirDiseno"> Permitir imprimir diseño en producción</label></div>
-
-                    <div class="orden-field prod-gf-only" data-nat="producto" style="display:none;">
-                        <label for="prodGfCobroTipo">Tipo de precio</label>
-                        <select id="prodGfCobroTipo">
-                            <option value="m2">Cobrar por metro cuadrado (M2)</option>
-                            <option value="m-lineal">Cobrar por metro lineal (M/lineal)</option>
-                        </select>
-                    </div>
-                    <div class="orden-field prod-gf-only prod-gf-m2-only" data-nat="producto" style="display:none;"><label for="prodGfPrecioGeneralM2">Precio de venta por M2</label><input id="prodGfPrecioGeneralM2" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only prod-gf-m2-only" data-nat="producto" style="display:none;"><label for="prodGfPrecioRevM2">Precio de venta por M2 revendedor</label><input id="prodGfPrecioRevM2" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only prod-gf-ml-only" data-nat="producto" style="display:none;"><label for="prodGfPrecioGeneralML">Precio de venta por M/lineal</label><input id="prodGfPrecioGeneralML" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only prod-gf-ml-only" data-nat="producto" style="display:none;"><label for="prodGfPrecioRevML">Precio de venta por M/lineal revendedor</label><input id="prodGfPrecioRevML" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only prod-gf-m2-only" data-nat="producto" style="display:none;"><label for="prodGfCostoM2">Costo por M2</label><input id="prodGfCostoM2" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only prod-gf-ml-only" data-nat="producto" style="display:none;"><label for="prodGfCostoML">Costo por M/lineal</label><input id="prodGfCostoML" type="number" min="0" step="0.01"></div>
-                    <div class="orden-field prod-gf-only productos-field-span3" data-nat="producto" style="display:none;">
-                        <label for="prodGfAjusteAncho">Ajuste del precio al ancho del vinil</label>
-                        <select id="prodGfAjusteAncho">
-                            <option value="metro">Ajustar al metro</option>
-                            <option value="medio">Ajustar a medio metro</option>
-                            <option value="sin">Sin ajuste</option>
-                        </select>
-                    </div>
-
-                    <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto,fabricado">
-                        <label style="margin-bottom:2px;">Variantes del producto</label>
-                        <div style="display:flex;align-items:center;gap:6px;">
-                            <button type="button" id="prodFormVariantesBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;">⚙ Variantes</button>
-                            <span id="prodFormVariantesResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin variantes configuradas</span>
-                        </div>
-                        <div id="prodFormVariantesPreview" style="margin-top:4px;"></div>
+                        <div class="orden-field"><label for="prodFormTipo">TIPO DE PRODUCTO</label><select id="prodFormTipo"><option value="stock">PRODUCTO</option><option value="gran-formato">GRAN FORMATO</option><option value="fabricado">FABRICADO</option><option value="insumo">INSUMO</option><option value="proceso">PROCESO</option><option value="servicio">SERVICIO</option></select></div>
+                        <div class="orden-field" id="prodFormNombreWrap"><label for="prodFormProducto">Nombre</label><input id="prodFormProducto" type="text" placeholder="Nombre del artículo"></div>
+                        <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormCategoria">Categoría</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormCategoria" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormCategoriaAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar categoría">+</button></div></div>
+                        <div class="orden-field" data-nat="producto,fabricado,insumo"><label for="prodFormMaterial">Material</label><input id="prodFormMaterial" type="text"></div>
+                        <div class="orden-field" data-nat="insumo"><label for="prodFormDesgastePorUso">Desgaste por unidad usada</label><input id="prodFormDesgastePorUso" type="number" min="0" step="0.001" value="1" placeholder="Cantidad que se consume por uso"></div>
+                        <div class="orden-field prod-stock-only productos-field-span3" data-nat="producto,fabricado,insumo,proceso,servicio"><label for="prodFormDescripcion">Descripción</label><textarea id="prodFormDescripcion" rows="2" placeholder="Descripción del producto" style="resize:none;"></textarea></div>
                     </div>
                 </div>
-            </div>
-        </div>
+
+                <!-- PASO: stock-compra ─ Stock y Compra -->
+                <div class="prod-step-panel" data-step="stock-compra">
+                    <div class="productos-modal-grid">
+                        <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo">
+                            <label for="prodFormUMCompra">U. medida compra</label>
+                            <select id="prodFormUMCompra" style="width:100%;"></select>
+                        </div>
+                        <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo">
+                            <label for="prodFormUMVenta">U. medida venta</label>
+                            <div style="display:flex;gap:4px;align-items:center;">
+                                <select id="prodFormUMVenta" style="flex:1;"></select>
+                                <button type="button" id="prodFormUMConfig" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;" title="Configurar unidades de medida">⚙</button>
+                            </div>
+                        </div>
+                        <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormExistencias">Existencias</label><input id="prodFormExistencias" type="number" min="0" step="1"></div>
+                        <div class="orden-field prod-stock-only" data-nat="producto,fabricado"><label for="prodFormMinima">Cantidad mínima</label><input id="prodFormMinima" type="number" min="0" step="1"></div>
+                        <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormPrecioCompra">Precio de compra</label><input id="prodFormPrecioCompra" type="number" min="0" step="0.01"></div>
+                        <div class="orden-field prod-stock-only" data-nat="producto,fabricado,insumo"><label for="prodFormProveedor">Proveedor</label><div style="display:flex;gap:4px;align-items:center;"><select id="prodFormProveedor" style="flex:1;"><option value="">Seleccionar...</option></select><button type="button" id="prodFormProveedorAdd" class="productos-btn" style="padding:4px 8px;font-size:0.7rem;white-space:nowrap;" title="Agregar proveedor" onclick="abrirPopupProveedorDesdeProductos()">+</button></div></div>
+                    </div>
+                </div>
+
+                <!-- PASO: precios ─ Precios -->
+                <div class="prod-step-panel" data-step="precios">
+                    <div class="productos-modal-grid">
+                        <div class="orden-field prod-stock-only" id="prodFormVentaWrap" data-nat="producto,fabricado,insumo,servicio"><label for="prodFormVenta">Precio unitario venta general</label><input id="prodFormVenta" type="number" min="0" step="0.01"></div>
+                        <div class="orden-field prod-stock-only" data-nat="producto,fabricado"><label for="prodFormRevendedor">Precio unitario revendedor</label><input id="prodFormRevendedor" type="number" min="0" step="0.01"></div>
+                        <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto,fabricado">
+                            <label style="margin-bottom:2px;">Variantes del producto</label>
+                            <div style="display:flex;align-items:center;gap:6px;">
+                                <button type="button" id="prodFormVariantesBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;">⚙ Variantes</button>
+                                <span id="prodFormVariantesResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin variantes configuradas</span>
+                            </div>
+                            <div id="prodFormVariantesPreview" style="margin-top:4px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO: config ─ Procesos / Fabricación / Insumos -->
+                <div class="prod-step-panel" data-step="config">
+                    <div class="productos-modal-grid">
+                        <div class="orden-field productos-field-span3 prod-stock-only" data-nat="producto,fabricado"><label style="margin-bottom:2px;">⚙️ Procesos asignados</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormProcesosBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border:none;border-radius:6px;">⚙️ Seleccionar procesos</button><span id="prodFormProcesosResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin procesos asignados</span></div><div id="prodFormProcesosPreview" style="margin-top:4px;font-size:0.6rem;"></div></div>
+                        <div class="orden-field productos-field-span3" data-nat="fabricado"><label style="margin-bottom:2px;">🧪 Receta de fabricación</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormRecetaBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border:none;border-radius:6px;">🧪 Configurar receta</button><span id="prodFormRecetaResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin insumos en la receta</span></div><div id="prodFormRecetaPreview" style="margin-top:4px;max-height:45px;overflow-y:auto;font-size:0.6rem;"></div></div>
+                        <div class="orden-field productos-field-span3" data-nat="proceso"><label style="margin-bottom:2px;">🧰 Insumos del proceso</label><div style="display:flex;align-items:center;gap:6px;"><button type="button" id="prodFormProcesoInsumosBtn" class="productos-btn" style="padding:6px 14px;font-size:0.62rem;background:#f07a00;color:#fff;border:none;border-radius:6px;">🧰 Enlazar insumos</button><span id="prodFormProcesoInsumosResumen" style="font-size:0.55rem;color:#9ca3af;flex:1;">Sin insumos enlazados</span></div><div id="prodFormProcesoInsumosPreview" style="margin-top:4px;font-size:0.6rem;"></div></div>
+                    </div>
+                </div>
+
+                <!-- PASO: empaque ─ Empaque y Envío -->
+                <div class="prod-step-panel" data-step="empaque">
+                    <div class="productos-modal-grid">
+                        <div class="orden-field productos-field-span3" data-nat="producto,fabricado,insumo">
+                            <label style="font-size:0.62rem;font-weight:900;color:#ff9900;letter-spacing:0.5px;margin-bottom:4px;display:block;">📦 MEDIDAS Y PESO DEL PAQUETE (para cotizar envíos)</label>
+                            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr 1fr;gap:4px;">
+                                <div class="orden-field"><label for="prodFormPkgLargo">Largo (cm)</label><input id="prodFormPkgLargo" type="number" min="0" step="0.1" value="0" placeholder="cm"></div>
+                                <div class="orden-field"><label for="prodFormPkgAncho">Ancho (cm)</label><input id="prodFormPkgAncho" type="number" min="0" step="0.1" value="0" placeholder="cm"></div>
+                                <div class="orden-field"><label for="prodFormPkgAlto">Alto (cm)</label><input id="prodFormPkgAlto" type="number" min="0" step="0.1" value="0" placeholder="cm"></div>
+                                <div class="orden-field"><label for="prodFormPkgPeso">Peso (kg)</label><input id="prodFormPkgPeso" type="number" min="0" step="0.01" value="0" placeholder="kg"></div>
+                                <div class="orden-field"><label>Vol. (cm³)</label><input id="prodFormPkgVol" type="text" readonly style="background:#f3f4f6;opacity:0.8;" value="0"></div>
+                            </div>
+                            <div id="prodFormPkgVolInfo" style="font-size:0.5rem;color:#9ca3af;margin-top:2px;font-style:italic;">Peso volumétrico: 0 kg (÷5000)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASO: muestrario ─ Muestrario -->
+                <div class="prod-step-panel" data-step="muestrario">
+                    <div class="productos-modal-grid">
+                        <div class="orden-field productos-field-span3" data-nat="producto,fabricado"><label for="prodFormMuestrarioAsociado">📁 Muestrario asociado</label><select id="prodFormMuestrarioAsociado"><option value="">Sin muestrario</option><option value="BOLSA BOUTIQUE TROQUELADA">BOLSA BOUTIQUE TROQUELADA</option><option value="BOLSAS KRAFT">BOLSAS KRAFT</option><option value="BOLSAS KRAFT BLANCAS">BOLSAS KRAFT BLANCAS</option><option value="TARJETAS DE PRESENTACIÓN">TARJETAS DE PRESENTACIÓN</option><option value="VOLANTES">VOLANTES</option></select></div>
+                        <div class="orden-field" data-nat="producto,fabricado"><label for="prodFormRevisionesGratis">🔄 Revisiones gratis</label><input id="prodFormRevisionesGratis" type="number" min="0" max="20" value="2" step="1" placeholder="Ej: 2"></div>
+                        <div class="orden-field" data-nat="producto,fabricado"><label for="prodFormCobroRevision">💰 Cobro extra por revisión</label><input id="prodFormCobroRevision" type="number" min="0" step="0.01" value="0" placeholder="Ej: 150.00"></div>
+                        <div class="orden-field productos-field-span3" data-nat="producto,fabricado"><label style="display:flex;align-items:center;gap:6px;cursor:pointer;"><input type="checkbox" id="prodFormImprimirDiseno"> Permitir imprimir diseño en producción</label></div>
+                    </div>
+                </div>
+
+                <!-- PASO: precios-gf ─ Precios Gran Formato -->
+                <div class="prod-step-panel" data-step="precios-gf">
+                    <div class="productos-modal-grid">
+                        <div class="orden-field">
+                            <label for="prodGfCobroTipo">Tipo de precio</label>
+                            <select id="prodGfCobroTipo">
+                                <option value="m2">Cobrar por metro cuadrado (M2)</option>
+                                <option value="m-lineal">Cobrar por metro lineal (M/lineal)</option>
+                            </select>
+                        </div>
+                        <div class="orden-field prod-gf-m2-only"><label for="prodGfPrecioGeneralM2">Precio de venta por M2</label><input id="prodGfPrecioGeneralM2" type="number" min="0" step="0.01"></div>
+                        <div class="orden-field prod-gf-m2-only"><label for="prodGfPrecioRevM2">Precio de venta por M2 revendedor</label><input id="prodGfPrecioRevM2" type="number" min="0" step="0.01"></div>
+                        <div class="orden-field prod-gf-ml-only"><label for="prodGfPrecioGeneralML">Precio de venta por M/lineal</label><input id="prodGfPrecioGeneralML" type="number" min="0" step="0.01"></div>
+                        <div class="orden-field prod-gf-ml-only"><label for="prodGfPrecioRevML">Precio de venta por M/lineal revendedor</label><input id="prodGfPrecioRevML" type="number" min="0" step="0.01"></div>
+                        <div class="orden-field prod-gf-m2-only"><label for="prodGfCostoM2">Costo por M2</label><input id="prodGfCostoM2" type="number" min="0" step="0.01"></div>
+                        <div class="orden-field prod-gf-ml-only"><label for="prodGfCostoML">Costo por M/lineal</label><input id="prodGfCostoML" type="number" min="0" step="0.01"></div>
+                        <div class="orden-field productos-field-span3">
+                            <label for="prodGfAjusteAncho">Ajuste del precio al ancho del vinil</label>
+                            <select id="prodGfAjusteAncho">
+                                <option value="metro">Ajustar al metro</option>
+                                <option value="medio">Ajustar a medio metro</option>
+                                <option value="sin">Sin ajuste</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- fin prod-form-main -->
+        </div><!-- fin prod-form-wizard -->
         <div class="productos-modal-actions">
-            <button id="prodFormSiguiente" class="productos-btn primary" type="button">Siguiente</button>
+            <button id="prodFormAnterior" class="productos-btn gray" type="button" style="display:none;">← Anterior</button>
+            <button id="prodFormSiguiente" class="productos-btn primary" type="button">Siguiente →</button>
             <button id="prodFormCerrar" class="productos-btn gray" type="button">Cerrar</button>
         </div>
     </div>
 </div>
-
 <!-- ============ MODAL: CONFIGURAR UNIDADES DE MEDIDA ============ -->
 <div id="popupUMConfig" class="productos-modal-overlay" aria-hidden="true" style="z-index:2200;">
     <div class="productos-modal-card" role="dialog" aria-modal="true" aria-labelledby="umConfigTitulo" style="width:min(96vw,540px);max-height:88vh;overflow-y:auto;">
@@ -13546,9 +13770,10 @@ const imgBolsaDeliveryBase = new Image();
                             <label style="font-size:0.52rem;font-weight:700;color:#374151;display:block;margin-bottom:4px;">Rol</label>
                             <select id="configUserRol" style="width:100%;box-sizing:border-box;">
                                 <option value="vendedor">VENDEDOR</option>
-                                <option value="disenador">DISENADOR</option>
+                                <option value="disenador">DISEÑADOR</option>
+                                <option value="productor">PRODUCTOR</option>
                                 <option value="repartidor">REPARTIDOR</option>
-                                <option value="admin">ADMINistrador</option>
+                                <option value="admin">ADMINISTRADOR</option>
                             </select>
                         </div>
                         <div class="config-users-add-actions">
@@ -14022,6 +14247,105 @@ document.addEventListener('DOMContentLoaded', () => {
     const prodFormVenta = document.getElementById('prodFormVenta');
     const prodFormSiguiente = document.getElementById('prodFormSiguiente');
     const prodFormCerrar = document.getElementById('prodFormCerrar');
+    const prodFormAnterior = document.getElementById('prodFormAnterior');
+
+    // ── Wizard de producto ──────────────────────────────────────
+    const PROD_STEPS_MAP = {
+        'producto':    [{id:'basico',icon:'📋',label:'Identificación'},{id:'stock-compra',icon:'📦',label:'Stock y Compra'},{id:'precios',icon:'💲',label:'Precios'},{id:'config',icon:'⚙️',label:'Procesos'},{id:'empaque',icon:'📫',label:'Empaque'},{id:'muestrario',icon:'🎨',label:'Muestrario'}],
+        'gran-formato':[{id:'basico',icon:'📋',label:'Identificación'},{id:'precios-gf',icon:'💲',label:'Precios GF'}],
+        'fabricado':   [{id:'basico',icon:'📋',label:'Identificación'},{id:'stock-compra',icon:'📦',label:'Stock y Compra'},{id:'precios',icon:'💲',label:'Precios'},{id:'config',icon:'🧪',label:'Fabricación'},{id:'empaque',icon:'📫',label:'Empaque'},{id:'muestrario',icon:'🎨',label:'Muestrario'}],
+        'insumo':      [{id:'basico',icon:'📋',label:'Identificación'},{id:'stock-compra',icon:'📦',label:'Stock y Compra'},{id:'empaque',icon:'📫',label:'Empaque'}],
+        'proceso':     [{id:'basico',icon:'📋',label:'Identificación'},{id:'config',icon:'🧰',label:'Insumos'}],
+        'servicio':    [{id:'basico',icon:'📋',label:'Identificación'},{id:'precios',icon:'💲',label:'Precios'}]
+    };
+    const TIPO_TO_NAT = {'stock':'producto','gran-formato':'gran-formato','fabricado':'fabricado','insumo':'insumo','proceso':'proceso','servicio':'servicio'};
+
+    let prodWizardCurrentStep = 0;
+
+    const getProdWizardSteps = () => {
+        const t = prodFormTipo?.value || 'stock';
+        const mapKey = TIPO_TO_NAT[t] || 'producto';
+        return PROD_STEPS_MAP[mapKey] || PROD_STEPS_MAP['producto'];
+    };
+
+    const renderProdStepNav = () => {
+        const nav = document.getElementById('prodStepNav');
+        if (!nav) return;
+        const steps = getProdWizardSteps();
+        nav.innerHTML = steps.map((s, i) => {
+            let cls = 'prod-step-navbtn';
+            if (i === prodWizardCurrentStep) cls += ' active';
+            else if (i < prodWizardCurrentStep) cls += ' done';
+            const clickable = i <= prodWizardCurrentStep;
+            return `<button type="button" class="${cls}" data-step-idx="${i}" ${clickable ? '' : 'disabled'}>
+                <span class="step-icon">${s.icon}</span>${s.label}
+            </button>`;
+        }).join('');
+        nav.querySelectorAll('.prod-step-navbtn[data-step-idx]').forEach(btn => {
+            const idx = Number(btn.dataset.stepIdx);
+            if (idx < prodWizardCurrentStep) {
+                btn.addEventListener('click', () => goToProdStep(idx));
+            }
+        });
+    };
+
+    const goToProdStep = (idx) => {
+        const steps = getProdWizardSteps();
+        if (idx < 0 || idx >= steps.length) return;
+        prodWizardCurrentStep = idx;
+        // show/hide panels
+        document.querySelectorAll('.prod-step-panel').forEach(p => p.classList.remove('active'));
+        const targetPanel = document.querySelector(`.prod-step-panel[data-step="${steps[idx].id}"]`);
+        if (targetPanel) targetPanel.classList.add('active');
+        // update header
+        const titleEl = document.getElementById('prodWizardStepTitle');
+        const countEl = document.getElementById('prodWizardStepCount');
+        if (titleEl) titleEl.textContent = steps[idx].label;
+        if (countEl) countEl.textContent = `Paso ${idx+1} de ${steps.length}`;
+        // anterior button
+        if (prodFormAnterior) prodFormAnterior.style.display = idx > 0 ? '' : 'none';
+        // siguiente button label
+        if (prodFormSiguiente) prodFormSiguiente.textContent = (idx === steps.length - 1) ? '✓ Guardar →' : 'Siguiente →';
+        renderProdStepNav();
+        // run naturaleza sync for visibility
+        syncProdFormModeByTipo();
+    };
+
+    const validateProdCurrentStep = () => {
+        const steps = getProdWizardSteps();
+        const cur = steps[prodWizardCurrentStep];
+        if (cur.id === 'basico') {
+            const codigo = document.getElementById('prodFormCodigo');
+            const nombre = document.getElementById('prodFormProducto');
+            if (!codigo?.value.trim()) {
+                codigo?.focus();
+                alert('El código del producto es obligatorio.');
+                return false;
+            }
+            if (!nombre?.value.trim()) {
+                nombre?.focus();
+                alert('El nombre del producto es obligatorio.');
+                return false;
+            }
+        }
+        return true;
+    };
+
+    const resetProdWizard = () => {
+        prodWizardCurrentStep = 0;
+        const steps = getProdWizardSteps();
+        document.querySelectorAll('.prod-step-panel').forEach(p => p.classList.remove('active'));
+        const firstPanel = document.querySelector(`.prod-step-panel[data-step="${steps[0].id}"]`);
+        if (firstPanel) firstPanel.classList.add('active');
+        const titleEl = document.getElementById('prodWizardStepTitle');
+        const countEl = document.getElementById('prodWizardStepCount');
+        if (titleEl) titleEl.textContent = steps[0].label;
+        if (countEl) countEl.textContent = `Paso 1 de ${steps.length}`;
+        if (prodFormAnterior) prodFormAnterior.style.display = 'none';
+        if (prodFormSiguiente) prodFormSiguiente.textContent = steps.length === 1 ? '✓ Guardar →' : 'Siguiente →';
+        renderProdStepNav();
+    };
+    // ───────────────────────────────────────────────────────────
     const popupProdTabulador = document.getElementById('popupProdTabulador');
     const prodTabuladorSelect = document.getElementById('prodTabuladorSelect');
     const prodTabRangosPreview = document.getElementById('prodTabRangosPreview');
@@ -18797,9 +19121,18 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (rapid === 'mes') {
             desde = new Date(today); desde.setMonth(desde.getMonth() - 1);
             hasta = today;
+        } else if (rapid === 'ano') {
+            desde = new Date(today.getFullYear(), 0, 1);
+            hasta = today;
+        } else if (rapid === '90dias') {
+            desde = new Date(today); desde.setDate(desde.getDate() - 90);
+            hasta = today;
+        } else if (rapid === '3meses') {
+            desde = new Date(today); desde.setMonth(desde.getMonth() - 3);
+            hasta = today;
         } else if (rapid === 'rango') {
-            const d = mpFiltroFechaDesde?.value || '';
-            const h = mpFiltroFechaHasta?.value || '';
+            const d = document.getElementById('mpFiltroFechaDesde')?.value || '';
+            const h = document.getElementById('mpFiltroFechaHasta')?.value || '';
             if (!d && !h) return null;
             desde = d ? new Date(d + 'T00:00:00') : new Date('2000-01-01');
             hasta = h ? new Date(h + 'T23:59:59') : new Date('2099-12-31');
@@ -18811,11 +19144,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const getMisPedidosFiltrados = () => {
         const minAdeudo = Number(mpFiltroAdeudo?.value || 0);
         const dateRange = getMpDateRange();
+        const buscarQ = (document.getElementById('mpFiltroBuscar')?.value || '').trim().toLowerCase();
         return misPedidosData.filter((row) => {
             if (row.tipo !== misPedidosTab) return false;
-            if (!mpMatch(row.folio, mpFiltroFolio?.value || '')) return false;
-            if (!mpMatch(row.clienteNombre, mpFiltroNombre?.value || '')) return false;
-            if (!mpMatch(row.telefono, mpFiltroTelefono?.value || '')) return false;
+            // Buscador unificado (folio, nombre, teléfono)
+            if (buscarQ) {
+                const hayMatch = mpMatch(row.folio, buscarQ) ||
+                                 mpMatch(row.clienteNombre, buscarQ) ||
+                                 mpMatch(row.telefono, buscarQ);
+                if (!hayMatch) return false;
+            }
             if (!mpMatch(row.disenador, mpFiltroDisenador?.value || '')) return false;
             if (dateRange) {
                 const fechaStr = row[dateRange.campo] || '';
@@ -19028,6 +19366,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (montoInput) montoInput.value = '';
         const pagosBtn = elF('mpDetPagosBtn');
         if (pagosBtn) pagosBtn.style.display = esCotizacion ? 'none' : '';
+        // Acciones secundarias: siempre visibles (historial, WA, PDF, estatus)
+        const accionesSec = elF('mpDetAccionesSecundarias');
+        if (accionesSec) accionesSec.style.display = '';
+        // Botones de producto: solo para órdenes (no cotizaciones)
+        const prodAcciones = elF('mpDetProdAcciones');
+        if (prodAcciones) prodAcciones.style.display = esCotizacion ? 'none' : 'flex';
+        // Reiniciar estado de botones de pago
+        document.querySelectorAll('#mpDetPayGrid .orden-pay-btn').forEach(b => b.classList.remove('active'));
 
         const lineas = Array.isArray(row.lineas) ? row.lineas : [];
         const tbody = elF('mpDetProductosBody');
@@ -19067,7 +19413,94 @@ document.addEventListener('DOMContentLoaded', () => {
         popupDetalleOrden.style.display = 'none';
         popupDetalleOrden.setAttribute('aria-hidden', 'true');
         mpDetOrdenActual = null;
+        mpDetAdminGranted = false;
     };
+
+    // ── Admin guard + product management ─────────────────────
+    let mpDetAdminGranted = false;
+
+    const mpRequireAdmin = (callback) => {
+        const role = (localStorage.getItem('logged_user_role') || '').toLowerCase().trim();
+        if (role === 'admin' || mpDetAdminGranted) { callback(); return; }
+        const pass = prompt('Acción de administrador.\nIngresa la contraseña de admin:');
+        if (!pass) return;
+        let usuarios = [];
+        try { usuarios = JSON.parse(localStorage.getItem('mock_usuarios_v1') || '[]'); } catch(_){}
+        const found = usuarios.find(u => (u.rol === 'admin' || u.role === 'admin') && u.password === pass);
+        if (!found) { notifyError('Contraseña incorrecta.', 'Admin'); return; }
+        mpDetAdminGranted = true;
+        notifyInfo('Acceso de administrador concedido para esta orden.', 'Admin');
+        callback();
+    };
+
+    const mpRefreshProductos = () => {
+        if (!mpDetOrdenActual) return;
+        const esc = (v) => String(v ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+        const fm = (n) => `$${Number(n||0).toFixed(2)}`;
+        const lineas = Array.isArray(mpDetOrdenActual.lineas) ? mpDetOrdenActual.lineas : [];
+        const tbody = document.getElementById('mpDetProductosBody');
+        if (!tbody) return;
+        if (!lineas.length) {
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#9ca3af;padding:12px;">Sin productos registrados</td></tr>';
+        } else {
+            tbody.innerHTML = lineas.map((l, i) => {
+                const importe = Number(l.precio||0) * Number(l.cantidad||1);
+                return `<tr style="border-bottom:1px solid #f0f0f0;">
+                    <td style="padding:7px 10px;font-weight:600;">${esc(l.producto)}</td>
+                    <td style="padding:7px 10px;">${esc(l.medida)}</td>
+                    <td style="padding:7px 10px;">${esc(l.material)}</td>
+                    <td style="padding:7px 10px;text-align:center;">${l.cantidad||1}</td>
+                    <td style="padding:7px 10px;text-align:right;">${fm(l.precio)}</td>
+                    <td style="padding:7px 10px;text-align:right;font-weight:700;color:#92400e;">${fm(importe)}</td>
+                </tr>`;
+            }).join('');
+        }
+        // Recalcular totales
+        const sub = lineas.reduce((s, l) => s + Number(l.precio||0)*Number(l.cantidad||1), 0);
+        mpDetOrdenActual.subtotal = sub;
+        mpDetOrdenActual.total = sub + Number(mpDetOrdenActual.impuestos||0) - Number(mpDetOrdenActual.descuento||0);
+        mpDetOrdenActual.adeudoCliente = Math.max(0, mpDetOrdenActual.total - Number(mpDetOrdenActual.anticipo||0));
+        mpDetOrdenActual.ganancia = mpDetOrdenActual.total - Number(mpDetOrdenActual.inversion||0);
+        const idx = misPedidosData.findIndex(r => r.id === mpDetOrdenActual.id);
+        if (idx >= 0) misPedidosData[idx] = { ...mpDetOrdenActual };
+        saveMisPedidos();
+        // Actualizar totales en pantalla
+        const fm2 = (n) => `$${Number(n||0).toFixed(2)}`;
+        const el2 = (id) => document.getElementById(id);
+        if (el2('mpDetSubtotal')) el2('mpDetSubtotal').textContent = fm2(mpDetOrdenActual.subtotal);
+        if (el2('mpDetTotal'))    el2('mpDetTotal').textContent    = fm2(mpDetOrdenActual.total);
+        if (el2('mpDetAdeudo'))   el2('mpDetAdeudo').textContent   = fm2(mpDetOrdenActual.adeudoCliente);
+        if (el2('mpDetGanancia')) el2('mpDetGanancia').textContent = fm2(mpDetOrdenActual.ganancia);
+        renderMisPedidos();
+    };
+
+    document.getElementById('mpDetAgregarProdBtn')?.addEventListener('click', () => {
+        if (!mpDetOrdenActual) return;
+        mpRequireAdmin(() => {
+            const nombre = prompt('Nombre del producto / servicio:');
+            if (!nombre) return;
+            const cant = Math.max(1, parseInt(prompt('Cantidad:', '1') || '1') || 1);
+            const precio = Math.max(0, parseFloat(prompt('Precio unitario ($):', '0') || '0') || 0);
+            if (!Array.isArray(mpDetOrdenActual.lineas)) mpDetOrdenActual.lineas = [];
+            mpDetOrdenActual.lineas.push({ producto: nombre.trim(), medida: '', material: '', cantidad: cant, precio });
+            mpRefreshProductos();
+        });
+    });
+
+    document.getElementById('mpDetEliminarProdBtn')?.addEventListener('click', () => {
+        if (!mpDetOrdenActual) return;
+        const lineas = Array.isArray(mpDetOrdenActual.lineas) ? mpDetOrdenActual.lineas : [];
+        if (!lineas.length) { notifyError('Esta orden no tiene productos.', 'Productos'); return; }
+        mpRequireAdmin(() => {
+            const lista = lineas.map((l, i) => `${i+1}. ${l.producto} (x${l.cantidad})`).join('\n');
+            const sel = prompt(`¿Qué línea eliminar?\n${lista}\n\nEscribe el número:`);
+            if (!sel) return;
+            const i = parseInt(sel) - 1;
+            if (isNaN(i) || i < 0 || i >= lineas.length) { notifyError('Número inválido.', 'Productos'); return; }
+            mpDetOrdenActual.lineas.splice(i, 1);
+            mpRefreshProductos();
+        });
+    });
 
     // Detalle buttons
     document.getElementById('mpDetCerrar')?.addEventListener('click', closeDetalleOrdenPopup);
@@ -19144,47 +19577,110 @@ document.addEventListener('DOMContentLoaded', () => {
         window.open(`https://wa.me/52${numero}?text=${encodeURIComponent(mensaje)}`, '_blank');
     });
 
-    document.getElementById('mpDetAbonoBtn')?.addEventListener('click', () => {
-        if (!mpDetOrdenActual) return;
-        const montoInput = document.getElementById('mpDetAbonoMonto');
-        const metodoInput = document.getElementById('mpDetAbonoMetodo');
-        const monto = Number(montoInput?.value || 0);
-        const metodo = metodoInput?.value || 'EFECTIVO';
-        if (!monto || monto <= 0) { alert('Ingresa un monto válido.'); return; }
-        const adeudo = Number(mpDetOrdenActual.adeudoCliente || 0);
-        if (monto > adeudo) { alert(`El monto supera el adeudo de $${adeudo.toFixed(2)}.`); return; }
-        const nuevoAnticipo = Number(mpDetOrdenActual.anticipo || 0) + monto;
-        const nuevoAdeudo = Math.max(0, Number(mpDetOrdenActual.total || 0) - nuevoAnticipo);
-        mpDetOrdenActual.anticipo = nuevoAnticipo;
-        mpDetOrdenActual.adeudoCliente = nuevoAdeudo;
-        const idx = misPedidosData.findIndex(r => r.id === mpDetOrdenActual.id);
-        if (idx >= 0) {
-            misPedidosData[idx].anticipo = nuevoAnticipo;
-            misPedidosData[idx].adeudoCliente = nuevoAdeudo;
-        }
-        const movCaja = {
-            id: 'CM-' + Date.now().toString(36).toUpperCase(),
-            tipo: 'ingreso',
-            monto: monto,
-            concepto: `Abono Orden ${mpDetOrdenActual.folio} — ${mpDetOrdenActual.clienteNombre}`,
-            fecha: todayISO(),
-            formaPago: metodo,
-            folio: mpDetOrdenActual.folio
+    // ── Popup de pago para Mis Pedidos (mismo look que Nueva Orden) ──────
+    (() => {
+        const mpPagoPopupEl  = document.getElementById('mpPagoPopup');
+        const mpPagoBodyEl   = document.getElementById('mpPagoBody');
+        const mpPagoTituloEl = document.getElementById('mpPagoTitulo');
+        const mpPagoAceptarEl = document.getElementById('mpPagoAceptar');
+        const mpPagoCancelarEl = document.getElementById('mpPagoCancelar');
+
+        const openMpPago  = () => { if (mpPagoPopupEl) { mpPagoPopupEl.style.display = 'flex'; mpPagoPopupEl.setAttribute('aria-hidden','false'); }};
+        const closeMpPago = () => { if (mpPagoPopupEl) { mpPagoPopupEl.style.display = 'none';  mpPagoPopupEl.setAttribute('aria-hidden','true');  }};
+
+        const registrarAbono = (monto, metodo, extras) => {
+            if (!mpDetOrdenActual) return;
+            const adeudo = Number(mpDetOrdenActual.adeudoCliente || 0);
+            if (monto <= 0) { notifyError('Ingresa una cantidad válida.', 'Abono'); return false; }
+            if (monto > adeudo + 0.01) { notifyError(`El monto supera el restante de ${formatMoney(adeudo)}.`, 'Abono'); return false; }
+            const nuevoAnticipo = Number(mpDetOrdenActual.anticipo || 0) + monto;
+            const nuevoAdeudo   = Math.max(0, Number(mpDetOrdenActual.total || 0) - nuevoAnticipo);
+            mpDetOrdenActual.anticipo      = nuevoAnticipo;
+            mpDetOrdenActual.adeudoCliente = nuevoAdeudo;
+            mpDetOrdenActual.metodoPago    = metodo;
+            const idx = misPedidosData.findIndex(r => r.id === mpDetOrdenActual.id);
+            if (idx >= 0) { misPedidosData[idx].anticipo = nuevoAnticipo; misPedidosData[idx].adeudoCliente = nuevoAdeudo; misPedidosData[idx].metodoPago = metodo; }
+            const movCaja = { id: 'CM-' + Date.now().toString(36).toUpperCase(), tipo: 'ingreso', monto, concepto: `Abono Orden ${mpDetOrdenActual.folio} — ${mpDetOrdenActual.clienteNombre}`, fecha: todayISO(), formaPago: metodo, folio: mpDetOrdenActual.folio, ...extras };
+            try { const cajaMov = JSON.parse(localStorage.getItem('mock_caja_movs_v1') || '[]'); cajaMov.push(movCaja); localStorage.setItem('mock_caja_movs_v1', JSON.stringify(cajaMov)); } catch (_) {}
+            saveMisPedidos();
+            document.getElementById('mpDetAnticipo').textContent = formatMoney(nuevoAnticipo);
+            document.getElementById('mpDetAdeudo').textContent   = formatMoney(nuevoAdeudo);
+            document.getElementById('mpDetMetodoPago').textContent = metodo;
+            const abonoWrap = document.getElementById('mpDetAbonoWrap');
+            if (nuevoAdeudo <= 0 && abonoWrap) abonoWrap.style.display = 'none';
+            document.querySelectorAll('#mpDetPayGrid .orden-pay-btn').forEach(b => b.classList.remove('active'));
+            renderMisPedidos();
+            notifyInfo(`Abono de ${formatMoney(monto)} registrado.`, 'Abono');
+            return true;
         };
-        try {
-            const cajaMov = JSON.parse(localStorage.getItem('mock_caja_movs_v1') || '[]');
-            cajaMov.push(movCaja);
-            localStorage.setItem('mock_caja_movs_v1', JSON.stringify(cajaMov));
-        } catch (_) {}
-        saveMisPedidos();
-        document.getElementById('mpDetAnticipo').textContent = `$${nuevoAnticipo.toFixed(2)}`;
-        document.getElementById('mpDetAdeudo').textContent = `$${nuevoAdeudo.toFixed(2)}`;
-        const abonoWrap = document.getElementById('mpDetAbonoWrap');
-        if (nuevoAdeudo <= 0 && abonoWrap) abonoWrap.style.display = 'none';
-        if (montoInput) montoInput.value = '';
-        renderMisPedidos();
-        alert(`Abono de $${monto.toFixed(2)} registrado exitosamente.`);
-    });
+
+        const renderMpPagoPopup = (method) => {
+            if (!mpPagoPopupEl || !mpPagoBodyEl || !mpPagoTituloEl) return;
+            const adeudo = Number(mpDetOrdenActual?.adeudoCliente || 0);
+            const adeudoTxt = formatMoney(adeudo);
+            const bancoReceptor = String(getConfigValue('caja', 'bancoReceptor') || 'BBVA México');
+            const cuentas = getCuentasBeneficiario?.() || [];
+            const cuentasOpts = cuentas.map(c => `<option value="${prodEscape(c)}">${prodEscape(c)}</option>`).join('');
+            if (method === 'EFECTIVO' || method === 'TARJETA') {
+                mpPagoTituloEl.textContent = method === 'EFECTIVO' ? 'PAGO EN EFECTIVO' : 'PAGO CON TARJETA';
+                mpPagoBodyEl.innerHTML = `
+                    <div class="orden-field full"><label>Restante de la orden</label><input type="text" value="${prodEscape(adeudoTxt)}" readonly></div>
+                    <div class="orden-field full"><label for="mpPagoCantidad">Cantidad a abonar</label><input id="mpPagoCantidad" type="number" min="0" step="0.01" placeholder="0.00" style="font-size:1rem;font-weight:700;"></div>`;
+                const inp = document.getElementById('mpPagoCantidad');
+                mpPagoAceptarEl.onclick = () => {
+                    if (registrarAbono(Math.max(0, Number(inp?.value || 0)), method, {})) closeMpPago();
+                };
+            } else if (method === 'TRANSFERENCIA') {
+                mpPagoTituloEl.textContent = 'PAGO POR TRANSFERENCIA';
+                mpPagoBodyEl.innerHTML = `
+                    <div class="orden-field"><label for="mpPagoBancoEmisor">Banco emisor</label><input id="mpPagoBancoEmisor" type="text" placeholder="Banco del cliente"></div>
+                    <div class="orden-field"><label for="mpPagoBancoReceptor">Banco receptor</label><input id="mpPagoBancoReceptor" type="text" value="${prodEscape(bancoReceptor)}" readonly></div>
+                    <div class="orden-field"><label for="mpPagoReferencia">No. de referencia (opcional)</label><input id="mpPagoReferencia" type="text" placeholder="Referencia"></div>
+                    <div class="orden-field full"><label for="mpPagoCuentaBenef">Cuenta beneficiario</label><select id="mpPagoCuentaBenef">${cuentasOpts}</select></div>
+                    <div class="orden-field full"><label for="mpPagoCantidad">Cantidad</label><input id="mpPagoCantidad" type="number" min="0" step="0.01" placeholder="0.00" style="font-size:1rem;font-weight:700;"></div>`;
+                const inp = document.getElementById('mpPagoCantidad');
+                mpPagoAceptarEl.onclick = () => {
+                    if (registrarAbono(Math.max(0, Number(inp?.value || 0)), method, {
+                        bancoEmisor: document.getElementById('mpPagoBancoEmisor')?.value || '',
+                        bancoReceptor,
+                        referencia: document.getElementById('mpPagoReferencia')?.value || '',
+                        cuentaBeneficiario: document.getElementById('mpPagoCuentaBenef')?.value || ''
+                    })) closeMpPago();
+                };
+            } else if (method === 'DEPOSITO') {
+                mpPagoTituloEl.textContent = 'PAGO POR DEPÓSITO';
+                mpPagoBodyEl.innerHTML = `
+                    <div class="orden-field full"><label for="mpPagoProcedencia">Origen de procedencia</label>
+                        <select id="mpPagoProcedencia"><option>OXXO</option><option>7-Eleven</option><option>Farmacias del Ahorro</option><option>Walmart</option><option>Chedraui</option><option>Bodega Aurrera</option></select></div>
+                    <div class="orden-field"><label for="mpPagoBancoReceptor">Banco receptor</label><input id="mpPagoBancoReceptor" type="text" value="${prodEscape(bancoReceptor)}" readonly></div>
+                    <div class="orden-field full"><label for="mpPagoCuentaBenef">Cuenta beneficiario</label><select id="mpPagoCuentaBenef">${cuentasOpts}</select></div>
+                    <div class="orden-field full"><label for="mpPagoCantidad">Cantidad</label><input id="mpPagoCantidad" type="number" min="0" step="0.01" placeholder="0.00" style="font-size:1rem;font-weight:700;"></div>`;
+                const inp = document.getElementById('mpPagoCantidad');
+                mpPagoAceptarEl.onclick = () => {
+                    if (registrarAbono(Math.max(0, Number(inp?.value || 0)), method, {
+                        procedencia: document.getElementById('mpPagoProcedencia')?.value || '',
+                        bancoReceptor,
+                        cuentaBeneficiario: document.getElementById('mpPagoCuentaBenef')?.value || ''
+                    })) closeMpPago();
+                };
+            }
+
+            mpPagoCancelarEl.onclick = closeMpPago;
+            mpPagoPopupEl.addEventListener('click', (ev) => { if (ev.target === mpPagoPopupEl) closeMpPago(); }, { once: true });
+            openMpPago();
+            setTimeout(() => document.getElementById('mpPagoCantidad')?.focus(), 50);
+        };
+
+        // Conectar botones de pay-grid
+        document.querySelectorAll('#mpDetPayGrid .orden-pay-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                if (!mpDetOrdenActual) return;
+                document.querySelectorAll('#mpDetPayGrid .orden-pay-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderMpPagoPopup(btn.dataset.mpPay);
+            });
+        });
+    })();
 
     // Imprimir orden (reuses PDF logic then prints)
     document.getElementById('mpDetImprimir')?.addEventListener('click', () => {
@@ -19921,6 +20417,9 @@ document.addEventListener('DOMContentLoaded', () => {
             // PRODUCTO: muchos campos — dejar compacto
             if (grid) { grid.style.alignContent = 'start'; }
         }
+
+        // Actualizar wizard si existe
+        if (typeof resetProdWizard === 'function') resetProdWizard();
     };
 
     const renderProductosTabla = () => {
@@ -22827,31 +23326,215 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    [mpFiltroFolio, mpFiltroNombre, mpFiltroTelefono, mpFiltroDisenador, mpFiltroFechaRapido, mpFiltroFechaDesde, mpFiltroFechaHasta, mpFiltroEstatus, mpFiltroAdeudo]
+    // ── Filtros Mis Pedidos ────────────────────────────────────
+    const mpFiltroBuscar = document.getElementById('mpFiltroBuscar');
+    [mpFiltroBuscar, mpFiltroDisenador, mpFiltroFechaRapido, mpFiltroEstatus, mpFiltroAdeudo]
         .filter(Boolean)
         .forEach((input) => {
             input.addEventListener('input', renderMisPedidos);
             input.addEventListener('change', renderMisPedidos);
         });
 
-    if (mpFiltroFechaRapido) {
-        mpFiltroFechaRapido.addEventListener('change', () => {
-            const isRango = mpFiltroFechaRapido.value === 'rango';
-            if (mpFechaRangoWrap) mpFechaRangoWrap.style.display = isRango ? '' : 'none';
-            if (mpFechaRangoWrap2) mpFechaRangoWrap2.style.display = isRango ? '' : 'none';
+    // ── Mini calendario ──────────────────────────────────────
+    let mpCalRangeStart = null, mpCalRangeEnd = null;
+    let mpCal1Month = 0, mpCal1Year = 2024, mpCal2Month = 1, mpCal2Year = 2024;
+
+    const openMpCalPopup = (anchorEl) => {
+        const popup = document.getElementById('mpCalPopup');
+        if (!popup) return;
+        const now = new Date();
+        mpCal1Month = now.getMonth() === 0 ? 11 : now.getMonth() - 1;
+        mpCal1Year  = now.getMonth() === 0 ? now.getFullYear() - 1 : now.getFullYear();
+        mpCal2Month = now.getMonth();
+        mpCal2Year  = now.getFullYear();
+        renderMpCalMonths();
+        // Posicionar debajo del ancla (botón de fecha)
+        const anchor = anchorEl || document.getElementById('mpFechaCalBtn');
+        if (anchor) {
+            const rect = anchor.getBoundingClientRect();
+            const popW = 560;
+            let left = rect.left;
+            if (left + popW > window.innerWidth - 8) left = window.innerWidth - popW - 8;
+            if (left < 4) left = 4;
+            popup.style.top  = (rect.bottom + 4 + window.scrollY) + 'px';
+            popup.style.left = left + 'px';
+        } else {
+            popup.style.top = '80px';
+            popup.style.left = '20px';
+        }
+        popup.style.display = 'block';
+    };
+
+    const closeMpCalPopup = () => {
+        const popup = document.getElementById('mpCalPopup');
+        if (popup) popup.style.display = 'none';
+    };
+
+    const renderMpCalMonths = () => {
+        renderMpCalMonth(document.getElementById('mpCal1'), mpCal1Year, mpCal1Month, 1);
+        renderMpCalMonth(document.getElementById('mpCal2'), mpCal2Year, mpCal2Month, 2);
+        updateMpCalRangeLabel();
+    };
+
+    const renderMpCalMonth = (container, year, month, which) => {
+        if (!container) return;
+        const MESES = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+        const today = new Date(); today.setHours(0,0,0,0);
+        const firstDay = new Date(year, month, 1);
+        const lastDay  = new Date(year, month + 1, 0);
+        const startDow = firstDay.getDay();
+        let html = `<div class="cal-header">
+            <button type="button" onclick="window._mpCalNav(${which},-1)">‹</button>
+            <span>${MESES[month]} ${year}</span>
+            <button type="button" onclick="window._mpCalNav(${which},1)">›</button>
+        </div><div class="cal-grid">
+        <div class="cal-dow">Do</div><div class="cal-dow">Lu</div><div class="cal-dow">Ma</div><div class="cal-dow">Mi</div><div class="cal-dow">Ju</div><div class="cal-dow">Vi</div><div class="cal-dow">Sá</div>`;
+        for (let i = 0; i < startDow; i++) html += '<div class="cal-day empty"></div>';
+        for (let d = 1; d <= lastDay.getDate(); d++) {
+            const date = new Date(year, month, d); date.setHours(0,0,0,0);
+            let cls = 'cal-day';
+            if (date.getTime() === today.getTime()) cls += ' today';
+            if (mpCalRangeStart && mpCalRangeEnd) {
+                const s = mpCalRangeStart.getTime(), e = mpCalRangeEnd.getTime(), t = date.getTime();
+                if (t === s) cls += ' range-start';
+                else if (t === e) cls += ' range-end';
+                else if (t > s && t < e) cls += ' in-range';
+            } else if (mpCalRangeStart && date.getTime() === mpCalRangeStart.getTime()) {
+                cls += ' range-start';
+            }
+            const iso = year + '-' + String(month+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
+            html += `<div class="${cls}" onclick="window._mpCalPick('${iso}')">${d}</div>`;
+        }
+        html += '</div>';
+        container.innerHTML = html;
+    };
+
+    window._mpCalNav = (which, delta) => {
+        if (which === 1) {
+            mpCal1Month += delta;
+            if (mpCal1Month > 11) { mpCal1Month = 0; mpCal1Year++; }
+            if (mpCal1Month < 0)  { mpCal1Month = 11; mpCal1Year--; }
+        } else {
+            mpCal2Month += delta;
+            if (mpCal2Month > 11) { mpCal2Month = 0; mpCal2Year++; }
+            if (mpCal2Month < 0)  { mpCal2Month = 11; mpCal2Year--; }
+        }
+        renderMpCalMonths();
+    };
+    window.mpCalNavMonth = window._mpCalNav; // alias
+
+    window._mpCalPick = (iso) => {
+        const d = new Date(iso + 'T00:00:00');
+        if (!mpCalRangeStart || (mpCalRangeStart && mpCalRangeEnd)) {
+            mpCalRangeStart = d; mpCalRangeEnd = null;
+        } else {
+            if (d < mpCalRangeStart) { mpCalRangeEnd = mpCalRangeStart; mpCalRangeStart = d; }
+            else                     { mpCalRangeEnd = d; }
+        }
+        renderMpCalMonths();
+    };
+    window.mpCalPickDay = window._mpCalPick; // alias
+
+    const updateMpCalRangeLabel = () => {
+        const el = document.getElementById('mpCalRangeLabel');
+        if (!el) return;
+        if (!mpCalRangeStart) { el.textContent = 'Haz clic en el día de inicio'; return; }
+        if (!mpCalRangeEnd)   { el.textContent = `Inicio: ${mpCalRangeStart.toLocaleDateString('es-MX')} — selecciona fin`; return; }
+        el.textContent = `Del ${mpCalRangeStart.toLocaleDateString('es-MX')} al ${mpCalRangeEnd.toLocaleDateString('es-MX')}`;
+    };
+
+    const toDateISO = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+
+    const applyMpCalRange = () => {
+        if (!mpCalRangeStart) return;
+        const end = mpCalRangeEnd || mpCalRangeStart;
+        const desdeEl = document.getElementById('mpFiltroFechaDesde');
+        const hastaEl = document.getElementById('mpFiltroFechaHasta');
+        if (desdeEl) desdeEl.value = toDateISO(mpCalRangeStart);
+        if (hastaEl) hastaEl.value = toDateISO(end);
+        if (mpFiltroFechaRapido) mpFiltroFechaRapido.value = 'rango';
+        const lbl = document.getElementById('mpFechaCalLabel');
+        if (lbl) lbl.textContent = toDateISO(mpCalRangeStart) + ' – ' + toDateISO(end);
+        const btn = document.getElementById('mpFechaCalBtn');
+        if (btn) { btn.style.background = '#fff7ed'; btn.style.borderColor = '#fde8c8'; btn.style.color = '#92400e'; }
+        closeMpCalPopup();
+        renderMisPedidos();
+    };
+
+    const QUICK_LABELS = { hoy:'Hoy', semana:'Semana', mes:'Mes', ano:'Año', '90dias':'Últimos 90 días', '3meses':'Últimos 3 meses' };
+
+    const applyMpCalQuick = (q) => {
+        mpCalRangeStart = null; mpCalRangeEnd = null;
+        const desdeEl = document.getElementById('mpFiltroFechaDesde');
+        const hastaEl = document.getElementById('mpFiltroFechaHasta');
+        if (desdeEl) desdeEl.value = '';
+        if (hastaEl) hastaEl.value = '';
+        if (mpFiltroFechaRapido) mpFiltroFechaRapido.value = q;
+        const lbl = document.getElementById('mpFechaCalLabel');
+        if (lbl) lbl.textContent = QUICK_LABELS[q] || q;
+        const btn = document.getElementById('mpFechaCalBtn');
+        if (btn) { btn.style.background = '#fff7ed'; btn.style.borderColor = '#fde8c8'; btn.style.color = '#92400e'; }
+        document.querySelectorAll('#mpCalPopup .mp-cal-quick').forEach(b => b.classList.toggle('active', b.dataset.q === q));
+        closeMpCalPopup();
+        renderMisPedidos();
+    };
+
+    // ── Cal popup — event wiring (directo, sin DOMContentLoaded) ──
+    (() => {
+        const calPopup   = document.getElementById('mpCalPopup');
+        const cerrarBtn  = document.getElementById('mpCalCerrar');
+        const limpiarBtn = document.getElementById('mpCalLimpiar');
+        const aceptarBtn = document.getElementById('mpCalAceptar');
+        const calBtn     = document.getElementById('mpFechaCalBtn');
+
+        if (cerrarBtn)  cerrarBtn.addEventListener('click', closeMpCalPopup);
+        if (aceptarBtn) aceptarBtn.addEventListener('click', applyMpCalRange);
+        if (calBtn)     calBtn.addEventListener('click', (ev) => { ev.stopPropagation(); openMpCalPopup(calBtn); });
+
+        if (limpiarBtn) limpiarBtn.addEventListener('click', () => {
+            mpCalRangeStart = null; mpCalRangeEnd = null;
+            if (mpFiltroFechaRapido) mpFiltroFechaRapido.value = '';
+            const de = document.getElementById('mpFiltroFechaDesde');
+            const ha = document.getElementById('mpFiltroFechaHasta');
+            if (de) de.value = ''; if (ha) ha.value = '';
+            const lbl = document.getElementById('mpFechaCalLabel');
+            if (lbl) lbl.textContent = 'Todas las fechas';
+            if (calBtn) { calBtn.style.background = '#fff'; calBtn.style.borderColor = '#d1d5db'; calBtn.style.color = '#374151'; }
+            closeMpCalPopup();
             renderMisPedidos();
         });
-    }
+
+        document.querySelectorAll('#mpCalPopup .mp-cal-quick').forEach(btn => {
+            btn.addEventListener('click', (ev) => { ev.stopPropagation(); applyMpCalQuick(btn.dataset.q); });
+        });
+
+        // Cerrar con click fuera del popup
+        document.addEventListener('click', (ev) => {
+            if (!calPopup || calPopup.style.display === 'none') return;
+            if (!calPopup.contains(ev.target) && ev.target !== calBtn) closeMpCalPopup();
+        });
+
+        // Cerrar con Escape
+        document.addEventListener('keydown', (ev) => {
+            if (ev.key === 'Escape') closeMpCalPopup();
+        });
+    })();
 
     if (mpLimpiarFiltros) {
         mpLimpiarFiltros.addEventListener('click', () => {
-            [mpFiltroFolio, mpFiltroNombre, mpFiltroTelefono, mpFiltroDisenador, mpFiltroFechaRapido, mpFiltroFechaDesde, mpFiltroFechaHasta, mpFiltroEstatus, mpFiltroAdeudo]
+            const buscar = document.getElementById('mpFiltroBuscar');
+            if (buscar) buscar.value = '';
+            [mpFiltroFolio, mpFiltroNombre, mpFiltroTelefono, mpFiltroDisenador, mpFiltroFechaRapido, mpFiltroEstatus, mpFiltroAdeudo]
                 .filter(Boolean)
-                .forEach((input) => {
-                    input.value = '';
-                });
-            if (mpFechaRangoWrap) mpFechaRangoWrap.style.display = 'none';
-            if (mpFechaRangoWrap2) mpFechaRangoWrap2.style.display = 'none';
+                .forEach((input) => { input.value = ''; });
+            mpCalRangeStart = null; mpCalRangeEnd = null;
+            const desdeEl = document.getElementById('mpFiltroFechaDesde');
+            const hastaEl = document.getElementById('mpFiltroFechaHasta');
+            if (desdeEl) desdeEl.value = '';
+            if (hastaEl) hastaEl.value = '';
+            const calBtn = document.getElementById('mpFechaCalBtn');
+            if (calBtn) calBtn.style.display = 'none';
+            closeMpCalPopup();
             mpSelectedIds = new Set();
             renderMisPedidos();
         });
@@ -24656,6 +25339,14 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
 
     if (prodFormSiguiente) {
         prodFormSiguiente.addEventListener('click', () => {
+            const steps = getProdWizardSteps();
+            const isLast = (prodWizardCurrentStep === steps.length - 1);
+            if (!isLast) {
+                if (!validateProdCurrentStep()) return;
+                goToProdStep(prodWizardCurrentStep + 1);
+                return;
+            }
+            // Último paso → comportamiento original
             const payload = collectProductFormPayload();
             if (!payload) return;
             prodPendingPayload = payload;
@@ -24670,6 +25361,12 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
                 prodPendingTabuladorId = payload.tabuladorId || tabuladoresData[0]?.id || '';
             }
             openProdTabuladorPopup();
+        });
+    }
+
+    if (prodFormAnterior) {
+        prodFormAnterior.addEventListener('click', () => {
+            goToProdStep(prodWizardCurrentStep - 1);
         });
     }
 
@@ -31896,101 +32593,206 @@ document.addEventListener('DOMContentLoaded', function() {
         applyRolePermissions(userRole);
     };
 
-    // ===== PERMISOS POR ROL =====
-    const applyRolePermissions = (role) => {
-        const isAdmin = role === 'admin';
-        const isVendedor = role === 'vendedor';
-        const isDisenador = role === 'disenador';
+    // ===== TABLA DE PERMISOS POR ROL Y MÓDULO =====
+    // admin: todos | vendedor: ventas+clientes | disenador: diseño | productor: producción | repartidor: reparto
+    const MODULE_PERMISSIONS = {
+        'NUEVA ORDEN':          ['admin','vendedor'],
+        'MIS PEDIDOS':          ['admin','vendedor','disenador','productor'],
+        'DISENO':               ['admin','disenador','vendedor'],
+        'DISEÑO':               ['admin','disenador','vendedor'],
+        'PRODUCCION':           ['admin','productor'],
+        'RECEPCION SUCURSAL':   ['admin','productor','repartidor'],
+        'CONTROL REPARTIDORES': ['admin','repartidor'],
+        'REPARTO APP MOVIL':    ['admin','repartidor'],
+        'REPARTO TEMPORAL':     ['admin','repartidor','vendedor'],
+        'REPARTO':              ['admin','repartidor','vendedor'],
+        'ENTREGAS':             ['admin','repartidor','vendedor'],
+        'PRODUCTOS':            ['admin','vendedor'],
+        'DASHBOARD':            ['admin','vendedor'],
+        'CAJA':                 ['admin','vendedor'],
+        'MUESTRARIO':           ['admin','vendedor','disenador'],
+        'CLIENTES':             ['admin','vendedor'],
+        'PROVEEDORES':          ['admin','vendedor'],
+        'REPORTES':             ['admin','vendedor'],
+        'CALENDARIO':           ['admin','vendedor','disenador','productor'],
+        'CONFIGURACIONES':      ['admin'],
+        'ALMACEN PEDIDOS':      ['admin','productor','repartidor'],
+    };
 
-        // Config button: visible for all roles (permissions enforced inside)
-        const btnAjustes = document.getElementById('btnAjustesMain');
-        if (btnAjustes) btnAjustes.style.display = '';
+    const canAccessModule = (role, moduleName) => {
+        if (!role) return false;
+        const key = String(moduleName || '').trim().toUpperCase();
+        const allowed = MODULE_PERMISSIONS[key];
+        if (!allowed) return role === 'admin'; // módulos no listados: solo admin
+        return allowed.includes(role);
+    };
 
-        // Caja module: admin and vendedor
-        const cajaCards = document.querySelectorAll('.inicio-card');
-        cajaCards.forEach(card => {
-            const label = (card.textContent || '').trim().toLowerCase();
-            if (label.includes('caja') || label.includes('reportes')) {
-                card.style.opacity = (isAdmin || isVendedor) ? '1' : '0.4';
-                card.style.pointerEvents = (isAdmin || isVendedor) ? '' : 'none';
-            }
-            if (label.includes('producción')) {
-                card.style.opacity = '1';
-                card.style.pointerEvents = '';
-            }
-        });
-
-        // Discount button: only admin
-        const descuentoBtn = document.getElementById('ordenBtnDescuento');
-        if (descuentoBtn) {
-            descuentoBtn.style.opacity = isAdmin ? '1' : '0.5';
-            if (!isAdmin) {
-                descuentoBtn.title = 'Solo administradores pueden aplicar descuentos';
-            }
-        }
-
-        // Show logged user role badge (only if role differs from label context)
-        const vendedorInput = document.getElementById('ordenVendedor');
-        if (vendedorInput && vendedorInput.parentElement) {
-            // Remove any existing badge to avoid duplicates
-            const existingBadge = vendedorInput.parentElement.querySelector('.login-user-badge');
-            if (existingBadge) existingBadge.remove();
-            // Only show badge if role is NOT vendedor (since the label already says VENDEDOR)
-            if (role !== 'vendedor') {
-                const badge = document.createElement('span');
-                badge.className = 'login-user-badge';
-                const roleLabels = { admin: 'ADMIN', vendedor: 'VENDEDOR', disenador: 'DISENADOR' };
-                badge.textContent = roleLabels[role] || role;
-                vendedorInput.parentElement.appendChild(badge);
-            }
-        }
-
-        // For disenador, also clean up badge in diseñador field
-        const disenadorSelect = document.getElementById('ordenDisenador');
-        if (disenadorSelect && disenadorSelect.parentElement) {
-            const existingDisBadge = disenadorSelect.parentElement.querySelector('.login-user-badge');
-            if (existingDisBadge) existingDisBadge.remove();
+    const showAccesoDenegado = (moduleName) => {
+        const overlay = document.getElementById('accesoDenegadoOverlay');
+        const msg = document.getElementById('accesoDenegadoMsg');
+        if (msg) msg.textContent = `No tienes permisos para acceder al módulo "${moduleName}". Contacta a un administrador.`;
+        if (overlay) { overlay.style.display = 'flex'; }
+        const btn = document.getElementById('accesoDenegadoVolverBtn');
+        if (btn && !btn._adListener) {
+            btn._adListener = true;
+            btn.addEventListener('click', () => {
+                if (overlay) overlay.style.display = 'none';
+                const inicio = document.getElementById('inicioSistema');
+                if (inicio) { inicio.style.display = 'flex'; inicio.setAttribute('aria-hidden','false'); }
+            });
         }
     };
 
-    // Check session on load
-    const checkSession = () => {
-        const savedName = localStorage.getItem('logged_user_name');
-        const savedEmail = localStorage.getItem('logged_user_email');
-        if (savedName && savedEmail) {
-            const role = localStorage.getItem('logged_user_role') || 'vendedor';
-            completeLogin(savedName, role);
-            // Reload user data from Firestore in background
-            loadUsersFromFirestore().then(async () => {
-                let sysUser = findUserByEmail(savedEmail);
-                // Auto-register if not in Firestore yet
-                if (!sysUser) {
-                    try {
-                        await saveUserToFirestore({ correo: savedEmail, nombre: savedName, rol: role });
-                        await loadUsersFromFirestore();
-                        sysUser = findUserByEmail(savedEmail);
-                    } catch (_) {}
-                }
-                if (sysUser && sysUser.rol !== role) {
-                    localStorage.setItem('logged_user_role', sysUser.rol);
-                    applyRolePermissions(sysUser.rol);
-                }
-            }).catch(() => {});
-        } else {
-            if (loginOverlay) loginOverlay.style.display = 'flex';
+    window.canAccessModule = canAccessModule;
+    window.showAccesoDenegado = showAccesoDenegado;
+
+    // ===== PERMISOS POR ROL =====
+    const applyRolePermissions = (role) => {
+        const isAdmin = role === 'admin';
+
+        // Descuento: solo admin
+        const descuentoBtn = document.getElementById('ordenBtnDescuento');
+        if (descuentoBtn) {
+            descuentoBtn.style.opacity = isAdmin ? '1' : '0.5';
+            if (!isAdmin) descuentoBtn.title = 'Solo administradores pueden aplicar descuentos';
         }
+
+        // Mostrar/ocultar tarjetas del menú según rol
+        document.querySelectorAll('.inicio-card').forEach(card => {
+            const onclick = card.getAttribute('onclick') || '';
+            const match = onclick.match(/abrirModuloPrincipal\(['"]([^'"]+)['"]\)/);
+            if (!match) return;
+            const modKey = match[1].trim().toUpperCase();
+            const allowed = canAccessModule(role, modKey);
+            card.style.opacity = allowed ? '1' : '0.35';
+            card.style.pointerEvents = allowed ? '' : '';
+            card.setAttribute('data-requires-perm', allowed ? '0' : '1');
+            card.title = allowed ? '' : '🚫 Sin acceso — ' + (role || 'sin rol');
+        });
+
+        // Badge de rol
+        const vendedorInput = document.getElementById('ordenVendedor');
+        if (vendedorInput && vendedorInput.parentElement) {
+            const existingBadge = vendedorInput.parentElement.querySelector('.login-user-badge');
+            if (existingBadge) existingBadge.remove();
+            if (role !== 'vendedor') {
+                const badge = document.createElement('span');
+                badge.className = 'login-user-badge';
+                const roleLabels = { admin:'ADMIN', vendedor:'VENDEDOR', disenador:'DISEÑADOR', productor:'PRODUCTOR', repartidor:'REPARTIDOR' };
+                badge.textContent = roleLabels[role] || role.toUpperCase();
+                vendedorInput.parentElement.appendChild(badge);
+            }
+        }
+        const disenadorSelect = document.getElementById('ordenDisenador');
+        if (disenadorSelect && disenadorSelect.parentElement) {
+            const b = disenadorSelect.parentElement.querySelector('.login-user-badge');
+            if (b) b.remove();
+        }
+
+        // Config tab usuarios visibles solo para admin
+        const tabUsuariosBtn = document.querySelector('.config-tab[data-tab="usuarios"]');
+        if (tabUsuariosBtn) tabUsuariosBtn.style.display = isAdmin ? '' : 'none';
     };
 
     if (loginBtn) loginBtn.addEventListener('click', doLogin);
     if (loginPassword) loginPassword.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); doLogin(); } });
     if (loginCorreo) loginCorreo.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); loginPassword?.focus(); } });
 
-    const waitForFirebase = () => {
-        if (window.firebase) { checkSession(); }
-        else { setTimeout(waitForFirebase, 100); }
+    // ===== AUTH STATE LISTENER (Firebase Auth real — única fuente de verdad) =====
+    // El sistema NO muestra nada hasta que Firebase confirme la sesión.
+    // El inicio se bloquea completamente hasta que onAuthStateChanged dispare.
+    window._currentFirebaseUser = undefined; // undefined = pendiente, null = no autenticado, object = autenticado
+
+    const _blockingOverlay = (() => {
+        // Pantalla de carga inicial mientras Firebase verifica sesión
+        const el = document.createElement('div');
+        el.id = 'authLoadingOverlay';
+        el.style.cssText = 'position:fixed;inset:0;z-index:999998;background:#0f172a;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;';
+        el.innerHTML = '<div style="font-size:2.5rem;">🔐</div><div style="color:#fff;font-size:0.75rem;font-weight:700;letter-spacing:1px;">VERIFICANDO SESIÓN...</div><div style="width:40px;height:4px;background:#ff9900;border-radius:2px;animation:authPulse 1s ease-in-out infinite;"></div>';
+        const style = document.createElement('style');
+        style.textContent = '@keyframes authPulse{0%,100%{opacity:0.3;transform:scaleX(0.5)}50%{opacity:1;transform:scaleX(1)}}';
+        document.head.appendChild(style);
+        document.body.insertBefore(el, document.body.firstChild);
+        return el;
+    })();
+
+    const _initAuthListener = () => {
+        if (!window.firebase) { setTimeout(_initAuthListener, 100); return; }
+        try {
+            const authApp = getAuthApp();
+            if (!authApp) { setTimeout(_initAuthListener, 150); return; }
+            const auth = window.firebase.auth(authApp);
+
+            auth.onAuthStateChanged(async (fbUser) => {
+                window._currentFirebaseUser = fbUser;
+                // Remove blocking overlay
+                if (_blockingOverlay && _blockingOverlay.parentNode) _blockingOverlay.remove();
+
+                if (!fbUser) {
+                    // ── NO AUTENTICADO: limpiar sesión y mostrar login ──
+                    localStorage.removeItem('logged_user_email');
+                    localStorage.removeItem('logged_user_name');
+                    localStorage.removeItem('logged_user_role');
+                    sessionStorage.removeItem('_admin_temp_pass');
+                    if (loginOverlay) loginOverlay.style.display = 'flex';
+                    // Ocultar el sistema completamente
+                    const inicio = document.getElementById('inicioSistema');
+                    if (inicio) { inicio.style.display = 'none'; inicio.setAttribute('aria-hidden','true'); }
+                    return;
+                }
+
+                // ── AUTENTICADO: cargar perfil desde Firestore ──
+                try {
+                    await loadUsersFromFirestore();
+                    let sysUser = findUserByEmail(fbUser.email);
+
+                    // Auto-registro si existe en Auth pero no en Firestore
+                    if (!sysUser) {
+                        try {
+                            const autoName = fbUser.displayName || fbUser.email.split('@')[0];
+                            await saveUserToFirestore({ correo: fbUser.email, nombre: autoName, rol: 'vendedor' });
+                            await loadUsersFromFirestore();
+                            sysUser = findUserByEmail(fbUser.email);
+                        } catch (_) {}
+                    }
+
+                    // Verificar que el usuario está activo
+                    if (sysUser && sysUser.activo === false) {
+                        auth.signOut().catch(() => {});
+                        if (loginOverlay) { loginOverlay.style.display = 'flex'; }
+                        const errEl = document.getElementById('loginError');
+                        if (errEl) errEl.textContent = 'Tu cuenta ha sido desactivada. Contacta al administrador.';
+                        return;
+                    }
+
+                    const userName = sysUser?.nombre || fbUser.displayName || fbUser.email.split('@')[0];
+                    const userRole = sysUser?.rol || 'vendedor';
+
+                    localStorage.setItem('logged_user_email', fbUser.email);
+                    localStorage.setItem('logged_user_name', userName);
+                    localStorage.setItem('logged_user_role', userRole);
+
+                    completeLogin(userName, userRole);
+                } catch (err) {
+                    console.error('Error cargando perfil de usuario:', err);
+                    // Usar datos del token si Firestore falla
+                    const fallbackName = fbUser.displayName || fbUser.email.split('@')[0];
+                    const fallbackRole = localStorage.getItem('logged_user_role') || 'vendedor';
+                    localStorage.setItem('logged_user_email', fbUser.email);
+                    localStorage.setItem('logged_user_name', fallbackName);
+                    completeLogin(fallbackName, fallbackRole);
+                }
+            });
+        } catch (err) {
+            console.error('Error iniciando auth listener:', err);
+            // Fallback: mostrar login
+            if (_blockingOverlay && _blockingOverlay.parentNode) _blockingOverlay.remove();
+            if (loginOverlay) loginOverlay.style.display = 'flex';
+        }
     };
-    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', waitForFirebase); }
-    else { waitForFirebase(); }
+
+    if (document.readyState === 'loading') { document.addEventListener('DOMContentLoaded', _initAuthListener); }
+    else { _initAuthListener(); }
 
     // ===== USUARIOS CONFIG TAB (FIRESTORE) =====
     const esc = (s) => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
@@ -32019,7 +32821,7 @@ document.addEventListener('DOMContentLoaded', function() {
             tbody.innerHTML = users.map((u) => {
                 const isSelf = String(u.correo||'').toLowerCase() === currentEmail;
                 const roleClass = u.rol === 'admin' ? 'admin' : u.rol === 'disenador' ? 'disenador' : 'vendedor';
-                const roleLabel = u.rol === 'admin' ? 'Administrador' : u.rol === 'disenador' ? 'Diseñador' : 'Vendedor';
+                const roleLabel = {admin:'Administrador', disenador:'Diseñador', productor:'Productor', repartidor:'Repartidor', vendedor:'Vendedor'}[u.rol] || (u.rol||'Vendedor');
                 const activo = u.activo !== false;
                 const canDelete = currentRole === 'admin' && !isSelf;
                 const canToggle = currentRole === 'admin' && !isSelf;
@@ -32032,7 +32834,9 @@ document.addEventListener('DOMContentLoaded', function() {
                         ${canChangeRole
                             ? `<select class="config-user-role-select" data-doc-id="${esc(u.id)}" style="font-size:0.52rem;padding:4px 8px;border-radius:6px;background:#f9fafb;color:#374151;border:1px solid #d1d5db;">
                                 <option value="vendedor"${u.rol==='vendedor'?' selected':''}>VENDEDOR</option>
-                                <option value="disenador"${u.rol==='disenador'?' selected':''}>DISENADOR</option>
+                                <option value="disenador"${u.rol==='disenador'?' selected':''}>DISEÑADOR</option>
+                                <option value="productor"${u.rol==='productor'?' selected':''}>PRODUCTOR</option>
+                                <option value="repartidor"${u.rol==='repartidor'?' selected':''}>REPARTIDOR</option>
                                 <option value="admin"${u.rol==='admin'?' selected':''}>ADMIN</option>
                             </select>`
                             : `<span class="config-user-role-badge ${roleClass}">${roleLabel}</span>`
