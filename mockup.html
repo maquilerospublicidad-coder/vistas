@@ -1627,7 +1627,7 @@
         .orden-stock-popup {
             position: fixed;
             inset: 0;
-            z-index: 2300;
+            z-index: 100030;
             display: none;
             align-items: center;
             justify-content: center;
@@ -2112,10 +2112,10 @@
             border: 1px solid #e4e8ef;
             border-radius: 10px;
             padding: 7px;
-            display: grid;
-            grid-template-columns: repeat(9, minmax(80px, 1fr));
+            display: flex;
+            flex-wrap: wrap;
             gap: 6px;
-            align-items: end;
+            align-items: flex-end;
         }
 
         /* ── Mis Pedidos: payment grid uses orden-pay-btn (same as Nueva Orden) ── */
@@ -2145,6 +2145,8 @@
         .mp-cal-month .cal-day.today { font-weight:900; color:#ff9900; }
         .mp-cal-month .cal-day.in-range { background:#fff7ed; color:#92400e; }
         .mp-cal-month .cal-day.range-start, .mp-cal-month .cal-day.range-end { background:#ff9900; color:#fff; border-radius:50%; font-weight:900; }
+        .mp-cal-month .cal-day.hover-range { background:#fff7ed; color:#92400e; }
+        .mp-cal-month .cal-day.hover-end { background:#ffcc80; color:#7c3a00; border-radius:50%; font-weight:700; }
         .mp-cal-month .cal-day.other-month { color:#d1d5db; }
         .mp-cal-month .cal-day.empty { cursor:default; pointer-events:none; }
 
@@ -2161,19 +2163,66 @@
 
         .mispedidos-table {
             width: 100%;
-            border-collapse: collapse;
+            border-collapse: separate;
+            border-spacing: 0;
             min-width: 1220px;
+            background: #fff;
+            border-radius: 18px;
+            box-shadow: 0 4px 24px 0 rgba(31,41,55,0.07);
+            overflow: hidden;
+            margin-bottom: 18px;
         }
-
-        .mispedidos-table th,
+        .mispedidos-table th {
+            position: sticky;
+            top: 0;
+            background: #f8fafc;
+            color: #ea580c;
+            text-transform: uppercase;
+            font-size: 0.74rem;
+            letter-spacing: 0.24px;
+            font-weight: 900;
+            padding: 13px 10px;
+            border-bottom: 2px solid #ff9900;
+            z-index: 2;
+        }
         .mispedidos-table td {
-            border-bottom: 1px solid #edf1f6;
-            padding: 7px;
-            font-size: 0.62rem;
+            padding: 13px 10px;
+            font-size: 0.92rem;
             color: #273142;
-            white-space: nowrap;
+            background: #fff;
+            border-bottom: 1.5px solid #f3f4f6;
             text-align: center;
+            transition: background 0.13s, box-shadow 0.13s;
         }
+        .mispedidos-table tr:last-child td {
+            border-bottom: none;
+        }
+        .mispedidos-table tr:hover td {
+            background: #fff7ed;
+            box-shadow: 0 2px 12px 0 rgba(255,153,0,0.07);
+        }
+        .mispedidos-table .badge {
+            display: inline-block;
+            padding: 4px 14px;
+            border-radius: 14px;
+            font-size: 0.82em;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 1px 4px 0 rgba(255,153,0,0.04);
+        }
+        .mispedidos-table .badge-pendiente { background: #fff7ed; color: #ea580c; border: 1.5px solid #fde8c8; }
+        .mispedidos-table .badge-en-produccion { background: #e0f2fe; color: #0369a1; border: 1.5px solid #bae6fd; }
+        .mispedidos-table .badge-terminado { background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0; }
+        .mispedidos-table .badge-entregado { background: #fefce8; color: #b45309; border: 1.5px solid #fde68a; }
+        .mispedidos-table .badge-pendiente-por-entregar { background: #f3e8ff; color: #7c3aed; border: 1.5px solid #e9d5ff; }
+        .mispedidos-table .badge-cotizacion { background: #f1f5f9; color: #64748b; border: 1.5px solid #cbd5e1; }
+        .mispedidos-table .badge-cancelado { background: #fef2f2; color: #be123c; border: 1.5px solid #fecdd3; }
+        .mispedidos-table .badge-otro { background: #e0e7ef; color: #334155; border: 1.5px solid #cbd5e1; }
+        .mispedidos-table .badge-anticipo { background: #fef9c3; color: #a16207; border: 1.5px solid #fef08a; }
+        .mispedidos-table .badge-adeudo { background: #fee2e2; color: #991b1b; border: 1.5px solid #fecaca; }
+        .mispedidos-table .badge-ganancia { background: #f0fdf4; color: #15803d; border: 1.5px solid #bbf7d0; }
+        .mispedidos-table .badge-inversion { background: #e0e7ef; color: #334155; border: 1.5px solid #cbd5e1; }
 
         .mispedidos-table th {
             position: sticky;
@@ -7435,12 +7484,41 @@
 
 <button id="btnHome" class="btn-home" onclick="irAtrasConfigurador()" title="Volver al muestrario" aria-label="Volver al muestrario">←</button>
 
-<div id="accesoDenegadoOverlay" style="display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.82);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0;" aria-modal="true" role="alertdialog">
+<div id="accesoDenegadoOverlay" style="display:none;position:fixed;inset:0;z-index:999999;background:rgba(0,0,0,0.82);align-items:center;justify-content:center;flex-direction:column;gap:0;" aria-modal="true" role="alertdialog">
   <div style="background:#fff;border-radius:16px;padding:36px 40px;max-width:420px;width:90%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
     <div style="font-size:3rem;margin-bottom:12px;">🚫</div>
     <h2 style="margin:0 0 8px;font-size:1.1rem;color:#dc2626;font-weight:900;">ACCESO DENEGADO</h2>
     <p id="accesoDenegadoMsg" style="margin:0 0 20px;font-size:0.7rem;color:#6b7280;line-height:1.5;">No tienes permisos para acceder a este módulo.</p>
     <button id="accesoDenegadoVolverBtn" type="button" style="background:#ff9900;color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:0.7rem;font-weight:800;cursor:pointer;">← Volver al inicio</button>
+  </div>
+</div>
+
+<!-- Modal de permisos de módulos por usuario -->
+<div id="userPermsModal" style="display:none;position:fixed;inset:0;z-index:999997;background:rgba(0,0,0,0.65);align-items:center;justify-content:center;">
+  <div style="background:#fff;border-radius:16px;padding:28px 32px;max-width:520px;width:95%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
+      <h3 id="userPermsTitle" style="margin:0;font-size:0.85rem;font-weight:900;color:#111827;">⚙️ Permisos de módulos</h3>
+      <button id="userPermsClose" type="button" style="background:none;border:none;font-size:1.2rem;cursor:pointer;color:#6b7280;padding:4px;line-height:1;">✕</button>
+    </div>
+    <p id="userPermsSubtitle" style="font-size:0.58rem;color:#6b7280;margin:0 0 16px;"></p>
+    <div style="margin-bottom:12px;">
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;background:#fef7ed;border:2px solid #fed7aa;border-radius:10px;padding:12px 16px;">
+        <input type="checkbox" id="userPermsTodos" style="width:18px;height:18px;accent-color:#ff9900;cursor:pointer;">
+        <div>
+          <div style="font-weight:800;font-size:0.68rem;color:#92400e;">🔓 ACCESO TOTAL — Todos los módulos</div>
+          <div style="font-size:0.52rem;color:#b45309;margin-top:2px;">El usuario podrá ver y usar cualquier módulo del sistema</div>
+        </div>
+      </label>
+    </div>
+    <div style="font-size:0.6rem;font-weight:700;color:#374151;margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">O selecciona módulos individuales:</div>
+    <div id="userPermsModulosList" style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:20px;"></div>
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;border-top:1px solid #f3f4f6;padding-top:16px;">
+      <button id="userPermsDefaultBtn" type="button" style="padding:7px 14px;border-radius:8px;border:1px solid #d1d5db;background:#f9fafb;color:#6b7280;font-size:0.56rem;font-weight:700;cursor:pointer;" title="Eliminar permisos personalizados y usar los del rol">↩ Usar permisos del rol</button>
+      <div style="display:flex;gap:8px;">
+        <button id="userPermsCancelBtn" type="button" style="padding:8px 18px;border-radius:8px;border:1px solid #d1d5db;background:#f9fafb;color:#374151;font-size:0.6rem;font-weight:700;cursor:pointer;">Cancelar</button>
+        <button id="userPermsSaveBtn" type="button" style="padding:8px 20px;border-radius:8px;border:none;background:#ff9900;color:#fff;font-size:0.6rem;font-weight:800;cursor:pointer;">💾 GUARDAR</button>
+      </div>
+    </div>
   </div>
 </div>
 <div id="inicioSistema" class="inicio-sistema-overlay" aria-hidden="true">
@@ -7658,9 +7736,10 @@
                 Correo
                 <input id="cliFormCorreo" type="email" placeholder="cliente@correo.com" autocomplete="off">
             </label>
-            <label class="clientesform-field">
-                Tipo de cliente
-                <select id="cliFormTipo">
+            <label class="clientesform-field" style="flex-direction:row;align-items:center;gap:10px;padding:10px 8px;cursor:pointer;">
+                <input id="cliFormEsRevendedor" type="checkbox" style="width:18px;height:18px;accent-color:#ff9900;cursor:pointer;flex-shrink:0;" onchange="document.getElementById('cliFormTipo').value=this.checked?'Revendedor':'Publico en general'">
+                <span style="font-weight:800;font-size:0.72rem;">Es Revendedor</span>
+                <select id="cliFormTipo" style="display:none;">
                     <option value="Publico en general">Publico en general</option>
                     <option value="Revendedor">Revendedor</option>
                 </select>
@@ -9486,17 +9565,28 @@ const imgBolsaDeliveryBase = new Image();
         const key = String(modulo || '').trim().toUpperCase();
 
         // ── GUARDIA DE PERMISOS ──
-        // Verificar que hay una sesión Firebase activa
-        const _fbUser = (window._currentFirebaseUser !== undefined)
-            ? window._currentFirebaseUser
-            : null;
-        const _role = localStorage.getItem('logged_user_role') || '';
-        if (!_role) {
-            // No hay sesión conocida — mostrar login
+        // Si Firebase aún no ha respondido, esperar (no mostrar acceso denegado)
+        if (window._currentFirebaseUser === undefined) {
             const lo = document.getElementById('loginOverlay');
             if (lo) lo.style.display = 'flex';
             return;
         }
+        // Si Firebase confirmó que NO hay sesión, ir a login (sin "acceso denegado")
+        if (!window._currentFirebaseUser) {
+            localStorage.removeItem('logged_user_role');
+            localStorage.removeItem('logged_user_email');
+            const lo = document.getElementById('loginOverlay');
+            if (lo) lo.style.display = 'flex';
+            return;
+        }
+        const _role = localStorage.getItem('logged_user_role') || '';
+        if (!_role) {
+            // Sin rol conocido — volver a login
+            const lo = document.getElementById('loginOverlay');
+            if (lo) lo.style.display = 'flex';
+            return;
+        }
+        // Usuario autenticado pero sin permiso para este módulo
         if (!canAccessModule(_role, key)) {
             showAccesoDenegado(key);
             return;
@@ -11376,16 +11466,7 @@ const imgBolsaDeliveryBase = new Image();
                 <input id="ordenStockSearch" type="text" placeholder="Nombre, medida, material, categoria o codigo">
             </div>
 
-            <div class="orden-stock-prices" role="radiogroup" aria-label="Modo de precio">
-                <label class="orden-stock-price-option active" for="ordenStockPriceGeneral">
-                    <input id="ordenStockPriceGeneral" name="ordenStockPriceMode" type="radio" value="general" checked>
-                    Precio publico general
-                </label>
-                <label class="orden-stock-price-option" for="ordenStockPriceRevendedor">
-                    <input id="ordenStockPriceRevendedor" name="ordenStockPriceMode" type="radio" value="revendedor">
-                    Precio revendedor
-                </label>
-            </div>
+            <!-- Precio se auto-detecta por tipo de cliente (Revendedor) -->
 
             <div class="orden-stock-table-wrap">
                 <table class="orden-stock-table">
@@ -11456,20 +11537,14 @@ const imgBolsaDeliveryBase = new Image();
             </div>
         </div>
 
-        <div class="mispedidos-filters" style="gap:10px;align-items:flex-end;">
-            <div class="orden-field" style="flex:2;min-width:180px;">
+        <div class="mispedidos-filters">
+            <div class="orden-field" style="flex:3 1 220px;min-width:200px;">
                 <input id="mpFiltroBuscar" type="text" placeholder="🔍  Folio, nombre o teléfono..." aria-label="Buscar por folio, nombre o teléfono">
                 <input id="mpFiltroFolio" type="hidden">
                 <input id="mpFiltroNombre" type="hidden">
                 <input id="mpFiltroTelefono" type="hidden">
             </div>
-            <div class="orden-field" style="min-width:130px;">
-                <label>Diseñador</label>
-                <select id="mpFiltroDisenador">
-                    <option value="">Todos</option>
-                </select>
-            </div>
-            <div class="orden-field" style="min-width:130px;">
+            <div class="orden-field" style="flex:1 1 150px;min-width:140px;">
                 <label>Fecha</label>
                 <!-- selector oculto, solo para que getMpDateRange() lea su valor -->
                 <select id="mpFiltroFechaRapido" style="display:none;" aria-hidden="true">
@@ -11491,17 +11566,23 @@ const imgBolsaDeliveryBase = new Image();
                 <div id="mpFechaRangoWrap" style="display:none;"></div>
                 <div id="mpFechaRangoWrap2" style="display:none;"></div>
             </div>
-            <div class="orden-field" style="min-width:130px;">
+            <div class="orden-field" style="flex:1 1 140px;min-width:120px;">
                 <label>Estatus</label>
                 <select id="mpFiltroEstatus">
                     <option value="">Todos</option>
                 </select>
             </div>
-            <div class="orden-field" style="min-width:90px;">
+            <div class="orden-field" style="flex:1 1 120px;min-width:120px;">
+                <label>Vendedor</label>
+                <select id="mpFiltroDisenador">
+                    <option value="">Todos</option>
+                </select>
+            </div>
+            <div class="orden-field" style="flex:1 1 100px;min-width:90px;">
                 <label>Adeudo</label>
                 <input id="mpFiltroAdeudo" type="number" min="0" step="0.01" placeholder="Mínimo">
             </div>
-            <div class="orden-field" style="min-width:70px;">
+            <div class="orden-field" style="flex:0 0 auto;">
                 <label>&nbsp;</label>
                 <button id="mpLimpiarFiltros" class="orden-btn" type="button">Limpiar</button>
             </div>
@@ -11516,11 +11597,11 @@ const imgBolsaDeliveryBase = new Image();
             <!-- Quick buttons row -->
             <div style="display:flex;flex-wrap:wrap;gap:4px;margin-bottom:12px;">
                 <button class="mp-cal-quick" data-q="hoy" type="button">Hoy</button>
-                <button class="mp-cal-quick" data-q="semana" type="button">Semana</button>
-                <button class="mp-cal-quick" data-q="mes" type="button">Mes</button>
-                <button class="mp-cal-quick" data-q="ano" type="button">Año</button>
-                <button class="mp-cal-quick" data-q="3meses" type="button">Últimos 3 meses</button>
-                <button class="mp-cal-quick" data-q="90dias" type="button">Últimos 90 días</button>
+                <button class="mp-cal-quick" data-q="semana" type="button">Ult. semana</button>
+                <button class="mp-cal-quick" data-q="mes" type="button">Ult. mes</button>
+                <button class="mp-cal-quick" data-q="ano" type="button">Ult. año</button>
+                <button class="mp-cal-quick" data-q="3meses" type="button">Últ. 3 meses</button>
+                <button class="mp-cal-quick" data-q="90dias" type="button">Últ. 90 días</button>
             </div>
             <!-- Dual calendar -->
             <div style="display:flex;gap:16px;">
@@ -11529,8 +11610,7 @@ const imgBolsaDeliveryBase = new Image();
             </div>
             <div id="mpCalRangeLabel" style="margin-top:10px;font-size:0.58rem;color:#374151;text-align:center;min-height:16px;"></div>
             <div style="display:flex;justify-content:flex-end;gap:8px;margin-top:10px;">
-                <button id="mpCalLimpiar" type="button" style="padding:6px 14px;background:#f3f4f6;color:#374151;border:none;border-radius:6px;cursor:pointer;font-size:0.6rem;font-weight:700;">Limpiar</button>
-                <button id="mpCalAceptar" type="button" style="padding:6px 14px;background:#ff9900;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.6rem;font-weight:800;">✓ Aplicar</button>
+                <button id="mpCalAceptar" type="button" style="padding:6px 18px;background:#ff9900;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:0.6rem;font-weight:800;">✓ Aplicar</button>
             </div>
         </div>
 
@@ -11570,15 +11650,17 @@ const imgBolsaDeliveryBase = new Image();
 <div id="popupDetalleOrden" class="popup-overlay" aria-hidden="true" style="z-index:100010;">
     <div class="popup-card wide" role="dialog" aria-modal="true" style="max-width:980px;max-height:95vh;overflow-y:auto;padding:0;border-radius:16px;border:none;">
         <!-- HEADER limpio con folio -->
-        <div style="background:#fff;padding:16px 24px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #e4e8ef;border-radius:16px 16px 0 0;">
-            <div>
-                <div id="mpDetTipoLabel" style="font-size:0.58rem;font-weight:800;color:#64748b;letter-spacing:1px;text-transform:uppercase;">ORDEN DE TRABAJO</div>
-                <div id="mpDetFolio" style="font-size:1.4rem;font-weight:900;color:#1f2937;line-height:1.2;"></div>
-                <div id="mpDetFechaEmitida" style="font-size:0.62rem;color:#9ca3af;margin-top:2px;"></div>
+        <div style="background:#fff;padding:22px 32px 14px 32px;display:flex;justify-content:space-between;align-items:end;border-bottom:2px solid #ff9900;border-radius:18px 18px 0 0;box-shadow:0 2px 12px 0 rgba(255,153,0,0.07);">
+            <div style="display:flex;flex-direction:column;gap:2px;">
+                <div id="mpDetTipoLabel" style="font-size:0.72rem;font-weight:900;color:#ff9900;letter-spacing:1.5px;text-transform:uppercase;">ORDEN DE TRABAJO</div>
+                <div style="display:flex;align-items:center;gap:18px;margin-top:2px;">
+                    <div id="mpDetFolio" style="font-size:2.1rem;font-weight:900;color:#1f2937;line-height:1.1;background:#fff7ed;padding:2px 22px;border-radius:16px;border:2px solid #ff9900;letter-spacing:2px;"></div>
+                    <div id="mpDetFechaEmitida" style="font-size:0.82rem;color:#64748b;font-weight:700;background:#f3f4f6;padding:2px 14px;border-radius:12px;border:1.5px solid #e4e8ef;"></div>
+                </div>
             </div>
-            <div style="display:flex;align-items:center;gap:10px;">
-                <div id="mpDetEstatus" style="font-size:0.6rem;font-weight:800;padding:5px 14px;border-radius:20px;display:inline-block;background:#fff7ed;color:#ff9900;border:1px solid #fde8c8;"></div>
-                <button id="mpDetCerrar" style="background:#fff;border:1px solid #d4dae4;color:#1f2937;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;font-weight:900;">✕</button>
+            <div style="display:flex;align-items:center;gap:16px;">
+                <div id="mpDetEstatus" style="font-size:0.74rem;font-weight:900;padding:7px 22px;border-radius:22px;display:inline-block;background:#fff7ed;color:#ff9900;border:2px solid #ff9900;box-shadow:0 1px 6px 0 rgba(255,153,0,0.07);text-transform:uppercase;letter-spacing:1px;"></div>
+                <button id="mpDetCerrar" style="background:#fff;border:2px solid #d4dae4;color:#1f2937;width:38px;height:38px;border-radius:50%;cursor:pointer;font-size:1.2rem;font-weight:900;box-shadow:0 1px 4px 0 rgba(0,0,0,0.04);">✕</button>
             </div>
         </div>
         <div style="display:grid;grid-template-columns:1fr 300px;gap:0;background:#fff;">
@@ -13794,11 +13876,12 @@ const imgBolsaDeliveryBase = new Image();
                                     <th>Nombre</th>
                                     <th>Rol</th>
                                     <th>Estado</th>
+                                    <th>Módulos</th>
                                     <th style="text-align:center;">Acciones</th>
                                 </tr>
                             </thead>
                             <tbody id="configUsersTableBody">
-                                <tr><td colspan="5" style="text-align:center;color:#666;padding:16px;">Cargando usuarios...</td></tr>
+                                <tr><td colspan="6" style="text-align:center;color:#666;padding:16px;">Cargando usuarios...</td></tr>
                             </tbody>
                         </table>
                     </div>
@@ -16969,6 +17052,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (cliFormUbiNegocio) cliFormUbiNegocio.value = isEdit ? String(cliente?.ubiNegocio || '') : '';
         if (cliFormUbiPuntoMedio) cliFormUbiPuntoMedio.value = isEdit ? String(cliente?.ubiPuntoMedio || '') : '';
         if (cliFormTipo) cliFormTipo.value = isEdit ? String(cliente?.tipoCliente || 'Publico en general') : 'Publico en general';
+        const _esRevEl = document.getElementById('cliFormEsRevendedor');
+        if (_esRevEl) _esRevEl.checked = isEdit ? (cliente?.tipoCliente || '') === 'Revendedor' : false;
         if (cliFormSave) cliFormSave.textContent = ordenClienteFormMode === 'register-order' ? 'Aceptar' : 'Guardar cliente';
 
         popupClientesForm.style.display = 'flex';
@@ -19154,7 +19239,7 @@ document.addEventListener('DOMContentLoaded', () => {
                                  mpMatch(row.telefono, buscarQ);
                 if (!hayMatch) return false;
             }
-            if (!mpMatch(row.disenador, mpFiltroDisenador?.value || '')) return false;
+            if (!mpMatch(row.vendedor, mpFiltroDisenador?.value || '')) return false;
             if (dateRange) {
                 const fechaStr = row[dateRange.campo] || '';
                 if (!fechaStr) return false;
@@ -19191,12 +19276,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 <td>${escapeHtml(row.fechaEntrega)}</td>
                 <td>${escapeHtml(row.disenador || '-')}</td>
                 <td>${escapeHtml(row.vendedor || '-')}</td>
-                <td>${formatMoney(Number(row.inversion || 0))}</td>
-                <td>${formatMoney(Number(row.ganancia || 0))}</td>
-                <td>${formatMoney(Number(row.total || 0))}</td>
-                <td>${formatMoney(Number(row.anticipo || 0))}</td>
-                <td>${formatMoney(Number(row.adeudoCliente || 0))}</td>
-                <td>${escapeHtml((row.estatusProduccion || '').replace('-', ' '))}</td>
+                <td><span class="badge badge-inversion">${formatMoney(Number(row.inversion || 0))}</span></td>
+                <td><span class="badge badge-ganancia">${formatMoney(Number(row.ganancia || 0))}</span></td>
+                <td style="font-weight:900;color:#ea580c;">${formatMoney(Number(row.total || 0))}</td>
+                <td><span class="badge badge-anticipo">${formatMoney(Number(row.anticipo || 0))}</span></td>
+                <td><span class="badge badge-adeudo">${formatMoney(Number(row.adeudoCliente || 0))}</span></td>
+                <td><span class="badge badge-${(row.estatusProduccion||'otro').replace(/[^a-zA-Z0-9]/g,'-').toLowerCase()}">${escapeHtml((row.estatusProduccion || '').replace('-', ' '))}</span></td>
             </tr>`).join('');
         }
 
@@ -19301,10 +19386,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const populateMpDisenadorFilter = () => {
         if (!mpFiltroDisenador) return;
         const current = mpFiltroDisenador.value || '';
-        const disenadoresSet = new Set();
-        misPedidosData.forEach(r => { if (r.disenador) disenadoresSet.add(r.disenador); });
-        getDisenadoresConfigurados().forEach(d => disenadoresSet.add(d));
-        const lista = [...disenadoresSet].sort();
+        const vendedoresSet = new Set();
+        misPedidosData.forEach(r => { if (r.vendedor) vendedoresSet.add(r.vendedor); });
+        const lista = [...vendedoresSet].sort();
         mpFiltroDisenador.innerHTML = '<option value="">Todos</option>' + lista.map(d => `<option value="${prodEscape(d)}">${prodEscape(d)}</option>`).join('');
         if (current && lista.includes(current)) mpFiltroDisenador.value = current;
     };
@@ -19477,13 +19561,8 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('mpDetAgregarProdBtn')?.addEventListener('click', () => {
         if (!mpDetOrdenActual) return;
         mpRequireAdmin(() => {
-            const nombre = prompt('Nombre del producto / servicio:');
-            if (!nombre) return;
-            const cant = Math.max(1, parseInt(prompt('Cantidad:', '1') || '1') || 1);
-            const precio = Math.max(0, parseFloat(prompt('Precio unitario ($):', '0') || '0') || 0);
-            if (!Array.isArray(mpDetOrdenActual.lineas)) mpDetOrdenActual.lineas = [];
-            mpDetOrdenActual.lineas.push({ producto: nombre.trim(), medida: '', material: '', cantidad: cant, precio });
-            mpRefreshProductos();
+            window._mpDetAddLineasMode = true;
+            openOrdenStockPopup('stock');
         });
     });
 
@@ -21741,6 +21820,11 @@ document.addEventListener('DOMContentLoaded', () => {
         loadProductos();
         ordenStockSearchTerm = '';
         ordenStockPriceMode = 'general';
+        // Auto-detectar precio revendedor si el cliente es de tipo Revendedor
+        {
+            const _cliSel = getClientesOrdenSelectable().find(c => c.id === ordenClienteSeleccionadoId);
+            if (_cliSel?.tipoCliente === 'Revendedor') ordenStockPriceMode = 'revendedor';
+        }
         ordenStockSelectedId = '';
         setOrdenStockQty(1);
         closeOrdenStockQtyPopup();
@@ -21763,6 +21847,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const closeOrdenStockPopup = () => {
         if (!ordenStockPopup) return;
+        window._mpDetAddLineasMode = false;
         closeOrdenStockQtyPopup();
         ordenStockPopup.style.display = 'none';
         ordenStockPopup.setAttribute('aria-hidden', 'true');
@@ -21791,10 +21876,26 @@ document.addEventListener('DOMContentLoaded', () => {
                 return Array.isArray(procModel?.insumosEnlazados) && procModel.insumosEnlazados.length > 0;
             });
 
+        const _applyLinea = (linea) => {
+            if (window._mpDetAddLineasMode) {
+                window._mpDetAddLineasMode = false;
+                if (mpDetOrdenActual) {
+                    if (!Array.isArray(mpDetOrdenActual.lineas)) mpDetOrdenActual.lineas = [];
+                    mpDetOrdenActual.lineas.push(linea);
+                }
+                closeOrdenStockPopup();
+                mpRefreshProductos();
+            } else {
+                ordenLineas.push(linea);
+                renderTabla();
+                closeOrdenStockPopup();
+            }
+        };
+
         if (tieneProcesoConInsumos) {
             // Prompt user to select insumo for each proceso
             promptSeleccionInsumosProcesos(productoModel, (selecciones) => {
-                ordenLineas.push({
+                _applyLinea({
                     producto: producto.producto || 'Producto de stock',
                     medida: producto.medida || '-',
                     material: producto.material || '-',
@@ -21805,13 +21906,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     linkedInsumoId: producto.linkedInsumoId || '',
                     insumosProcesoSeleccionados: selecciones
                 });
-                renderTabla();
-                closeOrdenStockPopup();
             });
             return;
         }
 
-        ordenLineas.push({
+        _applyLinea({
             producto: producto.producto || 'Producto de stock',
             medida: producto.medida || '-',
             material: producto.material || '-',
@@ -21821,8 +21920,6 @@ document.addEventListener('DOMContentLoaded', () => {
             sourceType: producto.sourceType || 'producto',
             linkedInsumoId: producto.linkedInsumoId || ''
         });
-        renderTabla();
-        closeOrdenStockPopup();
     };
 
     const addLineaManual = (tipo) => {
@@ -23336,7 +23433,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
     // ── Mini calendario ──────────────────────────────────────
-    let mpCalRangeStart = null, mpCalRangeEnd = null;
+    let mpCalRangeStart = null, mpCalRangeEnd = null, mpCalHoverDate = null;
     let mpCal1Month = 0, mpCal1Year = 2024, mpCal2Month = 1, mpCal2Year = 2024;
 
     const openMpCalPopup = (anchorEl) => {
@@ -23387,23 +23484,25 @@ document.addEventListener('DOMContentLoaded', () => {
             <button type="button" onclick="window._mpCalNav(${which},-1)">‹</button>
             <span>${MESES[month]} ${year}</span>
             <button type="button" onclick="window._mpCalNav(${which},1)">›</button>
-        </div><div class="cal-grid">
+        </div><div class="cal-grid" onmouseleave="window._mpCalHover(null)">
         <div class="cal-dow">Do</div><div class="cal-dow">Lu</div><div class="cal-dow">Ma</div><div class="cal-dow">Mi</div><div class="cal-dow">Ju</div><div class="cal-dow">Vi</div><div class="cal-dow">Sá</div>`;
         for (let i = 0; i < startDow; i++) html += '<div class="cal-day empty"></div>';
         for (let d = 1; d <= lastDay.getDate(); d++) {
             const date = new Date(year, month, d); date.setHours(0,0,0,0);
+            const t = date.getTime();
             let cls = 'cal-day';
-            if (date.getTime() === today.getTime()) cls += ' today';
+            // Today only highlights when no selection is active
+            if (t === today.getTime() && !mpCalRangeStart) cls += ' today';
             if (mpCalRangeStart && mpCalRangeEnd) {
-                const s = mpCalRangeStart.getTime(), e = mpCalRangeEnd.getTime(), t = date.getTime();
+                const s = mpCalRangeStart.getTime(), e = mpCalRangeEnd.getTime();
                 if (t === s) cls += ' range-start';
                 else if (t === e) cls += ' range-end';
                 else if (t > s && t < e) cls += ' in-range';
-            } else if (mpCalRangeStart && date.getTime() === mpCalRangeStart.getTime()) {
-                cls += ' range-start';
+            } else if (mpCalRangeStart && !mpCalRangeEnd) {
+                if (t === mpCalRangeStart.getTime()) cls += ' range-start';
             }
             const iso = year + '-' + String(month+1).padStart(2,'0') + '-' + String(d).padStart(2,'0');
-            html += `<div class="${cls}" onclick="window._mpCalPick('${iso}')">${d}</div>`;
+            html += `<div class="${cls}" data-iso="${iso}" onclick="event.stopPropagation();window._mpCalPick('${iso}')" onmouseenter="window._mpCalHover('${iso}')">${d}</div>`;
         }
         html += '</div>';
         container.innerHTML = html;
@@ -23425,15 +23524,35 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window._mpCalPick = (iso) => {
         const d = new Date(iso + 'T00:00:00');
-        if (!mpCalRangeStart || (mpCalRangeStart && mpCalRangeEnd)) {
-            mpCalRangeStart = d; mpCalRangeEnd = null;
+        if (!mpCalRangeStart || mpCalRangeEnd) {
+            // Sin selección o resetear: fijar inicio, no cerrar
+            mpCalRangeStart = d; mpCalRangeEnd = null; mpCalHoverDate = null;
         } else {
+            // Fijar fin (sin importar si es el mismo día)
             if (d < mpCalRangeStart) { mpCalRangeEnd = mpCalRangeStart; mpCalRangeStart = d; }
             else                     { mpCalRangeEnd = d; }
+            mpCalHoverDate = null;
         }
         renderMpCalMonths();
+        // Nunca cierra automático — espera botón Aplicar
     };
     window.mpCalPickDay = window._mpCalPick; // alias
+
+    window._mpCalHover = (iso) => {
+        mpCalHoverDate = iso ? new Date(iso + 'T00:00:00') : null;
+        // Manipulación directa de clases, sin re-render (evita pérdida de clic)
+        document.querySelectorAll('#mpCalPopup [data-iso]').forEach(cell => {
+            cell.classList.remove('hover-range', 'hover-end');
+            if (!mpCalHoverDate || !mpCalRangeStart || mpCalRangeEnd) return;
+            const t = new Date(cell.dataset.iso + 'T00:00:00').getTime();
+            const s = mpCalRangeStart.getTime();
+            const h = mpCalHoverDate.getTime();
+            if (h === s) return;
+            const lo = Math.min(s, h), hi = Math.max(s, h);
+            if (t >= lo && t <= hi && t !== s) cell.classList.add('hover-range');
+            if (t === hi) cell.classList.add('hover-end');
+        });
+    };
 
     const updateMpCalRangeLabel = () => {
         const el = document.getElementById('mpCalRangeLabel');
@@ -23464,45 +23583,58 @@ document.addEventListener('DOMContentLoaded', () => {
     const QUICK_LABELS = { hoy:'Hoy', semana:'Semana', mes:'Mes', ano:'Año', '90dias':'Últimos 90 días', '3meses':'Últimos 3 meses' };
 
     const applyMpCalQuick = (q) => {
-        mpCalRangeStart = null; mpCalRangeEnd = null;
+        const now = new Date();
+        const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+        let desde, hasta;
+        if (q === 'hoy') {
+            desde = new Date(today); hasta = new Date(today);
+        } else if (q === 'semana') {
+            desde = new Date(today); desde.setDate(desde.getDate() - 7); hasta = new Date(today);
+        } else if (q === 'mes') {
+            const pm = today.getMonth() === 0 ? 11 : today.getMonth() - 1;
+            const py = today.getMonth() === 0 ? today.getFullYear() - 1 : today.getFullYear();
+            desde = new Date(py, pm, 1);
+            hasta = new Date(py, pm + 1, 0);
+        } else if (q === 'ano') {
+            desde = new Date(today.getFullYear() - 1, 0, 1);
+            hasta = new Date(today.getFullYear() - 1, 11, 31);
+        } else if (q === '90dias') {
+            desde = new Date(today); desde.setDate(desde.getDate() - 90); hasta = new Date(today);
+        } else if (q === '3meses') {
+            desde = new Date(today); desde.setMonth(desde.getMonth() - 3); hasta = new Date(today);
+        }
+        if (!desde || !hasta) return;
+        mpCalRangeStart = desde; mpCalRangeEnd = hasta;
         const desdeEl = document.getElementById('mpFiltroFechaDesde');
         const hastaEl = document.getElementById('mpFiltroFechaHasta');
-        if (desdeEl) desdeEl.value = '';
-        if (hastaEl) hastaEl.value = '';
-        if (mpFiltroFechaRapido) mpFiltroFechaRapido.value = q;
+        if (desdeEl) desdeEl.value = toDateISO(desde);
+        if (hastaEl) hastaEl.value = toDateISO(hasta);
+        if (mpFiltroFechaRapido) mpFiltroFechaRapido.value = 'rango';
         const lbl = document.getElementById('mpFechaCalLabel');
-        if (lbl) lbl.textContent = QUICK_LABELS[q] || q;
+        if (lbl) lbl.textContent = toDateISO(desde) + ' – ' + toDateISO(hasta);
         const btn = document.getElementById('mpFechaCalBtn');
         if (btn) { btn.style.background = '#fff7ed'; btn.style.borderColor = '#fde8c8'; btn.style.color = '#92400e'; }
         document.querySelectorAll('#mpCalPopup .mp-cal-quick').forEach(b => b.classList.toggle('active', b.dataset.q === q));
-        closeMpCalPopup();
-        renderMisPedidos();
+        // Navegar calendario al rango
+        mpCal1Month = desde.getMonth(); mpCal1Year = desde.getFullYear();
+        mpCal2Month = hasta.getMonth(); mpCal2Year = hasta.getFullYear();
+        if (mpCal2Month === mpCal1Month && mpCal2Year === mpCal1Year) {
+            mpCal2Month++; if (mpCal2Month > 11) { mpCal2Month = 0; mpCal2Year++; }
+        }
+        renderMpCalMonths();
+        // Popup queda abierto — usar botón Aplicar para confirmar
     };
 
     // ── Cal popup — event wiring (directo, sin DOMContentLoaded) ──
     (() => {
         const calPopup   = document.getElementById('mpCalPopup');
         const cerrarBtn  = document.getElementById('mpCalCerrar');
-        const limpiarBtn = document.getElementById('mpCalLimpiar');
         const aceptarBtn = document.getElementById('mpCalAceptar');
         const calBtn     = document.getElementById('mpFechaCalBtn');
 
         if (cerrarBtn)  cerrarBtn.addEventListener('click', closeMpCalPopup);
         if (aceptarBtn) aceptarBtn.addEventListener('click', applyMpCalRange);
         if (calBtn)     calBtn.addEventListener('click', (ev) => { ev.stopPropagation(); openMpCalPopup(calBtn); });
-
-        if (limpiarBtn) limpiarBtn.addEventListener('click', () => {
-            mpCalRangeStart = null; mpCalRangeEnd = null;
-            if (mpFiltroFechaRapido) mpFiltroFechaRapido.value = '';
-            const de = document.getElementById('mpFiltroFechaDesde');
-            const ha = document.getElementById('mpFiltroFechaHasta');
-            if (de) de.value = ''; if (ha) ha.value = '';
-            const lbl = document.getElementById('mpFechaCalLabel');
-            if (lbl) lbl.textContent = 'Todas las fechas';
-            if (calBtn) { calBtn.style.background = '#fff'; calBtn.style.borderColor = '#d1d5db'; calBtn.style.color = '#374151'; }
-            closeMpCalPopup();
-            renderMisPedidos();
-        });
 
         document.querySelectorAll('#mpCalPopup .mp-cal-quick').forEach(btn => {
             btn.addEventListener('click', (ev) => { ev.stopPropagation(); applyMpCalQuick(btn.dataset.q); });
@@ -23533,7 +23665,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (desdeEl) desdeEl.value = '';
             if (hastaEl) hastaEl.value = '';
             const calBtn = document.getElementById('mpFechaCalBtn');
-            if (calBtn) calBtn.style.display = 'none';
+            if (calBtn) { calBtn.style.background = '#fff'; calBtn.style.borderColor = '#d1d5db'; calBtn.style.color = '#374151'; }
+            const calLbl = document.getElementById('mpFechaCalLabel');
+            if (calLbl) calLbl.textContent = 'Todas las fechas';
             closeMpCalPopup();
             mpSelectedIds = new Set();
             renderMisPedidos();
@@ -32543,20 +32677,32 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!sysUser) {
                 try {
                     const autoName = fbUser.displayName || email.split('@')[0];
-                    await saveUserToFirestore({ correo: email, nombre: autoName, rol: 'vendedor' });
+                    // Si no hay ningún usuario en el sistema, el primero en registrarse es admin
+                    const autoRol = (cachedUsers.length === 0) ? 'admin' : 'vendedor';
+                    await saveUserToFirestore({ correo: email, nombre: autoName, rol: autoRol });
                     await loadUsersFromFirestore();
                     sysUser = findUserByEmail(email);
                 } catch (_autoErr) { console.warn('No se pudo auto-registrar usuario en Firestore:', _autoErr); }
             }
 
             const userName = sysUser?.nombre || fbUser.displayName || email.split('@')[0];
-            const userRole = sysUser?.rol || 'vendedor';
+            // Si Firestore no pudo identificar el usuario pero es el único logged-in, intentar con localStorage previo
+            let userRole = sysUser?.rol || localStorage.getItem('logged_user_role') || 'vendedor';
+
+            // Protección: si no hay ningún admin en el sistema, promover a este usuario a admin
+            const hasAnyAdmin = cachedUsers.some(u => u.rol === 'admin');
+            if (!hasAnyAdmin && userRole !== 'admin') {
+                userRole = 'admin';
+                try { await updateUserInFirestore(sysUser?.id, { rol: 'admin' }); } catch(_) {}
+            }
 
             localStorage.setItem('logged_user_email', email);
             localStorage.setItem('logged_user_name', userName);
             localStorage.setItem('logged_user_role', userRole);
             // Store password temporarily for re-auth during user creation
             sessionStorage.setItem('_admin_temp_pass', pass);
+            // Permisos personalizados por módulo (null = usar permisos del rol)
+            window._currentUserModulosPermitidos = sysUser?.modulosPermitidos ?? null;
 
             completeLogin(userName, userRole);
         } catch (err) {
@@ -32621,9 +32767,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const canAccessModule = (role, moduleName) => {
         if (!role) return false;
+        if (role === 'admin') return true; // admin siempre tiene acceso total
         const key = String(moduleName || '').trim().toUpperCase();
+        // Permisos personalizados del usuario actual (sobrescriben los del rol)
+        const customPerms = window._currentUserModulosPermitidos;
+        if (customPerms === true) return true; // acceso total otorgado manualmente
+        if (Array.isArray(customPerms)) return customPerms.includes(key);
+        // Fallback: permisos por defecto del rol
         const allowed = MODULE_PERMISSIONS[key];
-        if (!allowed) return role === 'admin'; // módulos no listados: solo admin
+        if (!allowed) return false;
         return allowed.includes(role);
     };
 
@@ -32702,6 +32854,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // El sistema NO muestra nada hasta que Firebase confirme la sesión.
     // El inicio se bloquea completamente hasta que onAuthStateChanged dispare.
     window._currentFirebaseUser = undefined; // undefined = pendiente, null = no autenticado, object = autenticado
+    window._currentUserModulosPermitidos = null; // null=usar rol, true=todos, array=módulos específicos
 
     const _blockingOverlay = (() => {
         // Pantalla de carga inicial mientras Firebase verifica sesión
@@ -32734,6 +32887,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     localStorage.removeItem('logged_user_name');
                     localStorage.removeItem('logged_user_role');
                     sessionStorage.removeItem('_admin_temp_pass');
+                    window._currentUserModulosPermitidos = null;
                     if (loginOverlay) loginOverlay.style.display = 'flex';
                     // Ocultar el sistema completamente
                     const inicio = document.getElementById('inicioSistema');
@@ -32750,7 +32904,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     if (!sysUser) {
                         try {
                             const autoName = fbUser.displayName || fbUser.email.split('@')[0];
-                            await saveUserToFirestore({ correo: fbUser.email, nombre: autoName, rol: 'vendedor' });
+                            // Si no hay ningún usuario en el sistema, el primero es admin
+                            const autoRol = (cachedUsers.length === 0) ? 'admin' : 'vendedor';
+                            await saveUserToFirestore({ correo: fbUser.email, nombre: autoName, rol: autoRol });
                             await loadUsersFromFirestore();
                             sysUser = findUserByEmail(fbUser.email);
                         } catch (_) {}
@@ -32766,11 +32922,21 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     const userName = sysUser?.nombre || fbUser.displayName || fbUser.email.split('@')[0];
-                    const userRole = sysUser?.rol || 'vendedor';
+                    let userRole = sysUser?.rol || localStorage.getItem('logged_user_role') || 'vendedor';
+
+                    // Protección: si no hay ningún admin en el sistema, promover a este usuario a admin
+                    const hasAnyAdmin = cachedUsers.some(u => u.rol === 'admin');
+                    if (!hasAnyAdmin && userRole !== 'admin') {
+                        // No existe ningún admin — promover a este usuario
+                        userRole = 'admin';
+                        try { await updateUserInFirestore(sysUser?.id, { rol: 'admin' }); } catch(_) {}
+                    }
 
                     localStorage.setItem('logged_user_email', fbUser.email);
                     localStorage.setItem('logged_user_name', userName);
                     localStorage.setItem('logged_user_role', userRole);
+                    // Permisos personalizados por módulo (null = usar permisos del rol)
+                    window._currentUserModulosPermitidos = sysUser?.modulosPermitidos ?? null;
 
                     completeLogin(userName, userRole);
                 } catch (err) {
@@ -32780,6 +32946,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     const fallbackRole = localStorage.getItem('logged_user_role') || 'vendedor';
                     localStorage.setItem('logged_user_email', fbUser.email);
                     localStorage.setItem('logged_user_name', fallbackName);
+                    localStorage.setItem('logged_user_role', fallbackRole);
+                    window._currentUserModulosPermitidos = null;
                     completeLogin(fallbackName, fallbackRole);
                 }
             });
@@ -32797,6 +32965,129 @@ document.addEventListener('DOMContentLoaded', function() {
     // ===== USUARIOS CONFIG TAB (FIRESTORE) =====
     const esc = (s) => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
+    // Lista completa de módulos para el selector de permisos
+    const ALL_MODULES_LIST = [
+        { key: 'NUEVA ORDEN',          label: '🆕 Nueva Orden' },
+        { key: 'MIS PEDIDOS',          label: '📦 Mis Pedidos' },
+        { key: 'DISENO',               label: '🎨 Diseño' },
+        { key: 'PRODUCCION',           label: '🏭 Producción' },
+        { key: 'RECEPCION SUCURSAL',   label: '📷 Recepción Sucursal' },
+        { key: 'CONTROL REPARTIDORES', label: '🚚 Control Repartidores' },
+        { key: 'REPARTO APP MOVIL',    label: '📱 Reparto App Móvil' },
+        { key: 'REPARTO TEMPORAL',     label: '📋 Reparto Temporal' },
+        { key: 'PRODUCTOS',            label: '🧾 Productos' },
+        { key: 'DASHBOARD',            label: '📈 Dashboard' },
+        { key: 'CAJA',                 label: '💳 Caja' },
+        { key: 'MUESTRARIO',           label: '🎨 Muestrario' },
+        { key: 'CLIENTES',             label: '👥 Clientes' },
+        { key: 'PROVEEDORES',          label: '🏢 Proveedores' },
+        { key: 'REPORTES',             label: '📊 Reportes' },
+        { key: 'CALENDARIO',           label: '📅 Calendario' },
+        { key: 'CONFIGURACIONES',      label: '⚙️ Configuraciones' },
+    ];
+
+    // Abre el modal de permisos para un usuario
+    const openUserPermsModal = (docId, nombre, rol, currentPerms) => {
+        const modal = document.getElementById('userPermsModal');
+        const title = document.getElementById('userPermsTitle');
+        const subtitle = document.getElementById('userPermsSubtitle');
+        const todosChk = document.getElementById('userPermsTodos');
+        const listEl = document.getElementById('userPermsModulosList');
+        const saveBtn = document.getElementById('userPermsSaveBtn');
+        const cancelBtn = document.getElementById('userPermsCancelBtn');
+        const closeBtn = document.getElementById('userPermsClose');
+        const defaultBtn = document.getElementById('userPermsDefaultBtn');
+        if (!modal) return;
+
+        const roleLabels = { admin:'Administrador', vendedor:'Vendedor', disenador:'Diseñador', productor:'Productor', repartidor:'Repartidor' };
+        title.textContent = `⚙️ Permisos — ${nombre}`;
+        subtitle.textContent = `Rol: ${roleLabels[rol] || rol}. Configura a qué módulos puede acceder este usuario. Si no tienes ninguna opción marcada, se usarán los permisos por defecto del rol.`;
+
+        // Determinar estado inicial
+        const isTodos = currentPerms === true;
+        const selectedKeys = Array.isArray(currentPerms) ? currentPerms : [];
+
+        todosChk.checked = isTodos;
+
+        // Renderizar checkboxes de módulos
+        listEl.innerHTML = ALL_MODULES_LIST.map(m => `
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:8px 12px;transition:background .15s;" onmouseover="this.style.background='#eff6ff'" onmouseout="this.style.background='#f9fafb'">
+                <input type="checkbox" class="perm-mod-chk" data-key="${m.key}" ${selectedKeys.includes(m.key) ? 'checked' : ''} ${isTodos ? 'disabled' : ''} style="width:15px;height:15px;accent-color:#2563eb;cursor:pointer;">
+                <span style="font-size:0.58rem;font-weight:600;color:#374151;">${m.label}</span>
+            </label>
+        `).join('');
+
+        // Cuando "todos" cambia, deshabilitar/habilitar individuales
+        todosChk.onchange = () => {
+            listEl.querySelectorAll('.perm-mod-chk').forEach(c => {
+                c.disabled = todosChk.checked;
+                if (todosChk.checked) c.checked = false;
+            });
+        };
+
+        // Guardar
+        const doSave = async () => {
+            saveBtn.disabled = true;
+            saveBtn.textContent = '⏳ Guardando...';
+            let newPerms;
+            if (todosChk.checked) {
+                newPerms = true;
+            } else {
+                const checked = [...listEl.querySelectorAll('.perm-mod-chk:checked')].map(c => c.dataset.key);
+                newPerms = checked.length > 0 ? checked : null; // null = usar permisos del rol
+            }
+            try {
+                await updateUserInFirestore(docId, { modulosPermitidos: newPerms });
+                modal.style.display = 'none';
+                await renderConfigUsersTable();
+            } catch (err) {
+                alert('Error al guardar permisos: ' + err.message);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.textContent = '💾 GUARDAR';
+            }
+        };
+
+        // Restaurar permisos del rol (eliminar personalizados)
+        const doDefault = async () => {
+            if (!confirm(`¿Eliminar los permisos personalizados de "${nombre}" y usar los del rol?`)) return;
+            defaultBtn.disabled = true;
+            try {
+                await updateUserInFirestore(docId, { modulosPermitidos: null });
+                modal.style.display = 'none';
+                await renderConfigUsersTable();
+            } catch (err) {
+                alert('Error: ' + err.message);
+            } finally {
+                defaultBtn.disabled = false;
+            }
+        };
+
+        const doClose = () => { modal.style.display = 'none'; };
+
+        // Limpiar listeners antiguos clonando botones
+        [saveBtn, cancelBtn, closeBtn, defaultBtn].forEach(b => {
+            const clone = b.cloneNode(true);
+            b.parentNode.replaceChild(clone, b);
+        });
+        document.getElementById('userPermsSaveBtn').addEventListener('click', doSave);
+        document.getElementById('userPermsCancelBtn').addEventListener('click', doClose);
+        document.getElementById('userPermsClose').addEventListener('click', doClose);
+        document.getElementById('userPermsDefaultBtn').addEventListener('click', doDefault);
+        // Reattach todosChk listener after clone
+        document.getElementById('userPermsTodos').onchange = () => {
+            document.getElementById('userPermsModulosList').querySelectorAll('.perm-mod-chk').forEach(c => {
+                c.disabled = document.getElementById('userPermsTodos').checked;
+                if (document.getElementById('userPermsTodos').checked) c.checked = false;
+            });
+        };
+        modal.addEventListener('click', (e) => { if (e.target === modal) doClose(); }, { once: true });
+
+        modal.style.display = 'flex';
+    };
+
+    window.openUserPermsModal = openUserPermsModal;
+
     const renderConfigUsersTable = async () => {
         const tbody = document.getElementById('configUsersTableBody');
         const countEl = document.getElementById('configUsersCount');
@@ -32811,7 +33102,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (countEl) countEl.textContent = users.length + ' usuario' + (users.length !== 1 ? 's' : '');
 
             if (!users.length) {
-                tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#9ca3af;padding:20px;">No hay usuarios registrados en Firebase.</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#9ca3af;padding:20px;">No hay usuarios registrados en Firebase.</td></tr>';
                 return;
             }
 
@@ -32826,6 +33117,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 const canDelete = currentRole === 'admin' && !isSelf;
                 const canToggle = currentRole === 'admin' && !isSelf;
                 const canChangeRole = currentRole === 'admin' && !isSelf;
+
+                // Celda de permisos personalizados
+                let permsCell = '';
+                if (u.rol === 'admin') {
+                    permsCell = '<span style="font-size:0.48rem;font-weight:800;color:#ff9900;background:#fef7ed;border:1px solid #fed7aa;border-radius:6px;padding:3px 8px;">🔓 TOTAL</span>';
+                } else if (currentRole === 'admin') {
+                    const hasCustom = u.modulosPermitidos === true || (Array.isArray(u.modulosPermitidos) && u.modulosPermitidos.length > 0);
+                    const permsDataStr = esc(JSON.stringify(u.modulosPermitidos ?? null));
+                    permsCell = `<button class="config-user-perms" data-doc-id="${esc(u.id)}" data-email="${esc(u.correo)}" data-nombre="${esc(u.nombre)}" data-rol="${esc(u.rol)}" data-perms="${permsDataStr}" type="button" style="padding:4px 10px;font-size:0.48rem;background:${hasCustom ? '#eff6ff' : '#f9fafb'};border:1px solid ${hasCustom ? '#bfdbfe' : '#d1d5db'};color:${hasCustom ? '#2563eb' : '#6b7280'};border-radius:6px;cursor:pointer;font-weight:700;" title="Gestionar permisos de módulos">${hasCustom ? '⚙️ Personalizados' : '⚙️ Del rol'}</button>`;
+                } else {
+                    permsCell = '<span style="font-size:0.45rem;color:#9ca3af;">—</span>';
+                }
 
                 return `<tr${isSelf ? ' style="background:#fef7ed;"' : ''}>
                     <td>${esc(u.correo)}${isSelf ? ' <span style="font-size:0.45rem;color:#ff9900;font-weight:700;">(tú)</span>' : ''}</td>
@@ -32848,6 +33151,7 @@ document.addEventListener('DOMContentLoaded', function() {
                             ${activo ? 'Activo' : 'Inactivo'}
                         </span>
                     </td>
+                    <td style="text-align:center;">${permsCell}</td>
                     <td style="text-align:center;white-space:nowrap;">
                         ${canToggle ? `<button class="productos-btn config-user-toggle" data-doc-id="${esc(u.id)}" data-active="${activo}" style="padding:4px 10px;font-size:0.48rem;margin-right:4px;background:#f3f4f6;border:1px solid #d1d5db;color:#374151;border-radius:6px;cursor:pointer;" title="${activo ? 'Desactivar' : 'Activar'}">${activo ? '⏸' : '▶'}</button>` : ''}
                         ${currentRole === 'admin' ? `<button class="productos-btn config-user-resetpw" data-email="${esc(u.correo)}" data-name="${esc(u.nombre)}" style="padding:4px 10px;font-size:0.48rem;margin-right:4px;background:#eef2ff;border:1px solid #c7d2fe;color:#4338ca;border-radius:6px;cursor:pointer;" title="Enviar email para resetear contraseña">🔑</button>` : ''}
@@ -32927,9 +33231,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
 
+            // Bind permisos de módulos
+            tbody.querySelectorAll('.config-user-perms').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const docId = btn.dataset.docId;
+                    const nombre = btn.dataset.nombre;
+                    const rol = btn.dataset.rol;
+                    let currentPerms;
+                    try { currentPerms = JSON.parse(btn.dataset.perms); } catch(_) { currentPerms = null; }
+                    openUserPermsModal(docId, nombre, rol, currentPerms);
+                });
+            });
+
         } catch (err) {
             if (syncStatus) syncStatus.textContent = '❌ Error conectando con Firebase: ' + err.message;
-            tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#ef4444;padding:20px;">Error al cargar usuarios: ' + esc(err.message) + '</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:#ef4444;padding:20px;">Error al cargar usuarios: ' + esc(err.message) + '</td></tr>';
         }
     };
 
