@@ -29709,34 +29709,107 @@ window.MU = (function() {
           </div>
         </div>
 
-        <div class="prod-section-title" style="margin-top:8px;">📝 NOTAS DE PRODUCCIÓN</div>
-        <div class="prod-field">
-          <textarea id="prodNotasGenerales" rows="4" placeholder="Anotaciones del equipo de producción..." style="background:#fffbf5;border:1px solid #fde8c8;color:#1f2937;border-radius:8px;padding:8px;font-size:0.7rem;resize:vertical;font-family:inherit;"></textarea>
-          <button id="btnGuardarNotasProd" type="button" style="margin-top:4px;background:#ff9900;color:#fff;border:none;border-radius:6px;padding:6px 12px;font-size:0.65rem;font-weight:700;cursor:pointer;">💾 Guardar notas</button>
-        </div>
-
-        <div class="prod-section-title" style="margin-top:8px;">📦 SOLICITAR INSUMOS</div>
+        <div class="prod-section-title" style="margin-top:8px;"> SOLICITAR INSUMOS</div>
         <button id="btnAbrirPopupInsumo" type="button" class="prod-save-btn" style="font-size:0.72rem;width:100%;padding:10px 0;">📦 Solicitar Insumo</button>
         <div id="prodInsumosSolicitados" style="margin-top:6px;font-size:0.62rem;color:#6b7280;max-height:120px;overflow-y:auto;"></div>
 
-<!-- POPUP: Solicitar Insumo -->
-<div id="popupSolicitarInsumo" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;">
-  <div style="background:#fff;border-radius:12px;padding:24px;width:min(92vw,400px);box-shadow:0 8px 32px rgba(0,0,0,0.3);">
-    <h3 style="margin:0 0 14px;font-size:1rem;color:#1f2937;">📦 Solicitar Insumo</h3>
-    <div style="display:flex;flex-direction:column;gap:10px;">
-      <input type="text" id="popupInsumoNombre" placeholder="Nombre del insumo..." style="width:100%;border:1px solid #e5e7eb;border-radius:8px;padding:10px;font-size:0.78rem;box-sizing:border-box;">
-      <div style="display:flex;gap:8px;">
-        <input type="number" id="popupInsumoCantidad" placeholder="Cantidad" min="1" value="1" style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:10px;font-size:0.78rem;">
-        <select id="popupInsumoUrgencia" style="flex:1;border:1px solid #e5e7eb;border-radius:8px;padding:10px;font-size:0.78rem;background:#fff;">
-          <option value="normal">🟢 Normal</option>
-          <option value="urgente">🔴 Urgente</option>
-        </select>
+<!-- POPUP: Solicitar Insumos (multi-item) -->
+<div id="popupSolicitarInsumo" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.55);justify-content:center;align-items:center;">
+  <div style="background:#fff;border-radius:14px;width:min(96vw,620px);max-height:90vh;display:flex;flex-direction:column;box-shadow:0 12px 40px rgba(0,0,0,0.35);overflow:hidden;">
+    <!-- Header -->
+    <div style="background:#ff9900;padding:14px 18px;display:flex;align-items:center;gap:8px;flex-shrink:0;">
+      <span style="font-size:1.1rem;">📦</span>
+      <div>
+        <div style="font-size:0.9rem;font-weight:800;color:#fff;">Solicitar Insumos</div>
+        <div style="font-size:0.55rem;color:rgba(255,255,255,0.85);">Agrega uno o más insumos a la solicitud</div>
       </div>
-      <textarea id="popupInsumoComentarios" placeholder="Comentarios adicionales (opcional)..." rows="2" style="width:100%;border:1px solid #e5e7eb;border-radius:8px;padding:10px;font-size:0.75rem;resize:none;box-sizing:border-box;"></textarea>
+      <button id="btnPopupInsumoCerrar" type="button" style="margin-left:auto;background:rgba(255,255,255,0.2);border:none;color:#fff;border-radius:50%;width:28px;height:28px;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;">✕</button>
     </div>
-    <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end;">
-      <button id="btnPopupInsumoCancelar" type="button" style="padding:8px 16px;border:1px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer;font-size:0.75rem;">Cancelar</button>
-      <button id="btnPopupInsumoEnviar" type="button" style="padding:8px 16px;border:none;border-radius:8px;background:#f07a00;color:#fff;cursor:pointer;font-weight:700;font-size:0.75rem;">📦 Solicitar</button>
+
+    <!-- Modo de urgencia global -->
+    <div style="padding:10px 18px 6px;background:#fff7ed;border-bottom:1px solid #fde8c8;flex-shrink:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+      <span style="font-size:0.6rem;font-weight:800;color:#92400e;text-transform:uppercase;letter-spacing:0.4px;">Urgencia:</span>
+      <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:0.62rem;font-weight:700;">
+        <input type="radio" name="insumoModoUrgencia" value="todos_normal" checked style="accent-color:#ff9900;"> 🟢 Todos Normal
+      </label>
+      <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:0.62rem;font-weight:700;">
+        <input type="radio" name="insumoModoUrgencia" value="todos_urgente" style="accent-color:#dc2626;"> 🔴 Todos Urgente
+      </label>
+      <label style="display:flex;align-items:center;gap:4px;cursor:pointer;font-size:0.62rem;font-weight:700;">
+        <input type="radio" name="insumoModoUrgencia" value="variable" style="accent-color:#6366f1;"> 🔵 Variable (por ítem)
+      </label>
+    </div>
+
+    <!-- Formulario de agregar ítem -->
+    <div style="padding:12px 18px;background:#fafafa;border-bottom:1px solid #e5e7eb;flex-shrink:0;">
+      <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;">
+        <div style="flex:2 1 180px;min-width:0;">
+          <label style="font-size:0.52rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:0.4px;display:block;margin-bottom:3px;">Insumo</label>
+          <input type="text" id="popupInsumoNombre" placeholder="Nombre o buscar..." autocomplete="off"
+            style="width:100%;border:1px solid #d1d5db;border-radius:8px;padding:7px 10px;font-size:0.68rem;box-sizing:border-box;outline:none;">
+          <div id="popupInsumoSugerencias" style="display:none;position:absolute;background:#fff;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 8px 8px;z-index:10;max-height:120px;overflow-y:auto;width:auto;min-width:200px;box-shadow:0 4px 12px rgba(0,0,0,0.1);"></div>
+        </div>
+        <div style="flex:1 1 80px;min-width:0;">
+          <label style="font-size:0.52rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:0.4px;display:block;margin-bottom:3px;">Cantidad</label>
+          <input type="number" id="popupInsumoCantidad" min="1" value="1"
+            style="width:100%;border:1px solid #d1d5db;border-radius:8px;padding:7px 10px;font-size:0.68rem;box-sizing:border-box;outline:none;">
+        </div>
+        <div id="popupInsumoUrgenciaWrap" style="flex:1 1 100px;min-width:0;">
+          <label style="font-size:0.52rem;font-weight:800;color:#6b7280;text-transform:uppercase;letter-spacing:0.4px;display:block;margin-bottom:3px;">Urgencia ítem</label>
+          <select id="popupInsumoUrgencia" style="width:100%;border:1px solid #d1d5db;border-radius:8px;padding:7px 6px;font-size:0.65rem;background:#fff;box-sizing:border-box;outline:none;cursor:pointer;">
+            <option value="normal">🟢 Normal</option>
+            <option value="urgente">🔴 Urgente</option>
+          </select>
+        </div>
+        <button id="btnPopupInsumoAgregar" type="button"
+          style="flex-shrink:0;padding:7px 16px;background:#ff9900;color:#fff;border:none;border-radius:8px;font-weight:800;font-size:0.65rem;cursor:pointer;white-space:nowrap;height:32px;align-self:flex-end;">
+          ➕ Agregar
+        </button>
+      </div>
+      <div style="margin-top:6px;">
+        <input type="text" id="popupInsumoComentarios" placeholder="Comentario opcional para este ítem..."
+          style="width:100%;border:1px solid #e5e7eb;border-radius:8px;padding:6px 10px;font-size:0.62rem;box-sizing:border-box;outline:none;background:#fff;">
+      </div>
+    </div>
+
+    <!-- Tabla de ítems agregados -->
+    <div style="flex:1;overflow-y:auto;padding:10px 18px;">
+      <div style="font-size:0.55rem;font-weight:800;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;">
+        Ítems en la solicitud — <span id="popupInsumoCont">0</span> ítem(s)
+      </div>
+      <table id="popupInsumoTabla" style="width:100%;border-collapse:collapse;font-size:0.62rem;">
+        <thead>
+          <tr style="background:#f3f4f6;">
+            <th style="padding:5px 8px;text-align:left;font-weight:800;color:#374151;border-bottom:1px solid #e5e7eb;">Insumo</th>
+            <th style="padding:5px 8px;text-align:center;font-weight:800;color:#374151;border-bottom:1px solid #e5e7eb;width:60px;">Cant.</th>
+            <th style="padding:5px 8px;text-align:center;font-weight:800;color:#374151;border-bottom:1px solid #e5e7eb;width:80px;">Urgencia</th>
+            <th style="padding:5px 8px;text-align:left;font-weight:800;color:#374151;border-bottom:1px solid #e5e7eb;">Comentario</th>
+            <th style="padding:5px 4px;width:28px;border-bottom:1px solid #e5e7eb;"></th>
+          </tr>
+        </thead>
+        <tbody id="popupInsumoTbody">
+          <tr id="popupInsumoVacio">
+            <td colspan="5" style="text-align:center;padding:20px;color:#9ca3af;font-style:italic;">
+              Agrega insumos con el formulario de arriba
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Footer con botones -->
+    <div style="padding:10px 18px;border-top:1px solid #e5e7eb;display:flex;justify-content:space-between;align-items:center;flex-shrink:0;gap:8px;background:#fafafa;">
+      <div id="popupInsumoResumen" style="font-size:0.58rem;color:#6b7280;"></div>
+      <div style="display:flex;gap:8px;">
+        <button id="btnPopupInsumoCancelar" type="button"
+          style="padding:8px 16px;border:1px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer;font-size:0.68rem;font-weight:600;">
+          Cancelar
+        </button>
+        <button id="btnPopupInsumoEnviar" type="button"
+          style="padding:8px 20px;border:none;border-radius:8px;background:#ff9900;color:#fff;cursor:pointer;font-weight:800;font-size:0.68rem;">
+          📦 Enviar Solicitud
+        </button>
+      </div>
     </div>
   </div>
 </div>
@@ -30093,95 +30166,138 @@ document.addEventListener('DOMContentLoaded', function() {
 
     async function marcarTerminada(docId) {
         var orden = allOrders.find(function(x){ return x.id === docId; });
-        // Show popup asking for evidence photo
         var existing = document.getElementById('popupTerminarOrden');
         if (existing) existing.remove();
+
         var overlay = document.createElement('div');
         overlay.id = 'popupTerminarOrden';
-        overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;';
-        overlay.innerHTML = '<div style="background:#fff;border-radius:14px;width:min(94vw,440px);max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.3);">'+
-            '<div style="background:#16a34a;padding:16px 20px;border-radius:14px 14px 0 0;">'+
-                '<div style="font-size:0.95rem;font-weight:800;color:#fff;">✅ Marcar como Terminada</div>'+
-                '<div style="font-size:0.6rem;color:rgba(255,255,255,0.85);">'+esc((orden||{}).folio||'Sin folio')+' — '+esc((orden||{}).producto||'')+' — '+esc((orden||{}).cliente||'')+'</div>'+
-            '</div>'+
-            '<div style="padding:20px;">'+
-                '<p style="font-size:0.72rem;color:#374151;margin:0 0 10px;font-weight:700;">📷 Toma una foto de evidencia del producto terminado:</p>'+
-                '<label style="display:block;text-align:center;cursor:pointer;padding:20px;border:2px dashed #bbf7d0;border-radius:10px;background:#f0fdf4;color:#166534;font-weight:700;font-size:0.72rem;">'+
-                    '📷 Tomar Foto / Seleccionar'+
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.65);display:flex;justify-content:center;align-items:center;';
+
+        // Estado interno: 'camara' | 'preview'
+        var _fotoData = null;
+
+        function _buildCamara() {
+            return '<div style="padding:20px;">'+
+                '<p style="font-size:0.72rem;color:#374151;margin:0 0 4px;font-weight:700;">📷 Toma la foto de evidencia del producto terminado:</p>'+
+                '<p style="font-size:0.58rem;color:#6b7280;margin:0 0 14px;">Se usará la cámara trasera del dispositivo.</p>'+
+                '<label id="_terminadaFotoLabel" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:pointer;padding:28px 20px;border:2px dashed #bbf7d0;border-radius:12px;background:#f0fdf4;color:#166534;font-weight:800;font-size:0.8rem;transition:background 0.15s;">'+
+                    '<span style="font-size:2rem;">📷</span>'+
+                    'TOMAR FOTOGRAFÍA DE EVIDENCIA'+
+                    '<span style="font-size:0.55rem;font-weight:600;color:#16a34a;">Toca para abrir la cámara</span>'+
                     '<input type="file" id="_terminadaFotoInput" accept="image/*" capture="environment" style="display:none;">'+
                 '</label>'+
-                '<div id="_terminadaFotoPreview" style="text-align:center;margin-top:10px;"></div>'+
-                '<div id="_terminadaStatus" style="text-align:center;margin-top:6px;font-size:0.6rem;color:#9ca3af;"></div>'+
-                '<div style="display:flex;gap:8px;margin-top:14px;">'+
-                    '<button id="_terminadaCancelar" style="flex:1;padding:12px;border:1px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer;font-size:0.75rem;">Cancelar</button>'+
-                    '<button id="_terminadaAceptar" style="flex:1;padding:12px;border:none;border-radius:8px;background:#16a34a;color:#fff;cursor:pointer;font-weight:800;font-size:0.75rem;" disabled>✅ Aceptar y Terminar</button>'+
+                '<button id="_terminadaCancelar" style="width:100%;margin-top:12px;padding:10px;border:1px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer;font-size:0.72rem;">Cancelar</button>'+
+            '</div>';
+        }
+
+        function _buildPreview(fotoSrc) {
+            return '<div style="padding:20px;">'+
+                '<p style="font-size:0.7rem;color:#374151;margin:0 0 10px;font-weight:700;text-align:center;">¿La fotografía es correcta?</p>'+
+                '<div style="text-align:center;margin-bottom:14px;">'+
+                    '<img id="_terminadaFotoImg" src="'+fotoSrc+'" style="max-width:100%;max-height:220px;border-radius:10px;border:3px solid #16a34a;display:block;margin:0 auto;">'+
                 '</div>'+
-            '</div>'+
-        '</div>';
-        document.body.appendChild(overlay);
+                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">'+
+                    '<button id="_terminadaRechazar" style="padding:14px;background:#fef2f2;border:2px solid #fecaca;border-radius:10px;cursor:pointer;font-weight:800;font-size:1.2rem;color:#dc2626;" title="Volver a tomar">✕</button>'+
+                    '<button id="_terminadaAceptar" style="padding:14px;background:#16a34a;border:none;border-radius:10px;cursor:pointer;font-weight:800;font-size:1.2rem;color:#fff;" title="Confirmar y terminar">✔</button>'+
+                '</div>'+
+                '<div style="display:flex;justify-content:space-between;margin-top:6px;font-size:0.52rem;color:#9ca3af;">'+
+                    '<span style="color:#dc2626;font-weight:700;">✕ Volver a tomar</span>'+
+                    '<span style="color:#16a34a;font-weight:700;">✔ Confirmar y terminar</span>'+
+                '</div>'+
+                '<div id="_terminadaStatus" style="text-align:center;margin-top:8px;font-size:0.6rem;color:#9ca3af;min-height:16px;"></div>'+
+            '</div>';
+        }
 
-        var fotoData = null;
-        document.getElementById('_terminadaFotoInput').addEventListener('change', function() {
-            var file = this.files[0]; if (!file) return;
-            var reader = new FileReader();
-            reader.onload = function() {
-                fotoData = reader.result;
-                document.getElementById('_terminadaFotoPreview').innerHTML = '<img src="'+fotoData+'" style="max-width:100%;max-height:180px;border-radius:10px;border:2px solid #16a34a;">';
-                document.getElementById('_terminadaAceptar').disabled = false;
-            };
-            reader.readAsDataURL(file);
-        });
+        function _renderCamara() {
+            _fotoData = null;
+            overlay.innerHTML =
+                '<div style="background:#fff;border-radius:14px;width:min(94vw,420px);overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,0.35);">'+
+                    '<div style="background:#16a34a;padding:14px 18px;border-radius:14px 14px 0 0;">'+
+                        '<div style="font-size:0.9rem;font-weight:800;color:#fff;">✅ Marcar como Terminada</div>'+
+                        '<div style="font-size:0.58rem;color:rgba(255,255,255,0.85);">'+esc((orden||{}).folio||'Sin folio')+' — '+esc((orden||{}).producto||'')+' — '+esc((orden||{}).cliente||'')+'</div>'+
+                    '</div>'+
+                    _buildCamara()+
+                '</div>';
 
-        document.getElementById('_terminadaCancelar').addEventListener('click', function() { overlay.remove(); });
-
-        document.getElementById('_terminadaAceptar').addEventListener('click', async function() {
-            var statusEl = document.getElementById('_terminadaStatus');
-            var aceptarBtn = document.getElementById('_terminadaAceptar');
-            aceptarBtn.disabled = true;
-            aceptarBtn.textContent = 'Procesando...';
-            statusEl.textContent = 'Guardando...';
-            statusEl.style.color = '#ff9900';
-
-            var db = getProdDB(); if (!db) return;
-            try {
-                var codigoBarras = 'PT-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-                var fotoEvidenciaUrl = fotoData || '';
-
-                // Try Firebase Storage first, fallback to data URL
-                if (fotoData && fotoData.startsWith('data:')) {
-                    try {
-                        var storage = window.firebase.storage();
-                        var blob = await fetch(fotoData).then(function(r){ return r.blob(); });
-                        var path = 'evidencia_terminado/' + Date.now() + '_' + docId + '.jpg';
-                        var ref = storage.ref(path);
-                        await ref.put(blob);
-                        fotoEvidenciaUrl = await ref.getDownloadURL();
-                    } catch(se) {
-                        // Fallback: keep data URL
-                        fotoEvidenciaUrl = fotoData;
-                    }
-                }
-
-                await db.collection(PROD_COLLECTION).doc(docId).update({
-                    estado: 'terminada',
-                    codigoBarrasTerminado: codigoBarras,
-                    fotoEvidencia: fotoEvidenciaUrl,
-                    terminadaEn: window.firebase.firestore.FieldValue.serverTimestamp(),
-                    actualizadoEn: window.firebase.firestore.FieldValue.serverTimestamp()
+            var label  = overlay.querySelector('#_terminadaFotoLabel');
+            var input  = overlay.querySelector('#_terminadaFotoInput');
+            var cancel = overlay.querySelector('#_terminadaCancelar');
+            if (cancel) cancel.addEventListener('click', function() { overlay.remove(); });
+            if (label)  label.addEventListener('mouseenter', function(){ label.style.background='#dcfce7'; });
+            if (label)  label.addEventListener('mouseleave', function(){ label.style.background='#f0fdf4'; });
+            if (input) {
+                input.addEventListener('change', function() {
+                    var file = this.files[0]; if (!file) return;
+                    var reader = new FileReader();
+                    reader.onload = function(ev) {
+                        _fotoData = ev.target.result;
+                        _renderPreview(_fotoData);
+                    };
+                    reader.readAsDataURL(file);
                 });
-                if (orden) { orden.estado = 'terminada'; orden.codigoBarrasTerminado = codigoBarras; orden.fotoEvidencia = fotoEvidenciaUrl; }
-                renderOrdenes();
-                actualizarResumenProduccion();
-                overlay.remove();
-                // Auto-print label
-                imprimirEtiquetaTerminado(orden || { folio: '', codigoBarrasTerminado: codigoBarras });
-            } catch (err) {
-                statusEl.textContent = 'Error: ' + err.message;
-                statusEl.style.color = '#dc2626';
-                aceptarBtn.disabled = false;
-                aceptarBtn.textContent = '✅ Aceptar y Terminar';
             }
-        });
+        }
+
+        function _renderPreview(fotoSrc) {
+            overlay.innerHTML =
+                '<div style="background:#fff;border-radius:14px;width:min(94vw,420px);overflow:hidden;box-shadow:0 12px 48px rgba(0,0,0,0.35);">'+
+                    '<div style="background:#16a34a;padding:14px 18px;border-radius:14px 14px 0 0;">'+
+                        '<div style="font-size:0.9rem;font-weight:800;color:#fff;">✅ Confirmar Evidencia</div>'+
+                        '<div style="font-size:0.58rem;color:rgba(255,255,255,0.85);">'+esc((orden||{}).folio||'Sin folio')+' — '+esc((orden||{}).producto||'')+'</div>'+
+                    '</div>'+
+                    _buildPreview(fotoSrc)+
+                '</div>';
+
+            overlay.querySelector('#_terminadaRechazar').addEventListener('click', function() {
+                _renderCamara(); // volver a tomar
+            });
+
+            overlay.querySelector('#_terminadaAceptar').addEventListener('click', async function() {
+                var statusEl = overlay.querySelector('#_terminadaStatus');
+                var btn = overlay.querySelector('#_terminadaAceptar');
+                btn.disabled = true; btn.textContent = '⏳';
+                if (statusEl) { statusEl.textContent = 'Guardando evidencia…'; statusEl.style.color = '#ff9900'; }
+                var db = getProdDB(); if (!db) return;
+                try {
+                    var codigoBarras = 'PT-' + Date.now() + '-' + Math.random().toString(36).substr(2,5).toUpperCase();
+                    var fotoEvidenciaUrl = _fotoData || '';
+                    // Subir a Firebase Storage si es data URL
+                    if (_fotoData && _fotoData.startsWith('data:') && window.firebase && window.firebase.storage) {
+                        try {
+                            var storage = window.firebase.storage();
+                            var blob = await fetch(_fotoData).then(function(r){ return r.blob(); });
+                            var path = 'evidencia_terminado/' + Date.now() + '_' + docId + '.jpg';
+                            var ref = storage.ref(path);
+                            await ref.put(blob);
+                            fotoEvidenciaUrl = await ref.getDownloadURL();
+                        } catch(se) { /* fallback: mantener data URL */ }
+                    }
+                    await db.collection(PROD_COLLECTION).doc(docId).update({
+                        estado: 'terminada',
+                        codigoBarrasTerminado: codigoBarras,
+                        fotoEvidencia: fotoEvidenciaUrl,
+                        terminadaEn: window.firebase.firestore.FieldValue.serverTimestamp(),
+                        actualizadoEn: window.firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                    if (orden) {
+                        orden.estado = 'terminada';
+                        orden.codigoBarrasTerminado = codigoBarras;
+                        orden.fotoEvidencia = fotoEvidenciaUrl;
+                        orden.terminadaEn = { toDate: function(){ return new Date(); } };
+                    }
+                    renderOrdenes();
+                    actualizarResumenProduccion();
+                    overlay.remove();
+                    imprimirEtiquetaTerminado(orden || { folio: '', codigoBarrasTerminado: codigoBarras });
+                } catch(err) {
+                    if (statusEl) { statusEl.textContent = 'Error: ' + err.message; statusEl.style.color = '#dc2626'; }
+                    btn.disabled = false; btn.textContent = '✔';
+                }
+            });
+        }
+
+        document.body.appendChild(overlay);
+        _renderCamara();
     }
 
     function imprimirEtiquetaTerminado(orden) {
@@ -30261,23 +30377,92 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Timer de órdenes en proceso
+    var _timerInterval = null;
+    function _formatElapsed(ms) {
+        if (!ms || ms < 0) return '00:00:00';
+        var s = Math.floor(ms / 1000);
+        var h = Math.floor(s / 3600); s -= h * 3600;
+        var m = Math.floor(s / 60); s -= m * 60;
+        return String(h).padStart(2,'0')+':'+String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+    }
+    function _tickTimers() {
+        var now = Date.now();
+        document.querySelectorAll('.prod-timer-valor').forEach(function(el) {
+            var start = Number(el.dataset.start || '0');
+            if (start) el.textContent = _formatElapsed(now - start);
+        });
+    }
+    function _startTimerTick() {
+        if (_timerInterval) clearInterval(_timerInterval);
+        _timerInterval = setInterval(_tickTimers, 1000);
+    }
+
     function renderOrdenes() {
         var lista = MU.sortUrgent(MU.filter(allOrders, currentTab, prodBuscador.value, ['folio','cliente','producto']));
-        if (lista.length===0) { prodOrdenList.innerHTML='<div class="prod-empty">No hay ordenes en esta categoria.</div>'; return; }
+        if (lista.length===0) { prodOrdenList.innerHTML='<div class="prod-empty">No hay ordenes en esta categoría.</div>'; return; }
         prodOrdenList.innerHTML = lista.map(function(o) {
-            var fecha = o.creadoEn && o.creadoEn.toDate ? o.creadoEn.toDate().toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'}) : 'Sin fecha';
             var colorLabel = o.producto === 'Bolsas Kraft' ? 'Tinta' : 'Color';
             var urg = nivelUrgencia(o.fechaEntrega);
-            var opts = '';
             var estadoLabel = {pendiente:'⏳ Pendiente',en_proceso:'⚙️ En Proceso',terminada:'✅ Terminada',cancelada:'❌ Cancelada'};
             var urgColor = urg.text === 'ALTA' ? '#dc2626' : urg.text === 'MEDIA' ? '#f59e0b' : '#16a34a';
             var urgBg = urg.text === 'ALTA' ? '#fef2f2' : urg.text === 'MEDIA' ? '#fffbeb' : '#f0fdf4';
+
+            // Timer para órdenes en proceso
+            var timerHtml = '';
+            if (o.estado === 'en_proceso') {
+                var startMs = 0;
+                if (o.inicioTrabajoEn) {
+                    if (o.inicioTrabajoEn.toDate) startMs = o.inicioTrabajoEn.toDate().getTime();
+                    else if (typeof o.inicioTrabajoEn === 'number') startMs = o.inicioTrabajoEn;
+                }
+                var startStr = startMs ? new Date(startMs).toLocaleString('es-MX',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'}) : '—';
+                timerHtml = '<div style="display:flex;align-items:center;gap:8px;margin:4px 0;background:#fff7ed;border:1px solid #fde8c8;border-radius:8px;padding:5px 10px;font-size:0.62rem;">'+
+                    '<span style="color:#92400e;font-weight:700;">⏱ Iniciado:</span>'+
+                    '<span style="color:#92400e;">'+esc(startStr)+'</span>'+
+                    '<span style="color:#92400e;font-weight:700;margin-left:auto;">⏱ Tiempo:</span>'+
+                    '<span class="prod-timer-valor" data-start="'+esc(String(startMs))+'" style="font-family:monospace;font-weight:800;color:#ff9900;min-width:58px;">'+_formatElapsed(startMs?Date.now()-startMs:0)+'</span>'+
+                '</div>';
+            }
+            if (o.estado === 'terminada' && o.inicioTrabajoEn && o.terminadaEn) {
+                var s0 = o.inicioTrabajoEn.toDate ? o.inicioTrabajoEn.toDate().getTime() : Number(o.inicioTrabajoEn||0);
+                var s1 = o.terminadaEn.toDate ? o.terminadaEn.toDate().getTime() : Number(o.terminadaEn||0);
+                if (s0 && s1) timerHtml = '<div style="font-size:0.58rem;color:#6b7280;margin:2px 0;">⏱ Elaboración: <strong>'+_formatElapsed(s1-s0)+'</strong></div>';
+            }
+
+            // Notas historial
+            var nArr=[]; try{nArr=JSON.parse(o.notasHistorial||'[]');}catch(e){}
+            if(!Array.isArray(nArr))nArr=[];
+            var notaHtml = o.notas ? '<span style="grid-column:1/-1"><strong>📝 Última nota:</strong> '+esc(o.notas)+(nArr.length>1?' <span style="color:#ff9900;font-weight:700;">('+nArr.length+' notas)</span>':'')+'</span>' : '';
+            var disenoHtml = o.disenoUrl ? '<span style="grid-column:1/-1"><a href="'+esc(o.disenoUrl)+'" target="_blank" style="color:#ff9900;font-weight:700;">🎨 Ver diseño</a></span>' : '';
+
+            // Botones según estado
+            var btns = '';
+            if (o.estado === 'pendiente') {
+                // Solo COMENZAR para pendientes
+                btns = '<button class="prod-btn-action" style="background:#ff9900;border:none;color:#fff;font-weight:800;font-size:0.72rem;padding:10px 22px;border-radius:8px;cursor:pointer;flex:1;justify-content:center;" data-action="iniciar" data-id="'+esc(o.id)+'">▶ COMENZAR</button>';
+            } else if (o.estado === 'en_proceso') {
+                btns =
+                    '<button class="prod-btn-action" style="background:#fffbf5;border-color:#fde8c8;color:#92400e;" data-action="notas-orden" data-id="'+esc(o.id)+'">📝 Nota</button>'+
+                    '<button class="prod-btn-action" data-action="imprimir-instrucciones" data-id="'+esc(o.id)+'">📋 Reimprimir Orden</button>'+
+                    (checkPermitirImprimirDiseno(o.producto) ? '<button class="prod-btn-action" data-action="imprimir-diseno" data-id="'+esc(o.id)+'" style="background:#fff7ed;border-color:#fde8c8;color:#92400e;">🎨 Reimprimir Diseño</button>' : '')+
+                    '<button class="prod-btn-action" style="background:#fef2f2;border-color:#fecaca;color:#dc2626;" data-action="a-pendiente" data-id="'+esc(o.id)+'">⏸ Regresar a Pendiente</button>'+
+                    '<button class="prod-btn-action" style="background:#16a34a;border:none;color:#fff;font-weight:800;" data-action="terminado" data-id="'+esc(o.id)+'">✅ Marcar Terminada</button>';
+            } else if (o.estado === 'terminada') {
+                btns =
+                    '<button class="prod-btn-action" data-action="etiqueta" data-id="'+esc(o.id)+'">🏷 Reimprimir Etiqueta</button>'+
+                    '<button class="prod-btn-action" data-action="imprimir-instrucciones" data-id="'+esc(o.id)+'">📋 Reimprimir Orden</button>';
+            } else if (o.estado === 'cancelada') {
+                btns = '<button class="prod-btn-action" style="background:#fffbf5;border-color:#fde8c8;color:#92400e;" data-action="notas-orden" data-id="'+esc(o.id)+'">📝 Notas</button>';
+            }
+
             return '<div class="prod-orden-card" data-id="'+esc(o.id)+'" style="border-left:3px solid '+urgColor+';">'+
                 '<div class="prod-orden-top">'+
                   '<div><div class="prod-orden-folio">'+esc(o.folio||'Sin folio')+'</div>'+
                   '<div class="prod-orden-fecha"><span style="display:inline-block;padding:1px 6px;border-radius:4px;background:'+urgBg+';color:'+urgColor+';font-weight:700;">'+esc(urg.text)+' ('+esc(String(urg.days))+'d)</span> · Entrega: '+esc(o.fechaEntrega||'—')+'</div></div>'+
                   '<span style="font-size:0.6rem;font-weight:700;padding:3px 8px;border-radius:6px;background:#fff7ed;color:#92400e;border:1px solid #fde8c8;">'+esc(estadoLabel[o.estado]||o.estado)+'</span>'+
                 '</div>'+
+                timerHtml+
                 '<div class="prod-orden-info">'+
                   '<span><strong>Cliente:</strong> '+esc(o.cliente||'—')+'</span>'+
                   '<span><strong>Producto:</strong> '+esc(o.producto||'—')+'</span>'+
@@ -30285,22 +30470,15 @@ document.addEventListener('DOMContentLoaded', function() {
                   '<span><strong>Cantidad:</strong> '+esc(o.cantidad||'—')+'</span>'+
                   '<span><strong>Detalle:</strong> '+esc(o.detalleProducto||'—')+'</span>'+
                   '<span><strong>Creación:</strong> '+esc(o.fechaCreacion||'—')+'</span>'+
-                  (function(){var nArr=[];try{nArr=JSON.parse(o.notasHistorial||'[]');}catch(e){}if(!Array.isArray(nArr))nArr=[];var cnt=nArr.length;return o.notas?'<span style="grid-column:1/-1"><strong>📝 Última nota:</strong> '+esc(o.notas)+(cnt>1?' <span style="color:#ff9900;font-weight:700;">('+cnt+' notas)</span>':'')+'</span>':'';}())+
-                  (o.disenoUrl?'<span style="grid-column:1/-1"><a href="'+esc(o.disenoUrl)+'" target="_blank" style="color:#ff9900;font-weight:700;">🎨 Ver diseño</a></span>':'')+
+                  notaHtml + disenoHtml +
                 '</div>'+
-                '<div class="prod-orden-bottom"><div class="prod-orden-actions">'+
-                  '<button class="prod-btn-action" style="background:#fffbf5;border-color:#fde8c8;color:#92400e;" data-action="notas-orden" data-id="'+esc(o.id)+'">📝 Nota</button>'+
-                  (o.estado === 'pendiente' ? '<button class="prod-btn-action print" data-action="imprimir-instrucciones" data-id="'+esc(o.id)+'">🖨 IMPRIMIR ORDEN</button>' : '')+
-                  (o.estado === 'pendiente' && checkPermitirImprimirDiseno(o.producto) ? '<button class="prod-btn-action print" data-action="imprimir-diseno" data-id="'+esc(o.id)+'" style="background:#fff7ed;border-color:#fde8c8;color:#92400e;">🎨 IMPRIMIR DISEÑO</button>' : '')+
-                  (o.estado === 'pendiente' ? '<button class="prod-btn-action" style="background:#ff9900;border-color:#ff9900;color:#fff;font-weight:800;" data-action="iniciar" data-id="'+esc(o.id)+'">▶ COMENZAR</button>' : '')+
-                  (o.estado === 'en_proceso' && checkPermitirImprimirDiseno(o.producto) ? '<button class="prod-btn-action" title="Imprimir Diseño" data-action="imprimir-diseno" data-id="'+esc(o.id)+'" style="background:#fff7ed;border-color:#fde8c8;color:#92400e;padding:8px 10px;font-size:0.8rem;">� Imprimir Diseño</button>' : '')+
-                  (o.estado === 'en_proceso' ? '<button class="prod-btn-action" title="Imprimir Orden" data-action="imprimir-instrucciones" data-id="'+esc(o.id)+'" style="padding:8px 10px;font-size:0.8rem;">📋</button>' : '')+
-                  (o.estado === 'en_proceso' ? '<button class="prod-btn-action" title="Regresar a Pendiente" style="background:#fef2f2;border-color:#fecaca;color:#dc2626;padding:8px 10px;font-size:0.8rem;" data-action="a-pendiente" data-id="'+esc(o.id)+'">⏸</button>' : '')+
-                  (o.estado === 'en_proceso' ? '<button class="prod-btn-action" title="Terminado" style="background:#f0fdf4;border-color:#bbf7d0;color:#166534;font-weight:800;padding:8px 10px;font-size:0.8rem;" data-action="terminado" data-id="'+esc(o.id)+'">✅</button>' : '')+
-                  (o.estado === 'terminada' ? '<button class="prod-btn-action" data-action="etiqueta" data-id="'+esc(o.id)+'">🏷 Reimprimir Etiqueta</button>' : '')+
-                '</div></div>'+
+                '<div class="prod-orden-bottom"><div class="prod-orden-actions">'+btns+'</div></div>'+
               '</div>';
         }).join('');
+
+        // Arrancar tick del timer si hay órdenes en proceso
+        var hayEnProceso = lista.some(function(o){ return o.estado === 'en_proceso'; });
+        if (hayEnProceso) _startTimerTick();
 
         prodOrdenList.querySelectorAll('[data-action]').forEach(function(btn) {
             btn.addEventListener('click', function() {
@@ -30312,7 +30490,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 if(action==='etiqueta') imprimirEtiquetaTerminado(orden);
                 if(action==='imprimir-instrucciones') imprimirOrden(orden);
                 if(action==='imprimir-diseno') imprimirDisenoOrden(orden);
-                if(action==='ver-diseno') { if (orden.disenoUrl) window.open(orden.disenoUrl, '_blank'); else alert('Sin diseño disponible.'); }
                 if(action==='terminado') marcarTerminada(docId);
             });
         });
@@ -30332,7 +30509,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 inicioTrabajoEn: window.firebase.firestore.FieldValue.serverTimestamp(),
                 actualizadoEn: window.firebase.firestore.FieldValue.serverTimestamp()
             });
-            if (orden) orden.estado = 'en_proceso';
+            if (orden) { orden.estado = 'en_proceso'; orden.inicioTrabajoEn = { toDate: function(){ return new Date(); } }; }
             renderOrdenes();
             actualizarResumenProduccion();
             // Show popup with order details + print options
@@ -30347,32 +30524,57 @@ document.addEventListener('DOMContentLoaded', function() {
         if (existing) existing.remove();
         var overlay = document.createElement('div');
         overlay.id = 'popupInicioOrden';
-        overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.6);display:flex;justify-content:center;align-items:center;';
-        var disenoImg = orden.disenoUrl ? '<img src="'+esc(orden.disenoUrl)+'" style="max-width:100%;max-height:280px;border-radius:10px;border:3px solid #ff9900;cursor:pointer;display:block;margin:0 auto;" onclick="window.open(\''+esc(orden.disenoUrl)+'\',\'_blank\')">' : '<div style="text-align:center;padding:30px;color:#9ca3af;font-size:0.72rem;background:#f9fafb;border-radius:10px;">Sin imagen de diseño disponible</div>';
-        overlay.innerHTML = '<div style="background:#fff;border-radius:14px;width:min(94vw,440px);max-height:90vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,0.3);">'+
-            '<div style="background:#ff9900;padding:16px 20px;border-radius:14px 14px 0 0;">'+
-                '<div style="font-size:0.95rem;font-weight:800;color:#fff;">▶ Orden Iniciada</div>'+
-                '<div style="font-size:0.6rem;color:rgba(255,255,255,0.85);">'+esc(orden.folio||'Sin folio')+' — '+esc(orden.producto||'')+' — '+esc(orden.cliente||'')+'</div>'+
-            '</div>'+
-            '<div style="padding:20px;">'+
-                '<div style="margin-bottom:14px;">'+disenoImg+'</div>'+
-                '<div style="font-size:0.5rem;color:#9ca3af;text-align:center;margin:-8px 0 12px;">Toca la imagen para ampliarla</div>'+
-                '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">'+
-                    '<button id="_inicioImprimirDiseno" style="padding:12px;background:#fff7ed;border:1px solid #fde8c8;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.72rem;color:#92400e;">🖨 Imprimir Diseño</button>'+
-                    '<button id="_inicioImprimirOrden" style="padding:12px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.72rem;color:#166534;">📋 Imprimir Orden</button>'+
-                '</div>'+
-                '<button id="_inicioCerrar" style="width:100%;padding:12px;margin-top:14px;background:#ff9900;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:800;font-size:0.78rem;">✓ Cerrar y continuar</button>'+
-            '</div>'+
-        '</div>';
-        document.body.appendChild(overlay);
+        overlay.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.65);display:flex;justify-content:center;align-items:center;';
 
-        document.getElementById('_inicioImprimirDiseno').addEventListener('click', function() {
-            if (typeof imprimirDisenoOrden === 'function') imprimirDisenoOrden(orden);
-            else if (orden.disenoUrl) window.open(orden.disenoUrl, '_blank');
-        });
-        document.getElementById('_inicioImprimirOrden').addEventListener('click', function() {
-            if (typeof imprimirOrden === 'function') imprimirOrden(orden);
-        });
+        var disenoImg = orden.disenoUrl
+            ? '<img src="'+esc(orden.disenoUrl)+'" style="max-width:100%;max-height:240px;border-radius:10px;border:3px solid #ff9900;cursor:pointer;display:block;margin:0 auto;" onclick="window.open(\''+esc(orden.disenoUrl)+'\',\'_blank\')">'
+            : '<div style="text-align:center;padding:24px;color:#9ca3af;font-size:0.72rem;background:#f9fafb;border-radius:10px;border:2px dashed #e5e7eb;">Sin imagen de diseño</div>';
+
+        var colorLabel = (orden.producto === 'Bolsas Kraft' || orden.producto === 'Bolsas Kraft Blancas') ? 'Tinta' : 'Color';
+
+        // Campos de detalle del producto
+        var detalles = [
+            ['Folio',      orden.folio],
+            ['Cliente',    orden.cliente],
+            ['Teléfono',   orden.telefono],
+            ['Producto',   orden.producto],
+            ['Detalle',    orden.detalleProducto],
+            [colorLabel,   orden.color],
+            ['Cantidad',   orden.cantidad],
+            ['Entrega',    orden.fechaEntrega],
+        ].filter(function(d){ return d[1]; });
+
+        var detallesHtml = '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px 12px;margin:10px 0;">'+
+            detalles.map(function(d){
+                return '<div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:7px;padding:6px 9px;">'+
+                    '<div style="font-size:0.48rem;font-weight:800;color:#9ca3af;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:2px;">'+esc(d[0])+'</div>'+
+                    '<div style="font-size:0.7rem;font-weight:700;color:#1f2937;">'+esc(d[1])+'</div>'+
+                '</div>';
+            }).join('')+
+        '</div>';
+
+        overlay.innerHTML =
+            '<div style="background:#fff;border-radius:14px;width:min(96vw,460px);max-height:92vh;overflow-y:auto;box-shadow:0 12px 48px rgba(0,0,0,0.35);">'+
+                '<div style="background:linear-gradient(135deg,#ff9900,#e68200);padding:16px 20px;border-radius:14px 14px 0 0;position:sticky;top:0;z-index:2;">'+
+                    '<div style="font-size:1rem;font-weight:800;color:#fff;">▶ ¡Orden Iniciada!</div>'+
+                    '<div style="font-size:0.6rem;color:rgba(255,255,255,0.88);margin-top:2px;">'+esc(orden.folio||'Sin folio')+' — '+esc(orden.cliente||'')+'</div>'+
+                '</div>'+
+                '<div style="padding:16px 18px;">'+
+                    '<div style="margin-bottom:12px;">'+disenoImg+'</div>'+
+                    (orden.disenoUrl?'<div style="font-size:0.48rem;color:#9ca3af;text-align:center;margin:-6px 0 10px;">Toca la imagen para ampliarla</div>':'')+
+                    detallesHtml+
+                    (orden.notas?'<div style="background:#fffbf5;border:1px solid #fde8c8;border-radius:8px;padding:8px 10px;font-size:0.62rem;color:#92400e;margin-bottom:10px;"><strong>📝 Notas:</strong> '+esc(orden.notas)+'</div>':'')+
+                    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">'+
+                        '<button id="_inicioImprimirDiseno" style="padding:10px;background:#fff7ed;border:1px solid #fde8c8;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.65rem;color:#92400e;">🖨 Imprimir Diseño</button>'+
+                        '<button id="_inicioImprimirOrden"  style="padding:10px;background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.65rem;color:#166534;">📋 Imprimir Orden</button>'+
+                    '</div>'+
+                    '<button id="_inicioCerrar" style="width:100%;padding:12px;margin-top:10px;background:#ff9900;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:800;font-size:0.78rem;">✓ Cerrar y comenzar</button>'+
+                '</div>'+
+            '</div>';
+
+        document.body.appendChild(overlay);
+        document.getElementById('_inicioImprimirDiseno').addEventListener('click', function() { imprimirDisenoOrden(orden); });
+        document.getElementById('_inicioImprimirOrden').addEventListener('click',  function() { imprimirOrden(orden); });
         document.getElementById('_inicioCerrar').addEventListener('click', function() { overlay.remove(); });
         overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
     }
@@ -30483,45 +30685,199 @@ document.addEventListener('DOMContentLoaded', function() {
         var el3 = document.getElementById('prodResumenTerminadas'); if (el3) el3.textContent = term;
     }
 
-    // Insumos request popup
+    // Insumos request popup — multi-item con modos de urgencia
+    var _insumoItems = []; // array de items: {nombre, cantidad, urgencia, comentario}
+
+    function _renderInsumoTabla() {
+        var tbody = document.getElementById('popupInsumoTbody');
+        var contEl = document.getElementById('popupInsumoCont');
+        var resumenEl = document.getElementById('popupInsumoResumen');
+        if (!tbody) return;
+        if (contEl) contEl.textContent = _insumoItems.length;
+        if (resumenEl) {
+            var urg = _insumoItems.filter(function(x){ return x.urgencia === 'urgente'; }).length;
+            resumenEl.textContent = _insumoItems.length
+                ? _insumoItems.length + ' ítem(s) — ' + urg + ' urgente(s)'
+                : '';
+        }
+        if (!_insumoItems.length) {
+            tbody.innerHTML = '<tr id="popupInsumoVacio"><td colspan="5" style="text-align:center;padding:20px;color:#9ca3af;font-style:italic;">Agrega insumos con el formulario de arriba</td></tr>';
+            return;
+        }
+        tbody.innerHTML = _insumoItems.map(function(it, i) {
+            var urgStyle = it.urgencia === 'urgente' ? 'color:#dc2626;font-weight:700;' : 'color:#16a34a;font-weight:700;';
+            var urgLabel = it.urgencia === 'urgente' ? '🔴 Urgente' : '🟢 Normal';
+            return '<tr style="border-bottom:1px solid #f3f4f6;">'+
+                '<td style="padding:5px 8px;color:#1f2937;font-weight:600;">'+esc(it.nombre)+'</td>'+
+                '<td style="padding:5px 8px;text-align:center;">'+esc(String(it.cantidad))+'</td>'+
+                '<td style="padding:5px 8px;text-align:center;'+urgStyle+'">'+urgLabel+'</td>'+
+                '<td style="padding:5px 8px;color:#6b7280;font-style:italic;">'+esc(it.comentario||'—')+'</td>'+
+                '<td style="padding:5px 4px;text-align:center;"><button type="button" data-del="'+i+'" style="background:none;border:none;color:#9ca3af;cursor:pointer;font-size:0.9rem;padding:2px 4px;">🗑</button></td>'+
+            '</tr>';
+        }).join('');
+        tbody.querySelectorAll('[data-del]').forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                _insumoItems.splice(Number(btn.dataset.del), 1);
+                _renderInsumoTabla();
+            });
+        });
+    }
+
+    function _syncInsumoUrgenciaWrap() {
+        var modo = document.querySelector('input[name="insumoModoUrgencia"]:checked');
+        var wrap = document.getElementById('popupInsumoUrgenciaWrap');
+        if (!wrap) return;
+        wrap.style.display = (modo && modo.value === 'variable') ? '' : 'none';
+    }
+
+    function _getModoUrgencia() {
+        var modo = document.querySelector('input[name="insumoModoUrgencia"]:checked');
+        return modo ? modo.value : 'todos_normal';
+    }
+
     function abrirPopupSolicitarInsumo(urgenciaPredeterminada) {
         var popup = document.getElementById('popupSolicitarInsumo');
         if (!popup) return;
+        _insumoItems = [];
         popup.style.display = 'flex';
-        var nombre = document.getElementById('popupInsumoNombre');
-        var cantidad = document.getElementById('popupInsumoCantidad');
-        var urgencia = document.getElementById('popupInsumoUrgencia');
-        var comentarios = document.getElementById('popupInsumoComentarios');
-        if (nombre) nombre.value = '';
+
+        // Reset form
+        var nombre    = document.getElementById('popupInsumoNombre');
+        var cantidad  = document.getElementById('popupInsumoCantidad');
+        var urgencia  = document.getElementById('popupInsumoUrgencia');
+        var coment    = document.getElementById('popupInsumoComentarios');
+        if (nombre)   nombre.value = '';
         if (cantidad) cantidad.value = '1';
-        if (urgencia) urgencia.value = urgenciaPredeterminada || 'normal';
-        if (comentarios) comentarios.value = '';
-        setTimeout(function() { if (nombre) nombre.focus(); }, 200);
+        if (urgencia) urgencia.value = urgenciaPredeterminada === 'urgente' ? 'urgente' : 'normal';
+        if (coment)   coment.value = '';
+
+        // Preset radio según urgencia predeterminada
+        var radios = document.querySelectorAll('input[name="insumoModoUrgencia"]');
+        radios.forEach(function(r) {
+            r.checked = (urgenciaPredeterminada === 'urgente' && r.value === 'todos_urgente') ||
+                        (!urgenciaPredeterminada && r.value === 'todos_normal') ||
+                        (urgenciaPredeterminada === 'normal' && r.value === 'todos_normal');
+        });
+        if (urgenciaPredeterminada === 'urgente') {
+            var ru = document.querySelector('input[name="insumoModoUrgencia"][value="todos_urgente"]');
+            if (ru) ru.checked = true;
+        }
+        _syncInsumoUrgenciaWrap();
+        _renderInsumoTabla();
+
+        // Listeners modo urgencia
+        radios.forEach(function(r) {
+            r.onchange = function() {
+                _syncInsumoUrgenciaWrap();
+                // Si cambia a "todos_urgente" o "todos_normal", actualiza items existentes
+                var m = _getModoUrgencia();
+                if (m !== 'variable') {
+                    var u = m === 'todos_urgente' ? 'urgente' : 'normal';
+                    _insumoItems.forEach(function(it) { it.urgencia = u; });
+                    _renderInsumoTabla();
+                }
+            };
+        });
+
+        // Autocomplete desde catálogo de insumos
+        if (nombre) {
+            nombre.oninput = function() {
+                var q = nombre.value.trim().toLowerCase();
+                var sug = document.getElementById('popupInsumoSugerencias');
+                if (!sug) return;
+                if (!q) { sug.style.display = 'none'; return; }
+                var insumos = [];
+                try { insumos = JSON.parse(localStorage.getItem('mock_insumos_v1') || '[]'); } catch(e){}
+                var matches = insumos.filter(function(x) {
+                    return String(x.nombre||x.name||'').toLowerCase().includes(q);
+                }).slice(0, 8);
+                if (!matches.length) { sug.style.display = 'none'; return; }
+                sug.style.display = 'block';
+                sug.innerHTML = matches.map(function(m) {
+                    return '<div style="padding:6px 10px;cursor:pointer;font-size:0.62rem;color:#374151;border-bottom:1px solid #f3f4f6;" data-nombre="'+esc(m.nombre||m.name||'')+'">'+
+                        esc(m.nombre||m.name||'')+'</div>';
+                }).join('');
+                sug.querySelectorAll('div[data-nombre]').forEach(function(d) {
+                    d.addEventListener('click', function() {
+                        nombre.value = d.dataset.nombre;
+                        sug.style.display = 'none';
+                    });
+                    d.addEventListener('mouseenter', function() { d.style.background='#fff7ed'; });
+                    d.addEventListener('mouseleave', function() { d.style.background=''; });
+                });
+            };
+        }
+
+        // Botón agregar ítem
+        var btnAgregar = document.getElementById('btnPopupInsumoAgregar');
+        btnAgregar.onclick = function() {
+            var nom = (nombre?.value || '').trim();
+            if (!nom) { nombre && nombre.focus(); return; }
+            var cant = Math.max(1, parseInt(cantidad?.value||'1',10)||1);
+            var m = _getModoUrgencia();
+            var urg;
+            if (m === 'todos_urgente') urg = 'urgente';
+            else if (m === 'todos_normal') urg = 'normal';
+            else urg = urgencia?.value || 'normal';
+            var com = (coment?.value || '').trim();
+            _insumoItems.push({ nombre: nom, cantidad: cant, urgencia: urg, comentario: com });
+            if (nombre)   nombre.value = '';
+            if (cantidad) cantidad.value = '1';
+            if (coment)   coment.value = '';
+            var sug = document.getElementById('popupInsumoSugerencias');
+            if (sug) sug.style.display = 'none';
+            _renderInsumoTabla();
+            setTimeout(function() { if (nombre) nombre.focus(); }, 50);
+        };
+
+        // Enviar con Enter en campo nombre
+        if (nombre) {
+            nombre.onkeydown = function(e) {
+                if (e.key === 'Enter') { e.preventDefault(); btnAgregar.click(); }
+            };
+        }
+
+        function cerrar() {
+            popup.style.display = 'none';
+            _insumoItems = [];
+        }
 
         var btnCancelar = document.getElementById('btnPopupInsumoCancelar');
-        var btnEnviar = document.getElementById('btnPopupInsumoEnviar');
-        function cerrar() { popup.style.display = 'none'; if (btnCancelar) btnCancelar.onclick = null; if (btnEnviar) btnEnviar.onclick = null; }
+        var btnCerrar   = document.getElementById('btnPopupInsumoCerrar');
+        var btnEnviar   = document.getElementById('btnPopupInsumoEnviar');
         if (btnCancelar) btnCancelar.onclick = cerrar;
+        if (btnCerrar)   btnCerrar.onclick   = cerrar;
+
         if (btnEnviar) btnEnviar.onclick = async function() {
-            var nom = (nombre?.value || '').trim();
-            var cant = cantidad?.value || '1';
-            var urg = urgencia?.value || 'normal';
-            var com = (comentarios?.value || '').trim();
-            if (!nom) { alert('Escribe el nombre del insumo.'); return; }
+            if (!_insumoItems.length) { alert('Agrega al menos un insumo.'); return; }
             var db = getProdDB(); if (!db) return;
+            btnEnviar.disabled = true;
+            btnEnviar.textContent = 'Enviando...';
             try {
-                var data = {
-                    nombre: nom, cantidad: Number(cant), urgencia: urg,
-                    estado: 'solicitado',
-                    creadoEn: window.firebase.firestore.FieldValue.serverTimestamp()
-                };
-                if (com) data.comentarios = com;
-                await db.collection('supply_requests').add(data);
+                var batch = db.batch();
+                _insumoItems.forEach(function(it) {
+                    var ref = db.collection('supply_requests').doc();
+                    batch.set(ref, {
+                        nombre:    it.nombre,
+                        cantidad:  it.cantidad,
+                        urgencia:  it.urgencia,
+                        comentarios: it.comentario || '',
+                        estado:    'solicitado',
+                        creadoEn:  window.firebase.firestore.FieldValue.serverTimestamp()
+                    });
+                });
+                await batch.commit();
                 cerrar();
                 cargarInsumosSolicitados();
-                alert('✅ Insumo solicitado: ' + nom);
-            } catch(err) { alert('Error: ' + err.message); }
+                alert('✅ ' + _insumoItems.length + ' insumo(s) solicitado(s).');
+            } catch(err) {
+                alert('Error: ' + err.message);
+                btnEnviar.disabled = false;
+                btnEnviar.textContent = '📦 Enviar Solicitud';
+            }
         };
+
+        setTimeout(function() { if (nombre) nombre.focus(); }, 200);
     }
     window.abrirPopupSolicitarInsumo = abrirPopupSolicitarInsumo;
 
@@ -30542,19 +30898,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     (r.urgencia==='urgente'?'🔴 ':'')+r.nombre+' x'+r.cantidad+' — '+r.estado+'</div>';
             }).join('');
         });
-    }
-
-    // Production notes save
-    var btnGuardarNotasProd = document.getElementById('btnGuardarNotasProd');
-    if (btnGuardarNotasProd) {
-        btnGuardarNotasProd.addEventListener('click', function() {
-            var notas = (document.getElementById('prodNotasGenerales')?.value || '').trim();
-            localStorage.setItem('produccion_notas_generales', notas);
-            alert('✅ Notas guardadas.');
-        });
-        // Load saved notes
-        var savedNotas = localStorage.getItem('produccion_notas_generales');
-        if (savedNotas) { var el = document.getElementById('prodNotasGenerales'); if (el) el.value = savedNotas; }
     }
 
     // Load insumos on panel open
