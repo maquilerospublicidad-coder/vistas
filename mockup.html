@@ -2321,7 +2321,6 @@
             overflow: hidden;
         }
 
-        /* Botón volver — original (accesible cuando es absoluto) */
         .productos-back {
             position: absolute;
             top: 8px;
@@ -2339,136 +2338,15 @@
             place-items: center;
         }
 
-        /* Variante inline dentro de la barra unificada */
-        .prod-back-inline {
-            position: static;
-            flex-shrink: 0;
-            margin-right: 2px;
-        }
-
-        /* ── BARRA UNIFICADA ── */
-        .prod-unified-bar {
+        .productos-head {
             background: #fff;
             border: 1px solid #e4e8ef;
             border-radius: 10px;
-            padding: 6px 10px;
+            padding: 7px 9px 7px 40px;
             display: flex;
             align-items: center;
+            justify-content: space-between;
             gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .prod-bar-left {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex: 1 1 320px;
-            min-width: 0;
-            flex-wrap: wrap;
-        }
-
-        .prod-bar-title {
-            margin: 0;
-            font-size: 0.78rem;
-            letter-spacing: 0.25px;
-            font-weight: 900;
-            text-transform: uppercase;
-            color: #1f2937;
-            white-space: nowrap;
-        }
-
-        .prod-search-wrap {
-            display: flex;
-            align-items: center;
-            background: #f5f7fb;
-            border: 1px solid #dde3ec;
-            border-radius: 8px;
-            padding: 4px 8px;
-            gap: 5px;
-            flex: 1 1 180px;
-        }
-
-        .prod-search-icon { font-size: 0.75rem; color: #9ca3af; }
-
-        .prod-search-input {
-            border: none;
-            background: transparent;
-            font-size: 0.6rem;
-            color: #1f2937;
-            outline: none;
-            width: 100%;
-        }
-
-        .prod-filter-select {
-            padding: 4px 7px;
-            font-size: 0.56rem;
-            border-radius: 7px;
-            border: 1px solid #d1d5db;
-            background: #fff;
-            cursor: pointer;
-            color: #374151;
-        }
-
-        /* ── ICONOS DE ACCIÓN RÁPIDA ── */
-        .prod-bar-icons {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex-wrap: wrap;
-        }
-
-        .prod-icon-btn {
-            padding: 4px 8px;
-            border: 1px solid #e5e7eb;
-            border-radius: 7px;
-            background: #f9fafb;
-            color: #374151;
-            font-size: 0.56rem;
-            font-weight: 700;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: background 0.12s;
-        }
-
-        .prod-icon-btn:hover { background: #f0f3f8; }
-
-        .prod-icon-green { color: #15803d !important; border-color: #bbf7d0 !important; }
-        .prod-icon-red   { color: #dc2626 !important; border-color: #fecaca !important; }
-        .prod-icon-orange {
-            background: #ff9900 !important;
-            color: #fff !important;
-            border-color: #ff9900 !important;
-            font-weight: 800 !important;
-        }
-
-        /* ── BLOQUE DERECHO: importar/exportar + CRUD ── */
-        .prod-bar-right {
-            display: flex;
-            align-items: center;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-
-        .prod-action-btn {
-            padding: 5px 11px;
-            border: none;
-            border-radius: 7px;
-            font-size: 0.58rem;
-            font-weight: 800;
-            cursor: pointer;
-            white-space: nowrap;
-        }
-
-        .prod-action-dark {
-            background: #404040;
-            color: #fff;
-        }
-
-        .prod-action-dark:hover { background: #2d2d2d; }
-
-        /* ── LEGACY BARRA HEAD (ocultada) ── */
-        .productos-head {
-            display: none; /* reemplazada por prod-unified-bar */
         }
 
         .productos-head-right {
@@ -12845,48 +12723,31 @@ const imgBolsaDeliveryBase = new Image();
 
 <div id="popupProductos" class="productos-overlay" aria-hidden="true">
     <div class="productos-card" role="dialog" aria-modal="true" aria-labelledby="productosTitulo">
-        <!-- ── BARRA UNIFICADA (título + búsqueda + filtros + acciones) ── -->
-        <div class="prod-unified-bar">
-            <!-- Bloque izquierdo: Volver + título + búsqueda -->
-            <div class="prod-bar-left">
-                <button id="productosBack" class="productos-back prod-back-inline" type="button" title="Volver al menú principal" aria-label="Volver al menú principal">←</button>
-                <h2 id="productosTitulo" class="prod-bar-title">PRODUCTOS</h2>
-                <div class="prod-search-wrap">
-                    <span class="prod-search-icon">🔍</span>
-                    <input id="productosSearchInput" type="text" class="prod-search-input" placeholder="Buscar por nombre, código, material…">
+        <button id="productosBack" class="productos-back" type="button" title="Volver al menú principal" aria-label="Volver al menú principal">←</button>
+
+        <div class="productos-head">
+            <h2 id="productosTitulo" class="productos-title">MÓDULO DE PRODUCTOS</h2>
+            <div class="productos-head-right">
+                <div class="productos-search">
+                    <label for="productosSearchInput">BUSCAR</label>
+                    <input id="productosSearchInput" type="text" placeholder="NOMBRE, MATERIAL, MEDIDA O CODIGO">
                 </div>
-                <!-- Filtros en línea -->
-                <select id="prodFiltroTipo" class="prod-filter-select" title="Filtrar por tipo de producto">
-                    <option value="">Todos los tipos</option>
-                    <option value="stock">Producto</option>
-                    <option value="gran-formato">Gran Formato</option>
-                    <option value="fabricado">Fabricado</option>
-                    <option value="insumo">Insumo</option>
-                    <option value="proceso">Proceso</option>
-                    <option value="servicio">Servicio</option>
-                </select>
-                <select id="prodFiltroCategoria" class="prod-filter-select" title="Filtrar por categoría">
-                    <option value="">Todas las categorías</option>
-                </select>
-            </div>
-
-            <!-- Bloque centro: iconos de acción rápida -->
-            <div class="prod-bar-icons">
-                <button id="prodLowStock" class="prod-icon-btn" type="button" title="Productos por agotarse" aria-label="Productos por agotarse">⚠</button>
-                <button id="prodExportPdf" class="prod-icon-btn" type="button" title="Exportar PDF" aria-label="Exportar PDF">📄</button>
-                <button id="prodEntradaStock" class="prod-icon-btn prod-icon-green" type="button" title="Registrar entrada de stock" aria-label="Registrar entrada de stock">↑ Entrada</button>
-                <button id="prodSalidaStock" class="prod-icon-btn prod-icon-red" type="button" title="Registrar salida de stock" aria-label="Registrar salida de stock">↓ Salida</button>
-                <button id="prodImprimir" class="prod-icon-btn" type="button" title="Imprimir inventario" aria-label="Imprimir inventario">🖨</button>
-                <button id="prodAlmacenFisico" class="prod-icon-btn prod-icon-orange" type="button" title="Almacén Físico" aria-label="Almacén Físico">📦 Almacén</button>
-            </div>
-
-            <!-- Bloque derecho: importar / exportar + CRUD -->
-            <div class="prod-bar-right">
-                <button id="prodImportar" class="prod-action-btn prod-action-dark" type="button" title="Importar productos desde archivo">⬆ Importar</button>
-                <button id="prodExcel" class="prod-action-btn prod-action-dark" type="button" title="Exportar todo a Excel">⬇ Exportar Excel</button>
-                <button id="prodAgregar" class="productos-btn primary" type="button">➕ Agregar</button>
-                <button id="prodEditar" class="productos-btn edit" type="button">✏️ Editar</button>
-                <button id="prodEliminar" class="productos-btn delete" type="button">⛔ Deshabilitar</button>
+                <div class="productos-tipo-filter" style="display:flex;gap:4px;align-items:center;flex-wrap:wrap;">
+                    <select id="prodFiltroTipo" style="padding:4px 8px;font-size:0.48rem;border-radius:6px;border:1px solid #d1d5db;background:#fff;cursor:pointer;">
+                        <option value="">TODOS LOS TIPOS</option>
+                        <option value="stock">PRODUCTO</option>
+                        <option value="gran-formato">GRAN FORMATO</option>
+                        <option value="fabricado">FABRICADO</option>
+                        <option value="insumo">INSUMO</option>
+                        <option value="proceso">PROCESO</option>
+                        <option value="servicio">SERVICIO</option>
+                    </select>
+                </div>
+                <div class="productos-crud">
+                    <button id="prodAgregar" class="productos-btn primary" type="button">➕ Agregar</button>
+                    <button id="prodEditar" class="productos-btn edit" type="button">✏️ Editar</button>
+                    <button id="prodEliminar" class="productos-btn delete" type="button">⛔ Deshabilitar</button>
+                </div>
             </div>
         </div>
 
@@ -12894,7 +12755,21 @@ const imgBolsaDeliveryBase = new Image();
             <div class="productos-main">
                 <div id="productosLegend" class="productos-legend">Listado de productos</div>
 
-                <div class="productos-tools-top" style="display:none;">
+                <div class="productos-tools-top">
+                    <div class="productos-icon-grid">
+                        <button id="prodActualizar" class="productos-btn productos-icon-btn" type="button" data-tip="Actualizar todo" title="Actualizar todo" aria-label="Actualizar todo">↻</button>
+                        <button id="prodLowStock" class="productos-btn productos-icon-btn" type="button" data-tip="Productos agotados o por agotarse" title="Productos agotados o por agotarse" aria-label="Productos agotados o por agotarse">⚠</button>
+                        <button id="prodExportPdf" class="productos-btn productos-icon-btn" type="button" data-tip="Exportar PDF" title="Exportar PDF" aria-label="Exportar PDF">📄</button>
+                        <button id="prodFiltroCategoria" class="productos-btn productos-icon-btn" type="button" data-tip="Filtrar por categoría" title="Filtrar por categoría" aria-label="Filtrar por categoría">🗂</button>
+                        <button id="prodFiltroCodigo" class="productos-btn productos-icon-btn" type="button" data-tip="Filtrar por código de producto" title="Filtrar por código de producto" aria-label="Filtrar por código de producto">#</button>
+                        <button id="prodEntradaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar entrada de stock" title="Registrar entrada de stock" aria-label="Registrar entrada de stock" style="color:#16a34a;font-size:1.2em;">↑</button>
+                        <button id="prodSalidaStock" class="productos-btn productos-icon-btn" type="button" data-tip="Registrar salida de stock" title="Registrar salida de stock" aria-label="Registrar salida de stock" style="color:#dc2626;font-size:1.2em;">↓</button>
+                        <button id="prodImprimir" class="productos-btn productos-icon-btn" type="button" data-tip="Imprimir inventario" title="Imprimir inventario" aria-label="Imprimir inventario">🖨</button>
+                        <button id="prodAlmacenFisico" class="productos-btn productos-icon-btn" type="button" data-tip="Almacén Físico" title="Almacén Físico" aria-label="Almacén Físico" style="background:#ff9900;color:#fff;font-weight:800;font-size:0.6rem;padding:5px 10px;border-radius:8px;">📦 ALMACÉN FÍSICO</button>
+                        <button id="prodExcel" class="productos-btn productos-icon-btn" type="button" data-tip="Exportar en Excel" title="Exportar en Excel" aria-label="Exportar en Excel">📊</button>
+                        <button id="prodAbrirPlantilla" class="productos-btn productos-icon-btn gray" type="button" data-tip="Abrir plantilla" title="Abrir plantilla" aria-label="Abrir plantilla">Abrir plantilla</button>
+                        <button id="prodImportarDesde" class="productos-btn productos-icon-btn gray" type="button" data-tip="Importar desde" title="Importar desde" aria-label="Importar desde">Importar desde</button>
+                    </div>
                     <input id="prodImportFile" type="file" accept=".csv,text/csv" style="display:none;" />
                 </div>
 
@@ -12913,46 +12788,6 @@ const imgBolsaDeliveryBase = new Image();
     </div>
 </div>
 
-
-<!-- ═══════ IMPORTAR PRODUCTOS — POPUP ═══════ -->
-<div id="popupImportarProductos" style="display:none;position:fixed;inset:0;z-index:10200;background:rgba(0,0,0,0.55);justify-content:center;align-items:center;">
-  <div style="background:#fff;width:min(94vw,540px);border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.28);overflow:hidden;display:flex;flex-direction:column;">
-    <div style="display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:2px solid #404040;background:#2d2d2d;">
-      <span style="font-size:1rem;color:#fff;">⬆</span>
-      <h3 style="margin:0;font-size:0.78rem;font-weight:900;color:#fff;flex:1;">IMPORTAR PRODUCTOS DESDE ARCHIVO CSV</h3>
-      <button id="btnCerrarImportarProductos" type="button" style="background:none;border:none;font-size:1.1rem;color:#9ca3af;cursor:pointer;padding:2px 6px;" title="Cerrar">✕</button>
-    </div>
-    <div style="padding:20px 22px;display:flex;flex-direction:column;gap:14px;">
-      <!-- Descarga de plantilla -->
-      <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:12px 14px;">
-        <div style="font-size:0.62rem;font-weight:800;color:#0369a1;margin-bottom:6px;">1. DESCARGA LA PLANTILLA</div>
-        <div style="font-size:0.58rem;color:#374151;margin-bottom:8px;">Descarga la plantilla CSV con las columnas correctas para llenarla con tus productos.</div>
-        <button id="btnDescargarPlantillaProductos" type="button" style="padding:7px 14px;background:#0369a1;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:0.6rem;font-weight:800;">📋 Descargar plantilla CSV</button>
-      </div>
-      <!-- Selección de archivo -->
-      <div style="background:#f8fafc;border:2px dashed #d1d5db;border-radius:10px;padding:16px 14px;text-align:center;cursor:pointer;" id="prodImportDropZone">
-        <div style="font-size:1.4rem;margin-bottom:6px;">📂</div>
-        <div style="font-size:0.62rem;font-weight:700;color:#374151;margin-bottom:4px;">2. SELECCIONA O ARRASTRA TU ARCHIVO CSV</div>
-        <div style="font-size:0.56rem;color:#6b7280;margin-bottom:10px;">Solo archivos .csv — máx. 5 MB</div>
-        <button type="button" id="btnSeleccionarCsvProductos" style="padding:7px 16px;background:#4b5563;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:0.6rem;font-weight:800;">Seleccionar archivo</button>
-        <input id="prodImportFile" type="file" accept=".csv,text/csv" style="display:none;" />
-        <div id="prodImportFileName" style="margin-top:8px;font-size:0.58rem;color:#6b7280;min-height:16px;"></div>
-      </div>
-      <!-- Opciones -->
-      <div style="display:flex;align-items:center;gap:8px;">
-        <input type="checkbox" id="prodImportActualizar" style="cursor:pointer;">
-        <label for="prodImportActualizar" style="font-size:0.58rem;color:#374151;cursor:pointer;">Actualizar productos existentes (mismo código)</label>
-      </div>
-      <!-- Botón importar -->
-      <div style="display:flex;gap:8px;justify-content:flex-end;">
-        <button id="btnCancelarImportarProductos" type="button" style="padding:8px 16px;border:1px solid #d1d5db;border-radius:8px;background:#fff;cursor:pointer;font-size:0.62rem;font-weight:700;">Cancelar</button>
-        <button id="btnEjecutarImportarProductos" type="button" style="padding:8px 20px;background:#2d2d2d;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:0.62rem;font-weight:800;" disabled>⬆ Importar productos</button>
-      </div>
-      <!-- Progreso/resultado -->
-      <div id="prodImportResult" style="display:none;font-size:0.6rem;padding:10px 12px;border-radius:8px;"></div>
-    </div>
-  </div>
-</div>
 
 <!-- ═══════ ALMACÉN FÍSICO OVERLAY ═══════ -->
 <div id="popupAlmacenFisico" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);justify-content:center;align-items:center;">
@@ -15326,16 +15161,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const productosTablaHead = document.getElementById('productosTablaHead');
     const productosTablaBody = document.getElementById('productosTablaBody');
     const productosSearchInput = document.getElementById('productosSearchInput');
-    const prodActualizar = null; // eliminado del nuevo layout
+    const prodActualizar = document.getElementById('prodActualizar');
     const prodLowStock = document.getElementById('prodLowStock');
     const prodExportPdf = document.getElementById('prodExportPdf');
     const prodFiltroCategoria = document.getElementById('prodFiltroCategoria');
-    const prodFiltroCodigo = null; // eliminado del nuevo layout
+    const prodFiltroCodigo = document.getElementById('prodFiltroCodigo');
     const prodEntradaStock = document.getElementById('prodEntradaStock');
     const prodImprimir = document.getElementById('prodImprimir');
     const prodExcel = document.getElementById('prodExcel');
     const prodAbrirPlantilla = document.getElementById('prodAbrirPlantilla');
-    const prodImportarDesde_legacy = null; // reemplazado por popup de importación
+    const prodImportarDesde = document.getElementById('prodImportarDesde');
     const prodGfToolbar = document.getElementById('prodGfToolbar');
     const prodGfAbrirPlantilla = document.getElementById('prodGfAbrirPlantilla');
     const prodGfImportarDesde = document.getElementById('prodGfImportarDesde');
@@ -17376,9 +17211,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const sp = document.getElementById(id);
             if (sp) { sp.style.display = 'none'; sp.setAttribute('aria-hidden','true'); }
         });
-        document.body.classList.remove('popup-open');
-        document.documentElement.classList.remove('popup-open');
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
+        if (popupListado?.style.display !== 'flex' && popupAccess?.style.display !== 'flex' && popupDesignTracking?.style.display !== 'flex' && popupMisPedidos?.style.display !== 'flex' && popupAjustesTabuladores?.style.display !== 'flex' && popupProdTabulador?.style.display !== 'flex' && popupProductos?.style.display !== 'flex' && popupCalendario?.style.display !== 'flex' && popupClientesModulo?.style.display !== 'flex') {
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
+        }
     };
 
     window.openCajaPopupGlobal = openCajaPopup;
@@ -17787,9 +17623,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!popupCalendario) return;
         popupCalendario.style.display = 'none';
         popupCalendario.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('popup-open');
-        document.documentElement.classList.remove('popup-open');
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
+        if (popupListado?.style.display !== 'flex' && popupAccess?.style.display !== 'flex' && popupDesignTracking?.style.display !== 'flex' && popupMisPedidos?.style.display !== 'flex' && popupAjustesTabuladores?.style.display !== 'flex' && popupProdTabulador?.style.display !== 'flex' && popupProductos?.style.display !== 'flex' && popupCaja?.style.display !== 'flex' && popupClientesModulo?.style.display !== 'flex' && popupCalProductos?.style.display !== 'flex' && popupCalProgreso?.style.display !== 'flex') {
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
+        }
     };
 
     window.openCalendarioPopupGlobal = openCalendarioPopup;
@@ -18232,9 +18069,10 @@ document.addEventListener('DOMContentLoaded', () => {
         closeClientesFormPopup();
         popupClientesModulo.style.display = 'none';
         popupClientesModulo.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('popup-open');
-        document.documentElement.classList.remove('popup-open');
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
+        if (popupListado?.style.display !== 'flex' && popupAccess?.style.display !== 'flex' && popupDesignTracking?.style.display !== 'flex' && popupMisPedidos?.style.display !== 'flex' && popupAjustesTabuladores?.style.display !== 'flex' && popupProdTabulador?.style.display !== 'flex' && popupProductos?.style.display !== 'flex' && popupCaja?.style.display !== 'flex' && popupCalendario?.style.display !== 'flex' && popupClientesModulo?.style.display !== 'flex') {
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
+        }
     };
 
     window.openClientesPopupGlobal = openClientesModuloPopup;
@@ -19355,9 +19193,10 @@ document.addEventListener('DOMContentLoaded', () => {
         closeProveedorFormPopup();
         popupProveedoresModulo.style.display = 'none';
         popupProveedoresModulo.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('popup-open');
-        document.documentElement.classList.remove('popup-open');
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
+        if (popupListado?.style.display !== 'flex' && popupAccess?.style.display !== 'flex' && popupDesignTracking?.style.display !== 'flex' && popupMisPedidos?.style.display !== 'flex' && popupAjustesTabuladores?.style.display !== 'flex' && popupProdTabulador?.style.display !== 'flex' && popupProductos?.style.display !== 'flex' && popupCaja?.style.display !== 'flex' && popupCalendario?.style.display !== 'flex' && popupClientesModulo?.style.display !== 'flex' && popupInsumosModulo?.style.display !== 'flex' && popupAlmacenModulo?.style.display !== 'flex' && popupReportesModulo?.style.display !== 'flex') {
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
+        }
     };
 
     const openInsumosPopup = () => {
@@ -19377,9 +19216,10 @@ document.addEventListener('DOMContentLoaded', () => {
         closeInsumoFormPopup();
         popupInsumosModulo.style.display = 'none';
         popupInsumosModulo.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('popup-open');
-        document.documentElement.classList.remove('popup-open');
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
+        if (popupListado?.style.display !== 'flex' && popupAccess?.style.display !== 'flex' && popupDesignTracking?.style.display !== 'flex' && popupMisPedidos?.style.display !== 'flex' && popupAjustesTabuladores?.style.display !== 'flex' && popupProdTabulador?.style.display !== 'flex' && popupProductos?.style.display !== 'flex' && popupCaja?.style.display !== 'flex' && popupCalendario?.style.display !== 'flex' && popupClientesModulo?.style.display !== 'flex' && popupProveedoresModulo?.style.display !== 'flex' && popupAlmacenModulo?.style.display !== 'flex' && popupReportesModulo?.style.display !== 'flex') {
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
+        }
     };
 
     const openAlmacenPopup = () => {
@@ -19398,9 +19238,10 @@ document.addEventListener('DOMContentLoaded', () => {
         closeAlmacenFormPopup();
         popupAlmacenModulo.style.display = 'none';
         popupAlmacenModulo.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('popup-open');
-        document.documentElement.classList.remove('popup-open');
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
+        if (popupListado?.style.display !== 'flex' && popupAccess?.style.display !== 'flex' && popupDesignTracking?.style.display !== 'flex' && popupMisPedidos?.style.display !== 'flex' && popupAjustesTabuladores?.style.display !== 'flex' && popupProdTabulador?.style.display !== 'flex' && popupProductos?.style.display !== 'flex' && popupCaja?.style.display !== 'flex' && popupCalendario?.style.display !== 'flex' && popupClientesModulo?.style.display !== 'flex' && popupProveedoresModulo?.style.display !== 'flex' && popupInsumosModulo?.style.display !== 'flex' && popupReportesModulo?.style.display !== 'flex') {
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
+        }
     };
 
     const getDateDaysAgo = (days) => {
@@ -20514,9 +20355,10 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!popupMisPedidos) return;
         popupMisPedidos.style.display = 'none';
         popupMisPedidos.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('popup-open');
-        document.documentElement.classList.remove('popup-open');
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
+        if (popupListado?.style.display !== 'flex' && popupAccess?.style.display !== 'flex' && popupDesignTracking?.style.display !== 'flex' && popupProductos?.style.display !== 'flex' && popupCaja?.style.display !== 'flex' && popupCalendario?.style.display !== 'flex' && popupClientesModulo?.style.display !== 'flex') {
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
+        }
     };
 
     window.openMisPedidosPopupGlobal = openMisPedidosPopup;
@@ -21850,16 +21692,6 @@ document.addEventListener('DOMContentLoaded', () => {
         alert(`Se importaron ${imported.length} productos.`);
     };
 
-    const syncProdCategorySelect = () => {
-        const sel = prodFiltroCategoria;
-        if (!sel) return;
-        const cats = getCategoriasProductos();
-        const prev = sel.value || '';
-        sel.innerHTML = '<option value="">Todas las categorías</option>' +
-            cats.filter((c) => c !== 'Todas').map((c) => `<option value="${prodEscape(c)}">${prodEscape(c)}</option>`).join('');
-        if (prev && cats.includes(prev)) sel.value = prev;
-    };
-
     const openProductosPopup = () => {
         if (!popupProductos) return;
         popupProductos.style.display = 'flex';
@@ -21870,17 +21702,16 @@ document.addEventListener('DOMContentLoaded', () => {
         productosSelectionAnchorId = '';
         loadProductos();
         renderProductosTabla();
-        // Poblar select de categorías con las categorías actuales
-        syncProdCategorySelect();
     };
 
     const closeProductosPopup = () => {
         if (!popupProductos) return;
         popupProductos.style.display = 'none';
         popupProductos.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('popup-open');
-        document.documentElement.classList.remove('popup-open');
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
+        if (popupListado?.style.display !== 'flex' && popupAccess?.style.display !== 'flex' && popupDesignTracking?.style.display !== 'flex' && popupMisPedidos?.style.display !== 'flex' && popupAjustesTabuladores?.style.display !== 'flex' && popupProdTabulador?.style.display !== 'flex' && popupCaja?.style.display !== 'flex' && popupCalendario?.style.display !== 'flex' && popupClientesModulo?.style.display !== 'flex') {
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
+        }
     };
 
     const openProdModal = (modal) => {
@@ -25043,7 +24874,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (prodFiltroTipo) {
         prodFiltroTipo.addEventListener('change', () => {
             productosTipoFilter = prodFiltroTipo.value;
-            syncProdCategorySelect();
             renderProductosTabla();
         });
     }
@@ -25071,10 +24901,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     if (prodFiltroCategoria) {
-        // Ahora es un <select> — filtra directamente sin popup
-        prodFiltroCategoria.addEventListener('change', () => {
-            productosCategoriaFilter = String(prodFiltroCategoria.value || '').trim();
-            renderProductosTabla();
+        prodFiltroCategoria.addEventListener('click', () => {
+            renderCategoriaPopup();
+            openProdModal(popupProdCategoria);
         });
     }
 
@@ -25269,101 +25098,19 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ── NUEVO: botón IMPORTAR → abre popup ──
-    const prodImportar = document.getElementById('prodImportar');
-    const popupImportarProductos = document.getElementById('popupImportarProductos');
-    const btnCerrarImportarProductos = document.getElementById('btnCerrarImportarProductos');
-    const btnCancelarImportarProductos = document.getElementById('btnCancelarImportarProductos');
-    const btnSeleccionarCsvProductos = document.getElementById('btnSeleccionarCsvProductos');
-    const btnEjecutarImportarProductos = document.getElementById('btnEjecutarImportarProductos');
-    const btnDescargarPlantillaProductos = document.getElementById('btnDescargarPlantillaProductos');
-    const prodImportFileName = document.getElementById('prodImportFileName');
-    const prodImportResult = document.getElementById('prodImportResult');
-    const prodImportDropZone = document.getElementById('prodImportDropZone');
-    let _prodImportSelectedFile = null;
-
-    const openImportarProductosPopup = () => {
-        if (!popupImportarProductos) return;
-        _prodImportSelectedFile = null;
-        if (prodImportFileName) prodImportFileName.textContent = '';
-        if (prodImportResult) { prodImportResult.style.display = 'none'; prodImportResult.textContent = ''; }
-        if (btnEjecutarImportarProductos) btnEjecutarImportarProductos.disabled = true;
-        if (prodImportFile) prodImportFile.value = '';
-        popupImportarProductos.style.display = 'flex';
-    };
-    const closeImportarProductosPopup = () => {
-        if (!popupImportarProductos) return;
-        popupImportarProductos.style.display = 'none';
-    };
-
-    if (prodImportar) prodImportar.addEventListener('click', openImportarProductosPopup);
-    if (btnCerrarImportarProductos) btnCerrarImportarProductos.addEventListener('click', closeImportarProductosPopup);
-    if (btnCancelarImportarProductos) btnCancelarImportarProductos.addEventListener('click', closeImportarProductosPopup);
-    if (popupImportarProductos) popupImportarProductos.addEventListener('click', (ev) => { if (ev.target === popupImportarProductos) closeImportarProductosPopup(); });
-
-    if (btnSeleccionarCsvProductos && prodImportFile) {
-        btnSeleccionarCsvProductos.addEventListener('click', () => prodImportFile.click());
-    }
-
-    // Drag & Drop
-    if (prodImportDropZone) {
-        prodImportDropZone.addEventListener('dragover', (ev) => { ev.preventDefault(); prodImportDropZone.style.borderColor = '#4b5563'; });
-        prodImportDropZone.addEventListener('dragleave', () => { prodImportDropZone.style.borderColor = '#d1d5db'; });
-        prodImportDropZone.addEventListener('drop', (ev) => {
-            ev.preventDefault();
-            prodImportDropZone.style.borderColor = '#d1d5db';
-            const file = ev.dataTransfer?.files?.[0];
-            if (file) { _prodImportSelectedFile = file; if (prodImportFileName) prodImportFileName.textContent = `📄 ${file.name}`; if (btnEjecutarImportarProductos) btnEjecutarImportarProductos.disabled = false; }
-        });
-    }
-
-    if (prodImportFile) {
-        prodImportFile.addEventListener('change', () => {
-            _prodImportSelectedFile = prodImportFile.files?.[0] || null;
-            if (prodImportFileName) prodImportFileName.textContent = _prodImportSelectedFile ? `📄 ${_prodImportSelectedFile.name}` : '';
-            if (btnEjecutarImportarProductos) btnEjecutarImportarProductos.disabled = !_prodImportSelectedFile;
-        });
-    }
-
-    if (btnDescargarPlantillaProductos) {
-        btnDescargarPlantillaProductos.addEventListener('click', () => {
-            prodAbrirPlantilla?.click();
-        });
-    }
-
-    if (btnEjecutarImportarProductos) {
-        btnEjecutarImportarProductos.addEventListener('click', async () => {
-            if (!_prodImportSelectedFile) return;
-            btnEjecutarImportarProductos.disabled = true;
-            btnEjecutarImportarProductos.textContent = 'Importando…';
+    if (prodImportarDesde && prodImportFile) {
+        prodImportarDesde.addEventListener('click', () => prodImportFile.click());
+        prodImportFile.addEventListener('change', async () => {
+            const file = prodImportFile.files?.[0];
             try {
-                await applyCsvImportProductos(_prodImportSelectedFile);
-                if (prodImportResult) {
-                    prodImportResult.style.display = 'block';
-                    prodImportResult.style.background = '#f0fdf4';
-                    prodImportResult.style.color = '#15803d';
-                    prodImportResult.style.border = '1px solid #bbf7d0';
-                    prodImportResult.textContent = '✅ Importación completada exitosamente.';
-                }
-                setTimeout(closeImportarProductosPopup, 1400);
+                await applyCsvImportProductos(file);
             } catch (err) {
-                if (prodImportResult) {
-                    prodImportResult.style.display = 'block';
-                    prodImportResult.style.background = '#fef2f2';
-                    prodImportResult.style.color = '#dc2626';
-                    prodImportResult.style.border = '1px solid #fecaca';
-                    prodImportResult.textContent = `❌ Error: ${err?.message || 'No se pudo importar el archivo.'}`;
-                }
-                btnEjecutarImportarProductos.disabled = false;
+                alert(`No se pudo importar: ${err?.message || 'Error desconocido'}`);
             } finally {
-                btnEjecutarImportarProductos.textContent = '⬆ Importar productos';
-                if (prodImportFile) prodImportFile.value = '';
+                prodImportFile.value = '';
             }
         });
     }
-
-    // Compat: legacy prodImportarDesde → ya no existe, no hacer nada
-    const prodImportarDesde = null;
 
     if (prodGfAbrirPlantilla) {
         prodGfAbrirPlantilla.addEventListener('click', () => {
@@ -27170,9 +26917,10 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
         if (!popupDesignTracking) return;
         popupDesignTracking.style.display = 'none';
         popupDesignTracking.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove('popup-open');
-        document.documentElement.classList.remove('popup-open');
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
+        if (popupListado?.style.display !== 'flex' && popupAccess?.style.display !== 'flex' && popupMisPedidos?.style.display !== 'flex' && popupProductos?.style.display !== 'flex' && popupCaja?.style.display !== 'flex' && popupCalendario?.style.display !== 'flex' && popupClientesModulo?.style.display !== 'flex') {
+            document.body.classList.remove('popup-open');
+            document.documentElement.classList.remove('popup-open');
+        }
     };
 
     const renderDesignTab = (tabId) => {
@@ -29913,7 +29661,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function closeProduccionPanel() {
         if (panelProduccion) panelProduccion.style.display = 'none';
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
     }
 
     window.openProduccionPopupGlobal = openProduccionPanel;
@@ -31707,7 +31454,6 @@ document.addEventListener('DOMContentLoaded', function() {
         panel.style.display = 'none';
         var popupScanner = document.getElementById('popupScannerRecepcion');
         if (popupScanner) popupScanner.remove();
-        if (typeof mostrarInicioSistema === 'function') mostrarInicioSistema();
     }
     window.openRecepcionSucursalGlobal = openRecepcionPanel;
     window.closeRecepcionSucursalGlobal = closeRecepcionPanel;
