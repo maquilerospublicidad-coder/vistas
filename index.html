@@ -2347,31 +2347,35 @@
         }
 
         /* ── BARRA UNIFICADA ── */
-        .prod-unified-bar {
-            background: #fff;
+        /* ═══════════════════════════════════════════════
+           PRODUCTOS — HEADER DE DOS FILAS
+           ═══════════════════════════════════════════════ */
+
+        /* Contenedor de las dos filas */
+        .prod-header {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
             border: 1px solid #e4e8ef;
             border-radius: 10px;
-            padding: 6px 10px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            flex-wrap: wrap;
+            overflow: hidden;
         }
 
-        .prod-bar-left {
+        /* ── FILA 1: Navegación + Búsqueda + CRUD ── */
+        .prod-row1 {
             display: flex;
             align-items: center;
             gap: 6px;
-            flex: 1 1 320px;
-            min-width: 0;
+            padding: 7px 10px;
+            background: #fff;
             flex-wrap: wrap;
         }
 
-        .prod-bar-title {
+        .prod-row1-title {
             margin: 0;
-            font-size: 0.78rem;
-            letter-spacing: 0.25px;
+            font-size: 0.8rem;
             font-weight: 900;
+            letter-spacing: 0.3px;
             text-transform: uppercase;
             color: #1f2937;
             white-space: nowrap;
@@ -2383,22 +2387,55 @@
             background: #f5f7fb;
             border: 1px solid #dde3ec;
             border-radius: 8px;
-            padding: 4px 8px;
-            gap: 5px;
-            flex: 1 1 180px;
+            padding: 5px 10px;
+            gap: 6px;
+            flex: 1 1 200px;
         }
 
-        .prod-search-icon { font-size: 0.75rem; color: #9ca3af; }
+        .prod-search-icon { font-size: 0.75rem; color: #9ca3af; flex-shrink: 0; }
 
         .prod-search-input {
             border: none;
             background: transparent;
-            font-size: 0.6rem;
+            font-size: 0.62rem;
             color: #1f2937;
             outline: none;
             width: 100%;
+            min-width: 0;
         }
 
+        .prod-search-input::placeholder { color: #adb5c3; }
+
+        /* Separador vertical */
+        .prod-vsep {
+            width: 1px;
+            height: 22px;
+            background: #e5e7eb;
+            flex-shrink: 0;
+            margin: 0 2px;
+        }
+
+        /* ── FILA 2: Filtros + Herramientas + Exportar ── */
+        .prod-row2 {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 10px;
+            background: #f8fafc;
+            border-top: 1px solid #edf0f5;
+            flex-wrap: wrap;
+        }
+
+        .prod-row2-label {
+            font-size: 0.52rem;
+            font-weight: 800;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
+        /* Select de filtro */
         .prod-filter-select {
             padding: 4px 7px;
             font-size: 0.56rem;
@@ -2407,69 +2444,60 @@
             background: #fff;
             cursor: pointer;
             color: #374151;
+            height: 26px;
         }
 
-        /* ── ICONOS DE ACCIÓN RÁPIDA ── */
-        .prod-bar-icons {
-            display: flex;
+        /* Botones pequeños de herramientas (fila 2) */
+        .prod-tool-btn {
+            display: inline-flex;
             align-items: center;
             gap: 4px;
-            flex-wrap: wrap;
-        }
-
-        .prod-icon-btn {
-            padding: 4px 8px;
+            padding: 4px 9px;
             border: 1px solid #e5e7eb;
             border-radius: 7px;
-            background: #f9fafb;
+            background: #fff;
             color: #374151;
             font-size: 0.56rem;
             font-weight: 700;
             cursor: pointer;
             white-space: nowrap;
-            transition: background 0.12s;
+            height: 26px;
+            transition: background 0.1s, border-color 0.1s;
         }
+        .prod-tool-btn:hover { background: #f0f3f8; border-color: #d1d5db; }
 
-        .prod-icon-btn:hover { background: #f0f3f8; }
+        /* Variantes de color para herramientas */
+        .prod-tool-btn.green { color: #15803d; border-color: #bbf7d0; background: #f0fdf4; }
+        .prod-tool-btn.green:hover { background: #dcfce7; }
+        .prod-tool-btn.red   { color: #b91c1c; border-color: #fecaca; background: #fef2f2; }
+        .prod-tool-btn.red:hover   { background: #fee2e2; }
+        .prod-tool-btn.orange { background: #ff9900; color: #fff; border-color: #ff9900; font-weight: 800; }
+        .prod-tool-btn.orange:hover { background: #e68900; }
+        .prod-tool-btn.amber { color: #92400e; border-color: #fde68a; background: #fffbeb; }
+        .prod-tool-btn.amber:hover { background: #fef3c7; }
 
-        .prod-icon-green { color: #15803d !important; border-color: #bbf7d0 !important; }
-        .prod-icon-red   { color: #dc2626 !important; border-color: #fecaca !important; }
-        .prod-icon-orange {
-            background: #ff9900 !important;
-            color: #fff !important;
-            border-color: #ff9900 !important;
-            font-weight: 800 !important;
-        }
-
-        /* ── BLOQUE DERECHO: importar/exportar + CRUD ── */
-        .prod-bar-right {
-            display: flex;
+        /* Botones de exportar/importar (fila 2, visualmente distintos) */
+        .prod-export-btn {
+            display: inline-flex;
             align-items: center;
-            gap: 5px;
-            flex-wrap: wrap;
-        }
-
-        .prod-action-btn {
-            padding: 5px 11px;
+            gap: 4px;
+            padding: 4px 11px;
             border: none;
             border-radius: 7px;
-            font-size: 0.58rem;
+            font-size: 0.56rem;
             font-weight: 800;
             cursor: pointer;
             white-space: nowrap;
+            height: 26px;
         }
+        .prod-export-btn.dark  { background: #2d2d2d; color: #fff; }
+        .prod-export-btn.dark:hover  { background: #1a1a1a; }
+        .prod-export-btn.slate { background: #475569; color: #fff; }
+        .prod-export-btn.slate:hover { background: #334155; }
 
-        .prod-action-dark {
-            background: #404040;
-            color: #fff;
-        }
-
-        .prod-action-dark:hover { background: #2d2d2d; }
-
-        /* ── LEGACY BARRA HEAD (ocultada) ── */
-        .productos-head {
-            display: none; /* reemplazada por prod-unified-bar */
-        }
+        /* ── LEGACY (ocultado) ── */
+        .prod-unified-bar { display: none; }
+        .productos-head   { display: none; }
 
         .productos-head-right {
             display: flex;
@@ -12845,18 +12873,38 @@ const imgBolsaDeliveryBase = new Image();
 
 <div id="popupProductos" class="productos-overlay" aria-hidden="true">
     <div class="productos-card" role="dialog" aria-modal="true" aria-labelledby="productosTitulo">
-        <!-- ── BARRA UNIFICADA (título + búsqueda + filtros + acciones) ── -->
-        <div class="prod-unified-bar">
-            <!-- Bloque izquierdo: Volver + título + búsqueda -->
-            <div class="prod-bar-left">
-                <button id="productosBack" class="productos-back prod-back-inline" type="button" title="Volver al menú principal" aria-label="Volver al menú principal">←</button>
-                <h2 id="productosTitulo" class="prod-bar-title">PRODUCTOS</h2>
+
+        <!-- ══════════════════════════════════════════════════════
+             HEADER PRODUCTOS — DOS FILAS
+             ══════════════════════════════════════════════════════ -->
+        <div class="prod-header">
+
+            <!-- ── FILA 1: Volver · Título · Búsqueda · CRUD ── -->
+            <div class="prod-row1">
+                <button id="productosBack" class="productos-back prod-back-inline" type="button"
+                        title="Volver al menú principal" aria-label="Volver al menú principal">←</button>
+
+                <h2 id="productosTitulo" class="prod-row1-title">Productos</h2>
+
                 <div class="prod-search-wrap">
                     <span class="prod-search-icon">🔍</span>
-                    <input id="productosSearchInput" type="text" class="prod-search-input" placeholder="Buscar por nombre, código, material…">
+                    <input id="productosSearchInput" type="text" class="prod-search-input"
+                           placeholder="Buscar por nombre, código, categoría o material…">
                 </div>
-                <!-- Filtros en línea -->
-                <select id="prodFiltroTipo" class="prod-filter-select" title="Filtrar por tipo de producto">
+
+                <span class="prod-vsep"></span>
+
+                <button id="prodAgregar" class="productos-btn primary" type="button">➕ Agregar</button>
+                <button id="prodEditar"  class="productos-btn edit"    type="button">✏️ Editar</button>
+                <button id="prodEliminar" class="productos-btn delete"  type="button">⛔ Deshabilitar</button>
+            </div>
+
+            <!-- ── FILA 2: Filtros | Herramientas de inventario | Exportar/Importar ── -->
+            <div class="prod-row2">
+
+                <!-- Filtros -->
+                <span class="prod-row2-label">Filtrar:</span>
+                <select id="prodFiltroTipo" class="prod-filter-select" title="Tipo de producto">
                     <option value="">Todos los tipos</option>
                     <option value="stock">Producto</option>
                     <option value="gran-formato">Gran Formato</option>
@@ -12865,38 +12913,33 @@ const imgBolsaDeliveryBase = new Image();
                     <option value="proceso">Proceso</option>
                     <option value="servicio">Servicio</option>
                 </select>
-                <select id="prodFiltroCategoria" class="prod-filter-select" title="Filtrar por categoría">
+                <select id="prodFiltroCategoria" class="prod-filter-select" title="Categoría">
                     <option value="">Todas las categorías</option>
                 </select>
-            </div>
 
-            <!-- Bloque centro: iconos de acción rápida -->
-            <div class="prod-bar-icons">
-                <button id="prodLowStock" class="prod-icon-btn" type="button" title="Productos por agotarse" aria-label="Productos por agotarse">⚠</button>
-                <button id="prodExportPdf" class="prod-icon-btn" type="button" title="Exportar PDF" aria-label="Exportar PDF">📄</button>
-                <button id="prodEntradaStock" class="prod-icon-btn prod-icon-green" type="button" title="Registrar entrada de stock" aria-label="Registrar entrada de stock">↑ Entrada</button>
-                <button id="prodSalidaStock" class="prod-icon-btn prod-icon-red" type="button" title="Registrar salida de stock" aria-label="Registrar salida de stock">↓ Salida</button>
-                <button id="prodImprimir" class="prod-icon-btn" type="button" title="Imprimir inventario" aria-label="Imprimir inventario">🖨</button>
-                <button id="prodAlmacenFisico" class="prod-icon-btn prod-icon-orange" type="button" title="Almacén Físico" aria-label="Almacén Físico">📦 Almacén</button>
-            </div>
+                <span class="prod-vsep"></span>
 
-            <!-- Bloque derecho: importar / exportar + CRUD -->
-            <div class="prod-bar-right">
-                <button id="prodImportar" class="prod-action-btn prod-action-dark" type="button" title="Importar productos desde archivo">⬆ Importar</button>
-                <button id="prodExcel" class="prod-action-btn prod-action-dark" type="button" title="Exportar todo a Excel">⬇ Exportar Excel</button>
-                <button id="prodAgregar" class="productos-btn primary" type="button">➕ Agregar</button>
-                <button id="prodEditar" class="productos-btn edit" type="button">✏️ Editar</button>
-                <button id="prodEliminar" class="productos-btn delete" type="button">⛔ Deshabilitar</button>
+                <!-- Herramientas de inventario -->
+                <button id="prodLowStock"     class="prod-tool-btn amber"  type="button" title="Ver productos por agotarse">⚠ Agotados</button>
+                <button id="prodEntradaStock" class="prod-tool-btn green"  type="button" title="Registrar entrada de stock">↑ Entrada</button>
+                <button id="prodSalidaStock"  class="prod-tool-btn red"    type="button" title="Registrar salida de stock">↓ Salida</button>
+                <button id="prodImprimir"     class="prod-tool-btn"        type="button" title="Imprimir inventario">🖨 Imprimir</button>
+                <button id="prodAlmacenFisico" class="prod-tool-btn orange" type="button" title="Almacén Físico (ubicaciones)">📦 Almacén Físico</button>
+
+                <span class="prod-vsep"></span>
+
+                <!-- Exportar / Importar -->
+                <button id="prodExportPdf" class="prod-export-btn slate"  type="button" title="Exportar catálogo en PDF">📄 PDF</button>
+                <button id="prodExcel"     class="prod-export-btn slate"  type="button" title="Exportar todo a Excel">⬇ Excel</button>
+                <button id="prodImportar"  class="prod-export-btn dark"   type="button" title="Importar productos desde CSV">⬆ Importar</button>
+
             </div>
         </div>
+        <!-- FIN HEADER ──────────────────────────────────────────── -->
 
         <div class="productos-layout">
             <div class="productos-main">
                 <div id="productosLegend" class="productos-legend">Listado de productos</div>
-
-                <div class="productos-tools-top" style="display:none;">
-                    <input id="prodImportFile" type="file" accept=".csv,text/csv" style="display:none;" />
-                </div>
 
                 <div class="productos-table-wrap">
                     <table class="productos-table">
