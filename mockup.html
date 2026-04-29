@@ -26934,99 +26934,178 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
     };
 
     const buildDesignOrderCard = (order, currentUser) => {
-        const lock = getDesignLock(String(order.id));
-        const isLocked   = lock && lock.user !== currentUser;
+        const lock        = getDesignLock(String(order.id));
+        const isLocked    = lock && lock.user && lock.user !== currentUser;
         const isMySession = lock && lock.user === currentUser;
-        const estadoLabels = { pendiente:{label:'Pendiente',css:'pendiente'}, en_diseno:{label:'En diseño',css:'en_diseno'}, en_revision:{label:'En revisión',css:'en_revision'}, terminada:{label:'Terminada',css:'terminada'} };
-        const estadoInfo = estadoLabels[order.estado] || { label: order.estado||'N/A', css:'pendiente' };
-        const folio    = escHtml(String(order.folio||order.id||'—'));
-        const cliente  = escHtml(String(order.clienteNombre||order.cliente||'—'));
-        const producto = escHtml(String(order.producto||'—'));
-        const disenador= escHtml(String(order.disenador||'Sin asignar'));
-        const fecha    = order.fecha ? new Date(order.fecha).toLocaleDateString('es-MX') : '—';
-        let sessionTimerHtml = '';
+
+        // Estado visual
+        const estadoMap = {
+            pendiente:         { label:'⏳ Pendiente',    css:'pendiente'  },
+            pendiente_diseno:  { label:'⏳ Pendiente',    css:'pendiente'  },
+            en_diseno:         { label:'🎨 En diseño',    css:'en_diseno'  },
+            en_revision:       { label:'🔍 En revisión',  css:'en_revision'},
+            terminada:         { label:'✅ Terminada',    css:'terminada'  },
+        };
+        const estadoInfo = estadoMap[order.estado] || { label: escHtml(order.estado||'N/A'), css:'pendiente' };
+
+        const folio     = escHtml(String(order.folio || order.id || '—'));
+        const cliente   = escHtml(String(order.clienteNombre || order.cliente || order.nombreCliente || '—'));
+        const producto  = escHtml(String(order.producto || order.nombreProducto || '—'));
+        const disenador = escHtml(String(order.disenador || ''));
+        const fechaRaw  = order.fechaEntrega || order.fecha || order.createdAt || '';
+        const fecha     = fechaRaw ? new Date(fechaRaw).toLocaleDateString('es-MX',{day:'2-digit',month:'short'}) : '—';
+        const notas     = escHtml(String(order.notasDisenador || order.notasDiseno || '').slice(0,80));
+        const cantidad  = order.cantidad ? escHtml(String(order.cantidad)) : '';
+
+        // Timer si tiene sesión activa mía
+        let timerHtml = '';
         if (isMySession && lock.timerStart) {
-            const secs = Math.floor((Date.now()-lock.timerStart)/1000);
-            sessionTimerHtml = `<span style="font-size:0.53rem;color:#4ade80;font-weight:700;">⏱ ${designFormatTime(secs)}</span>`;
+            const secs = Math.floor((Date.now() - lock.timerStart) / 1000);
+            timerHtml = `<span style="font-size:0.52rem;color:#4ade80;font-weight:800;letter-spacing:0.5px;">⏱ ${designFormatTime(secs)}</span>`;
         }
+
+        // Imágenes de referencia (miniatura rápida)
+        const imgCount = extractDesignImages(order).length;
+        const imgsBadge = imgCount > 0
+            ? `<span style="font-size:0.5rem;color:#ffc080;font-weight:700;">🖼 ${imgCount} img</span>` : '';
+
         const oid = escHtml(String(order.id));
+
+        // Botón principal según estado y lock
+        let acciones = '';
+        if (isLocked) {
+            acciones = `<button class="design-btn secondary" type="button" disabled style="opacity:0.45;font-size:0.56rem;cursor:not-allowed;">🔒 ${escHtml(lock.user)}</button>`;
+        } else if (isMySession) {
+            acciones = `<button class="design-btn primary" type="button" data-design-action="comenzar" data-order-id="${oid}" style="font-size:0.56rem;background:rgba(74,222,128,0.25);border:1px solid rgba(74,222,128,0.4);color:#4ade80;">▶ Continuar</button>`;
+        } else {
+            const label = order.estado === 'en_diseno' ? '▶ Retomar' : '▶ Comenzar';
+            acciones = `<button class="design-btn primary" type="button" data-design-action="comenzar" data-order-id="${oid}" style="font-size:0.56rem;">${label}</button>`;
+        }
+
         return `<div class="design-order-card${isLocked?' locked-by-other':''}${isMySession?' active-session':''}" data-order-id="${oid}">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:6px;">
-                <div style="font-size:0.72rem;font-weight:900;color:#fff;">${folio}</div>
-                <div style="display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end;">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;margin-bottom:5px;">
+                <div>
+                    <div style="font-size:0.74rem;font-weight:900;color:#fff;line-height:1.1;">${folio}</div>
+                    ${cantidad?`<div style="font-size:0.52rem;color:#607080;">Cant: ${cantidad}</div>`:''}
+                </div>
+                <div style="display:flex;gap:3px;flex-wrap:wrap;justify-content:flex-end;">
                     <span class="design-order-tag ${estadoInfo.css}">${estadoInfo.label}</span>
-                    ${isLocked   ? `<span class="design-order-tag locked">🔒 ${escHtml(lock.user)}</span>` : ''}
-                    ${isMySession? `<span class="design-order-tag mis">✏️ Tú</span>` : ''}
+                    ${isMySession ? `<span class="design-order-tag mis">✏️ Tú</span>` : ''}
                 </div>
             </div>
-            <div style="font-size:0.64rem;color:#c0d4ee;margin-bottom:2px;">👤 ${cliente}</div>
+            <div style="font-size:0.64rem;color:#c0d4ee;margin-bottom:1px;">👤 ${cliente}</div>
             <div style="font-size:0.62rem;color:#8aa8c8;margin-bottom:4px;">🖨 ${producto}</div>
-            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap;">
-                <span class="design-order-tag diseñador">✏ ${disenador}</span>
-                <span style="font-size:0.54rem;color:#4a6a8a;">${fecha}</span>
-                ${sessionTimerHtml}
+            ${notas ? `<div style="font-size:0.55rem;color:#7a9ab4;font-style:italic;margin-bottom:4px;border-left:2px solid rgba(255,153,0,0.3);padding-left:5px;">${notas}${order.notasDisenador?.length>80?'…':''}</div>` : ''}
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;flex-wrap:wrap;margin-bottom:6px;">
+                <span class="design-order-tag diseñador" style="${!disenador?'opacity:0.5;':''}">${disenador ? `✏ ${disenador}` : '👤 Sin asignar'}</span>
+                <div style="display:flex;gap:5px;align-items:center;">
+                    ${imgsBadge}
+                    <span style="font-size:0.52rem;color:#3a5a74;">📅 ${fecha}</span>
+                    ${timerHtml}
+                </div>
             </div>
-            <div style="display:flex;gap:5px;margin-top:8px;flex-wrap:wrap;">
-                ${isLocked
-                    ? `<button class="design-btn secondary" type="button" disabled style="opacity:0.5;font-size:0.56rem;">🔒 En uso</button>`
-                    : `<button class="design-btn primary" type="button" data-design-action="comenzar" data-order-id="${oid}" style="font-size:0.56rem;">▶ Comenzar</button>`}
-                <button class="design-btn secondary" type="button" data-design-action="historial" data-order-id="${oid}" style="font-size:0.56rem;">📋</button>
-                ${!isLocked ? `<button class="design-btn secondary" type="button" data-design-action="traspasar" data-order-id="${oid}" style="font-size:0.56rem;">↔</button>` : ''}
+            <div style="display:flex;gap:5px;flex-wrap:wrap;">
+                ${acciones}
+                <button class="design-btn secondary" type="button" data-design-action="historial" data-order-id="${oid}" title="Ver historial" style="font-size:0.56rem;">📋 Historial</button>
+                ${!isLocked ? `<button class="design-btn secondary" type="button" data-design-action="traspasar" data-order-id="${oid}" title="Traspasar orden" style="font-size:0.56rem;">↔ Traspasar</button>` : ''}
             </div>
         </div>`;
     };
 
+    // Estados que indican "necesita diseño" — órdenes relevantes para el módulo
+    const DESIGN_RELEVANT_STATES = ['pendiente','en_diseno','en_revision','pendiente_diseno'];
+
     const renderDesignMisOrdenes = () => {
-        const userName  = localStorage.getItem('logged_user_name') || '';
-        const searchVal = (document.getElementById('designSearchMis')?.value || '').toLowerCase();
+        const userName  = (localStorage.getItem('logged_user_name') || '').trim();
+        const searchVal = (document.getElementById('designSearchMis')?.value || '').toLowerCase().trim();
         const allOrders = getDesignOrders();
+
+        // "Mis órdenes" = asignadas al usuario actual O sin asignar (disponibles para tomar)
         const orders = allOrders.filter(o => {
-            const matchUser  = !userName || (o.disenador||'').toLowerCase() === userName.toLowerCase();
-            const matchState = designMisFilter === 'todos' || o.estado === designMisFilter;
-            const search     = !searchVal || [o.folio,o.clienteNombre,o.producto,o.id].some(v => String(v||'').toLowerCase().includes(searchVal));
-            return matchUser && matchState && search && ['pendiente','en_diseno','en_revision'].includes(o.estado);
+            const estadoOk = DESIGN_RELEVANT_STATES.includes(o.estado);
+            if (!estadoOk) return false;
+            const disenadorOrden = (o.disenador || '').trim();
+            // Mostrar si: está asignada al usuario, o si no hay usuario logueado, o si no tiene asignado
+            const matchUser = !userName
+                || disenadorOrden.toLowerCase() === userName.toLowerCase()
+                || !disenadorOrden;
+            if (!matchUser) return false;
+            // Filtro de estado (chips)
+            const filterEstado = designMisFilter === 'todos'
+                || o.estado === designMisFilter
+                || (designMisFilter === 'pendiente' && o.estado === 'pendiente_diseno');
+            if (!filterEstado) return false;
+            // Búsqueda
+            if (searchVal) {
+                const hay = [o.folio, o.clienteNombre, o.cliente, o.producto, String(o.id||'')]
+                    .some(v => String(v||'').toLowerCase().includes(searchVal));
+                if (!hay) return false;
+            }
+            return true;
         });
+
         const count = document.getElementById('designMisCount');
         if (count) count.textContent = `${orders.length} orden${orders.length!==1?'es':''}`;
         const container = document.getElementById('designListMis');
         if (!container) return;
-        container.innerHTML = orders.length
-            ? orders.map(o => buildDesignOrderCard(o, userName)).join('')
-            : '<div style="color:#4a6a8a;font-size:0.72rem;padding:30px;text-align:center;grid-column:1/-1;">No tienes órdenes asignadas.</div>';
+        if (!orders.length) {
+            container.innerHTML = `<div style="color:#4a6a8a;font-size:0.72rem;padding:30px;text-align:center;grid-column:1/-1;">
+                ${userName ? `No tienes órdenes asignadas ni disponibles.` : 'No hay órdenes pendientes de diseño.'}
+                <br><span style="font-size:0.6rem;opacity:0.6;">Las órdenes con estado "pendiente" aparecerán aquí.</span>
+            </div>`;
+            return;
+        }
+        container.innerHTML = orders.map(o => buildDesignOrderCard(o, userName)).join('');
     };
 
     const renderDesignTodas = () => {
-        const userName      = localStorage.getItem('logged_user_name') || '';
-        const searchVal     = (document.getElementById('designSearchTodas')?.value || '').toLowerCase();
-        const filterD       = document.getElementById('designFilterDisenador')?.value || '';
-        const allOrders     = getDesignOrders();
-        const disenadores   = [...new Set(allOrders.filter(o=>o.disenador).map(o=>o.disenador))];
+        const userName  = (localStorage.getItem('logged_user_name') || '').trim();
+        const searchVal = (document.getElementById('designSearchTodas')?.value || '').toLowerCase().trim();
+        const filterD   = document.getElementById('designFilterDisenador')?.value || '';
+        const allOrders = getDesignOrders();
+
+        // Poblar selector de diseñadores
+        const disenadores = [...new Set(allOrders
+            .filter(o => DESIGN_RELEVANT_STATES.includes(o.estado) && o.disenador)
+            .map(o => o.disenador))];
         const selEl = document.getElementById('designFilterDisenador');
         if (selEl) {
             const prev = selEl.value;
-            selEl.innerHTML = '<option value="">Todos</option>' + disenadores.map(d=>`<option value="${escHtml(d)}"${d===prev?' selected':''}>${escHtml(d)}</option>`).join('');
+            selEl.innerHTML = '<option value="">Todos los diseñadores</option>'
+                + disenadores.map(d => `<option value="${escHtml(d)}"${d===prev?' selected':''}>${escHtml(d)}</option>`).join('')
+                + `<option value="__sin_asignar__"${filterD==="__sin_asignar__"?" selected":""}>— Sin asignar —</option>`;
         }
+
         const orders = allOrders.filter(o => {
-            const validState = ['pendiente','en_diseno','en_revision'].includes(o.estado);
-            const matchD = !filterD || (o.disenador||'') === filterD;
-            const search = !searchVal || [o.folio,o.clienteNombre,o.producto,o.id].some(v=>String(v||'').toLowerCase().includes(searchVal));
-            return validState && matchD && search;
+            if (!DESIGN_RELEVANT_STATES.includes(o.estado)) return false;
+            if (filterD === '__sin_asignar__') { if (o.disenador) return false; }
+            else if (filterD && (o.disenador||'') !== filterD) return false;
+            if (searchVal) {
+                const hay = [o.folio, o.clienteNombre, o.cliente, o.producto, String(o.id||'')]
+                    .some(v => String(v||'').toLowerCase().includes(searchVal));
+                if (!hay) return false;
+            }
+            return true;
         });
+
         const count = document.getElementById('designTodasCount');
         if (count) count.textContent = `${orders.length} orden${orders.length!==1?'es':''}`;
         const container = document.getElementById('designListTodas');
         if (!container) return;
         container.innerHTML = orders.length
             ? orders.map(o => buildDesignOrderCard(o, userName)).join('')
-            : '<div style="color:#4a6a8a;font-size:0.72rem;padding:30px;text-align:center;grid-column:1/-1;">No hay órdenes pendientes.</div>';
+            : '<div style="color:#4a6a8a;font-size:0.72rem;padding:30px;text-align:center;grid-column:1/-1;">No hay órdenes que coincidan con los filtros.</div>';
     };
 
     const renderDesignActivas = () => {
-        const userName  = localStorage.getItem('logged_user_name') || '';
+        const userName  = (localStorage.getItem('logged_user_name') || '').trim();
         const sessions  = getDesignSessions();
         const allOrders = getDesignOrders();
+        // Mostrar órdenes con sesión activa O en estado en_diseno
         const activeIds = new Set(Object.keys(sessions));
-        const activas   = allOrders.filter(o => activeIds.has(String(o.id)));
+        const activas   = allOrders.filter(o =>
+            activeIds.has(String(o.id)) || o.estado === 'en_diseno'
+        );
         const container = document.getElementById('designListActivas');
         if (!container) return;
         container.innerHTML = activas.length
@@ -27084,62 +27163,109 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
     const openDesignComenzarPopup = (orderId) => {
         const allOrders = getDesignOrders();
         const order = allOrders.find(o => String(o.id) === String(orderId));
-        if (!order) return;
+        if (!order) { notifyError('No se encontró la orden #' + orderId, 'Diseño'); return; }
         designCurrentOrder = order;
-        const userName = localStorage.getItem('logged_user_name') || 'Diseñador';
+        const userName = (localStorage.getItem('logged_user_name') || 'Diseñador').trim();
         const lock = getDesignLock(String(orderId));
 
-        document.getElementById('designComenzarTitulo').textContent = 'Diseño de Orden';
+        // Título y folio
+        const tituloEl = document.getElementById('designComenzarTitulo');
+        if (tituloEl) tituloEl.textContent = 'Diseño de Orden';
         const folioEl = document.getElementById('designComenzarFolio');
         if (folioEl) folioEl.textContent = `#${order.folio||order.id}`;
 
+        // Info general
+        const clienteStr  = order.clienteNombre || order.cliente || order.nombreCliente || '—';
+        const productoStr = order.producto || order.nombreProducto || '—';
         const infoEl = document.getElementById('designComenzarInfo');
-        if (infoEl) infoEl.innerHTML = `<strong>Folio:</strong> ${escHtml(String(order.folio||order.id))} &nbsp;|&nbsp;
-            <strong>Cliente:</strong> ${escHtml(String(order.clienteNombre||order.cliente||'—'))} &nbsp;|&nbsp;
-            <strong>Producto:</strong> ${escHtml(String(order.producto||'—'))} &nbsp;|&nbsp;
-            <strong>Estado:</strong> ${escHtml(String(order.estado||'—'))}`;
+        if (infoEl) infoEl.innerHTML =
+            `<div style="display:grid;grid-template-columns:auto 1fr;gap:3px 10px;font-size:0.64rem;">
+                <strong style="color:#8ab4d4;">Folio:</strong>     <span>${escHtml(String(order.folio||order.id))}</span>
+                <strong style="color:#8ab4d4;">Cliente:</strong>   <span>${escHtml(clienteStr)}</span>
+                <strong style="color:#8ab4d4;">Producto:</strong>  <span>${escHtml(productoStr)}</span>
+                <strong style="color:#8ab4d4;">Estado:</strong>    <span>${escHtml(String(order.estado||'—'))}</span>
+                ${order.cantidad?`<strong style="color:#8ab4d4;">Cantidad:</strong><span>${escHtml(String(order.cantidad))}</span>`:''}
+                ${order.fechaEntrega?`<strong style="color:#8ab4d4;">Entrega:</strong><span>${new Date(order.fechaEntrega).toLocaleDateString('es-MX',{day:'2-digit',month:'short',year:'numeric'})}</span>`:''}
+                ${order.disenador?`<strong style="color:#8ab4d4;">Diseñador:</strong><span>${escHtml(order.disenador)}</span>`:''}
+            </div>`;
 
+        // Notas diseñador
         const notasDEl = document.getElementById('designComenzarNotasD');
-        if (notasDEl) notasDEl.textContent = order.notasDisenador||order.notasDiseno||'Sin indicaciones de diseño.';
-        const notasPEl = document.getElementById('designComenzarNotasP');
-        if (notasPEl) notasPEl.textContent = order.notasProduccion||'Sin notas de producción.';
-        const comsEl = document.getElementById('designComenzarComentarios');
-        if (comsEl) comsEl.textContent = order.comentarios||order.notas||order.observaciones||'Sin comentarios.';
+        if (notasDEl) notasDEl.textContent =
+            order.notasDisenador || order.notasDiseno || order.instruccionesDiseno ||
+            'Sin indicaciones de diseño registradas.';
 
+        // Notas producción
+        const notasPEl = document.getElementById('designComenzarNotasP');
+        if (notasPEl) notasPEl.textContent =
+            order.notasProduccion || order.notasProd || 'Sin notas de producción.';
+
+        // Comentarios generales
+        const comsEl = document.getElementById('designComenzarComentarios');
+        if (comsEl) comsEl.textContent =
+            order.comentarios || order.notas || order.observaciones || 'Sin comentarios adicionales.';
+
+        // Líneas del pedido
         const lineasEl = document.getElementById('designComenzarLineas');
         if (lineasEl) {
-            const lineas = Array.isArray(order.lineas) ? order.lineas : [];
-            lineasEl.innerHTML = lineas.length
-                ? lineas.map((l,i) => {
-                    const desc = l.descripcion||l.producto||l.nombre||`Línea ${i+1}`;
-                    const qty  = l.cantidad||l.qty||'';
-                    const notes = l.notas||l.obs||'';
-                    return `<div style="padding:3px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
-                        <span style="color:#ffc080;font-weight:700;">${i+1}.</span> ${escHtml(String(desc))}${qty?` × <strong>${escHtml(String(qty))}</strong>`:''}
-                        ${notes?`<br><span style="color:#7894b4;font-size:0.54rem;">${escHtml(String(notes))}</span>`:''}
+            const lineas = Array.isArray(order.lineas) ? order.lineas
+                : Array.isArray(order.productos) ? order.productos : [];
+            if (lineas.length) {
+                lineasEl.innerHTML = lineas.map((l, i) => {
+                    const desc  = l.descripcion || l.producto || l.nombre || l.nombreProducto || `Línea ${i+1}`;
+                    const qty   = l.cantidad || l.qty || '';
+                    const notas = l.notas || l.obs || l.instrucciones || '';
+                    const size  = l.talla || l.tamaño || l.size || '';
+                    return `<div style="padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.06);">
+                        <span style="color:#ffc080;font-weight:800;">${i+1}.</span>
+                        ${escHtml(String(desc))}
+                        ${qty ? `<span style="color:#7ae0a0;font-weight:700;"> × ${escHtml(String(qty))}</span>` : ''}
+                        ${size ? `<span style="color:#a0c4ff;font-size:0.54rem;"> [${escHtml(String(size))}]</span>` : ''}
+                        ${notas ? `<div style="color:#7894b4;font-size:0.54rem;margin-top:2px;padding-left:10px;">↳ ${escHtml(String(notas))}</div>` : ''}
                     </div>`;
-                }).join('')
-                : '<span style="color:#4a6a8a;">Sin líneas de detalle.</span>';
+                }).join('');
+            } else {
+                // Si no hay líneas, mostrar el producto principal
+                lineasEl.innerHTML = productoStr !== '—'
+                    ? `<div style="font-size:0.62rem;color:#c0d4ee;">${escHtml(productoStr)}${order.cantidad?' × '+escHtml(String(order.cantidad)):''}</div>`
+                    : '<span style="color:#4a6a8a;font-size:0.62rem;">Sin detalles de líneas.</span>';
+            }
         }
 
+        // Imágenes de referencia
         const imgsEl = document.getElementById('designComenzarImagenes');
         if (imgsEl) {
             const imgs = extractDesignImages(order);
-            imgsEl.innerHTML = imgs.length
-                ? imgs.map(src => `<img src="${src}" class="design-imagen-thumb" alt="Ref" onclick="openDesignLightbox('${src}')">`).join('')
-                : '<div style="color:#4a6a8a;font-size:0.62rem;">Sin imágenes de referencia.</div>';
+            if (imgs.length) {
+                imgsEl.innerHTML = imgs.map((src, i) =>
+                    `<div class="design-imagen-thumb" onclick="openDesignLightbox('${escHtml(src)}')" title="Imagen ${i+1} — clic para ampliar">
+                        <img src="${escHtml(src)}" alt="Ref ${i+1}" style="width:100%;height:100%;object-fit:cover;border-radius:5px;">
+                    </div>`
+                ).join('');
+            } else {
+                imgsEl.innerHTML = '<div style="color:#4a6a8a;font-size:0.62rem;padding:10px;grid-column:1/-1;text-align:center;">Sin imágenes de referencia en esta orden.</div>';
+            }
         }
 
-        const lockInfoEl = document.getElementById('designLockInfo');
-        const lockMsgEl  = document.getElementById('designLockMsg');
+        // Estado del botón descarga
+        const btnDescargar = document.getElementById('btnDesignDescargar');
+        if (btnDescargar) {
+            const imgs2 = extractDesignImages(order);
+            btnDescargar.style.opacity = imgs2.length ? '1' : '0.4';
+            btnDescargar.title = imgs2.length ? `Descargar ${imgs2.length} imagen(es)` : 'Sin imágenes para descargar';
+        }
+
+        // Control de lock / estado de botones
+        const lockInfoEl  = document.getElementById('designLockInfo');
+        const lockMsgEl   = document.getElementById('designLockMsg');
         const btnComenzar = document.getElementById('btnDesignDoComenzar');
         const btnPausar   = document.getElementById('btnDesignPausar');
         const btnValidar  = document.getElementById('btnDesignValidar');
         const timerBox    = document.getElementById('designTimerBox');
 
-        if (lock && lock.user !== userName) {
+        if (lock && lock.user && lock.user !== userName) {
             if (lockInfoEl) lockInfoEl.style.display = 'block';
-            if (lockMsgEl)  lockMsgEl.textContent = `${lock.user} está trabajando en esta orden.`;
+            if (lockMsgEl)  lockMsgEl.textContent = `${lock.user} ya está trabajando en esta orden. Espera a que termine o pausa.`;
             if (btnComenzar) btnComenzar.style.display = 'none';
             if (btnPausar)   btnPausar.style.display = 'none';
             if (btnValidar)  btnValidar.style.display = 'none';
@@ -27177,19 +27303,30 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
 
     const doDesignComenzar = () => {
         if (!designCurrentOrder) return;
-        const userName = localStorage.getItem('logged_user_name') || 'Diseñador';
+        const userName = (localStorage.getItem('logged_user_name') || 'Diseñador').trim();
         const orderId  = String(designCurrentOrder.id);
+
+        // Verificar que no hay otro diseñador trabajando en ella
+        const existingLock = getDesignLock(orderId);
+        if (existingLock && existingLock.user !== userName) {
+            notifyError(`${existingLock.user} ya está trabajando en esta orden. No puedes iniciarla simultáneamente.`, 'Control de concurrencia');
+            return;
+        }
+
         acquireDesignLock(orderId, userName);
         const allOrders = getDesignOrders();
         const idx = allOrders.findIndex(o => String(o.id) === orderId);
         if (idx >= 0) {
-            allOrders[idx].estado     = 'en_diseno';
-            allOrders[idx].disenador  = allOrders[idx].disenador || userName;
+            allOrders[idx].estado    = 'en_diseno';
+            // Auto-asignar al diseñador si la orden no tiene uno
+            if (!allOrders[idx].disenador) allOrders[idx].disenador = userName;
             allOrders[idx].ultimaAccionDiseno = new Date().toISOString();
+            allOrders[idx].fechaInicioDiseno  = allOrders[idx].fechaInicioDiseno || new Date().toISOString();
             saveDesignOrders(allOrders);
             designCurrentOrder = allOrders[idx];
         }
-        addDesignHistoryEntry(orderId, { action:'inicio', user:userName, desc:'Diseño iniciado' });
+        addDesignHistoryEntry(orderId, { action:'inicio', user:userName,
+            desc:`Diseño iniciado por ${userName}` });
         const s = getDesignSessions();
         if (s[orderId]) { s[orderId].timerStart = Date.now(); setDesignSessions(s); }
         startDesignTimer(0);
@@ -27199,6 +27336,9 @@ body { font-family: Arial, Helvetica, sans-serif; display: flex; flex-direction:
         if (btnComenzar) btnComenzar.style.display = 'none';
         if (btnPausar)   btnPausar.style.display = 'inline-flex';
         if (btnValidar)  btnValidar.style.display = 'inline-flex';
+        // Actualizar título del popup con el nombre del diseñador
+        const folioEl = document.getElementById('designComenzarFolio');
+        if (folioEl) folioEl.textContent = `#${designCurrentOrder.folio||designCurrentOrder.id} — ${userName}`;
         checkDesignSaturation();
     };
 
@@ -30380,8 +30520,19 @@ document.addEventListener('DOMContentLoaded', function() {
     function closeDisenoPanel() {
         panelDiseno.style.display = 'none';
     }
-    window.openDisenoPopupGlobal = openDisenoPanel;
-    window.closeDisenoPopupGlobal = closeDisenoPanel;
+    // El módulo V2 (popupDesignTracking) es el principal.
+    // openDisenoPanel se mantiene como fallback pero el menú usa V2.
+    window.openDisenoPopupGlobal = function() {
+        if (typeof openDesignPopup === 'function') {
+            openDesignPopup();
+        } else {
+            openDisenoPanel();
+        }
+    };
+    window.closeDisenoPopupGlobal = function() {
+        if (typeof closeDesignPopup === 'function') closeDesignPopup();
+        closeDisenoPanel();
+    };
 
     if (disenoBack) disenoBack.addEventListener('click', function() {
         closeDisenoPanel();
