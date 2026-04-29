@@ -32535,6 +32535,11 @@ document.addEventListener('DOMContentLoaded', function() {
   #panelControlRepartidores .cr-toggle { padding:6px 14px; border:none; background:transparent; border-radius:6px; font-size:0.50rem; font-weight:700; color:#94a3b8; cursor:pointer; transition:all 0.15s; }
   #panelControlRepartidores .cr-toggle:hover { color:#cbd5e1; }
   #panelControlRepartidores .cr-toggle.active { background:#3b82f6; color:#fff; }
+  /* Capa toggle buttons en el mapa */
+  #panelControlRepartidores .cr-mapa-capa { display:inline-flex; align-items:center; gap:4px; padding:5px 10px; border:1px solid rgba(255,255,255,0.15); border-radius:6px; background:rgba(255,255,255,0.06); color:#64748b; font-size:0.48rem; font-weight:700; cursor:pointer; transition:all 0.18s; white-space:nowrap; }
+  #panelControlRepartidores .cr-mapa-capa:hover { background:rgba(255,255,255,0.12); color:#cbd5e1; border-color:rgba(255,255,255,0.3); transform:translateY(-1px); }
+  #panelControlRepartidores .cr-mapa-capa.active { background:#1e40af; color:#fff; border-color:#3b82f6; box-shadow:0 0 0 2px rgba(59,130,246,0.3); }
+  #panelControlRepartidores .cr-mapa-capa .cr-capa-ico { font-size:0.8rem; }
 </style>
 <div id="panelControlRepartidores" class="entrega-overlay">
   <div style="display:flex;flex-direction:column;width:100%;height:100vh;">
@@ -32552,14 +32557,14 @@ document.addEventListener('DOMContentLoaded', function() {
       <!-- Sidebar -->
       <div class="cr-sidebar">
         <div style="padding:12px 14px 8px;font-size:0.42rem;font-weight:800;color:#475569;text-transform:uppercase;letter-spacing:1px;">Módulos</div>
-        <button class="cr-sidebar-btn active" data-cr-section="dashboard"><span class="cr-ico">📊</span> Dashboard</button>
-        <button class="cr-sidebar-btn" data-cr-section="localizacion"><span class="cr-ico">🗺</span> Localización</button>
+        <button class="cr-sidebar-btn active" data-cr-section="dashboard"><span class="cr-ico">📊</span> Dashboard & Reportes</button>
+        <button class="cr-sidebar-btn" data-cr-section="mapa"><span class="cr-ico">🗺</span> Mapa & Rutas</button>
         <button class="cr-sidebar-btn" data-cr-section="pedidos"><span class="cr-ico">📦</span> Pedidos</button>
         <button class="cr-sidebar-btn" data-cr-section="repartidores"><span class="cr-ico">👥</span> Repartidores</button>
-        <button class="cr-sidebar-btn" data-cr-section="rutas"><span class="cr-ico">🛣</span> Rutas</button>
-        <button class="cr-sidebar-btn" data-cr-section="reportes"><span class="cr-ico">📈</span> Reportes & KPIs</button>
-        <button class="cr-sidebar-btn" data-cr-section="alertas"><span class="cr-ico">🔔</span> Alertas & Com.</button>
-        <button class="cr-sidebar-btn" data-cr-section="config"><span class="cr-ico">⚙️</span> Configuración</button>
+        <button class="cr-sidebar-btn" data-cr-section="inventario"><span class="cr-ico">🎒</span> Inventario</button>
+        <button class="cr-sidebar-btn" data-cr-section="recoleccion"><span class="cr-ico">🏭</span> Recolección</button>
+        <button class="cr-sidebar-btn" data-cr-section="reagendar"><span class="cr-ico">📅</span> Reagendamiento</button>
+        <button class="cr-sidebar-btn" data-cr-section="alertas"><span class="cr-ico">🔔</span> Alertas & Config</button>
         <div style="flex:1;"></div>
         <div style="padding:10px 14px;border-top:1px solid rgba(255,255,255,0.08);">
           <div id="crSidebarResumen" style="font-size:0.48rem;color:#64748b;line-height:1.6;"></div>
@@ -32569,58 +32574,264 @@ document.addEventListener('DOMContentLoaded', function() {
       <div class="cr-main">
         <div id="crSubTabBar" style="display:none;flex-shrink:0;"></div>
 
-        <!-- ── SECTION: DASHBOARD ── -->
+        <!-- ══════════════════════════════════════════════════
+             SECCIÓN FUSIONADA: DASHBOARD + KPIs + REPORTES
+             ══════════════════════════════════════════════════ -->
         <div class="cr-section active" id="crSecDashboard" data-cr-section="dashboard">
-          <div class="cr-stats">
-            <div class="cr-stat"><div class="val" style="color:#f59e0b;" id="crStatSinAsignar">0</div><div class="lbl">Sin Asignar</div></div>
-            <div class="cr-stat"><div class="val" style="color:#3b82f6;" id="crStatAsignados">0</div><div class="lbl">Asignados</div></div>
-            <div class="cr-stat"><div class="val" style="color:#8b5cf6;" id="crStatRecibidos">0</div><div class="lbl">Recibidos</div></div>
-            <div class="cr-stat"><div class="val" style="color:#10b981;" id="crStatEntregados">0</div><div class="lbl">Entregados</div></div>
-            <div class="cr-stat"><div class="val" style="color:#ef4444;" id="crStatNoEntregados">0</div><div class="lbl">No Entregados</div></div>
-            <div class="cr-stat"><div class="val" style="color:#0f172a;" id="crStatRepartidores">0</div><div class="lbl">Repartidores</div></div>
-          </div>
-          <div class="cr-card">
-            <h3>📋 Actividad Reciente</h3>
-            <div id="crDashActivity" style="max-height:300px;overflow-y:auto;font-size:0.55rem;color:#475569;">Cargando...</div>
-          </div>
-          <div class="cr-card">
-            <h3>🚚 Estado de Repartidores</h3>
-            <div id="crDashRepartidoresStatus"></div>
-          </div>
-        </div>
 
-        <!-- ── SECTION: LOCALIZACIÓN ── -->
-        <div class="cr-section" id="crSecLocalizacion" data-cr-section="localizacion">
-          <div class="cr-header-bar" style="margin-bottom:10px;">
-            <div class="cr-toggle-group" id="crLocToggle">
-              <button class="cr-toggle active" data-loc="repartidores">🚚 Repartidores</button>
-              <button class="cr-toggle" data-loc="clientes">📍 Clientes</button>
-            </div>
-            <select id="crLocFiltroZona" class="cr-select"><option value="">Todas las zonas</option></select>
-            <input id="crLocBuscar" type="text" class="cr-input" placeholder="🔍 Buscar..." style="max-width:200px;">
+          <!-- Sub-tabs internos -->
+          <div class="cr-subtabs" style="display:flex;">
+            <button class="cr-subtab active" data-dash-tab="resumen">📊 Resumen General</button>
+            <button class="cr-subtab" data-dash-tab="kpis">🏆 KPIs & Ranking</button>
+            <button class="cr-subtab" data-dash-tab="reportes">📄 Exportar Reportes</button>
+            <button class="cr-subtab" data-dash-tab="historial">📜 Historial Cliente</button>
           </div>
-          <div class="cr-card">
-            <div id="crMapaGeneral" class="cr-map-placeholder" style="height:400px;">
-              <div style="text-align:center;">
-                <div style="font-size:2rem;margin-bottom:8px;">🗺</div>
-                <div>Mapa en tiempo real</div>
-                <div style="font-size:0.5rem;color:#94a3b8;margin-top:4px;">Alterna entre vista de repartidores y clientes</div>
+
+          <!-- ── TAB: RESUMEN GENERAL ── -->
+          <div id="crDashTab_resumen" data-dash-tab="resumen">
+            <div class="cr-stats">
+              <div class="cr-stat"><div class="val" style="color:#f59e0b;" id="crStatSinAsignar">0</div><div class="lbl">Sin Asignar</div></div>
+              <div class="cr-stat"><div class="val" style="color:#3b82f6;" id="crStatAsignados">0</div><div class="lbl">Asignados</div></div>
+              <div class="cr-stat"><div class="val" style="color:#8b5cf6;" id="crStatRecibidos">0</div><div class="lbl">Recibidos</div></div>
+              <div class="cr-stat"><div class="val" style="color:#10b981;" id="crStatEntregados">0</div><div class="lbl">Entregados</div></div>
+              <div class="cr-stat"><div class="val" style="color:#ef4444;" id="crStatNoEntregados">0</div><div class="lbl">No Entregados</div></div>
+              <div class="cr-stat"><div class="val" style="color:#0f172a;" id="crStatRepartidores">0</div><div class="lbl">Repartidores</div></div>
+              <div class="cr-stat"><div class="val" style="color:#0ea5e9;" id="crStatKmHoy">0</div><div class="lbl">Km Hoy</div></div>
+              <div class="cr-stat"><div class="val" style="color:#dc2626;" id="crStatPenalizaciones">0</div><div class="lbl">Penalizaciones</div></div>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="cr-card">
+                <h3>🚚 Estado de Repartidores</h3>
+                <div id="crDashRepartidoresStatus"></div>
+              </div>
+              <div class="cr-card">
+                <h3>📋 Actividad Reciente</h3>
+                <div id="crDashActivity" style="max-height:260px;overflow-y:auto;font-size:0.55rem;color:#475569;">Cargando...</div>
+              </div>
+            </div>
+            <!-- Penalizaciones compactas -->
+            <div class="cr-card" style="margin-top:0;">
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+                <h3 style="margin:0;flex:1;">⚠️ Penalizaciones</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:6px;align-items:end;flex:3;">
+                  <select id="crPenRep" class="cr-select" style="width:100%;"></select>
+                  <input id="crPenMotivo" type="text" class="cr-input" placeholder="Motivo...">
+                  <input id="crPenMonto" type="number" class="cr-input" placeholder="$0.00" min="0" step="0.01">
+                  <button id="crPenAgregar" type="button" class="cr-btn danger" style="white-space:nowrap;">+ Registrar</button>
+                </div>
+              </div>
+              <table class="cr-table">
+                <thead><tr><th>Fecha</th><th>Repartidor</th><th>Motivo</th><th>Monto</th><th>Acciones</th></tr></thead>
+                <tbody id="crPenTabla"><tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:16px;">Sin penalizaciones</td></tr></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- ── TAB: KPIs & RANKING ── -->
+          <div id="crDashTab_kpis" data-dash-tab="kpis" style="display:none;">
+            <div class="cr-header-bar">
+              <select id="crKpiFiltroRep" class="cr-select"><option value="">Todos los repartidores</option></select>
+              <select id="crKpiFiltroPeriodo" class="cr-select">
+                <option value="semana">Esta semana</option>
+                <option value="mes" selected>Este mes</option>
+                <option value="todo">Todo el tiempo</option>
+              </select>
+            </div>
+            <div class="cr-stats" id="crKpisStats">
+              <div class="cr-stat"><div class="val" style="color:#10b981;" id="crKpiExito">0%</div><div class="lbl">% Entrega Exitosa</div></div>
+              <div class="cr-stat"><div class="val" style="color:#3b82f6;" id="crKpiPromedio">0</div><div class="lbl">Entregas/Día</div></div>
+              <div class="cr-stat"><div class="val" style="color:#f59e0b;" id="crKpiTiempo">—</div><div class="lbl">Tiempo Prom. Ruta</div></div>
+              <div class="cr-stat"><div class="val" style="color:#8b5cf6;" id="crKpiPuntualidad">0%</div><div class="lbl">Puntualidad</div></div>
+              <div class="cr-stat"><div class="val" style="color:#ef4444;" id="crKpiNoEntregas">0</div><div class="lbl">No Entregas</div></div>
+              <div class="cr-stat"><div class="val" style="color:#0ea5e9;" id="crKpiCalificacion">—</div><div class="lbl">Calificación</div></div>
+            </div>
+            <div class="cr-card">
+              <h3>📈 Ranking de Repartidores</h3>
+              <table class="cr-table">
+                <thead><tr><th>#</th><th>Repartidor</th><th>Entregas</th><th>% Éxito</th><th>Puntualidad</th><th>Calificación</th><th>Tendencia</th></tr></thead>
+                <tbody id="crKpiRanking"><tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">Cargando...</td></tr></tbody>
+              </table>
+            </div>
+            <div class="cr-card">
+              <h3>📊 Desempeño por Zona</h3>
+              <div id="crKpiZonas" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;"></div>
+            </div>
+            <!-- Kilometraje dentro de KPIs -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="cr-card">
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                  <h3 style="margin:0;flex:1;">🛣️ Kilometraje</h3>
+                  <select id="crKmFiltroRep" class="cr-select"><option value="">Todos</option></select>
+                  <select id="crKmFiltroPeriodo" class="cr-select"><option value="hoy">Hoy</option><option value="semana">Semana</option><option value="mes" selected>Mes</option></select>
+                </div>
+                <div class="cr-stats" style="grid-template-columns:1fr 1fr;">
+                  <div class="cr-stat"><div class="val" style="color:#0ea5e9;font-size:1.1rem;" id="crKmTotal">0</div><div class="lbl">Km Totales</div></div>
+                  <div class="cr-stat"><div class="val" style="color:#f59e0b;font-size:1.1rem;" id="crKmCosto">$0</div><div class="lbl">Costo Estimado</div></div>
+                  <div class="cr-stat"><div class="val" style="color:#8b5cf6;font-size:1.1rem;" id="crKmPromedio">0</div><div class="lbl">Km Prom/Día</div></div>
+                  <div class="cr-stat"><div class="val" style="color:#10b981;font-size:1.1rem;" id="crKmViaticos">$0</div><div class="lbl">Viáticos</div></div>
+                </div>
+              </div>
+              <div class="cr-card">
+                <h3>⚙️ Registro Manual Km</h3>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px;">
+                  <div><label style="font-size:0.45rem;font-weight:700;color:#64748b;">Repartidor</label><select id="crKmRep" class="cr-select" style="width:100%;"></select></div>
+                  <div><label style="font-size:0.45rem;font-weight:700;color:#64748b;">Fecha</label><input id="crKmFecha" type="date" class="cr-input"></div>
+                  <div><label style="font-size:0.45rem;font-weight:700;color:#64748b;">Km Inicio</label><input id="crKmInicio" type="number" class="cr-input" placeholder="0" min="0"></div>
+                  <div><label style="font-size:0.45rem;font-weight:700;color:#64748b;">Km Final</label><input id="crKmFinal" type="number" class="cr-input" placeholder="0" min="0"></div>
+                </div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <div style="flex:1;"><label style="font-size:0.45rem;font-weight:700;color:#64748b;">Costo/Km ($)</label><input id="crKmCostoPorKm" type="number" class="cr-input" value="3.50" step="0.10" min="0"></div>
+                  <button id="crKmAgregar" type="button" class="cr-btn primary" style="white-space:nowrap;align-self:flex-end;">+ Registrar</button>
+                  <button id="crKmGuardarCosto" type="button" class="cr-btn success" style="white-space:nowrap;align-self:flex-end;">💾</button>
+                </div>
+                <table class="cr-table" style="margin-top:8px;"><thead><tr><th>Fecha</th><th>Repartidor</th><th>Recorrido</th><th>Costo</th><th></th></tr></thead><tbody id="crKmTabla"><tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:10px;">Sin registros</td></tr></tbody></table>
               </div>
             </div>
           </div>
-          <!-- Vista: Repartidores -->
-          <div id="crLocViewReps" class="cr-card">
-            <h3>📡 Repartidores en Ruta</h3>
-            <div id="crLocRepartidoresEnRuta" style="font-size:0.55rem;color:#64748b;">Sin datos de ubicación</div>
+
+          <!-- ── TAB: EXPORTAR REPORTES ── -->
+          <div id="crDashTab_reportes" data-dash-tab="reportes" style="display:none;">
+            <div class="cr-card">
+              <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;">
+                <h3 style="margin:0;flex:1;">⚙️ Filtros del Reporte</h3>
+                <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
+                  <div><label style="font-size:0.45rem;font-weight:700;color:#64748b;display:block;">Desde</label><input id="crRepDesde" type="date" class="cr-input"></div>
+                  <div><label style="font-size:0.45rem;font-weight:700;color:#64748b;display:block;">Hasta</label><input id="crRepHasta" type="date" class="cr-input"></div>
+                  <div><label style="font-size:0.45rem;font-weight:700;color:#64748b;display:block;">Repartidor</label><select id="crRepFiltroRep" class="cr-select"><option value="">Todos</option></select></div>
+                  <button id="crRepGenerar" type="button" class="cr-btn primary" style="white-space:nowrap;align-self:flex-end;">📄 Generar</button>
+                </div>
+              </div>
+              <div id="crRepPreview" style="min-height:40px;"></div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;">
+              <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px;cursor:pointer;" id="crRepEntregas">
+                <div style="font-size:1.2rem;margin-bottom:6px;">📦</div>
+                <div style="font-weight:800;font-size:0.62rem;color:#1e40af;margin-bottom:4px;">Entregas</div>
+                <div style="font-size:0.48rem;color:#64748b;">Por periodo, repartidor y zona.</div>
+              </div>
+              <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px;cursor:pointer;" id="crRepGastos">
+                <div style="font-size:1.2rem;margin-bottom:6px;">💰</div>
+                <div style="font-weight:800;font-size:0.62rem;color:#166534;margin-bottom:4px;">Gastos</div>
+                <div style="font-size:0.48rem;color:#64748b;">Por repartidor, categoría y periodo.</div>
+              </div>
+              <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:10px;padding:14px;cursor:pointer;" id="crRepAsistencia">
+                <div style="font-size:1.2rem;margin-bottom:6px;">✅</div>
+                <div style="font-weight:800;font-size:0.62rem;color:#7c3aed;margin-bottom:4px;">Asistencia</div>
+                <div style="font-size:0.48rem;color:#64748b;">Checks, retardos, faltas y horas extra.</div>
+              </div>
+              <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:14px;cursor:pointer;" id="crRepKm">
+                <div style="font-size:1.2rem;margin-bottom:6px;">🛣️</div>
+                <div style="font-weight:800;font-size:0.62rem;color:#c2410c;margin-bottom:4px;">Kilometraje</div>
+                <div style="font-size:0.48rem;color:#64748b;">Km recorridos y costos.</div>
+              </div>
+              <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;cursor:pointer;" id="crRepPenalizaciones">
+                <div style="font-size:1.2rem;margin-bottom:6px;">⚠️</div>
+                <div style="font-weight:800;font-size:0.62rem;color:#dc2626;margin-bottom:4px;">Penalizaciones</div>
+                <div style="font-size:0.48rem;color:#64748b;">Por repartidor con motivos y montos.</div>
+              </div>
+              <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:14px;cursor:pointer;" id="crRepDesempeno">
+                <div style="font-size:1.2rem;margin-bottom:6px;">📈</div>
+                <div style="font-weight:800;font-size:0.62rem;color:#0369a1;margin-bottom:4px;">Desempeño</div>
+                <div style="font-size:0.48rem;color:#64748b;">KPIs, ranking y tendencias.</div>
+              </div>
+            </div>
           </div>
-          <!-- Vista: Clientes -->
-          <div id="crLocViewClientes" class="cr-card" style="display:none;">
+
+          <!-- ── TAB: HISTORIAL CLIENTE ── -->
+          <div id="crDashTab_historial" data-dash-tab="historial" style="display:none;">
+            <div class="cr-card">
+              <h3>📜 Historial de Entregas por Cliente</h3>
+              <p style="font-size:0.52rem;color:#64748b;margin:0 0 10px 0;">Consulta todas las entregas realizadas a un cliente, incluyendo motivos de no-entrega y reagendaciones.</p>
+              <div class="cr-header-bar">
+                <input id="crHistBuscar" type="text" class="cr-input" placeholder="🔍 Buscar cliente por nombre..." style="max-width:320px;">
+                <select id="crHistFiltroEstado" class="cr-select">
+                  <option value="">Todos los estados</option>
+                  <option value="entregada">✅ Entregadas</option>
+                  <option value="no_entregada">❌ No entregadas</option>
+                  <option value="pendiente">📬 Pendientes</option>
+                </select>
+              </div>
+            </div>
+            <div id="crHistResultados" style="display:flex;flex-direction:column;gap:8px;"></div>
+          </div>
+
+        </div><!-- /crSecDashboard -->
+
+        <!-- ══════════════════════════════════════════════════
+             SECCIÓN FUSIONADA: MAPA + RUTAS INTERACTIVO
+             ══════════════════════════════════════════════════ -->
+        <div class="cr-section" id="crSecMapa" data-cr-section="mapa">
+
+          <!-- Controles superiores -->
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+            <select id="crLocFiltroZona" class="cr-select"><option value="">Todas las zonas</option></select>
+            <select id="crRutaRep" class="cr-select" style="min-width:160px;"><option value="">— Seleccionar repartidor —</option></select>
+            <select id="crRutaFecha" class="cr-select"><option value="hoy">Hoy</option><option value="manana">Mañana</option></select>
+            <input id="crLocBuscar" type="text" class="cr-input" placeholder="🔍 Buscar..." style="max-width:180px;flex:1;">
+            <button id="crRutaGenerar" type="button" class="cr-btn primary">🛣 Generar Ruta</button>
+          </div>
+
+          <!-- Mapa + panel de botones animados -->
+          <div class="cr-card" style="padding:0;overflow:hidden;">
+            <!-- Panel de capas del mapa (botones animados) -->
+            <div style="display:flex;align-items:center;gap:4px;padding:8px 12px;background:#1e293b;flex-wrap:wrap;" id="crMapaCapasPanel">
+              <span style="font-size:0.45rem;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:0.5px;margin-right:4px;">Capas:</span>
+              <button class="cr-mapa-capa active" data-capa="repartidores" title="Posición actual de cada repartidor en ruta">
+                <span class="cr-capa-ico">🚚</span><span class="cr-capa-lbl">Repartidores</span>
+              </button>
+              <button class="cr-mapa-capa active" data-capa="clientes_pendientes" title="Clientes con entrega pendiente">
+                <span class="cr-capa-ico">📍</span><span class="cr-capa-lbl">Por entregar</span>
+              </button>
+              <button class="cr-mapa-capa" data-capa="clientes_entregados" title="Clientes donde ya se entregó hoy">
+                <span class="cr-capa-ico">✅</span><span class="cr-capa-lbl">Entregados</span>
+              </button>
+              <button class="cr-mapa-capa" data-capa="no_encontrados" title="Clientes donde no se encontró nadie">
+                <span class="cr-capa-ico">❌</span><span class="cr-capa-lbl">No encontrados</span>
+              </button>
+              <button class="cr-mapa-capa" data-capa="paradas" title="Paradas del repartidor con tiempo de estancia">
+                <span class="cr-capa-ico">⏱</span><span class="cr-capa-lbl">Paradas</span>
+              </button>
+              <button class="cr-mapa-capa" data-capa="ruta_trazada" title="Ruta optimizada trazada en el mapa">
+                <span class="cr-capa-ico">🛣</span><span class="cr-capa-lbl">Ruta</span>
+              </button>
+            </div>
+            <!-- Mapa -->
+            <div id="crMapaGeneral" class="cr-map-placeholder" style="height:420px;border-radius:0;">
+              <div style="text-align:center;">
+                <div style="font-size:2.5rem;margin-bottom:8px;">🗺</div>
+                <div style="font-weight:700;font-size:0.65rem;">Mapa en tiempo real</div>
+                <div style="font-size:0.5rem;color:#94a3b8;margin-top:6px;">Activa las capas con los botones de arriba</div>
+                <div id="crMapaCapaInfo" style="margin-top:10px;font-size:0.55rem;color:#60a5fa;font-weight:700;min-height:18px;"></div>
+              </div>
+            </div>
+            <!-- Info panel (aparece al seleccionar capa) -->
+            <div id="crMapaInfoPanel" style="display:none;max-height:180px;overflow-y:auto;padding:10px 14px;background:#f8fafc;border-top:1px solid #e2e8f0;font-size:0.55rem;"></div>
+          </div>
+
+          <!-- Dos columnas: repartidores en ruta + paradas/detalles -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="cr-card">
+              <h3>📡 Repartidores en Ruta</h3>
+              <div id="crLocRepartidoresEnRuta" style="font-size:0.55rem;color:#64748b;">Sin datos de ubicación</div>
+            </div>
+            <div class="cr-card">
+              <h3>📋 Paradas Programadas / Ruta</h3>
+              <div id="crRutaParadas" style="font-size:0.55rem;color:#64748b;">Sin ruta generada. Selecciona repartidor y genera ruta.</div>
+            </div>
+          </div>
+
+          <!-- Clientes por zona -->
+          <div class="cr-card">
             <h3>📍 Clientes por Zona</h3>
-            <p style="font-size:0.52rem;color:#64748b;margin:0 0 8px 0;">Haz clic en <strong>"📜 Historial"</strong> para ver las entregas de un cliente.</p>
-            <div id="crGeocercaResumen" style="font-size:0.55rem;color:#64748b;margin-bottom:10px;">Cargando...</div>
-            <div id="crLocClientesList" style="display:flex;flex-direction:column;gap:6px;"></div>
+            <div id="crGeocercaResumen" style="font-size:0.55rem;color:#64748b;margin-bottom:8px;">Cargando...</div>
+            <div style="display:flex;gap:8px;margin-bottom:8px;">
+              <select id="crGeocercaFiltroZona" class="cr-select"><option value="">Todas las zonas</option></select>
+              <input id="crGeocercaBuscar" type="text" class="cr-input" placeholder="🔍 Buscar cliente..." style="max-width:220px;">
+            </div>
+            <div id="crLocClientesList" style="display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto;"></div>
           </div>
-        </div>
+
+        </div><!-- /crSecMapa -->
 
         <!-- ── SECTION: PEDIDOS ── -->
         <div class="cr-section" id="crSecPedidos" data-cr-section="pedidos">
@@ -32792,124 +33003,134 @@ document.addEventListener('DOMContentLoaded', function() {
           </div>
         </div>
 
-        <!-- ── SECTION: RUTAS ── -->
-        <div class="cr-section" id="crSecRutas" data-cr-section="rutas">
-          <div class="cr-card">
-            <h3>🛣 Optimización de Rutas</h3>
-            <p style="font-size:0.52rem;color:#64748b;margin:0 0 12px 0;">Visualiza y optimiza las rutas de entrega por repartidor. El sistema sugiere el orden de entrega más eficiente.</p>
-            <div style="display:flex;gap:8px;margin-bottom:12px;">
-              <select id="crRutaRep" class="cr-select"><option value="">Seleccionar repartidor</option></select>
-              <select id="crRutaFecha" class="cr-select"><option value="hoy">Hoy</option><option value="manana">Mañana</option></select>
-              <button id="crRutaGenerar" type="button" class="cr-btn primary">🛣 Generar Ruta</button>
-            </div>
-            <div id="crRutaMapa" class="cr-map-placeholder" style="height:350px;">
-              <div style="text-align:center;"><div style="font-size:2rem;margin-bottom:8px;">🛣</div><div>Selecciona un repartidor para ver su ruta</div></div>
-            </div>
-          </div>
-          <div class="cr-card">
-            <h3>📋 Paradas Programadas</h3>
-            <div id="crRutaParadas" style="font-size:0.55rem;color:#64748b;">Sin ruta generada</div>
-          </div>
-        </div>
+        <!-- crSecRutas REMOVED — merged into crSecMapa -->
+        <!-- crSecPenalizaciones, crSecHistorial, crSecKpis REMOVED — merged into crSecDashboard tabs -->
 
-        <!-- ── SECTION: PENALIZACIONES ── -->
-        <div class="cr-section" id="crSecPenalizaciones" data-cr-section="penalizaciones">
-          <div class="cr-card">
-            <h3>⚠️ Penalizaciones</h3>
-            <p style="font-size:0.52rem;color:#64748b;margin:0 0 12px 0;">Registro de penalizaciones para repartidores: retardos, faltantes, incumplimientos, etc.</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end;margin-bottom:14px;">
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Repartidor</label><select id="crPenRep" class="cr-select" style="width:100%;"></select></div>
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Motivo</label><input id="crPenMotivo" type="text" class="cr-input" placeholder="Ej: Retardo, Mercancía dañada..."></div>
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Monto</label><input id="crPenMonto" type="number" class="cr-input" placeholder="$0.00" min="0" step="0.01"></div>
-              <button id="crPenAgregar" type="button" class="cr-btn danger" style="white-space:nowrap;">+ Registrar</button>
-            </div>
-            <table class="cr-table">
-              <thead><tr><th>Fecha</th><th>Repartidor</th><th>Motivo</th><th>Monto</th><th>Acciones</th></tr></thead>
-              <tbody id="crPenTabla"><tr><td colspan="5" style="text-align:center;color:#94a3b8;padding:20px;">Sin penalizaciones</td></tr></tbody>
-            </table>
-          </div>
-        </div>
-
-
-        <!-- ── SECTION: HISTORIAL CLIENTE ── -->
-        <div class="cr-section" id="crSecHistorial" data-cr-section="historial">
-          <div class="cr-card">
-            <h3>📜 Historial de Entregas por Cliente</h3>
-            <p style="font-size:0.52rem;color:#64748b;margin:0 0 12px 0;">Consulta todas las entregas realizadas a un cliente, incluyendo motivos de no-entrega y reagendaciones.</p>
-            <div class="cr-header-bar">
-              <input id="crHistBuscar" type="text" class="cr-input" placeholder="🔍 Buscar cliente por nombre..." style="max-width:300px;">
-              <select id="crHistFiltroEstado" class="cr-select">
-                <option value="">Todos los estados</option>
-                <option value="entregada">✅ Entregadas</option>
-                <option value="no_entregada">❌ No entregadas</option>
-                <option value="pendiente">📬 Pendientes</option>
-              </select>
-            </div>
-          </div>
-          <div id="crHistResultados" style="display:flex;flex-direction:column;gap:8px;"></div>
-        </div>
-
-        <!-- ── SECTION: KPIs ── -->
-        <div class="cr-section" id="crSecKpis" data-cr-section="kpis">
-          <div class="cr-header-bar">
-            <select id="crKpiFiltroRep" class="cr-select"><option value="">Todos los repartidores</option></select>
-            <select id="crKpiFiltroPeriodo" class="cr-select">
-              <option value="semana">Esta semana</option>
-              <option value="mes" selected>Este mes</option>
-              <option value="todo">Todo el tiempo</option>
-            </select>
-          </div>
-          <div class="cr-stats" id="crKpisStats">
-            <div class="cr-stat"><div class="val" style="color:#10b981;" id="crKpiExito">0%</div><div class="lbl">% Entrega Exitosa</div></div>
-            <div class="cr-stat"><div class="val" style="color:#3b82f6;" id="crKpiPromedio">0</div><div class="lbl">Entregas/Día</div></div>
-            <div class="cr-stat"><div class="val" style="color:#f59e0b;" id="crKpiTiempo">—</div><div class="lbl">Tiempo Prom. Ruta</div></div>
-            <div class="cr-stat"><div class="val" style="color:#8b5cf6;" id="crKpiPuntualidad">0%</div><div class="lbl">Puntualidad</div></div>
-            <div class="cr-stat"><div class="val" style="color:#ef4444;" id="crKpiNoEntregas">0</div><div class="lbl">No Entregas</div></div>
-            <div class="cr-stat"><div class="val" style="color:#0ea5e9;" id="crKpiCalificacion">—</div><div class="lbl">Calificación</div></div>
-          </div>
-          <div class="cr-card">
-            <h3>📈 Ranking de Repartidores</h3>
-            <table class="cr-table">
-              <thead><tr><th>#</th><th>Repartidor</th><th>Entregas</th><th>% Éxito</th><th>Puntualidad</th><th>Calificación</th><th>Tendencia</th></tr></thead>
-              <tbody id="crKpiRanking"><tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">Cargando...</td></tr></tbody>
-            </table>
-          </div>
-          <div class="cr-card">
-            <h3>📊 Desempeño por Zona</h3>
-            <div id="crKpiZonas" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:8px;"></div>
-          </div>
-        </div>
-
-        <!-- ── SECTION: ALERTAS ── -->
+        <!-- ── SECTION: ALERTAS & COMUNICACIÓN & CONFIG (fusionada) ── -->
         <div class="cr-section" id="crSecAlertas" data-cr-section="alertas">
-          <div class="cr-stats">
-            <div class="cr-stat"><div class="val" style="color:#ef4444;" id="crAlertaCriticas">0</div><div class="lbl">🔴 Críticas</div></div>
-            <div class="cr-stat"><div class="val" style="color:#f59e0b;" id="crAlertaWarnings">0</div><div class="lbl">🟡 Advertencias</div></div>
-            <div class="cr-stat"><div class="val" style="color:#3b82f6;" id="crAlertaInfo">0</div><div class="lbl">🔵 Info</div></div>
+          <!-- Sub-tab bar -->
+          <div class="cr-subtabs">
+            <button class="cr-subtab active" data-alertas-tab="alertas">🔔 Alertas</button>
+            <button class="cr-subtab" data-alertas-tab="comunicacion">💬 Comunicación</button>
+            <button class="cr-subtab" data-alertas-tab="config">⚙️ Configuración</button>
           </div>
-          <div class="cr-card">
-            <h3>🔔 Alertas en Tiempo Real</h3>
-            <p style="font-size:0.52rem;color:#64748b;margin:0 0 8px 0;">Notificaciones automáticas según eventos de la app móvil del repartidor.</p>
-            <div style="display:flex;gap:6px;margin-bottom:10px;">
-              <select id="crAlertaFiltro" class="cr-select">
-                <option value="">Todas</option>
-                <option value="critica">🔴 Críticas</option>
-                <option value="warning">🟡 Advertencias</option>
-                <option value="info">🔵 Informativas</option>
-              </select>
-              <button id="crAlertaLimpiar" type="button" class="cr-btn" style="background:#f3f4f6;color:#64748b;border:1px solid #d1d5db;">🗑 Limpiar leídas</button>
+
+          <!-- ── Tab: Alertas ── -->
+          <div id="crAlertasTab_alertas">
+            <div class="cr-stats">
+              <div class="cr-stat"><div class="val" style="color:#ef4444;" id="crAlertaCriticas">0</div><div class="lbl">🔴 Críticas</div></div>
+              <div class="cr-stat"><div class="val" style="color:#f59e0b;" id="crAlertaWarnings">0</div><div class="lbl">🟡 Advertencias</div></div>
+              <div class="cr-stat"><div class="val" style="color:#3b82f6;" id="crAlertaInfo">0</div><div class="lbl">🔵 Info</div></div>
             </div>
-            <div id="crAlertasLista" style="display:flex;flex-direction:column;gap:6px;max-height:500px;overflow-y:auto;"></div>
+            <div class="cr-card">
+              <h3>🔔 Alertas en Tiempo Real</h3>
+              <p style="font-size:0.52rem;color:#64748b;margin:0 0 8px 0;">Notificaciones automáticas según eventos de la app móvil del repartidor.</p>
+              <div style="display:flex;gap:6px;margin-bottom:10px;">
+                <select id="crAlertaFiltro" class="cr-select">
+                  <option value="">Todas</option>
+                  <option value="critica">🔴 Críticas</option>
+                  <option value="warning">🟡 Advertencias</option>
+                  <option value="info">🔵 Informativas</option>
+                </select>
+                <button id="crAlertaLimpiar" type="button" class="cr-btn" style="background:#f3f4f6;color:#64748b;border:1px solid #d1d5db;">🗑 Limpiar leídas</button>
+              </div>
+              <div id="crAlertasLista" style="display:flex;flex-direction:column;gap:6px;max-height:500px;overflow-y:auto;"></div>
+            </div>
+            <div class="cr-card">
+              <h3>⚙️ Configuración de Alertas</h3>
+              <div style="display:flex;flex-direction:column;gap:8px;" id="crAlertaConfig">
+                <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertNoEntrega" checked> Repartidor reporta no-entrega</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertRetardo" checked> Retardo en check de entrada</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertFueraZona" checked> Repartidor fuera de geocerca</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertGasto" checked> Gasto elevado registrado</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertSinMovimiento"> Sin movimiento por más de 30 min</label>
+                <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertEntregaCompleta" checked> Repartidor completó todas las entregas</label>
+              </div>
+            </div>
           </div>
-          <div class="cr-card">
-            <h3>⚙️ Configuración de Alertas</h3>
-            <div style="display:flex;flex-direction:column;gap:8px;" id="crAlertaConfig">
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertNoEntrega" checked> Repartidor reporta no-entrega</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertRetardo" checked> Retardo en check de entrada</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertFueraZona" checked> Repartidor fuera de geocerca</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertGasto" checked> Gasto elevado registrado</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertSinMovimiento"> Sin movimiento por más de 30 min</label>
-              <label style="display:flex;align-items:center;gap:8px;font-size:0.55rem;font-weight:700;color:#334155;cursor:pointer;"><input type="checkbox" id="crAlertEntregaCompleta" checked> Repartidor completó todas las entregas</label>
+
+          <!-- ── Tab: Comunicación ── -->
+          <div id="crAlertasTab_comunicacion" style="display:none;">
+            <div class="cr-card" style="height:calc(100vh - 220px);display:flex;flex-direction:column;">
+              <h3>💬 Comunicación con Repartidores</h3>
+              <div class="cr-header-bar" style="flex-shrink:0;">
+                <select id="crChatRep" class="cr-select"><option value="">— Seleccionar repartidor —</option></select>
+                <span id="crChatStatus" style="font-size:0.48rem;color:#94a3b8;">Sin conversación activa</span>
+              </div>
+              <div id="crChatMessages" style="flex:1;overflow-y:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;margin:8px 0;display:flex;flex-direction:column;gap:6px;">
+                <div style="text-align:center;color:#94a3b8;font-size:0.55rem;padding:40px;">Selecciona un repartidor para iniciar conversación</div>
+              </div>
+              <div style="display:flex;gap:6px;flex-shrink:0;">
+                <input id="crChatInput" type="text" class="cr-input" placeholder="Escribe un mensaje..." style="flex:1;" disabled>
+                <button id="crChatSend" type="button" class="cr-btn primary" disabled>Enviar</button>
+                <button id="crChatQuick" type="button" class="cr-btn" style="background:#f3f4f6;color:#64748b;border:1px solid #d1d5db;" title="Mensajes rápidos">⚡</button>
+              </div>
+              <div id="crChatQuickMenu" style="display:none;margin-top:6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px;">
+                <div style="font-size:0.48rem;font-weight:800;color:#64748b;margin-bottom:6px;">MENSAJES RÁPIDOS</div>
+                <div style="display:flex;flex-wrap:wrap;gap:4px;">
+                  <button type="button" class="cr-quick-msg cr-btn" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:0.48rem;" data-msg="¿Cuál es tu ubicación actual?">📍 Ubicación</button>
+                  <button type="button" class="cr-quick-msg cr-btn" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:0.48rem;" data-msg="¿Cuántas entregas te faltan?">📦 Pendientes</button>
+                  <button type="button" class="cr-quick-msg cr-btn" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:0.48rem;" data-msg="Regresa a sucursal cuando termines">🏢 Regresar</button>
+                  <button type="button" class="cr-quick-msg cr-btn" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:0.48rem;" data-msg="Tienes una nueva asignación de carga">📋 Nueva carga</button>
+                  <button type="button" class="cr-quick-msg cr-btn" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:0.48rem;" data-msg="URGENTE: Comunícate conmigo inmediatamente">🚨 Urgente</button>
+                  <button type="button" class="cr-quick-msg cr-btn" style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;font-size:0.48rem;" data-msg="Buen trabajo hoy, gracias 👍">👍 Buen trabajo</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── Tab: Configuración del módulo ── -->
+          <div id="crAlertasTab_config" style="display:none;">
+            <div class="cr-card">
+              <h3>🗺 Zonas de Entrega</h3>
+              <div id="crConfigZonasLista" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;min-height:40px;color:#94a3b8;font-size:0.55rem;"></div>
+              <div style="display:grid;grid-template-columns:1fr auto;gap:8px;">
+                <input id="crConfigZonaNombre" type="text" class="cr-input" placeholder="Nombre de zona...">
+                <button id="crConfigZonaAgregar" type="button" class="cr-btn primary">+ Agregar</button>
+              </div>
+            </div>
+            <div class="cr-card">
+              <h3>📍 Geocercas</h3>
+              <p style="font-size:0.52rem;color:#64748b;margin:0 0 8px 0;">Define las zonas delimitadas en el mapa para monitoreo automático.</p>
+              <div id="crGeocercaLista" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;min-height:40px;color:#94a3b8;font-size:0.55rem;"></div>
+              <button id="crGeocercaAgregar" type="button" class="cr-btn primary">+ Nueva Geocerca</button>
+            </div>
+            <div class="cr-card">
+              <h3>💳 Conceptos de Gastos</h3>
+              <div id="crGastosConceptosLista" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;min-height:40px;color:#94a3b8;font-size:0.55rem;"></div>
+              <div style="display:grid;grid-template-columns:1fr auto;gap:8px;">
+                <input id="crGastoConceptoNombre" type="text" class="cr-input" placeholder="Concepto de gasto...">
+                <button id="crGastoConceptoAgregar" type="button" class="cr-btn primary">+ Agregar</button>
+              </div>
+            </div>
+            <div class="cr-card">
+              <h3>🕐 Horarios de Operación</h3>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;" id="crHorariosConfig">
+                <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Hora inicio:</label><input type="time" id="crHorarioInicio" class="cr-input" value="08:00"></div>
+                <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Hora fin:</label><input type="time" id="crHorarioFin" class="cr-input" value="18:00"></div>
+                <div>
+                  <label style="font-size:0.48rem;font-weight:700;color:#64748b;">Días activos:</label>
+                  <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;">
+                    <label style="font-size:0.48rem;cursor:pointer;"><input type="checkbox" checked> Lun</label>
+                    <label style="font-size:0.48rem;cursor:pointer;"><input type="checkbox" checked> Mar</label>
+                    <label style="font-size:0.48rem;cursor:pointer;"><input type="checkbox" checked> Mié</label>
+                    <label style="font-size:0.48rem;cursor:pointer;"><input type="checkbox" checked> Jue</label>
+                    <label style="font-size:0.48rem;cursor:pointer;"><input type="checkbox" checked> Vie</label>
+                    <label style="font-size:0.48rem;cursor:pointer;"><input type="checkbox"> Sáb</label>
+                    <label style="font-size:0.48rem;cursor:pointer;"><input type="checkbox"> Dom</label>
+                  </div>
+                </div>
+              </div>
+              <div style="margin-top:10px;"><button id="crHorarioGuardar" type="button" class="cr-btn primary">💾 Guardar Horarios</button></div>
+            </div>
+            <div class="cr-card">
+              <h3>✅ Conceptos de Visita</h3>
+              <p style="font-size:0.52rem;color:#64748b;margin:0 0 8px 0;">Resultados disponibles para los repartidores al reportar una visita fallida en la app.</p>
+              <div id="crCheckConceptosLista" style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px;min-height:40px;color:#94a3b8;font-size:0.55rem;"></div>
+              <div style="display:grid;grid-template-columns:1fr auto;gap:8px;">
+                <input id="crCheckConceptoNombre" type="text" class="cr-input" placeholder="Concepto de visita...">
+                <button id="crCheckConceptoAgregar" type="button" class="cr-btn primary">+ Agregar</button>
+              </div>
             </div>
           </div>
         </div>
@@ -32989,128 +33210,6 @@ document.addEventListener('DOMContentLoaded', function() {
           </div>
         </div>
 
-        <!-- ── SECTION: REPORTES ── -->
-        <div class="cr-section" id="crSecReportes" data-cr-section="reportes">
-          <div class="cr-card">
-            <h3>📊 Reportes Exportables</h3>
-            <p style="font-size:0.52rem;color:#64748b;margin:0 0 14px 0;">Genera reportes en formato imprimible o CSV para análisis externo.</p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;">
-              <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px;cursor:pointer;" id="crRepEntregas">
-                <div style="font-size:1.2rem;margin-bottom:6px;">📦</div>
-                <div style="font-weight:800;font-size:0.62rem;color:#1e40af;margin-bottom:4px;">Reporte de Entregas</div>
-                <div style="font-size:0.48rem;color:#64748b;">Todas las entregas por periodo, repartidor y zona. Incluye estados y conceptos de no-entrega.</div>
-              </div>
-              <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:14px;cursor:pointer;" id="crRepGastos">
-                <div style="font-size:1.2rem;margin-bottom:6px;">💰</div>
-                <div style="font-weight:800;font-size:0.62rem;color:#166534;margin-bottom:4px;">Reporte de Gastos</div>
-                <div style="font-size:0.48rem;color:#64748b;">Gastos por repartidor, categoría y periodo. Incluye montos aprobados y pendientes.</div>
-              </div>
-              <div style="background:#faf5ff;border:1px solid #e9d5ff;border-radius:10px;padding:14px;cursor:pointer;" id="crRepAsistencia">
-                <div style="font-size:1.2rem;margin-bottom:6px;">✅</div>
-                <div style="font-weight:800;font-size:0.62rem;color:#7c3aed;margin-bottom:4px;">Reporte de Asistencia</div>
-                <div style="font-size:0.48rem;color:#64748b;">Checks de entrada/salida, retardos, faltas y horas extras por repartidor.</div>
-              </div>
-              <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:14px;cursor:pointer;" id="crRepKm">
-                <div style="font-size:1.2rem;margin-bottom:6px;">🛣️</div>
-                <div style="font-weight:800;font-size:0.62rem;color:#c2410c;margin-bottom:4px;">Reporte de Kilometraje</div>
-                <div style="font-size:0.48rem;color:#64748b;">Km recorridos por repartidor, costo por km y viáticos asociados.</div>
-              </div>
-              <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:14px;cursor:pointer;" id="crRepPenalizaciones">
-                <div style="font-size:1.2rem;margin-bottom:6px;">⚠️</div>
-                <div style="font-weight:800;font-size:0.62rem;color:#dc2626;margin-bottom:4px;">Reporte de Penalizaciones</div>
-                <div style="font-size:0.48rem;color:#64748b;">Penalizaciones aplicadas por repartidor con motivos y montos descontados.</div>
-              </div>
-              <div style="background:#f0f9ff;border:1px solid #bae6fd;border-radius:10px;padding:14px;cursor:pointer;" id="crRepDesempeno">
-                <div style="font-size:1.2rem;margin-bottom:6px;">📈</div>
-                <div style="font-weight:800;font-size:0.62rem;color:#0369a1;margin-bottom:4px;">Reporte de Desempeño</div>
-                <div style="font-size:0.48rem;color:#64748b;">KPIs, ranking, tendencias y comparativa entre repartidores por periodo.</div>
-              </div>
-            </div>
-          </div>
-          <div class="cr-card">
-            <h3>⚙️ Filtros del Reporte</h3>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end;">
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Desde</label><input id="crRepDesde" type="date" class="cr-input"></div>
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Hasta</label><input id="crRepHasta" type="date" class="cr-input"></div>
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Repartidor</label><select id="crRepFiltroRep" class="cr-select" style="width:100%;"><option value="">Todos</option></select></div>
-              <button id="crRepGenerar" type="button" class="cr-btn primary" style="white-space:nowrap;">📄 Generar</button>
-            </div>
-            <div id="crRepPreview" style="margin-top:12px;min-height:60px;"></div>
-          </div>
-        </div>
-
-        <!-- ── SECTION: COMUNICACIÓN ── -->
-        <div class="cr-section" id="crSecComunicacion" data-cr-section="comunicacion">
-          <div class="cr-card" style="height:calc(100vh - 160px);display:flex;flex-direction:column;">
-            <h3>💬 Comunicación con Repartidores</h3>
-            <div class="cr-header-bar" style="flex-shrink:0;">
-              <select id="crChatRep" class="cr-select"><option value="">— Seleccionar repartidor —</option></select>
-              <span id="crChatStatus" style="font-size:0.48rem;color:#94a3b8;">Sin conversación activa</span>
-            </div>
-            <div id="crChatMessages" style="flex:1;overflow-y:auto;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:10px;margin:8px 0;display:flex;flex-direction:column;gap:6px;">
-              <div style="text-align:center;color:#94a3b8;font-size:0.55rem;padding:40px;">Selecciona un repartidor para iniciar conversación</div>
-            </div>
-            <div style="display:flex;gap:6px;flex-shrink:0;">
-              <input id="crChatInput" type="text" class="cr-input" placeholder="Escribe un mensaje..." style="flex:1;" disabled>
-              <button id="crChatSend" type="button" class="cr-btn primary" disabled>Enviar</button>
-              <button id="crChatQuick" type="button" class="cr-btn" style="background:#f3f4f6;color:#64748b;border:1px solid #d1d5db;" title="Mensajes rápidos">⚡</button>
-            </div>
-            <div id="crChatQuickMenu" style="display:none;margin-top:6px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:8px;">
-              <div style="font-size:0.48rem;font-weight:800;color:#64748b;margin-bottom:6px;">MENSAJES RÁPIDOS</div>
-              <div style="display:flex;flex-wrap:wrap;gap:4px;">
-                <button type="button" class="cr-quick-msg cr-btn" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:0.48rem;" data-msg="¿Cuál es tu ubicación actual?">📍 Ubicación</button>
-                <button type="button" class="cr-quick-msg cr-btn" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:0.48rem;" data-msg="¿Cuántas entregas te faltan?">📦 Pendientes</button>
-                <button type="button" class="cr-quick-msg cr-btn" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:0.48rem;" data-msg="Regresa a sucursal cuando termines">🏢 Regresar</button>
-                <button type="button" class="cr-quick-msg cr-btn" style="background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe;font-size:0.48rem;" data-msg="Tienes una nueva asignación de carga">📋 Nueva carga</button>
-                <button type="button" class="cr-quick-msg cr-btn" style="background:#fef2f2;color:#dc2626;border:1px solid #fecaca;font-size:0.48rem;" data-msg="URGENTE: Comunícate conmigo inmediatamente">🚨 Urgente</button>
-                <button type="button" class="cr-quick-msg cr-btn" style="background:#f0fdf4;color:#16a34a;border:1px solid #bbf7d0;font-size:0.48rem;" data-msg="Buen trabajo hoy, gracias 👍">👍 Buen trabajo</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── SECTION: KILOMETRAJE ── -->
-        <div class="cr-section" id="crSecKilometraje" data-cr-section="kilometraje">
-          <div class="cr-header-bar">
-            <select id="crKmFiltroRep" class="cr-select"><option value="">Todos los repartidores</option></select>
-            <select id="crKmFiltroPeriodo" class="cr-select">
-              <option value="hoy">Hoy</option>
-              <option value="semana">Esta semana</option>
-              <option value="mes" selected>Este mes</option>
-            </select>
-          </div>
-          <div class="cr-stats">
-            <div class="cr-stat"><div class="val" style="color:#0ea5e9;" id="crKmTotal">0</div><div class="lbl">Km Totales</div></div>
-            <div class="cr-stat"><div class="val" style="color:#f59e0b;" id="crKmCosto">$0</div><div class="lbl">Costo Estimado</div></div>
-            <div class="cr-stat"><div class="val" style="color:#8b5cf6;" id="crKmPromedio">0</div><div class="lbl">Km Promedio/Día</div></div>
-            <div class="cr-stat"><div class="val" style="color:#10b981;" id="crKmViaticos">$0</div><div class="lbl">Viáticos Pagados</div></div>
-          </div>
-          <div class="cr-card">
-            <h3>🛣️ Registro de Kilometraje</h3>
-            <p style="font-size:0.52rem;color:#64748b;margin:0 0 10px 0;">Se registra automáticamente desde la app móvil al iniciar y terminar ruta. También permite captura manual.</p>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr auto;gap:8px;align-items:end;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #e2e8f0;">
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Repartidor</label><select id="crKmRep" class="cr-select" style="width:100%;"></select></div>
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Km Inicio</label><input id="crKmInicio" type="number" class="cr-input" placeholder="0" min="0"></div>
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Km Final</label><input id="crKmFinal" type="number" class="cr-input" placeholder="0" min="0"></div>
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Fecha</label><input id="crKmFecha" type="date" class="cr-input"></div>
-              <button id="crKmAgregar" type="button" class="cr-btn primary" style="white-space:nowrap;">+ Registrar</button>
-            </div>
-            <table class="cr-table">
-              <thead><tr><th>Fecha</th><th>Repartidor</th><th>Km Inicio</th><th>Km Final</th><th>Recorrido</th><th>Costo</th><th>Acciones</th></tr></thead>
-              <tbody id="crKmTabla"><tr><td colspan="7" style="text-align:center;color:#94a3b8;padding:20px;">Sin registros de kilometraje</td></tr></tbody>
-            </table>
-          </div>
-          <div class="cr-card">
-            <h3>⚙️ Configuración de Costo</h3>
-            <div style="display:flex;gap:12px;align-items:center;">
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Costo por Km ($)</label><input id="crKmCostoPorKm" type="number" class="cr-input" value="3.50" step="0.10" min="0" style="width:100px;"></div>
-              <button id="crKmGuardarCosto" type="button" class="cr-btn success">💾 Guardar</button>
-            </div>
-          </div>
-        </div>
-
-
-        <!-- Historial Popup Overlay -->
         <div id="crHistPopup" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:10001;">
           <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;max-width:750px;width:95%;max-height:85vh;overflow-y:auto;padding:24px;box-shadow:0 25px 50px rgba(0,0,0,0.25);">
             <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
@@ -37564,26 +37663,26 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('ctrlRepBtnRefresh').addEventListener('click',function(){cargarEntregas();renderActiveSection();});
 
     // ── SIDEBAR NAVIGATION ──
-    // ── SECTION GROUPS (merged modules) ──
+    // ── SECTION GROUPS — 1:1 para nueva barra lateral ──
     var SECTION_GROUPS = {
-        dashboard:     { sections:['dashboard'] },
-        localizacion:  { sections:['localizacion'] },
-        pedidos:       { sections:['pedidos','recoleccion','reagendar','inventario'],  tabs:['📦 Listado','🏭 Recolección','📅 Reagendar','📋 Inv. Vehículo'] },
-        repartidores:  { sections:['repartidores','gastos','checks','penalizaciones','kilometraje'], tabs:['👥 Directorio','💰 Gastos','✅ Asistencia','⚠️ Penaliz.','🛣️ Km'] },
-        rutas:         { sections:['rutas'] },
-        reportes:      { sections:['kpis','reportes'],                         tabs:['📈 KPIs','📊 Exportar'] },
-        alertas:       { sections:['alertas','comunicacion'],                  tabs:['🔔 Alertas','💬 Chat'] },
-        config:        { sections:['zonas','horarios','conceptos'],            tabs:['🏷 Zonas','🕐 Horarios','📋 Conceptos'] }
+        dashboard:    { sections:['dashboard'] },
+        mapa:         { sections:['mapa'] },
+        pedidos:      { sections:['pedidos'] },
+        repartidores: { sections:['repartidores'] },
+        inventario:   { sections:['inventario'] },
+        recoleccion:  { sections:['recoleccion'] },
+        reagendar:    { sections:['reagendar'] },
+        alertas:      { sections:['alertas'] }
     };
     var SEC_RENDERS = {
-        dashboard:renderDashboard, localizacion:renderLocalizacion,
-        pedidos:renderPedidos, recoleccion:renderRecoleccion, reagendar:renderReagendamiento, inventario:renderInventario,
-        repartidores:renderRepartidoresSection, gastos:renderGastos, checks:renderChecks,
-        penalizaciones:renderPenalizacionesSec, kilometraje:renderKilometraje,
-        kpis:renderKpis, reportes:renderReportes,
-        alertas:renderAlertas, comunicacion:renderComunicacion,
-        zonas:renderZonas, horarios:renderHorarios, conceptos:renderConceptos,
-        rutas:renderRutas, geocercas:renderGeocercas, historial:renderHistorial
+        dashboard:renderDashboard,
+        mapa:function(){},
+        pedidos:renderPedidos,
+        repartidores:renderRepartidoresSection,
+        inventario:renderInventario,
+        recoleccion:renderRecoleccion,
+        reagendar:renderReagendamiento,
+        alertas:renderAlertas
     };
     var currentGroup='dashboard', currentSubIdx=0;
 
@@ -37597,6 +37696,46 @@ document.addEventListener('DOMContentLoaded', function() {
             renderActiveSection();
         });
     });
+
+    // ── Sub-tabs inline: data-dash-tab (Dashboard) ──
+    panel.addEventListener('click',function(e){
+        var btn=e.target.closest('[data-dash-tab].cr-subtab');
+        if(!btn) return;
+        var tab=btn.dataset.dashTab;
+        panel.querySelectorAll('[data-dash-tab].cr-subtab').forEach(function(b){b.classList.remove('active');});
+        btn.classList.add('active');
+        panel.querySelectorAll('[id^="crDashTab_"]').forEach(function(el){el.style.display='none';});
+        var target=document.getElementById('crDashTab_'+tab);
+        if(target) target.style.display='';
+    });
+
+    // ── Sub-tabs inline: data-alertas-tab (Alertas & Config) ──
+    panel.addEventListener('click',function(e){
+        var btn=e.target.closest('[data-alertas-tab].cr-subtab');
+        if(!btn) return;
+        var tab=btn.dataset.alertasTab;
+        panel.querySelectorAll('[data-alertas-tab].cr-subtab').forEach(function(b){b.classList.remove('active');});
+        btn.classList.add('active');
+        panel.querySelectorAll('[id^="crAlertasTab_"]').forEach(function(el){el.style.display='none';});
+        var target=document.getElementById('crAlertasTab_'+tab);
+        if(target) target.style.display='';
+    });
+
+    // ── Capa toggle buttons en el mapa ──
+    panel.addEventListener('click',function(e){
+        var btn=e.target.closest('.cr-mapa-capa');
+        if(!btn) return;
+        btn.classList.toggle('active');
+        var capa=btn.dataset.capa;
+        var capaInfo=document.getElementById('crMapaCapaInfo');
+        if(capaInfo){
+            var msgs={repartidores:'Posición en tiempo real de repartidores',clientes_pendientes:'Clientes con entregas pendientes',clientes_entregados:'Entregas completadas hoy',no_encontrados:'Visitas fallidas sin entrega',paradas:'Paradas y tiempos por ubicación',ruta_trazada:'Ruta trazada del repartidor'};
+            var activos=panel.querySelectorAll('.cr-mapa-capa.active');
+            if(activos.length===0){capaInfo.textContent='Sin capas activas';}
+            else{var names=[];activos.forEach(function(b){names.push(msgs[b.dataset.capa]||b.dataset.capa);});capaInfo.textContent=names.join(' · ');}
+        }
+    });
+
     function getActiveSection(){
         var active = panel.querySelector('.cr-sidebar-btn.active');
         return active ? active.dataset.crSection : 'dashboard';
