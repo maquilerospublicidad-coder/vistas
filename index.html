@@ -32540,6 +32540,12 @@ document.addEventListener('DOMContentLoaded', function() {
   #panelControlRepartidores .cr-mapa-capa:hover { background:rgba(255,255,255,0.12); color:#cbd5e1; border-color:rgba(255,255,255,0.3); transform:translateY(-1px); }
   #panelControlRepartidores .cr-mapa-capa.active { background:#1e40af; color:#fff; border-color:#3b82f6; box-shadow:0 0 0 2px rgba(59,130,246,0.3); }
   #panelControlRepartidores .cr-mapa-capa .cr-capa-ico { font-size:0.8rem; }
+  /* Icon-only action buttons on rep rows */
+  #panelControlRepartidores .cr-ico-btn { width:30px;height:30px;border:none;border-radius:7px;cursor:pointer;font-size:0.82rem;background:#f1f5f9;transition:all 0.15s;display:inline-flex;align-items:center;justify-content:center;padding:0; }
+  #panelControlRepartidores .cr-ico-btn:hover { background:#e2e8f0;transform:scale(1.15); }
+  #panelControlRepartidores .cr-ico-btn.active { background:#dbeafe;box-shadow:0 0 0 2px #3b82f6; }
+  #panelControlRepartidores .cr-ico-btn.danger { background:#fef2f2; }
+  #panelControlRepartidores .cr-ico-btn.danger:hover { background:#fee2e2; }
 </style>
 <div id="panelControlRepartidores" class="entrega-overlay">
   <div style="display:flex;flex-direction:column;width:100%;height:100vh;">
@@ -32865,14 +32871,29 @@ document.addEventListener('DOMContentLoaded', function() {
         <!-- ── SECTION: REPARTIDORES ── -->
         <div class="cr-section" id="crSecRepartidores" data-cr-section="repartidores">
           <div class="cr-card">
-            <h3>👥 Repartidores Registrados</h3>
-            <div id="configRepartidoresLista" style="display:flex;flex-direction:column;gap:8px;margin-bottom:14px;"></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end;padding-top:12px;border-top:1px solid #e2e8f0;">
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Nombre completo</label><input id="configRepartidorNombre" type="text" class="cr-input" placeholder="Juan Pérez"></div>
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Teléfono</label><input id="configRepartidorTel" type="tel" class="cr-input" placeholder="9511234567"></div>
-              <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;">Zona</label><select id="configRepartidorZona" class="cr-select" style="width:100%;"><option value="">— Sin zona —</option></select></div>
-              <button id="configRepartidorAgregar" type="button" class="cr-btn primary" style="white-space:nowrap;">+ Agregar</button>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+              <h3 style="margin:0;">👥 Repartidores</h3>
+              <button id="crRepMostrarAlta" type="button" class="cr-btn primary" style="font-size:0.48rem;">+ Nuevo</button>
             </div>
+            <div id="crRepFormAlta" style="display:none;padding:10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;margin-bottom:12px;">
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:8px;align-items:end;">
+                <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;display:block;margin-bottom:2px;">Nombre</label><input id="configRepartidorNombre" type="text" class="cr-input" placeholder="Juan Pérez"></div>
+                <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;display:block;margin-bottom:2px;">Teléfono</label><input id="configRepartidorTel" type="tel" class="cr-input" placeholder="9511234567"></div>
+                <div><label style="font-size:0.48rem;font-weight:700;color:#64748b;display:block;margin-bottom:2px;">Zona</label><select id="configRepartidorZona" class="cr-select" style="width:100%;"><option value="">— Sin zona —</option></select></div>
+                <div style="display:flex;gap:6px;align-items:flex-end;">
+                  <button id="configRepartidorAgregar" type="button" class="cr-btn primary">✓ Guardar</button>
+                  <button id="crRepCancelarAlta" type="button" class="cr-btn" style="background:#f1f5f9;border:1px solid #d1d5db;">✕</button>
+                </div>
+              </div>
+            </div>
+            <div id="configRepartidoresLista" style="display:flex;flex-direction:column;gap:6px;"></div>
+          </div>
+          <div id="crRepAccionPanel" style="display:none;" class="cr-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid #e2e8f0;">
+              <span id="crRepAccionTitulo" style="font-size:0.65rem;font-weight:900;color:#0f172a;"></span>
+              <button id="crRepAccionCerrar" type="button" style="background:none;border:none;cursor:pointer;font-size:1.1rem;color:#94a3b8;line-height:1;padding:2px 6px;">✕</button>
+            </div>
+            <div id="crRepAccionCuerpo"></div>
           </div>
         </div>
 
@@ -37876,24 +37897,50 @@ document.addEventListener('DOMContentLoaded', function() {
     function renderRepartidoresSection(){
         var container=document.getElementById('configRepartidoresLista');if(!container)return;
         var reps=getReps();
-        if(!reps.length){container.innerHTML='<div style="text-align:center;color:#94a3b8;font-size:0.55rem;padding:16px;">Sin repartidores registrados</div>';return;}
+        if(!reps.length){container.innerHTML='<div style="text-align:center;color:#94a3b8;font-size:0.55rem;padding:20px;">Sin repartidores. Usa el botón + Nuevo para agregar.</div>';return;}
         container.innerHTML=reps.map(function(r,i){
-            return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;">'+
-                '<div style="width:36px;height:36px;border-radius:50%;background:#1e40af;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.65rem;flex-shrink:0;">'+esc(r.nombre.charAt(0).toUpperCase())+'</div>'+
-                '<div style="flex:1;">'+
-                    '<div style="font-size:0.62rem;font-weight:800;color:#0f172a;">'+esc(r.nombre)+'</div>'+
-                    '<div style="font-size:0.48rem;color:#64748b;">📱 '+esc(r.telefono||'—')+' · 🏷 '+esc(r.zona||'Sin zona')+' · ID: '+esc(r.id)+'</div>'+
+            var pend=allEntregas.filter(function(e){return e.repartidorId===r.id&&e.estado!=='entregada'&&e.estado!=='no_entregada';}).length;
+            var isAct=r.activo!==false;
+            return '<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;transition:box-shadow 0.15s;" onmouseover="this.style.boxShadow=\'0 2px 8px rgba(0,0,0,0.07)\'" onmouseout="this.style.boxShadow=\'none\'">'+
+                '<div style="width:38px;height:38px;border-radius:50%;background:'+(isAct?'linear-gradient(135deg,#1e40af,#3b82f6)':'#94a3b8')+';color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:0.65rem;flex-shrink:0;">'+esc(r.nombre.charAt(0).toUpperCase())+'</div>'+
+                '<div style="flex:1;min-width:0;">'+
+                    '<div style="font-size:0.62rem;font-weight:800;color:#0f172a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">'+esc(r.nombre)+'</div>'+
+                    '<div style="font-size:0.46rem;color:#64748b;">📱 '+esc(r.telefono||'—')+' · 🏷 '+esc(r.zona||'Sin zona')+(pend?' · <span style="color:#f59e0b;font-weight:700;">'+pend+' pendientes</span>':'')+'</div>'+
                 '</div>'+
-                '<span class="cr-badge" style="'+(r.activo!==false?'background:#f0fdf4;color:#16a34a':'background:#fef2f2;color:#dc2626')+'">'+(r.activo!==false?'Activo':'Inactivo')+'</span>'+
-                '<button type="button" class="cr-btn" data-rep-toggle="'+i+'" style="font-size:0.45rem;background:#f1f5f9;color:#475569;border:1px solid #d1d5db;">'+(r.activo!==false?'⏸ Desactivar':'▶ Activar')+'</button>'+
-                '<button type="button" data-rep-del="'+i+'" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:0.75rem;">✕</button>'+
+                '<span class="cr-badge" style="'+(isAct?'background:#f0fdf4;color:#16a34a':'background:#fef2f2;color:#dc2626')+';flex-shrink:0;">'+(isAct?'Activo':'Inactivo')+'</span>'+
+                '<div style="display:flex;gap:4px;flex-shrink:0;">'+
+                    '<button class="cr-ico-btn" data-ra="inv"    data-rid="'+esc(r.id)+'" data-rn="'+esc(r.nombre)+'" title="Inventario / Carga asignada">📦</button>'+
+                    '<button class="cr-ico-btn" data-ra="asignar" data-rid="'+esc(r.id)+'" data-rn="'+esc(r.nombre)+'" title="Asignar pedidos">🚚</button>'+
+                    '<button class="cr-ico-btn" data-ra="kpi"    data-rid="'+esc(r.id)+'" data-rn="'+esc(r.nombre)+'" title="KPIs & Rendimiento">📊</button>'+
+                    '<button class="cr-ico-btn" data-ra="pen"    data-rid="'+esc(r.id)+'" data-rn="'+esc(r.nombre)+'" title="Penalizaciones">⚠️</button>'+
+                    '<button class="cr-ico-btn" data-ra="toggle" data-ridx="'+i+'" title="'+(isAct?'Desactivar':'Activar')+'">'+(isAct?'⏸':'▶')+'</button>'+
+                    '<button class="cr-ico-btn danger" data-ra="del" data-ridx="'+i+'" data-rn="'+esc(r.nombre)+'" title="Eliminar repartidor">🗑</button>'+
+                '</div>'+
             '</div>';
         }).join('');
-        container.querySelectorAll('[data-rep-del]').forEach(function(btn){
-            btn.addEventListener('click',function(){if(!confirm('¿Eliminar repartidor?'))return;var r=getReps();r.splice(parseInt(btn.dataset.repDel),1);saveReps(r);renderRepartidoresSection();populateRepSelects();});
-        });
-        container.querySelectorAll('[data-rep-toggle]').forEach(function(btn){
-            btn.addEventListener('click',function(){var r=getReps();var idx=parseInt(btn.dataset.repToggle);r[idx].activo=r[idx].activo===false?true:false;saveReps(r);renderRepartidoresSection();});
+        container.querySelectorAll('[data-ra]').forEach(function(btn){
+            btn.addEventListener('click',function(){
+                var ra=btn.dataset.ra,rid=btn.dataset.rid,rn=btn.dataset.rn,ridx=parseInt(btn.dataset.ridx||0);
+                var reps2=getReps();
+                if(ra==='toggle'){reps2[ridx].activo=reps2[ridx].activo===false;saveReps(reps2);renderRepartidoresSection();return;}
+                if(ra==='del'){if(!confirm('¿Eliminar "'+rn+'"?'))return;reps2.splice(ridx,1);saveReps(reps2);renderRepartidoresSection();populateRepSelects();return;}
+                var acPanel=document.getElementById('crRepAccionPanel');
+                var titulo=document.getElementById('crRepAccionTitulo');
+                var cuerpo=document.getElementById('crRepAccionCuerpo');
+                if(!acPanel||!titulo||!cuerpo)return;
+                var icons={inv:'📦',asignar:'🚚',kpi:'📊',pen:'⚠️'};
+                var labels={inv:'Inventario / Carga',asignar:'Asignar pedidos',kpi:'KPIs & Rendimiento',pen:'Penalizaciones'};
+                titulo.innerHTML='<span style="margin-right:4px;">'+esc(icons[ra]||'')+'</span><b>'+esc(labels[ra]||ra)+'</b> &nbsp;·&nbsp; '+esc(rn);
+                acPanel.style.display='block';
+                acPanel.scrollIntoView({behavior:'smooth',block:'nearest'});
+                // Mark active button
+                container.querySelectorAll('.cr-ico-btn.active').forEach(function(b){b.classList.remove('active');});
+                btn.classList.add('active');
+                if(ra==='inv')    crRepRenderInv(rid,cuerpo);
+                else if(ra==='asignar') crRepRenderAsignar(rid,rn,cuerpo);
+                else if(ra==='kpi')    crRepRenderKpi(rid,cuerpo);
+                else if(ra==='pen')    crRepRenderPen(rid,rn,cuerpo);
+            });
         });
     }
     var btnAddRep=document.getElementById('configRepartidorAgregar');
@@ -37907,8 +37954,146 @@ document.addEventListener('DOMContentLoaded', function() {
         saveReps(reps);
         var n=document.getElementById('configRepartidorNombre');if(n)n.value='';
         var t=document.getElementById('configRepartidorTel');if(t)t.value='';
+        var formAlta2=document.getElementById('crRepFormAlta');if(formAlta2)formAlta2.style.display='none';
         renderRepartidoresSection();populateRepSelects();
     });
+    // Form-alta toggle
+    var _btnMostrarAlta=document.getElementById('crRepMostrarAlta');
+    var _formAlta=document.getElementById('crRepFormAlta');
+    var _btnCancelarAlta=document.getElementById('crRepCancelarAlta');
+    if(_btnMostrarAlta)_btnMostrarAlta.addEventListener('click',function(){if(_formAlta)_formAlta.style.display='block';});
+    if(_btnCancelarAlta)_btnCancelarAlta.addEventListener('click',function(){if(_formAlta)_formAlta.style.display='none';});
+    // Close action panel
+    var _btnCerrarAcc=document.getElementById('crRepAccionCerrar');
+    if(_btnCerrarAcc)_btnCerrarAcc.addEventListener('click',function(){
+        var p=document.getElementById('crRepAccionPanel');if(p)p.style.display='none';
+        document.querySelectorAll('#configRepartidoresLista .cr-ico-btn.active').forEach(function(b){b.classList.remove('active');});
+    });
+
+    // ── PANEL ACCIÓN REPARTIDOR: helpers ──
+    function crRepRenderInv(rid,cuerpo){
+        var pedidos=allEntregas.filter(function(e){return e.repartidorId===rid;});
+        var carg=pedidos.length,
+            ent=pedidos.filter(function(e){return e.estado==='entregada';}).length,
+            pend=pedidos.filter(function(e){return e.estado!=='entregada'&&e.estado!=='no_entregada';}).length,
+            dev=pedidos.filter(function(e){return e.estado==='no_entregada';}).length;
+        var stC={pendiente:'#f59e0b',en_camino:'#3b82f6',entregada:'#10b981',no_entregada:'#ef4444'};
+        cuerpo.innerHTML=
+            '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;">'+
+                '<div class="cr-stat"><div class="val" style="color:#3b82f6;font-size:1.1rem;">'+carg+'</div><div class="lbl">Cargados</div></div>'+
+                '<div class="cr-stat"><div class="val" style="color:#10b981;font-size:1.1rem;">'+ent+'</div><div class="lbl">Entregados</div></div>'+
+                '<div class="cr-stat"><div class="val" style="color:#f59e0b;font-size:1.1rem;">'+pend+'</div><div class="lbl">Pendientes</div></div>'+
+                '<div class="cr-stat"><div class="val" style="color:#ef4444;font-size:1.1rem;">'+dev+'</div><div class="lbl">Devueltos</div></div>'+
+            '</div>'+
+            (pedidos.length?
+                '<table class="cr-table"><thead><tr><th>Folio</th><th>Producto</th><th>Cantidad</th><th>Cliente</th><th>Estado</th></tr></thead><tbody>'+
+                pedidos.map(function(e){
+                    return '<tr><td style="font-weight:700;">'+esc(e.folioProduccion||e.id)+'</td><td>'+esc(e.producto||'—')+'</td><td>'+esc(e.cantidad||'—')+'</td><td>'+esc(e.cliente||'—')+'</td>'+
+                        '<td><span class="cr-badge" style="background:'+(stC[e.estado]||'#94a3b8')+'18;color:'+(stC[e.estado]||'#94a3b8')+';">'+esc(e.estado||'pendiente')+'</span></td></tr>';
+                }).join('')+'</tbody></table>':
+                '<div style="text-align:center;color:#94a3b8;font-size:0.55rem;padding:16px;">Sin carga asignada a este repartidor</div>');
+    }
+    function crRepRenderAsignar(rid,rn,cuerpo){
+        var disponibles=allRecoleccion.filter(function(o){
+            return (o.estado==='terminada'||o.estado==='almacenado')&&!o.repartidorId;
+        });
+        if(!disponibles.length){cuerpo.innerHTML='<div style="text-align:center;color:#94a3b8;font-size:0.55rem;padding:16px;">Sin pedidos disponibles para asignar en este momento</div>';return;}
+        cuerpo.innerHTML='<div style="display:flex;flex-direction:column;gap:6px;">'+
+            disponibles.map(function(o){
+                var folio=o.folioProduccion||o.folio||o.id;
+                return '<div style="display:flex;align-items:center;gap:10px;padding:8px 10px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;">'+
+                    '<div style="flex:1;min-width:0;">'+
+                        '<div style="font-weight:700;font-size:0.58rem;">'+esc(folio)+'</div>'+
+                        '<div style="font-size:0.46rem;color:#64748b;">'+esc(o.cliente||'—')+' · '+esc(o.producto||'—')+(o.cantidad?' ×'+esc(o.cantidad):'')+'</div>'+
+                    '</div>'+
+                    '<button class="cr-btn primary cr-asignar-btn" data-oid="'+esc(o.id)+'" data-osrc="'+esc(o._source||'')+'" style="font-size:0.45rem;white-space:nowrap;">🚚 Asignar a '+esc(rn)+'</button>'+
+                '</div>';
+            }).join('')+'</div>';
+        cuerpo.querySelectorAll('.cr-asignar-btn').forEach(function(btn){
+            btn.addEventListener('click',function(){
+                var oid=btn.dataset.oid,osrc=btn.dataset.osrc;
+                var db=getCRDB();if(!db){alert('Sin conexión a base de datos');return;}
+                var col=osrc==='production'?'production_orders':'stored_orders';
+                btn.disabled=true;btn.textContent='⏳ Asignando…';
+                db.collection(col).doc(oid).update({
+                    repartidorId:rid,repartidorNombre:rn,
+                    estado:'asignado_recoleccion',
+                    fechaAsignacion:new Date().toISOString()
+                }).then(function(){
+                    var o=allRecoleccion.find(function(x){return x.id===oid;});
+                    if(o){o.repartidorId=rid;o.repartidorNombre=rn;o.estado='asignado_recoleccion';}
+                    btn.closest('div[style]').innerHTML='<div style="color:#16a34a;font-weight:700;font-size:0.52rem;padding:8px;">✅ Asignado a '+esc(rn)+'</div>';
+                }).catch(function(err){btn.disabled=false;btn.textContent='🚚 Asignar';alert('Error: '+err.message);});
+            });
+        });
+    }
+    function crRepRenderKpi(rid,cuerpo){
+        var data=allEntregas.filter(function(e){return e.repartidorId===rid;});
+        var total=data.length,
+            ent=data.filter(function(e){return e.estado==='entregada';}).length,
+            noEnt=data.filter(function(e){return e.estado==='no_entregada';}).length,
+            pend=data.filter(function(e){return e.estado!=='entregada'&&e.estado!=='no_entregada';}).length;
+        var pct=total?Math.round(ent/total*100):0;
+        var pens=getPenalizaciones().filter(function(p){return p.repId===rid;});
+        var totalPen=pens.reduce(function(s,p){return s+Number(p.monto||0);},0);
+        var color=pct>=80?'#10b981':pct>=50?'#f59e0b':'#ef4444';
+        cuerpo.innerHTML=
+            '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;">'+
+                '<div class="cr-stat"><div class="val" style="color:#3b82f6;font-size:1.1rem;">'+total+'</div><div class="lbl">Total Entregas</div></div>'+
+                '<div class="cr-stat"><div class="val" style="color:#10b981;font-size:1.1rem;">'+ent+'</div><div class="lbl">Exitosas</div></div>'+
+                '<div class="cr-stat"><div class="val" style="color:'+color+';font-size:1.1rem;">'+pct+'%</div><div class="lbl">% Éxito</div></div>'+
+                '<div class="cr-stat"><div class="val" style="color:#f59e0b;font-size:1.1rem;">'+pend+'</div><div class="lbl">Pendientes</div></div>'+
+                '<div class="cr-stat"><div class="val" style="color:#ef4444;font-size:1.1rem;">'+noEnt+'</div><div class="lbl">No entregadas</div></div>'+
+                '<div class="cr-stat"><div class="val" style="color:#dc2626;font-size:1rem;">'+fmtMoney(totalPen)+'</div><div class="lbl">Penalizaciones $</div></div>'+
+            '</div>'+
+            '<div style="text-align:center;padding:8px;font-size:0.7rem;font-weight:900;color:'+color+';">'+
+                (pct>=80?'⭐ Rendimiento Excelente':pct>=60?'👍 Rendimiento Bueno':total?'⚠️ Necesita Mejorar':'— Sin datos aún —')+
+            '</div>';
+    }
+    function crRepRenderPen(rid,rn,cuerpo){
+        var safeId='crRepPL'+rid.replace(/[^a-z0-9]/gi,'_');
+        function _listar(){
+            var pens=getPenalizaciones().filter(function(p){return p.repId===rid;});
+            var lista=document.getElementById(safeId);if(!lista)return;
+            if(!pens.length){lista.innerHTML='<div style="color:#94a3b8;font-size:0.52rem;padding:10px;text-align:center;">Sin penalizaciones registradas para este repartidor</div>';return;}
+            lista.innerHTML='<table class="cr-table"><thead><tr><th>Fecha</th><th>Motivo</th><th>Monto</th><th></th></tr></thead><tbody>'+
+                pens.map(function(p,i){
+                    return '<tr><td>'+fmtDate(p.fecha)+'</td><td>'+esc(p.motivo||'—')+'</td><td style="font-weight:700;color:#ef4444;">'+fmtMoney(p.monto)+'</td>'+
+                        '<td><button class="cr-btn danger cr-del-pen" data-pi="'+i+'" style="font-size:0.42rem;padding:3px 8px;">✕</button></td></tr>';
+                }).join('')+'</tbody></table>';
+            lista.querySelectorAll('.cr-del-pen').forEach(function(b){
+                b.addEventListener('click',function(){
+                    var allPens=getPenalizaciones();
+                    var repPens=allPens.filter(function(p){return p.repId===rid;});
+                    var gi=allPens.indexOf(repPens[parseInt(b.dataset.pi)]);
+                    if(gi>=0)allPens.splice(gi,1);
+                    savePenalizaciones(allPens);_listar();
+                });
+            });
+        }
+        cuerpo.innerHTML=
+            '<div style="display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:end;margin-bottom:12px;">'+
+                '<div><label style="font-size:0.48rem;font-weight:700;color:#64748b;display:block;margin-bottom:2px;">Motivo</label>'+
+                '<input id="crRepPM" type="text" class="cr-input" placeholder="Descripción de la penalización"></div>'+
+                '<div><label style="font-size:0.48rem;font-weight:700;color:#64748b;display:block;margin-bottom:2px;">Monto $</label>'+
+                '<input id="crRepPMto" type="number" class="cr-input" placeholder="0.00" style="width:90px;"></div>'+
+                '<button id="crRepPGuardar" type="button" class="cr-btn danger" style="white-space:nowrap;">⚠️ Aplicar</button>'+
+            '</div>'+
+            '<div id="'+safeId+'"></div>';
+        _listar();
+        var btnG=document.getElementById('crRepPGuardar');
+        if(btnG)btnG.addEventListener('click',function(){
+            var motivo=((document.getElementById('crRepPM')||{}).value||'').trim();
+            var monto=Number((document.getElementById('crRepPMto')||{}).value)||0;
+            if(!motivo){alert('Ingresa el motivo');return;}
+            var pens=getPenalizaciones();
+            pens.push({repId:rid,motivo:motivo,monto:monto,fecha:new Date().toISOString()});
+            savePenalizaciones(pens);
+            var m=document.getElementById('crRepPM');if(m)m.value='';
+            var mt=document.getElementById('crRepPMto');if(mt)mt.value='';
+            _listar();
+        });
+    }
 
     // ── RUTAS ──
     function renderRutas(){
